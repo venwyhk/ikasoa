@@ -170,8 +170,8 @@ Ikasoa是一款高性能轻量级的RPC框架,基于apache thrift开发,抛弃�
 
         ......
 
-        <!-- ikasoa服务端配置 -->
-        <bean id="soaServer" class="org.sulei.example.ikasoa.SoaServer" init-method="run" destroy-method="stop">
+        <!-- 服务端配置 -->
+        <bean id="rpcServer" class="org.sulei.example.ikasoa.RpcServer" init-method="run" destroy-method="stop">
             <constructor-arg index="0" ref="ikasoaFactory"/>
             <constructor-arg index="1">
                 <value>9993</value><!-- 设置服务开放端口 -->
