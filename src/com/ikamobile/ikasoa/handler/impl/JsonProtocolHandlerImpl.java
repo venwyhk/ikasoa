@@ -91,7 +91,11 @@ public class JsonProtocolHandlerImpl<T1, T2> implements ProtocolHandler<T1, T2> 
 			}
 			result = (T2) map;
 		} else {
-			result = (T2) JSON.parseObject(str, resultData.getClassType());
+			try {
+				result = (T2) JSON.parseObject(str, resultData.getClassType());
+			} catch (Exception e) {
+				result = (T2) JSON.parseObject("{}", resultData.getClassType());
+			}
 		}
 		return result;
 	}

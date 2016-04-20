@@ -72,12 +72,17 @@ public class DefaultIkasoaFactory extends GeneralFactory implements IkasoaFactor
 		bgsFactory.setProtocolType(protocolType);
 		return (T) Proxy.newProxyInstance(iClass.getClassLoader(), new Class<?>[] { iClass }, new InvocationHandler() {
 			@Override
-			public Object invoke(Object proxy, Method iMethod, Object[] args) throws Throwable {
+			public Object invoke(Object proxy, Method iMethod, Object[] args) {
 				String sKey = getSKey(iClass, iMethod);
 				LOG.debug("server key : " + sKey);
 				BaseGetService<Object[], T> s = bgsFactory.getBaseGetService(serverHost, serverPort, sKey,
 						new ReturnData(iMethod));
-				return s.get(args);
+				try {
+					return s.get(args);
+				} catch (Throwable e) {
+					LOG.error(e.getMessage(), e);
+					return null;
+				}
 			}
 		});
 	}
@@ -90,12 +95,17 @@ public class DefaultIkasoaFactory extends GeneralFactory implements IkasoaFactor
 		bgsFactory.setProtocolType(protocolType);
 		return (T) Proxy.newProxyInstance(iClass.getClassLoader(), new Class<?>[] { iClass }, new InvocationHandler() {
 			@Override
-			public Object invoke(Object proxy, Method iMethod, Object[] args) throws Throwable {
+			public Object invoke(Object proxy, Method iMethod, Object[] args) {
 				String sKey = getSKey(iClass, iMethod);
 				LOG.debug("server key : " + sKey);
 				BaseGetService<Object[], T> s = bgsFactory.getBaseGetService(serverHostList, serverPort, sKey,
 						new ReturnData(iMethod));
-				return s.get(args);
+				try {
+					return s.get(args);
+				} catch (Throwable e) {
+					LOG.error(e.getMessage(), e);
+					return null;
+				}
 			}
 		});
 	}
@@ -224,7 +234,8 @@ public class DefaultIkasoaFactory extends GeneralFactory implements IkasoaFactor
 	// 比较两个方法是否相同
 	private boolean compareMethod(Method m1, Method m2) {
 		if (m1 != null && m2 != null && m1.getName().equals(m2.getName())
-				&& m1.getParameterTypes().length == m2.getParameterTypes().length) {
+				&& m1.getParameterTypes().length == m2.getParameterTypes().length
+				&& m1.getReturnType().getName().equals(m2.getReturnType().getName())) {
 			for (int i = 0; i < m1.getParameterTypes().length; i++) {
 				if (!m1.getParameterTypes()[i].getName().equals(m2.getParameterTypes()[i].getName())) {
 					return false;

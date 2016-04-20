@@ -97,7 +97,7 @@
 		<dependency>
 			<groupId>org.sulei</groupId>
 			<artifactId>sulei-core-thrift</artifactId>
-			<version>0.3.1</version>
+			<version>0.3.2</version>
 		</dependency>
 		<dependency>
 			<groupId>com.alibaba</groupId>
