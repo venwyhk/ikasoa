@@ -208,12 +208,18 @@ public class DefaultIkasoaFactory extends GeneralFactory implements IkasoaFactor
 			}
 			ProtocolHandlerFactory<Object[], Object> protocolHandlerFactory = new ProtocolHandlerFactory<Object[], Object>();
 			for (Method implMethod : implClass.getMethods()) {
-				// 过滤掉无效方法
+
 				boolean isValidMethod = false;
-				for (Method iMethod : iClass.getMethods()) {
-					if (compareMethod(iMethod, implMethod)) {
-						isValidMethod = true;
-						break;
+				// 对hashCode和toString两个方法做特殊处理
+				if ("hashCode".equals(implMethod.getName()) || "toString".equals(implMethod.getName())) {
+					isValidMethod = true;
+				} else {
+					// 过滤掉无效方法
+					for (Method iMethod : iClass.getMethods()) {
+						if (compareMethod(iMethod, implMethod)) {
+							isValidMethod = true;
+							break;
+						}
 					}
 				}
 				if (!isValidMethod) {
