@@ -72,17 +72,12 @@ public class DefaultIkasoaFactory extends GeneralFactory implements IkasoaFactor
 		bgsFactory.setProtocolType(protocolType);
 		return (T) Proxy.newProxyInstance(iClass.getClassLoader(), new Class<?>[] { iClass }, new InvocationHandler() {
 			@Override
-			public Object invoke(Object proxy, Method iMethod, Object[] args) {
+			public Object invoke(Object proxy, Method iMethod, Object[] args) throws Throwable {
 				String sKey = getSKey(iClass, iMethod);
 				LOG.debug("server key : " + sKey);
 				BaseGetService<Object[], T> s = bgsFactory.getBaseGetService(serverHost, serverPort, sKey,
 						new ReturnData(iMethod));
-				try {
-					return s.get(args);
-				} catch (Throwable e) {
-					LOG.error(e.getMessage(), e);
-					return null;
-				}
+				return s.get(args);
 			}
 		});
 	}
@@ -95,17 +90,12 @@ public class DefaultIkasoaFactory extends GeneralFactory implements IkasoaFactor
 		bgsFactory.setProtocolType(protocolType);
 		return (T) Proxy.newProxyInstance(iClass.getClassLoader(), new Class<?>[] { iClass }, new InvocationHandler() {
 			@Override
-			public Object invoke(Object proxy, Method iMethod, Object[] args) {
+			public Object invoke(Object proxy, Method iMethod, Object[] args) throws Throwable {
 				String sKey = getSKey(iClass, iMethod);
 				LOG.debug("server key : " + sKey);
 				BaseGetService<Object[], T> s = bgsFactory.getBaseGetService(serverHostList, serverPort, sKey,
 						new ReturnData(iMethod));
-				try {
-					return s.get(args);
-				} catch (Throwable e) {
-					LOG.error(e.getMessage(), e);
-					return null;
-				}
+				return s.get(args);
 			}
 		});
 	}
