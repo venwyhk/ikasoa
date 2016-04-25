@@ -416,5 +416,13 @@ Ikasoa是一款高性能轻量级的RPC框架,基于apache thrift开发,抛弃�
 		</tr>
     </table>
 
+## 注意事项 ##
 
-*<center>sulei@ikamobile.com | 2016-04</center>*
+- fastjson依赖版本建议与ikasoa所依赖的版本一致(当前为1.2.8).否则可能出现服务名不能匹配,无法调用服务的情况.
+
+- 参数对象以父类的形式传递,转换为子类时可能会丢失子类属性值.建议尽量以子类形式传递参数.
+
+- 不支持抽象类作为参数传递.
+
+
+*sulei@ikamobile.com | 2016-04*
