@@ -1,9 +1,9 @@
-# Ikasoa入门使用手册 #
+# Ikasoa 开发文档 #
 *Version: 0.1-BETA4*
 
 ## 概述 ##
 
-Ikasoa是一款高性能轻量级的RPC框架,基于apache thrift开发,抛弃了原有的idl定义接口方式.客户端可以像调用本地接口那样去调用远程接口,并支持负载均衡,简化了服务定义,降低了学习成本.
+Ikasoa-rpc是一款高性能轻量级的RPC框架,基于apache thrift开发,抛弃了原有的idl定义接口方式.客户端可以像调用本地接口那样去调用远程接口,并支持负载均衡,简化了服务定义,提高开发效率.
 
 ## 环境搭建 ##
 
@@ -309,7 +309,7 @@ Ikasoa是一款高性能轻量级的RPC框架,基于apache thrift开发,抛弃�
     IkasoaFactory ikasoaFactory = new DefaultIkasoaFactory(ProtocolType.KRYO);
     ......
 
-*(需要注意在0.1版本中kryo序列化方式暂未对异常对象进行处理.)*
+*(需要注意在目前的版本中kryo序列化方式暂未对异常对象进行处理.)*
 
 - 选择xml作为序列化方式
 
@@ -318,111 +318,15 @@ Ikasoa是一款高性能轻量级的RPC框架,基于apache thrift开发,抛弃�
     IkasoaFactory ikasoaFactory = new DefaultIkasoaFactory(ProtocolType.XML);
     ......
 
-- 各序列化方式的简单性能测试对比(仅供参考)
-
-    <table>
-		<tr>
-			<td><b>序列化方式</b></td>
-        	<td><b>序列化后的字符串长度</b></td>
-        	<td><b>100次连续序列化和反序列化耗时</b></td>
-        	<td><b>1000次连续序列化和反序列化耗时</b></td>
-        	<td><b>10000次连续序列化和反序列化耗时</b></td>
-        	<td><b>适用场景</b></td>
-		</tr>
-    	<tr>
-			<td>fastjson</td>
-       		<td>45</td>
-        	<td>422ms</td>
-        	<td>484ms</td>
-        	<td>609ms</td>
-        	<td>适合对象结构简单,访问频次较高的场景.</td>
-		</tr>
-    	<tr>
-			<td>kryo</td>
-       		<td>28</td>
-        	<td>172ms</td>
-        	<td>359ms</td>
-        	<td>969ms</td>
-        	<td>适合对象结构复杂,对响应时间要求较高的场景.</td>
-		</tr>
-    	<tr>
-			<td>xml</td>
-       		<td>580</td>
-        	<td>1407ms</td>
-        	<td>7812ms</td>
-        	<td>60859ms</td>
-        	<td>适合开发和测试场景.</td>
-		</tr>
-    </table>
-
-## 功能对比 ##
-
-- 功能对比
-
-    <table>
-		<tr>
-			<td></td>
-        	<td><b>thrift</b></td>
-        	<td><b>ikasoa</b></td>
-            <td><b>dubbo</b></td>
-		</tr>
-    	<tr>
-			<td><i>规模</i></td>
-       		<td>中量级</td>
-        	<td>轻量级</td>
-        	<td>重量级</td>
-		</tr>
-    	<tr>
-			<td><i>开发复杂度</i></td>
-       		<td>高<br/>(需要学习ThriftIDL语法,并生成相应的代码才能进行调用)</td>
-        	<td>低<br/>(配置简单,可像调用本地接口一样调用远程接口,同时兼容ThriftIDL)</td>
-        	<td>中<br/>(可像调用本地接口一样调用远程接口,但配置相对复杂)</td>
-		</tr>
-    	<tr>
-			<td><i>跨语言</i></td>
-       		<td>支持</td>
-        	<td>支持<br/>(可通过ThriftIDL兼容方式支持跨语言,或者进行针对性的二次开发)</td>
-        	<td>不支持(dubbox通过restful可支持跨语言)</td>
-		</tr>
-    	<tr>
-			<td><i>序列化方式</i></td>
-       		<td>thrift</td>
-        	<td>json(fastjson) <i>(默认)</i><br/>kryo<br/>xml</td>
-        	<td>hessian <i>(默认)</i><br/>json(fastjson)<br/>json(dubbo json)<br/>java serializable<br/><i>等</i></td>
-		</tr>
-    	<tr>
-			<td><i>集群和软负载均衡</i></td>
-       		<td>不支持</td>
-        	<td>支持</td>
-        	<td>支持</td>
-		</tr>
-    	<tr>
-			<td><i>软负载均衡方式</i></td>
-       		<td>-</td>
-        	<td>轮询 <i>(默认)</i><br/>权重轮询<br/>随机<br/><i>(并支持扩展)</i></td>
-        	<td>随机 <i>(默认)</i><br/>权重轮询<br/>最少活跃调用数<br/>一致性hash<br/><i>(并支持扩展)</i><br/></td>
-		</tr>
-    	<tr>
-			<td><i>协议</i></td>
-       		<td>thrift</td>
-        	<td>thrift <i>(默认)</i><br/>netty (nifty)</td>
-        	<td>netty+hessian <i>(默认)</i><br/>rmi<br/>http<br/>redis<br/>thrift<br/><i>等,(并支持协议扩展)</i></td>
-		</tr>
-    	<tr>
-			<td><i>协调服务支持</i></td>
-       		<td>不支持</td>
-        	<td>不支持</td>
-        	<td>zookeeper<br/>multicast<br/><i>等</i></td>
-		</tr>
-    </table>
-
 ## 注意事项 ##
 
 - fastjson依赖版本建议与ikasoa所依赖的版本一致(当前为1.2.8).否则可能出现服务名不能匹配,无法调用服务的情况.
 
-- 参数对象以父类的形式传递,转换为子类时可能会丢失子类属性值.建议尽量以子类形式传递参数.
+- 使用fastjson作为序列化方式时,参数对象以父类的形式传递,转换为子类时可能会丢失子类属性值.建议尽量以子类形式传递参数.
 
-- 不支持抽象类作为参数传递.
+- 不支持抽象类作为参数对象进行传递.
+
+- 使用fastjson作为序列化方式时,传递的Bean对象必须要有默认构造方法(建议使用类似lombok这样的工具来处理Bean对象).
 
 
-*sulei@ikamobile.com | 2016-04*
+*sulei@ikamobile.com | 2016-05*
