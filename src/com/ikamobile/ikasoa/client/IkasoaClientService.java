@@ -56,6 +56,8 @@ public class IkasoaClientService<T1, T2> implements BaseGetService<T1, T2> {
 			resultStr = factory.getService(thriftClient, serviceName).get(argStr);
 		} catch (STException e) {
 			throw new IkasoaException("Thrift get exception !", e);
+		} finally {
+			thriftClient.close();
 		}
 		// 返回值转换
 		Throwable throwable = null;

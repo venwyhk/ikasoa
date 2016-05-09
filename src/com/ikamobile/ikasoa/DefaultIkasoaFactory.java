@@ -1,6 +1,5 @@
 package com.ikamobile.ikasoa;
 
-import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.util.HashMap;
@@ -66,38 +65,25 @@ public class DefaultIkasoaFactory extends GeneralFactory implements IkasoaFactor
 	// 获取一个客户端接口实现
 	@Override
 	@SuppressWarnings("unchecked")
-	public <T> T getIkasoaClient(final Class<T> iClass, final String serverHost, final int serverPort) {
-		final BaseGetServiceFactory<Object[], T> bgsFactory = new BaseGetServiceFactory<Object[], T>(
+	public <T> T getIkasoaClient(Class<T> iClass, String serverHost, int serverPort) {
+		BaseGetServiceFactory<Object[], T> bgsFactory = new BaseGetServiceFactory<Object[], T>(
 				super.thriftServerConfiguration, super.thriftClientConfiguration);
 		bgsFactory.setProtocolType(protocolType);
-		return (T) Proxy.newProxyInstance(iClass.getClassLoader(), new Class<?>[] { iClass }, new InvocationHandler() {
-			@Override
-			public Object invoke(Object proxy, Method iMethod, Object[] args) throws Throwable {
-				String sKey = getSKey(iClass, iMethod);
-				LOG.debug("server key : " + sKey);
-				BaseGetService<Object[], T> s = bgsFactory.getBaseGetService(serverHost, serverPort, sKey,
-						new ReturnData(iMethod));
-				return s.get(args);
-			}
-		});
+		return (T) Proxy.newProxyInstance(iClass.getClassLoader(), new Class<?>[] { iClass },
+				(proxy, iMethod, args) -> bgsFactory
+						.getBaseGetService(serverHost, serverPort, getSKey(iClass, iMethod), new ReturnData(iMethod))
+						.get(args));
 	}
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public <T> T getIkasoaClient(final Class<T> iClass, final List<String> serverHostList, final int serverPort) {
-		final BaseGetServiceFactory<Object[], T> bgsFactory = new BaseGetServiceFactory<Object[], T>(
+	public <T> T getIkasoaClient(Class<T> iClass, List<String> serverHostList, int serverPort) {
+		BaseGetServiceFactory<Object[], T> bgsFactory = new BaseGetServiceFactory<Object[], T>(
 				super.thriftServerConfiguration, super.thriftClientConfiguration);
 		bgsFactory.setProtocolType(protocolType);
-		return (T) Proxy.newProxyInstance(iClass.getClassLoader(), new Class<?>[] { iClass }, new InvocationHandler() {
-			@Override
-			public Object invoke(Object proxy, Method iMethod, Object[] args) throws Throwable {
-				String sKey = getSKey(iClass, iMethod);
-				LOG.debug("server key : " + sKey);
-				BaseGetService<Object[], T> s = bgsFactory.getBaseGetService(serverHostList, serverPort, sKey,
-						new ReturnData(iMethod));
-				return s.get(args);
-			}
-		});
+		return (T) Proxy.newProxyInstance(iClass.getClassLoader(), new Class<?>[] { iClass },
+				(proxy, iMethod, args) -> bgsFactory.getBaseGetService(serverHostList, serverPort,
+						getSKey(iClass, iMethod), new ReturnData(iMethod)).get(args));
 	}
 
 	@Override
@@ -129,43 +115,44 @@ public class DefaultIkasoaFactory extends GeneralFactory implements IkasoaFactor
 	}
 
 	@Override
-	public Service getService(ThriftClient arg0) throws STException {
-		return super.getService(arg0);
+	public Service getService(ThriftClient thriftClient) throws STException {
+		return super.getService(thriftClient);
 	}
 
 	@Override
-	public Service getService(ThriftClient arg0, String arg1) throws STException {
-		return super.getService(arg0, arg1);
+	public Service getService(ThriftClient thriftClient, String serviceName) throws STException {
+		return super.getService(thriftClient, serviceName);
 	}
 
 	@Override
-	public ThriftClient getThriftClient(String arg0, int arg1) {
-		return super.getThriftClient(arg0, arg1);
+	public ThriftClient getThriftClient(String serverHost, int serverPort) {
+		return super.getThriftClient(serverHost, serverPort);
 	}
 
 	@Override
-	public ThriftClient getThriftClient(List<String> arg0, int arg1) {
-		return super.getThriftClient(arg0, arg1);
+	public ThriftClient getThriftClient(List<String> serverHostList, int serverPort) {
+		return super.getThriftClient(serverHostList, serverPort);
 	}
 
 	@Override
-	public ThriftServer getThriftServer(int arg0, Service arg1) {
-		return super.getThriftServer(arg0, arg1);
+	public ThriftServer getThriftServer(int serverPort, Service service) {
+		return super.getThriftServer(serverPort, service);
 	}
 
 	@Override
-	public ThriftServer getThriftServer(int arg0, Map<String, Service> arg1) throws STException {
-		return super.getThriftServer(arg0, arg1);
+	public ThriftServer getThriftServer(int serverPort, Map<String, Service> serviceMap) throws STException {
+		return super.getThriftServer(serverPort, serviceMap);
 	}
 
 	@Override
-	public ThriftServer getThriftServer(String arg0, int arg1, Service arg2) {
-		return super.getThriftServer(arg0, arg1, arg2);
+	public ThriftServer getThriftServer(String serverName, int serverPort, Service service) {
+		return super.getThriftServer(serverName, serverPort, service);
 	}
 
 	@Override
-	public ThriftServer getThriftServer(String arg0, int arg1, Map<String, Service> arg2) throws STException {
-		return super.getThriftServer(arg0, arg1, arg2);
+	public ThriftServer getThriftServer(String serverName, int serverPort, Map<String, Service> serviceMap)
+			throws STException {
+		return super.getThriftServer(serverName, serverPort, serviceMap);
 	}
 
 	private Map<String, Service> getServiceMapByImplClass(ImplClsCon implClsCon) throws IkasoaException {

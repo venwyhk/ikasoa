@@ -4,7 +4,7 @@
 	<groupId>com.ikamobile</groupId>
 	<artifactId>ikasoa</artifactId>
 	<name>Ikasoa</name>
-	<version>0.1-BETA3</version>
+	<version>0.1-BETA4</version>
 	<packaging>jar</packaging>
 
 	<build>
@@ -97,7 +97,7 @@
 		<dependency>
 			<groupId>org.sulei</groupId>
 			<artifactId>sulei-core-thrift</artifactId>
-			<version>0.3.2</version>
+			<version>0.3.3</version>
 		</dependency>
 		<dependency>
 			<groupId>com.alibaba</groupId>

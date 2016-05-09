@@ -1,5 +1,5 @@
 # Ikasoa入门使用手册 #
-*Version: 0.1-BETA3*
+*Version: 0.1-BETA4*
 
 ## 概述 ##
 
@@ -68,7 +68,7 @@ Ikasoa是一款高性能轻量级的RPC框架,基于apache thrift开发,抛弃�
             <dependency>
                 <groupId>com.ikamobile</groupId>
                 <artifactId>ikasoa</artifactId>
-                <version>0.1-BETA3</version>
+                <version>0.1-BETA4</version>
             </dependency>
 
             ......
@@ -309,7 +309,7 @@ Ikasoa是一款高性能轻量级的RPC框架,基于apache thrift开发,抛弃�
     IkasoaFactory ikasoaFactory = new DefaultIkasoaFactory(ProtocolType.KRYO);
     ......
 
-*(需要注意在0.1-BETA2版本中kryo序列化方式暂未对异常对象进行处理.)*
+*(需要注意在0.1版本中kryo序列化方式暂未对异常对象进行处理.)*
 
 - 选择xml作为序列化方式
 

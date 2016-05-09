@@ -2,7 +2,10 @@ package com.ikamobile.ikasoa;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.sulei.core.thrift.GeneralFactory;
+import org.sulei.core.thrift.client.ThriftClient;
 import org.sulei.core.thrift.client.ThriftClientConfiguration;
 import org.sulei.core.thrift.server.ThriftServerConfiguration;
 
@@ -19,6 +22,8 @@ import com.ikamobile.ikasoa.handler.ReturnData;
  * @version 0.1
  */
 public class BaseGetServiceFactory<T1, T2> extends GeneralFactory {
+
+	private static final Logger LOG = LoggerFactory.getLogger(BaseGetServiceFactory.class);
 
 	private ProtocolType protocolType;
 
@@ -40,49 +45,43 @@ public class BaseGetServiceFactory<T1, T2> extends GeneralFactory {
 		super(thriftServerConfiguration, thriftClientConfiguration);
 	}
 
-	public BaseGetService<T1, T2> getBaseGetService(String serverHost, int serverPort, ReturnData resultData) {
-		return getBaseGetService(serverHost, serverPort, null, resultData);
-	}
-
 	public BaseGetService<T1, T2> getBaseGetService(String serverHost, int serverPort, String serviceName,
 			ReturnData resultData) {
-		return new IkasoaClientService<T1, T2>(this, getThriftClient(serverHost, serverPort), serviceName,
+		return getBaseGetService(serverHost, serverPort, serviceName,
 				protocolHandlerFactory.getProtocolHandler(null, resultData, getProtocolType()));
 	}
 
-	public BaseGetService<T1, T2> getBaseGetService(String serverHost, int serverPort,
-			ProtocolHandler<T1, T2> protocolHandler) {
-		return getBaseGetService(serverHost, serverPort, null, protocolHandler);
-	}
-
 	public BaseGetService<T1, T2> getBaseGetService(String serverHost, int serverPort, String serviceName,
 			ProtocolHandler<T1, T2> protocolHandler) {
-		return new IkasoaClientService<T1, T2>(this, getThriftClient(serverHost, serverPort), serviceName,
-				protocolHandler);
+		return getBaseGetService(getThriftClient(serverHost, serverPort), serviceName, protocolHandler);
 	}
 
-	public BaseGetService<T1, T2> getBaseGetService(List<String> serverHostList, int serverPort,
+	public BaseGetService<T1, T2> getBaseGetService(ThriftClient thriftClient, String serviceName,
 			ReturnData resultData) {
-		return new IkasoaClientService<T1, T2>(this, getThriftClient(serverHostList, serverPort), null,
+		return getBaseGetService(thriftClient, serviceName,
 				protocolHandlerFactory.getProtocolHandler(null, resultData, getProtocolType()));
 	}
 
 	public BaseGetService<T1, T2> getBaseGetService(List<String> serverHostList, int serverPort, String serviceName,
 			ReturnData resultData) {
-		return new IkasoaClientService<T1, T2>(this, getThriftClient(serverHostList, serverPort), serviceName,
+		return getBaseGetService(serverHostList, serverPort, serviceName,
 				protocolHandlerFactory.getProtocolHandler(null, resultData, getProtocolType()));
-	}
-
-	public BaseGetService<T1, T2> getBaseGetService(List<String> serverHostList, int serverPort,
-			ProtocolHandler<T1, T2> protocolHandler) {
-		return new IkasoaClientService<T1, T2>(this, getThriftClient(serverHostList, serverPort), null,
-				protocolHandler);
 	}
 
 	public BaseGetService<T1, T2> getBaseGetService(List<String> serverHostList, int serverPort, String serviceName,
 			ProtocolHandler<T1, T2> protocolHandler) {
-		return new IkasoaClientService<T1, T2>(this, getThriftClient(serverHostList, serverPort), serviceName,
-				protocolHandler);
+		return getBaseGetService(getThriftClient(serverHostList, serverPort), serviceName, protocolHandler);
+	}
+
+	public BaseGetService<T1, T2> getBaseGetService(ThriftClient thriftClient, String serviceName,
+			ProtocolHandler<T1, T2> protocolHandler) {
+		if (thriftClient == null) {
+			LOG.error("thriftClient is null !");
+			return null;
+		}
+		LOG.debug("Create new instance 'IkasoaClientService' . (serverHost : " + thriftClient.getServerHost()
+				+ ", serverPort : " + thriftClient.getServerPort() + ", serviceName : " + serviceName + ")");
+		return new IkasoaClientService<T1, T2>(this, thriftClient, serviceName, protocolHandler);
 	}
 
 	public ProtocolType getProtocolType() {

@@ -25,7 +25,7 @@ public interface IkasoaFactory extends Factory {
 	 *            服务端口
 	 * @return T IKASOA客户端
 	 */
-	public <T> T getIkasoaClient(final Class<T> iClass, final String serverHost, final int serverPort);
+	public <T> T getIkasoaClient(Class<T> iClass, String serverHost, int serverPort);
 
 	/**
 	 * 获取IKASOA客户端
@@ -38,7 +38,7 @@ public interface IkasoaFactory extends Factory {
 	 *            服务端口
 	 * @return T IKASOA客户端
 	 */
-	public <T> T getIkasoaClient(final Class<T> iClass, final List<String> serverHostList, final int serverPort);
+	public <T> T getIkasoaClient(Class<T> iClass, List<String> serverHostList, int serverPort);
 
 	/**
 	 * 获取IKASOA服务端
