@@ -194,9 +194,11 @@ Ikasoa-rpc是一款高性能轻量级的RPC框架,基于apache thrift开发,抛�
         public RpcServer(IkasoaFactory ikasoaFactory, int serverPort) throws IkasoaException {
             // 实现类必须最终类,不能是抽象类
             this.server = ikasoaFactory.getIkasoaServer(ExampleServiceImpl.class, serverPort);
-            // 如果已有实例化后的对象(例如通过Spring注入的对象),则可以通过ImplClsCon类进行封装,Ikasoa将会直接引用该对,而不会重新实例化.例子如下:
+            // 如果已有实例化后的对象(例如通过Spring注入的对象),则可以通过ImplClsCon类进行封装,Ikasoa将会直接引用该类的实例,而不会重新实例化.
+            // 例子如下:
             // this.server = ikasoaFactory.getIkasoaServer(new ImplClsCon(ExampleServiceImpl.class, exampleServiceImpl), serverPort);
-            // 如有多个接口实现,可以传入List.例子如下:
+            // 如有多个接口实现,可以传入List.
+            // 例子如下:
             // List<ImplClsCon> sList = new ArrayList<ImplClsCon>();
             // sList.add(new ImplClsCon(ExampleServiceImpl.class));
             // sList.add(new ImplClsCon(Example2ServiceImpl.class));
