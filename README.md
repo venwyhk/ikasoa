@@ -224,7 +224,8 @@ Ikasoa-rpc是一款高性能轻量级的RPC框架,基于apache thrift开发,抛�
             // 如果接口之间有继承关系,则只需要配置子接口类
             // 设置服务器地址为”hocalhost”,端口为9993
             ExampleService es = new DefaultIkasoaFactory().getIkasoaClient(ExampleService.class, "localhost", 9993);
-            // 如果有多个服务提供者,服务地址也可以传入List,系统将自动执行负载均衡.例子如下:
+            // 如果有多个服务提供者,服务地址也可以传入List,系统将自动执行负载均衡(默认负载均衡规则为轮询,此外还支持带权重轮询和随机).
+            // 例子如下:
             //  List<String> hostList = new ArrayList<String>();
             //  hostList.add("localhost");
             //  hostList.add("192.168.1.41");
