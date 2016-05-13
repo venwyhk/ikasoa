@@ -1,5 +1,5 @@
 # Ikasoa 开发文档 #
-*Version: 0.1-BETA4*
+*Version: 0.2-SNAPSHOT*
 
 ## 概述 ##
 
@@ -30,7 +30,7 @@ Ikasoa-rpc是一款高性能轻量级的RPC框架,基于apache thrift开发,抛�
                 </snapshots>
                 <id>public</id>
                 <name>Public Repositories</name>
-                <url>http://repo.ikamobile.cn:8081/nexus/content/repositories/sulei-snapshots/</url>
+                <url>http://repo.ikamobile.cn:8081/nexus/content/repositories/snapshots/</url>
             </repository>
         </repositories>
         <pluginRepositories>
@@ -42,7 +42,7 @@ Ikasoa-rpc是一款高性能轻量级的RPC框架,基于apache thrift开发,抛�
             <pluginRepository>
 		    	<id>public</id>
 		    	<name>Public Repositories</name>
-		    	<url>http://repo.ikamobile.cn:8081/nexus/content/repositories/sulei-snapshots/</url>
+		    	<url>http://repo.ikamobile.cn:8081/nexus/content/repositories/snapshots/</url>
             </pluginRepository>
         </pluginRepositories>
         <distributionManagement>
@@ -67,8 +67,8 @@ Ikasoa-rpc是一款高性能轻量级的RPC框架,基于apache thrift开发,抛�
             <!-- 在这里添加对ikasoa的依赖 -->
             <dependency>
                 <groupId>com.ikamobile</groupId>
-                <artifactId>ikasoa</artifactId>
-                <version>0.1-BETA4</version>
+                <artifactId>ikasoa-rpc</artifactId>
+                <version>0.2-SNAPSHOT</version>
             </dependency>
 
             ......
@@ -171,13 +171,13 @@ Ikasoa-rpc是一款高性能轻量级的RPC框架,基于apache thrift开发,抛�
         ......
 
         <!-- 服务端配置 -->
-        <bean id="rpcServer" class="org.sulei.example.ikasoa.RpcServer" init-method="run" destroy-method="stop">
+        <bean id="rpcServer" class="example.RpcServer" init-method="run" destroy-method="stop">
             <constructor-arg index="0" ref="ikasoaFactory"/>
             <constructor-arg index="1">
                 <value>9993</value><!-- 设置服务开放端口 -->
             </constructor-arg>
         </bean>
-        <bean id="ikasoaFactory" class="com.ikamobile.ikasoa.DefaultIkasoaFactory"/>
+        <bean id="ikasoaFactory" class="com.ikamobile.ikasoa.core.DefaultIkasoaFactory"/>
 
         ......
 
@@ -185,10 +185,10 @@ Ikasoa-rpc是一款高性能轻量级的RPC框架,基于apache thrift开发,抛�
 
 > RpcServer.java
 > 
-    package org.sulei.example.ikasoa;
-    import com.ikamobile.ikasoa.IkasoaException;
-    import com.ikamobile.ikasoa.IkasoaFactory;
-    import com.ikamobile.ikasoa.IkasoaServer;
+    package example.ikasoa;
+    import com.ikamobile.ikasoa.rpc.IkasoaException;
+    import com.ikamobile.ikasoa.rpc.IkasoaFactory;
+    import com.ikamobile.ikasoa.rpc.IkasoaServer;
     public class RpcServer {
         private IkasoaServer server;
         public RpcServer(IkasoaFactory ikasoaFactory, int serverPort) throws IkasoaException {
@@ -220,18 +220,18 @@ Ikasoa-rpc是一款高性能轻量级的RPC框架,基于apache thrift开发,抛�
 
 > RpcClient.java
 > 
-    import com.ikamobile.ikasoa.DefaultIkasoaFactory;
+    import com.ikamobile.ikasoa.rpc.DefaultIkasoaFactory;
     public class RpcClient {
         public static void main(String[] args) {
             // 如果接口之间有继承关系,则只需要配置子接口类
             // 设置服务器地址为”hocalhost”,端口为9993
             ExampleService es = new DefaultIkasoaFactory().getIkasoaClient(ExampleService.class, "localhost", 9993);
-            // 如果有多个服务提供者,服务地址也可以传入List,系统将自动执行负载均衡(默认负载均衡规则为轮询,此外还支持带权重轮询和随机).
+            // 如果有多个服务提供者,服务器地址和端口也可以传入List,系统将自动执行负载均衡(默认负载均衡规则为轮询,此外还支持随机).
             // 例子如下:
-            //  List<String> hostList = new ArrayList<String>();
-            //  hostList.add("localhost");
-            //  hostList.add("192.168.1.41");
-            //  ExampleService es = new DefaultIkasoaFactory().getIkasoaClient(ExampleService.class, hostList, 9993);
+            //  List<ServerInfo> serverInfoList = new ArrayList<ServerInfo>();
+            //  serverInfoList.add(new ServerInfo("localhost", 9993));
+            //  serverInfoList.add(new ServerInfo("192.168.1.41", 9993));
+            //  ExampleService es = new DefaultIkasoaFactory().getIkasoaClient(ExampleService.class, serverInfoList);
             System.out.println(es.findVO(1).getString());
         }
     }
@@ -248,9 +248,9 @@ Ikasoa-rpc是一款高性能轻量级的RPC框架,基于apache thrift开发,抛�
 > 
     import org.apache.thrift.transport.TTransport;
     import org.apache.thrift.transport.TTransportFactory;
-    import org.sulei.core.thrift.client.ThriftClient;
-    import org.sulei.core.thrift.client.ThriftClientConfiguration;
-    import com.ikamobile.ikasoa.DefaultIkasoaFactory;
+    import com.ikamobile.ikasoa.core.thrift.client.ThriftClient;
+    import com.ikamobile.ikasoa.core.thrift.client.ThriftClientConfiguration;
+    import com.ikamobile.ikasoa.rpc.DefaultIkasoaFactory;
     import com.ikamobile.tmcs.controller.thrift.server.acceptor.GeneralThriftAcceptor;
     public class ThriftClientDemo {
         public static void main(String[] args) {
@@ -294,7 +294,7 @@ Ikasoa-rpc是一款高性能轻量级的RPC框架,基于apache thrift开发,抛�
 
 ## 序列化方式的选择 ##
 
-*Ikasoa提供了3种序列化方式,分别为fastjson,kryo,xml,默认使用fastjson.*
+*Ikasoa提供了3种序列化方式,分别为fastjson,xml,kryo,默认使用fastjson.*
 
 - 选择fastjson作为序列化方式(默认)
 
@@ -302,34 +302,32 @@ Ikasoa-rpc是一款高性能轻量级的RPC框架,基于apache thrift开发,抛�
     ......
     IkasoaFactory ikasoaFactory = new DefaultIkasoaFactory();
     // 也可以写为如下方式:
-    // IkasoaFactory ikasoaFactory = new DefaultIkasoaFactory(ProtocolType.JSON);
+    // IkasoaFactory ikasoaFactory = new DefaultIkasoaFactory(new Configurator(ProtocolType.JSON));
+    ......
+
+- 选择xml作为序列化方式
+
+> 
+    ......
+    IkasoaFactory ikasoaFactory = new DefaultIkasoaFactory(new Configurator(ProtocolType.XML));
     ......
 
 - 选择kryo作为序列化方式
 
 >
     ......
-    IkasoaFactory ikasoaFactory = new DefaultIkasoaFactory(ProtocolType.KRYO);
-    ......
-
-*(需要注意在目前的版本中kryo序列化方式暂未对异常对象进行处理.)*
-
-- 选择xml作为序列化方式
-
-> 
-    ......
-    IkasoaFactory ikasoaFactory = new DefaultIkasoaFactory(ProtocolType.XML);
+    IkasoaFactory ikasoaFactory = new DefaultIkasoaFactory(new Configurator(ProtocolType.KRYO));
     ......
 
 ## 注意事项 ##
 
-- fastjson依赖版本建议与ikasoa所依赖的版本一致(当前为1.2.8).否则可能出现服务名不能匹配,无法调用服务的情况.
+- 使用fastjson作为序列化方式时,fastjson依赖版本建议与ikasoa所依赖的版本一致(当前为1.2.8).否则可能出现服务名不能匹配,无法调用服务的情况.
 
-- 使用fastjson作为序列化方式时,参数对象以父类的形式传递,转换为子类时可能会丢失子类属性值.建议尽量以子类形式传递参数.
-
-- 不支持抽象类作为参数对象进行传递.
+- 使用kryo作为序列化方式时,如果参数或返回值以父类(或抽象类)的形式传递,转换为子类时可能会丢失子类属性值,建议尽量以子类形式传递参数.fastjson方式非集合类参数或返回值没有问题,xml方式都没有问题.
 
 - 使用fastjson作为序列化方式时,传递的Bean对象必须要有默认构造方法(建议使用类似lombok这样的工具来处理Bean对象).
+
+- 使用kryo作为序列化方式时,暂不支持自定义异常对象,如果抛出自定义异常对象,异常类型不能正确识别.
 
 
 *sulei@ikamobile.com | 2016-05*
