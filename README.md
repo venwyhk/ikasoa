@@ -5,18 +5,22 @@
 
 Ikasoa-rpc是一款高性能轻量级的RPC框架,基于apache thrift开发,抛弃了原有的idl定义接口方式.客户端可以像调用本地接口那样去调用远程接口,并支持负载均衡,简化了服务定义,提高开发效率.
 
+## 工程描述 ##
+
+- ikasoa-core *基础核心包*
+
+- ikasoa-rpc *RPC(远程过程调用协议)实现*
+
 ## 环境搭建 ##
 
 - Maven配置
 
     需要配置Ikamobile的Nexus私服,并添加ikasoa的依赖:
     
-> pom.xml
-
+pom.xml
+```xml
     <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-
-    ......
-
+        ......
         <!-- 配置Nexus私服 -->
         <repositories>
             <repository>
@@ -57,24 +61,19 @@ Ikasoa-rpc是一款高性能轻量级的RPC框架,基于apache thrift开发,抛�
                 <url>http://repo.ikamobile.cn:8081/nexus/content/repositories/snapshots</url>
             </snapshotRepository>
         </distributionManagement>
-
         ......
-
         <dependencies>
-
             ......
-
             <!-- 在这里添加对ikasoa的依赖 -->
             <dependency>
                 <groupId>com.ikamobile</groupId>
                 <artifactId>ikasoa-rpc</artifactId>
                 <version>0.2-SNAPSHOT</version>
             </dependency>
-
             ......
-
         </dependencies>
     </project>
+```
 
 - 导入工程&编译代码
 
@@ -88,15 +87,16 @@ Ikasoa-rpc是一款高性能轻量级的RPC框架,基于apache thrift开发,抛�
 
     新建例子接口(ExampleService.java),对象(ExampleVO.java)和实现 (ExampleServiceImpl.java)类:
 
-> ExampleService.java
-> 
+ExampleService.java
+```java
     public interface ExampleService {
         // 查询对象
         public ExampleVO findVO(int id);
     }
+```
 
-> ExampleVO.java
-> 
+ExampleVO.java
+```java
     public class ExampleVO {
         private int id;
         private String string;
@@ -119,20 +119,22 @@ Ikasoa-rpc是一款高性能轻量级的RPC框架,基于apache thrift开发,抛�
             this.string = string;
         }
     }
+```
 
-> ExampleServiceImpl.java
-> 
+ExampleServiceImpl.java
+```java
     public class ExampleServiceImpl implements ExampleService {
         @Override
         public ExampleVO findVO(int id) {
             return new ExampleVO(id, “helloworld”);
         }
     }
+```
 
 - 创建执行类
 
-> HelloWorld.java
-> 
+HelloWorld.java
+```java
     public class HelloWorld {
         public static void main(String[] args) {
             IkasoaFactory ikasoaFactory = new DefaultIkasoaFactory();
@@ -152,6 +154,7 @@ Ikasoa-rpc是一款高性能轻量级的RPC框架,基于apache thrift开发,抛�
             }
         }
     }
+```
 
 - 执行HelloWorld.java
 
@@ -163,13 +166,11 @@ Ikasoa-rpc是一款高性能轻量级的RPC框架,基于apache thrift开发,抛�
 
 - 服务端例子
 
-> SpringBean.xml
-
+bean.xml
+```xml
     <?xml version="1.0" encoding="UTF-8"?>
     <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context" xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.1.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.1.xsd">
-
         ......
-
         <!-- 服务端配置 -->
         <bean id="rpcServer" class="example.RpcServer" init-method="run" destroy-method="stop">
             <constructor-arg index="0" ref="ikasoaFactory"/>
@@ -178,13 +179,12 @@ Ikasoa-rpc是一款高性能轻量级的RPC框架,基于apache thrift开发,抛�
             </constructor-arg>
         </bean>
         <bean id="ikasoaFactory" class="com.ikamobile.ikasoa.core.DefaultIkasoaFactory"/>
-
         ......
-
     </beans>
+```
 
-> RpcServer.java
-> 
+RpcServer.java
+```java
     package example.ikasoa;
     import com.ikamobile.ikasoa.rpc.IkasoaException;
     import com.ikamobile.ikasoa.rpc.IkasoaFactory;
@@ -215,11 +215,12 @@ Ikasoa-rpc是一款高性能轻量级的RPC框架,基于apache thrift开发,抛�
             server.stop();
         }
     }
+```
 
 - 客户端例子
 
-> RpcClient.java
-> 
+RpcClient.java
+```java
     import com.ikamobile.ikasoa.rpc.DefaultIkasoaFactory;
     public class RpcClient {
         public static void main(String[] args) {
@@ -235,6 +236,7 @@ Ikasoa-rpc是一款高性能轻量级的RPC框架,基于apache thrift开发,抛�
             System.out.println(es.findVO(1).getString());
         }
     }
+```
 
 - 执行RpcClient.java
 
@@ -244,8 +246,8 @@ Ikasoa-rpc是一款高性能轻量级的RPC框架,基于apache thrift开发,抛�
 
 - 客户端调用Thrift服务端例子
 
-> ThriftClientDemo.java
-> 
+ThriftClientDemo.java
+```java
     import org.apache.thrift.transport.TTransport;
     import org.apache.thrift.transport.TTransportFactory;
     import com.ikamobile.ikasoa.core.thrift.client.ThriftClient;
@@ -273,6 +275,7 @@ Ikasoa-rpc是一款高性能轻量级的RPC框架,基于apache thrift开发,抛�
             }
         }
     }
+```
 
 ## 服务提供类型的选择 ##
 
@@ -280,17 +283,19 @@ Ikasoa-rpc是一款高性能轻量级的RPC框架,基于apache thrift开发,抛�
 
 - 使用Thrift服务
 
-> 
+```java
     ......
     IkasoaFactory ikasoaFactory = new DefaultIkasoaFactory();
     ......
+```
 
 - 使用Netty服务
 
-> 
+```java
     ......
     IkasoaFactory ikasoaFactory = new NettyIkasoaFactory();
     ......
+```
 
 ## 序列化方式的选择 ##
 
@@ -298,26 +303,29 @@ Ikasoa-rpc是一款高性能轻量级的RPC框架,基于apache thrift开发,抛�
 
 - 选择fastjson作为序列化方式(默认)
 
->
+```java
     ......
     IkasoaFactory ikasoaFactory = new DefaultIkasoaFactory();
     // 也可以写为如下方式:
     // IkasoaFactory ikasoaFactory = new DefaultIkasoaFactory(new Configurator(ProtocolType.JSON));
     ......
+```
 
 - 选择xml作为序列化方式
 
-> 
+```java
     ......
     IkasoaFactory ikasoaFactory = new DefaultIkasoaFactory(new Configurator(ProtocolType.XML));
     ......
+```
 
 - 选择kryo作为序列化方式
 
->
+```java
     ......
     IkasoaFactory ikasoaFactory = new DefaultIkasoaFactory(new Configurator(ProtocolType.KRYO));
     ......
+```
 
 ## 注意事项 ##
 
