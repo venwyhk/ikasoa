@@ -72,14 +72,11 @@ public abstract class AbstractThriftServerImpl implements ThriftServer {
 			executorService = Executors.newSingleThreadExecutor();
 		}
 		if (!isServing()) {
-			executorService.execute(new Runnable() {
-				@Override
-				public void run() {
-					try {
-						start();
-					} catch (STException e) {
-						throw new RuntimeException(e);
-					}
+			executorService.execute(() -> {
+				try {
+					start();
+				} catch (STException e) {
+					throw new RuntimeException(e);
 				}
 			});
 			Runtime.getRuntime().addShutdownHook(new Thread() {
