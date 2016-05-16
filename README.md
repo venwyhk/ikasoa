@@ -5,7 +5,11 @@
 
 Ikasoa-rpc是一款高性能轻量级的RPC框架,基于apache thrift开发,抛弃了原有的idl定义接口方式.客户端可以像调用本地接口那样去调用远程接口,并支持负载均衡,简化了服务定义,提高开发效率.
 
-## 工程描述 ##
+## 开发运行环境要求 ##
+
+*要求java运行环境为java8*
+
+## 工程说明 ##
 
 - ikasoa-core *基础核心包*
 
@@ -89,6 +93,7 @@ pom.xml
 
 ExampleService.java
 ```java
+    package example.ikasoa;
     public interface ExampleService {
         // 查询对象
         public ExampleVO findVO(int id);
@@ -97,6 +102,7 @@ ExampleService.java
 
 ExampleVO.java
 ```java
+    package example.ikasoa;
     public class ExampleVO {
         private int id;
         private String string;
@@ -123,6 +129,7 @@ ExampleVO.java
 
 ExampleServiceImpl.java
 ```java
+    package example.ikasoa;
     public class ExampleServiceImpl implements ExampleService {
         @Override
         public ExampleVO findVO(int id) {
@@ -135,6 +142,11 @@ ExampleServiceImpl.java
 
 HelloWorld.java
 ```java
+    package example.ikasoa;
+    import com.ikamobile.ikasoa.rpc.DefaultIkasoaFactory;
+    import com.ikamobile.ikasoa.rpc.IkasoaException;
+    import com.ikamobile.ikasoa.rpc.IkasoaFactory;
+    import com.ikamobile.ikasoa.rpc.IkasoaServer;
     public class HelloWorld {
         public static void main(String[] args) {
             IkasoaFactory ikasoaFactory = new DefaultIkasoaFactory();
@@ -172,7 +184,7 @@ bean.xml
     <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context" xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.1.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.1.xsd">
         ......
         <!-- 服务端配置 -->
-        <bean id="rpcServer" class="example.RpcServer" init-method="run" destroy-method="stop">
+        <bean id="rpcServer" class="example.ikasoa.RpcServer" init-method="run" destroy-method="stop">
             <constructor-arg index="0" ref="ikasoaFactory"/>
             <constructor-arg index="1">
                 <value>9993</value><!-- 设置服务开放端口 -->
@@ -221,6 +233,7 @@ RpcServer.java
 
 RpcClient.java
 ```java
+    package example.ikasoa;
     import com.ikamobile.ikasoa.rpc.DefaultIkasoaFactory;
     public class RpcClient {
         public static void main(String[] args) {
@@ -248,6 +261,7 @@ RpcClient.java
 
 ThriftClientDemo.java
 ```java
+    package example.ikasoa;
     import org.apache.thrift.transport.TTransport;
     import org.apache.thrift.transport.TTransportFactory;
     import com.ikamobile.ikasoa.core.thrift.client.ThriftClient;
