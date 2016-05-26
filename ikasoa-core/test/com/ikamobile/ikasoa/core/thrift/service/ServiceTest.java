@@ -23,7 +23,7 @@ public class ServiceTest extends TestCase {
 
 	@Test
 	public void testDefaultServiceImpl() {
-		int serverPort = 9005;
+		int serverPort = 49000;
 		Factory factory = new GeneralFactory();
 		ThriftServer thriftServer = factory.getThriftServer(serverPort, new ServiceImpl());
 		thriftServer.run();

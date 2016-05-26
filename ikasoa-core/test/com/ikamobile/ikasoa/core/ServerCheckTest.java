@@ -19,7 +19,7 @@ import junit.framework.TestCase;
  */
 public class ServerCheckTest extends TestCase {
 
-	private int serverPort = 9000;
+	private int serverPort = 19000;
 
 	private ThriftClientConfiguration configuration = new ThriftClientConfiguration();
 

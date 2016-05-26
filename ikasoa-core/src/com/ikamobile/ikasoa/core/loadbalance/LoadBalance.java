@@ -25,7 +25,7 @@ public interface LoadBalance {
 	 * 切换服务器信息
 	 * <p>
 	 * 按照负载均衡规则切换一个服务器信息.返回的信息或者之后通过<code>getServerInfo()</code>
-	 * 方法获取的服务器信息可能会与之前的不同.
+	 * 方法获取的服务器信息为切换过后的信息,可能会与之前的不同.
 	 * 
 	 * @return ServerInfo
 	 * @exception STException

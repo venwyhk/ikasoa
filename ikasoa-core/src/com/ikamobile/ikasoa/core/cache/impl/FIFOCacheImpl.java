@@ -6,7 +6,6 @@ import java.util.LinkedHashMap;
 /**
  * FIFO缓存实现
  * 
- * @author <a href="mailto:larry7696@gmail.com">Larry</a>
  * @version 0.3.1
  */
 public class FIFOCacheImpl<K, V> extends AbstractCacheImpl<K, V> {

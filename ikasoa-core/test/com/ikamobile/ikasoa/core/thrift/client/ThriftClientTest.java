@@ -20,7 +20,7 @@ public class ThriftClientTest extends TestCase {
 
 	private String serverHost = "localhost";
 
-	private int serverPort = 9000;
+	private int serverPort = 29000;
 
 	private ThriftClientConfiguration configuration = new ThriftClientConfiguration();
 

@@ -4,7 +4,7 @@
 	<groupId>com.ikamobile</groupId>
 	<artifactId>ikasoa-rpc</artifactId>
 	<name>Ikasoa Rpc</name>
-	<version>0.2-SNAPSHOT</version>
+	<version>0.2-BETA</version>
 	<packaging>jar</packaging>
 
 	<build>
@@ -97,7 +97,7 @@
 		<dependency>
 			<groupId>com.ikamobile</groupId>
 			<artifactId>ikasoa-core</artifactId>
-			<version>0.4-SNAPSHOT</version>
+			<version>0.4</version>
 		</dependency>
 		<dependency>
 			<groupId>com.alibaba</groupId>

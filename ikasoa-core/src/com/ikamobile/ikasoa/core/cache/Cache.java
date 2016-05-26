@@ -3,7 +3,6 @@ package com.ikamobile.ikasoa.core.cache;
 /**
  * 缓存接口
  * 
- * @author <a href="mailto:larry7696@gmail.com">Larry</a>
  * @version 0.3.1
  */
 public interface Cache<K, V> {

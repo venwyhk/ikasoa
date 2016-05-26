@@ -45,8 +45,7 @@ public interface ThriftServer {
 	/**
 	 * 获取Thrift服务名称
 	 * <p>
-	 * 这里的服务名称仅作为标记,方便在日志中进行检索.在客户端依然采用<i>serverHost</i>和 <i>serverPort</i>
-	 * 来定位服务.
+	 * 这里的服务名称仅作为标记,方便记录和检索.在客户端依然采用<i>serverHost</i>和 <i>serverPort</i> 来定位服务.
 	 * 
 	 * @return String 服务名称
 	 */
@@ -55,7 +54,7 @@ public interface ThriftServer {
 	/**
 	 * 获取Thrift服务器端口
 	 * <p>
-	 * 端口不能重复,且端口号需大于1024.如果是相同的服务部署到多台服务器上,建议同服务端口配置相同.
+	 * 端口不能重复,且端口号需大于1024.
 	 * 
 	 * @return int 服务器端口
 	 */

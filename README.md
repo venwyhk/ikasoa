@@ -1,5 +1,5 @@
 # Ikasoa 开发文档 #
-*Version: 0.2-SNAPSHOT*
+*Version: 0.2-BETA*
 
 ## 概述 ##
 
@@ -72,7 +72,7 @@ pom.xml
             <dependency>
                 <groupId>com.ikamobile</groupId>
                 <artifactId>ikasoa-rpc</artifactId>
-                <version>0.2-SNAPSHOT</version>
+                <version>0.2-BETA</version>
             </dependency>
             ......
         </dependencies>
@@ -352,4 +352,4 @@ ThriftClientDemo.java
 - 使用kryo作为序列化方式时,暂不支持自定义异常对象,如果抛出自定义异常对象,异常类型不能正确识别.
 
 
-*sulei@ikamobile.com | 2016-05*
+*sulei@ikamobile.com | 2016-05-26*

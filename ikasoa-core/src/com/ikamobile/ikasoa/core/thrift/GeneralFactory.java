@@ -29,7 +29,9 @@ import com.ikamobile.ikasoa.core.utils.StringUtil;
  */
 public class GeneralFactory implements Factory {
 
+	// 服务端配置
 	protected ThriftServerConfiguration thriftServerConfiguration = new ThriftServerConfiguration();
+	// 客户端配置
 	protected ThriftClientConfiguration thriftClientConfiguration = new ThriftClientConfiguration();
 
 	public GeneralFactory() {

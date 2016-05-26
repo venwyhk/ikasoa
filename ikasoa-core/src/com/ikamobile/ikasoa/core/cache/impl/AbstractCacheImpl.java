@@ -9,7 +9,6 @@ import com.ikamobile.ikasoa.core.cache.Cache;
 /**
  * 缓存抽象实现
  * 
- * @author <a href="mailto:larry7696@gmail.com">Larry</a>
  * @version 0.3.1
  */
 public abstract class AbstractCacheImpl<K, V> implements Cache<K, V> {

@@ -36,7 +36,7 @@ public class ThriftServerTest extends TestCase {
 
 	@Test
 	public void testDefaultThriftServerImpl() {
-		int serverPort = 9007;
+		int serverPort = 39001;
 		ThriftServer defaultThriftServer = factory.getThriftServer(serverName, serverPort,
 				new ThriftSimpleService.Processor<Iface>(new TestThriftServiceImpl()));
 		assertEquals(defaultThriftServer.getServerName(), serverName);
@@ -63,7 +63,7 @@ public class ThriftServerTest extends TestCase {
 
 	@Test
 	public void testNonblockingThriftServerImpl() {
-		int serverPort = 9008;
+		int serverPort = 39002;
 		ThriftServer nioThriftServer = new NonblockingThriftServerImpl(serverName, serverPort, configuration,
 				new ThriftSimpleService.Processor<Iface>(new TestThriftServiceImpl()));
 		assertEquals(nioThriftServer.getServerName(), serverName);
@@ -91,7 +91,7 @@ public class ThriftServerTest extends TestCase {
 
 	@Test
 	public void testSimpleThriftServerImpl() {
-		int serverPort = 9009;
+		int serverPort = 39003;
 		ThriftServer simpleThriftServer = new SimpleThriftServerImpl(serverName, serverPort, configuration,
 				new ThriftSimpleService.Processor<Iface>(new TestThriftServiceImpl()));
 		assertEquals(simpleThriftServer.getServerName(), serverName);
@@ -118,7 +118,7 @@ public class ThriftServerTest extends TestCase {
 
 	@Test
 	public void testMultiplexedThriftServerImpl() {
-		int serverPort = 9010;
+		int serverPort = 39101;
 		Map<String, TProcessor> processorMap = new HashMap<String, TProcessor>();
 		processorMap.put("testServer", new ThriftSimpleService.Processor<Iface>(new TestThriftServiceImpl()));
 		MultiplexedProcessor processor = new MultiplexedProcessor(processorMap);
@@ -149,7 +149,7 @@ public class ThriftServerTest extends TestCase {
 
 	@Test
 	public void testCompactDefaultThriftServerImpl() {
-		int serverPort = 9011;
+		int serverPort = 39201;
 		Factory factory = new GeneralFactory(new CompactThriftServerConfiguration(),
 				new CompactThriftClientConfiguration());
 		ThriftServer defaultThriftServer = factory.getThriftServer(serverName, serverPort,
@@ -175,7 +175,7 @@ public class ThriftServerTest extends TestCase {
 
 	@Test
 	public void testTupleDefaultThriftServerImpl() {
-		int serverPort = 9012;
+		int serverPort = 39202;
 		Factory factory = new GeneralFactory(new TupleThriftServerConfiguration(),
 				new TupleThriftClientConfiguration());
 		ThriftServer defaultThriftServer = factory.getThriftServer(serverName, serverPort,
