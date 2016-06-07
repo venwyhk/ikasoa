@@ -1,13 +1,14 @@
-# Ikasoa 开发文档 #
-*Version: 0.2-BETA*
+![](https://raw.githubusercontent.com/venwyhk/ikasoa/master/ikasoalogo_small.png)
+&nbsp;*Ikasoa Documentation*
+&nbsp;*Version: 0.2-BETA*
 
 ## 概述 ##
 
-Ikasoa-rpc是一款高性能轻量级的RPC框架,基于apache thrift开发,抛弃了原有的idl定义接口方式.客户端可以像调用本地接口那样去调用远程接口,并支持负载均衡,简化了服务定义,提高开发效率.
+Ikasoa-rpc是一款高性能轻量级的RPC框架,基于apache thrift开发,客户端可以像调用本地接口那样去调用远程接口.
 
 ## 开发运行环境要求 ##
 
-*要求java运行环境为java8*
+- 要求java运行环境为java8
 
 ## 工程说明 ##
 
