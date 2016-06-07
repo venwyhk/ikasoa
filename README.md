@@ -1,6 +1,6 @@
 ![](http://raw.githubusercontent.com/venwyhk/ikasoa/master/ikasoalogo_small.png)
 
-&nbsp;**Ikasoa Documentation** *Version: 0.2-BETA*
+&nbsp;Ikasoa Documentation
 
 ## ikasoa开发文档 ##
 
