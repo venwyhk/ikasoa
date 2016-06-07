@@ -1,0 +1,86 @@
+﻿<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.ikamobile</groupId>
+	<artifactId>ikasoa-example</artifactId>
+	<name>Ikasoa Rpc Example</name>
+	<version>0.2</version>
+	<packaging>war</packaging>
+
+	<build>
+		<sourceDirectory>src</sourceDirectory>
+		<testSourceDirectory>test</testSourceDirectory>
+		<plugins>
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>1.8</source>
+					<target>1.8</target>
+					<encoding>UTF-8</encoding>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.17</version>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>2.10.3</version>
+				<configuration>
+					<outputDirectory>target\javadoc</outputDirectory>
+					<reportOutputDirectory>target\javadoc</reportOutputDirectory>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+    <repositories>
+        <repository>
+            <id>ikamobile-nexus</id>
+            <name>ikamobile Nexus Repository</name>
+            <url>http://repo.ikamobile.cn:8081/nexus/content/groups/public/</url>
+        </repository>
+        <repository>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+            <id>public</id>
+            <name>Public Repositories</name>
+            <url>http://repo.ikamobile.cn:8081/nexus/content/repositories/snapshots/</url>
+        </repository>
+    </repositories>
+    <pluginRepositories>
+        <pluginRepository>
+            <id>ikamobile-nexus</id>
+            <name>ikamobile Nexus Repository</name>
+            <url>http://repo.ikamobile.cn:8081/nexus/content/groups/public/</url>
+        </pluginRepository>
+        <pluginRepository>
+            <id>public</id>
+            <name>Public Repositories</name>
+            <url>http://repo.ikamobile.cn:8081/nexus/content/repositories/snapshots/</url>
+        </pluginRepository>
+    </pluginRepositories>
+    <distributionManagement>
+        <repository>
+            <id>ikamobile-nexus</id>
+            <name>Internal Releases</name>
+            <url>http://repo.ikamobile.cn:8081/nexus/content/repositories/releases/</url>
+        </repository>
+        <snapshotRepository>
+            <id>ikamobile-nexus</id>
+            <name>ikamobile Snapshots</name>
+            <url>http://repo.ikamobile.cn:8081/nexus/content/repositories/snapshots</url>
+        </snapshotRepository>
+    </distributionManagement>
+	
+    <dependencies>
+        <dependency>
+            <groupId>com.ikamobile</groupId>
+            <artifactId>ikasoa-rpc</artifactId>
+            <version>0.2-BETA</version>
+        </dependency>
+    </dependencies>
+</project>

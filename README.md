@@ -16,6 +16,8 @@ Ikasoa-rpc是一款高性能轻量级的RPC框架,基于apache thrift开发,客�
 
 - ikasoa-rpc *RPC(远程过程调用协议)实现*
 
+- ikasoa-example *示例*
+
 ### 环境搭建 ###
 
 - Maven配置
@@ -94,7 +96,7 @@ pom.xml
 
 ExampleService.java
 ```java
-    package example.ikasoa;
+    package com.ikamobile.ikasoa.example;
     public interface ExampleService {
         // 查询对象
         public ExampleVO findVO(int id);
@@ -103,7 +105,7 @@ ExampleService.java
 
 ExampleVO.java
 ```java
-    package example.ikasoa;
+    package com.ikamobile.ikasoa.example;
     public class ExampleVO {
         private int id;
         private String string;
@@ -130,7 +132,7 @@ ExampleVO.java
 
 ExampleServiceImpl.java
 ```java
-    package example.ikasoa;
+    package com.ikamobile.ikasoa.example;
     public class ExampleServiceImpl implements ExampleService {
         @Override
         public ExampleVO findVO(int id) {
@@ -141,14 +143,14 @@ ExampleServiceImpl.java
 
 - 创建执行类
 
-HelloWorld.java
+Main.java
 ```java
-    package example.ikasoa;
+    package com.ikamobile.ikasoa.example;
     import com.ikamobile.ikasoa.rpc.DefaultIkasoaFactory;
     import com.ikamobile.ikasoa.rpc.IkasoaException;
     import com.ikamobile.ikasoa.rpc.IkasoaFactory;
     import com.ikamobile.ikasoa.rpc.IkasoaServer;
-    public class HelloWorld {
+    public class Main {
         public static void main(String[] args) {
             IkasoaFactory ikasoaFactory = new DefaultIkasoaFactory();
             try {
@@ -169,7 +171,7 @@ HelloWorld.java
     }
 ```
 
-- 执行HelloWorld.java
+- 执行Main.java
 
     如输出”helloword”则表示执行成功.
 
