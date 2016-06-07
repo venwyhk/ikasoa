@@ -1,21 +1,22 @@
-![](http://raw.githubusercontent.com/venwyhk/ikasoa/master/ikasoalogo_small.png)
-&nbsp;*Ikasoa Documentation*<br/>&nbsp;*Version: 0.2-BETA*
+![](http://raw.githubusercontent.com/venwyhk/ikasoa/master/ikasoalogo_small.png)<br/>&nbsp;*Ikasoa Documentation*<br/>&nbsp;*Version: 0.2-BETA*
 
-## 概述 ##
+## ikasoa开发文档 ##
+
+### 概述 ###
 
 Ikasoa-rpc是一款高性能轻量级的RPC框架,基于apache thrift开发,客户端可以像调用本地接口那样去调用远程接口.
 
-## 开发运行环境要求 ##
+### 开发运行环境要求 ###
 
 - 要求java运行环境为java8
 
-## 工程说明 ##
+### 工程说明 ###
 
 - ikasoa-core *基础核心包*
 
 - ikasoa-rpc *RPC(远程过程调用协议)实现*
 
-## 环境搭建 ##
+### 环境搭建 ###
 
 - Maven配置
 
@@ -85,7 +86,7 @@ pom.xml
 
     执行命令”mvn clean package”打包.
 
-## “helloworld” ##
+### “helloworld” ###
 
 - 创建接口和实现
 
@@ -172,7 +173,7 @@ HelloWorld.java
 
     如输出”helloword”则表示执行成功.
 
-## 使用实例 ##
+### 使用实例 ###
 
 *例子程序需要使用到Spring框架.*
 
@@ -255,7 +256,7 @@ RpcClient.java
 
     如输出”helloword”则表示执行成功.
 
-## ThriftIDL实例 ##
+### ThriftIDL实例 ###
 
 - 客户端调用Thrift服务端例子
 
@@ -291,7 +292,7 @@ ThriftClientDemo.java
     }
 ```
 
-## 服务提供类型的选择 ##
+### 服务提供类型的选择 ###
 
 *Ikasoa默认使用Thrift作为服务类型的实现,但也提供了Netty以供选择.*
 
@@ -311,7 +312,7 @@ ThriftClientDemo.java
     ......
 ```
 
-## 序列化方式的选择 ##
+### 序列化方式的选择 ###
 
 *Ikasoa提供了3种序列化方式,分别为fastjson,xml,kryo,默认使用fastjson.*
 
@@ -341,7 +342,7 @@ ThriftClientDemo.java
     ......
 ```
 
-## 注意事项 ##
+### 注意事项 ###
 
 - 使用fastjson作为序列化方式时,fastjson依赖版本建议与ikasoa所依赖的版本一致(当前为1.2.8).否则可能出现服务名不能匹配,无法调用服务的情况.
 
