@@ -1,8 +1,4 @@
-![](http://raw.githubusercontent.com/venwyhk/ikasoa/master/ikasoalogo_small.png)
-
-&nbsp;Ikasoa Documentation
-
-## ikasoa开发文档 ##
+![](https://raw.githubusercontent.com/venwyhk/ikasoa/master/ikasoalogo_small.png)<br />&nbsp;Ikasoa Documentation
 
 ### 概述 ###
 
