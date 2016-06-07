@@ -16,7 +16,7 @@ public class ExampleServiceImpl implements ExampleService {
 	public ExampleVO findVO(int id) {
 		ExampleVO evo = new ExampleVO();
 		evo.setId(id);
-		evo.setString("苏磊");
+		evo.setString("阿里爸爸");
 		return evo;
 	}
 
@@ -25,14 +25,14 @@ public class ExampleServiceImpl implements ExampleService {
 		List<ExampleVO> evoList = new ArrayList<ExampleVO>();
 		ExampleVO evo = new ExampleVO();
 		evo.setId(1);
-		evo.setString("苏磊");
+		evo.setString("阿里爸爸");
 		evoList.add(evo);
 		ExampleVO evo2 = new ExampleVO();
 		evo2.setId(2);
-		evo2.setString("苏磊苏磊");
+		evo2.setString("阿里爸爸阿里爸爸");
 		ExampleVO evo3 = new ExampleVO();
 		evo3.setId(2322);
-		evo3.setString("苏磊苏磊苏磊");
+		evo3.setString("阿里爸爸阿里爸爸阿里爸爸");
 		evo2.setEvo(evo3);
 		evoList.add(evo2);
 		evoList.add(evo3);
@@ -81,7 +81,7 @@ public class ExampleServiceImpl implements ExampleService {
 
 	@Override
 	public int getInt() throws IkasoaTestException, Exception {
-		throw new IkasoaTestException("明天不上班.");
+		throw new IkasoaTestException("明天不上班!");
 	}
 
 	@Override

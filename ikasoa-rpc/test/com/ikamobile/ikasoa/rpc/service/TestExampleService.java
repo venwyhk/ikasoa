@@ -32,33 +32,30 @@ public class TestExampleService extends TestCase {
 		invoke(new DefaultIkasoaFactory(), 9992);
 	}
 
-	// @Test
-	// public void testNettyService() {
-	// invoke(new NettyIkasoaFactory(), 9993);
-	// }
-	//
-	// @Test
-	// public void testDefaultKryoService() {
-	// invoke(new DefaultIkasoaFactory(new Configurator(ProtocolType.KRYO)),
-	// 9996);
-	// }
-	//
-	// @Test
-	// public void testNettyKryoService() {
-	// invoke(new NettyIkasoaFactory(new Configurator(ProtocolType.KRYO)),
-	// 9997);
-	// }
-	//
-	// @Test
-	// public void testDefaultXmlService() {
-	// invoke(new DefaultIkasoaFactory(new Configurator(ProtocolType.XML)),
-	// 9994);
-	// }
-	//
-	// @Test
-	// public void testNettyXmlService() {
-	// invoke(new NettyIkasoaFactory(new Configurator(ProtocolType.XML)), 9995);
-	// }
+	@Test
+	public void testNettyService() {
+		invoke(new NettyIkasoaFactory(), 9993);
+	}
+
+	@Test
+	public void testDefaultKryoService() {
+		invoke(new DefaultIkasoaFactory(new Configurator(ProtocolType.KRYO)), 9996);
+	}
+
+	@Test
+	public void testNettyKryoService() {
+		invoke(new NettyIkasoaFactory(new Configurator(ProtocolType.KRYO)), 9997);
+	}
+
+	@Test
+	public void testDefaultXmlService() {
+		invoke(new DefaultIkasoaFactory(new Configurator(ProtocolType.XML)), 9994);
+	}
+
+	@Test
+	public void testNettyXmlService() {
+		invoke(new NettyIkasoaFactory(new Configurator(ProtocolType.XML)), 9995);
+	}
 
 	private void invoke(IkasoaFactory ikasoaFactory, int port) {
 		try {
@@ -76,13 +73,6 @@ public class TestExampleService extends TestCase {
 			ExampleService es = ikasoaFactory.getIkasoaClient(ExampleService.class, "localhost", port);
 			// 实例化一个本地接口实现
 			ExampleService es2 = new ExampleServiceImpl();
-
-//			ExampleVO evo = new ExampleVO();
-//			evo.setId(111);
-//			evo.setString("slsl");
-//			evo.setDescriptor("abcc");
-//			ExampleSuperVO v = es.getExampleSuperVO(evo);
-//			System.out.println(v.getDescriptor());
 
 			// 测试远程接口与本地接口调用结果是否一致
 			assertEquals(es.findVO(4).getId(), es2.findVO(4).getId());
