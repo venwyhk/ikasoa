@@ -1,4 +1,4 @@
-![](http://raw.githubusercontent.com/venwyhk/ikasoa/master/ikasoalogo_small.gif)<br/>&nbsp;*Ikasoa Documentation*<br/>&nbsp;*Version: 0.2-BETA*
+![](http://raw.githubusercontent.com/venwyhk/ikasoa/master/ikasoalogo_small.png)<br/>&nbsp;*Ikasoa Documentation*<br/>&nbsp;*Version: 0.2-BETA*
 
 ## ikasoa开发文档 ##
 
