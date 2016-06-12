@@ -114,8 +114,8 @@ public class JsonProtocolHandlerImpl<T1, T2> implements ProtocolHandler<T1, T2> 
 					&& resultData.getClassTypes().length != 2) {
 				throw new RuntimeException("'Map' must appoint type ! eg : 'Map<String, String>' .");
 			}
-			Map<Object, Object> map = new HashMap<Object, Object>();
 			JSONObject jsonMap = JSON.parseObject(resultStr);
+			Map<Object, Object> map = new HashMap<Object, Object>(jsonMap.size());
 			for (String key : jsonMap.keySet()) {
 				Object valueObj = JSON.parseObject(jsonMap.get(key).toString(), resultData.getClassTypes(1));
 				map.put(key, valueObj);
