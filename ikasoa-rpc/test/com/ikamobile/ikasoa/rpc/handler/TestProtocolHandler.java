@@ -55,4 +55,25 @@ public class TestProtocolHandler extends TestCase {
 		assertEquals(revo.getString(), testStr);
 	}
 
+	@Test
+	public void testKryoProtocolHandlerImpl() {
+
+		ProtocolHandlerFactory<Object[], ExampleVO> chf = new ProtocolHandlerFactory<Object[], ExampleVO>();
+		ReturnData rd = new ReturnData(ExampleVO.class);
+		ProtocolHandler<Object[], ExampleVO> ch = chf.getProtocolHandler(rd, ProtocolType.KRYO);
+
+		String as = ch.argToStr(new Object[] { evo });
+		Object[] evoo = ch.strToArg(as);
+		ExampleVO aevo = (ExampleVO) evoo[0];
+		assertNotNull(aevo);
+		assertEquals(aevo.getId(), testId);
+		assertEquals(aevo.getString(), testStr);
+
+		String rs = ch.resultToStr(evo);
+		ExampleVO revo = ch.strToResult(rs);
+		assertNotNull(revo);
+		assertEquals(revo.getId(), testId);
+		assertEquals(revo.getString(), testStr);
+	}
+
 }
