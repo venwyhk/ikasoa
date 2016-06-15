@@ -2,6 +2,8 @@
 
 ---
 
+&nbsp;[![](https://codeship.com/projects/9cf2f150-1507-0134-ee57-3adebfc67210/status?branch=master)](https://codeship.com/projects/157977)&nbsp;<!-- &nbsp;[![Dependency Status](https://www.versioneye.com/user/projects/576130610a82b2003b63b74c/badge.svg?style=flat)](https://www.versioneye.com/user/projects/576130610a82b2003b63b74c) -->
+
 ### 概述 ###
 
 Ikasoa-rpc是一款高性能轻量级的RPC框架,基于apache thrift开发,客户端可以像调用本地接口那样去调用远程接口.
