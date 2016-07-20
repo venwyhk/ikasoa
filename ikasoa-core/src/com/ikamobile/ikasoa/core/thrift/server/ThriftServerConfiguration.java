@@ -12,11 +12,11 @@ import com.ikamobile.ikasoa.core.thrift.AbstractThriftConfiguration;
  * @version 0.1
  */
 public class ThriftServerConfiguration extends AbstractThriftConfiguration {
-	
+
 	private ServerAspect serverAspect;
 
 	/**
-	 * Thrift服务事件处理器，用于扩展其它功能
+	 * Thrift服务事件处理器,用于扩展其它功能
 	 */
 	private TServerEventHandler serverEventHandler;
 

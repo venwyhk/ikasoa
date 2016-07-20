@@ -49,7 +49,7 @@ public class ServerCheckTest extends TestCase {
 	@Test
 	public void testLoadBalanceCheck() {
 		configuration.setServerCheck(new ServerCheckTestImpl());
-		List<ServerInfo> serverInfoList = new ArrayList<ServerInfo>();
+		List<ServerInfo> serverInfoList = new ArrayList<>();
 		serverInfoList.add(new ServerInfo("192.168.1.1", serverPort));
 		serverInfoList.add(new ServerInfo("192.168.1.2", serverPort));
 		serverInfoList.add(new ServerInfo("192.168.1.3", serverPort));

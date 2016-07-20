@@ -40,7 +40,7 @@ public class ThriftClientTest extends TestCase {
 	 */
 	@Test
 	public void testLoadBalanceThriftClientImpl() {
-		List<ServerInfo> serverInfoList = new ArrayList<ServerInfo>();
+		List<ServerInfo> serverInfoList = new ArrayList<>();
 		serverInfoList.add(new ServerInfo(serverHost, serverPort));
 		ThriftClient loadBalanceThriftClient = new LoadBalanceThriftClientImpl(
 				new PollingLoadBalanceImpl(serverInfoList), configuration);

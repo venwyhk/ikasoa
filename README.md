@@ -160,7 +160,7 @@ Main.java
                 IkasoaServer ikasoaServer = ikasoaFactory.getIkasoaServer(ExampleServiceImpl.class, 9999);
                 // 服务端启动服务
                 ikasoaServer.run();
-                Thread.sleep(500);
+                Thread.sleep(100);
                 // 客户端获取远程接口实现
                 ExampleService es = ikasoaFactory.getIkasoaClient(ExampleService.class, "localhost", 9999);
                 // 客户端输出结果

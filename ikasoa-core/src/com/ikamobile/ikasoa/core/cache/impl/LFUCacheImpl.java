@@ -12,7 +12,7 @@ public class LFUCacheImpl<K, V> extends AbstractCacheImpl<K, V> {
 
 	public LFUCacheImpl(int cacheSize, long defaultExpire) {
 		super(cacheSize, defaultExpire);
-		cacheMap = new HashMap<K, CacheObject<K, V>>(cacheSize + 1);
+		cacheMap = new HashMap<>(cacheSize + 1);
 	}
 
 	/**

@@ -22,7 +22,7 @@ public class ExampleServiceImpl implements ExampleService {
 
 	@Override
 	public List<ExampleVO> getVOList() {
-		List<ExampleVO> evoList = new ArrayList<ExampleVO>();
+		List<ExampleVO> evoList = new ArrayList<>();
 		ExampleVO evo = new ExampleVO();
 		evo.setId(1);
 		evo.setString("阿里爸爸");

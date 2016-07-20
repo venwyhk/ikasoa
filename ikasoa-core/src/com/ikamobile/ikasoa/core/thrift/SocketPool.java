@@ -18,15 +18,15 @@ public class SocketPool {
 
 	private static final Logger LOG = LoggerFactory.getLogger(SocketPool.class);
 
-	private static Map<String, SocketPool> selfMap = new HashMap<String, SocketPool>();
-
-	private Hashtable<Integer, ThriftSocket> socketPool = null;
-
 	// 默认单个连接池容量
-	private static final int POOL_SIZE = 10;
+	private static final byte POOL_SIZE = Byte.MAX_VALUE;
 
 	// 是否空闲 (true: 不空闲, false: 空闲)
 	private boolean[] socketStatusArray = null;
+
+	private static Map<String, SocketPool> selfMap = new HashMap<>(POOL_SIZE);
+
+	private Hashtable<Byte, ThriftSocket> socketPool = null;
 
 	/**
 	 * 初始化连接池
@@ -37,7 +37,7 @@ public class SocketPool {
 		}
 		SocketPool self = new SocketPool();
 		selfMap.put(getPoolKey(host, port), self);
-		self.socketPool = new Hashtable<Integer, ThriftSocket>();
+		self.socketPool = new Hashtable<Byte, ThriftSocket>();
 		self.socketStatusArray = new boolean[POOL_SIZE];
 		// 初始化连接池
 		LOG.debug("Initiation pool ......");
@@ -58,9 +58,9 @@ public class SocketPool {
 		}
 		ThriftSocket socket = null;
 		try {
-			for (int i = 0; i < POOL_SIZE; i++) {
+			for (byte i = 0; i < POOL_SIZE; i++) {
 				socket = new ThriftSocket(host, port);
-				self.socketPool.put(new Integer(i), socket);
+				self.socketPool.put(new Byte(i), socket);
 				self.socketStatusArray[i] = false;
 			}
 		} catch (Exception e) {
@@ -79,21 +79,50 @@ public class SocketPool {
 		if (self == null || self.socketStatusArray == null) {
 			self = init(host, port);
 		}
-		int i = 0;
-		for (i = 0; i < POOL_SIZE; i++) {
+		byte i = 0;
+		for (; i < POOL_SIZE; i++) {
 			if (!self.socketStatusArray[i]) {
 				self.socketStatusArray[i] = true;
 				break;
 			}
 		}
 		if (i >= POOL_SIZE) {
-			// 如果连接不够用,会重新初始化连接池
-			LOG.warn("No enough pooled connection ! Again retry initiation pool .");
-			init(host, port);
-			return buildThriftSocket(host, port);
+			// 如果连接不够用,会尝试回收已关闭的连接,如果还是不够用,会等待一会再试一次.
+			ThriftSocket thriftSocket = refreshAndGetThriftSocket(self, host, port);
+			if (thriftSocket == null) {
+				try {
+					Thread.sleep(10000);
+				} catch (InterruptedException e) {
+					LOG.error(e.getMessage());
+				}
+				thriftSocket = refreshAndGetThriftSocket(self, host, port);
+			}
+			// 如果再试后还是不够用就打印错误日志,并重新初始化连接池.(这时有可能会抛异常)
+			if (thriftSocket == null) {
+				LOG.error("No enough pooled connection ! Again retry initiation pool .");
+				init(host, port);
+				return buildThriftSocket(host, port);
+			} else {
+				return thriftSocket;
+			}
 		}
+		return getThriftSocket(self, i, host, port);
+	}
+
+	private static ThriftSocket refreshAndGetThriftSocket(SocketPool self, String host, int port) {
+		refresh(self, host, port);
+		for (byte i = 0; i < POOL_SIZE; i++) {
+			if (!self.socketStatusArray[i]) {
+				self.socketStatusArray[i] = true;
+				return getThriftSocket(self, i, host, port);
+			}
+		}
+		return null;
+	}
+
+	private static ThriftSocket getThriftSocket(SocketPool self, byte i, String host, int port) {
 		LOG.debug("Get socket number is " + i + " .");
-		ThriftSocket thriftSocket = self.socketPool.get(new Integer(i));
+		ThriftSocket thriftSocket = self.socketPool.get(new Byte(i));
 		if (thriftSocket != null) {
 			return thriftSocket;
 		} else {
@@ -119,8 +148,8 @@ public class SocketPool {
 	/**
 	 * 将用完的连接放回池中,并调整为空闲状态
 	 */
-	public static void releaseThriftSocket(ThriftSocket socket, String host, int port) {
-		if (socket == null || !checkHostAndPort(host, port)) {
+	public static void releaseThriftSocket(ThriftSocket thriftSocket, String host, int port) {
+		if (thriftSocket == null || !checkHostAndPort(host, port)) {
 			LOG.error("Server host or port is null ! Release unsuccessful .");
 			return;
 		}
@@ -128,8 +157,8 @@ public class SocketPool {
 		if (self == null) {
 			self = init(host, port);
 		}
-		for (int i = 0; i < POOL_SIZE; i++) {
-			if (self.socketPool.get(new Integer(i)) == socket) {
+		for (byte i = 0; i < POOL_SIZE; i++) {
+			if (self.socketPool.get(new Byte(i)) == thriftSocket) {
 				self.socketStatusArray[i] = false;
 				LOG.debug("Release socket number is " + i + " .");
 				break;
@@ -147,8 +176,8 @@ public class SocketPool {
 		ThriftSocket socket = null;
 		for (Entry<String, SocketPool> entry : selfMap.entrySet()) {
 			SocketPool self = entry.getValue();
-			for (int i = 0; i < POOL_SIZE; i++) {
-				socket = self.socketPool.get(new Integer(i));
+			for (byte i = 0; i < POOL_SIZE; i++) {
+				socket = self.socketPool.get(new Byte(i));
 				try {
 					socket.close();
 					self.socketStatusArray[i] = false;
@@ -156,6 +185,21 @@ public class SocketPool {
 					LOG.error(e.getMessage());
 				}
 			}
+		}
+	}
+
+	private synchronized static void refresh(SocketPool self, String host, int port) {
+		try {
+			for (byte i = 0; i < POOL_SIZE; i++) {
+				ThriftSocket thriftSocket = self.socketPool.get(i);
+				if (self.socketStatusArray[i] && (thriftSocket == null || thriftSocket.getSocket() == null
+						|| (thriftSocket.isOpen() && thriftSocket.getSocket().isClosed()))) {
+					thriftSocket = new ThriftSocket(host, port);
+					self.socketStatusArray[i] = false;
+				}
+			}
+		} catch (Exception e) {
+			throw new RuntimeException(e);
 		}
 	}
 

@@ -26,6 +26,8 @@ import junit.framework.TestCase;
  */
 public class ThriftServerTest extends TestCase {
 
+	private static String LOCAL_HOST = "localhost";
+
 	private static String serverName = "TestThriftServer";
 
 	private static String testString = "12345678abcdefg";
@@ -43,7 +45,7 @@ public class ThriftServerTest extends TestCase {
 		assertEquals(defaultThriftServer.getServerPort(), serverPort);
 		assertEquals(defaultThriftServer.getThriftServerConfiguration(), configuration);
 		defaultThriftServer.run();
-		ThriftClient thriftClient = factory.getThriftClient("localhost", serverPort);
+		ThriftClient thriftClient = factory.getThriftClient(LOCAL_HOST, serverPort);
 		TTransport transport = null;
 		try {
 			transport = thriftClient.getTransport();
@@ -70,7 +72,7 @@ public class ThriftServerTest extends TestCase {
 		assertEquals(nioThriftServer.getServerPort(), serverPort);
 		assertEquals(nioThriftServer.getThriftServerConfiguration(), configuration);
 		nioThriftServer.run();
-		ThriftClient thriftClient = factory.getThriftClient("localhost", serverPort);
+		ThriftClient thriftClient = factory.getThriftClient(LOCAL_HOST, serverPort);
 		TTransport transport = null;
 		try {
 			transport = thriftClient.getTransport();
@@ -98,7 +100,7 @@ public class ThriftServerTest extends TestCase {
 		assertEquals(simpleThriftServer.getServerPort(), serverPort);
 		assertEquals(simpleThriftServer.getThriftServerConfiguration(), configuration);
 		simpleThriftServer.run();
-		ThriftClient thriftClient = factory.getThriftClient("localhost", serverPort);
+		ThriftClient thriftClient = factory.getThriftClient(LOCAL_HOST, serverPort);
 		TTransport transport = null;
 		try {
 			transport = thriftClient.getTransport();
@@ -119,7 +121,7 @@ public class ThriftServerTest extends TestCase {
 	@Test
 	public void testMultiplexedThriftServerImpl() {
 		int serverPort = 39101;
-		Map<String, TProcessor> processorMap = new HashMap<String, TProcessor>();
+		Map<String, TProcessor> processorMap = new HashMap<>();
 		processorMap.put("testServer", new ThriftSimpleService.Processor<Iface>(new TestThriftServiceImpl()));
 		MultiplexedProcessor processor = new MultiplexedProcessor(processorMap);
 		ThriftServer defaultThriftServer = new DefaultThriftServerImpl(serverName, serverPort, configuration,
@@ -128,7 +130,7 @@ public class ThriftServerTest extends TestCase {
 		assertEquals(defaultThriftServer.getServerPort(), serverPort);
 		assertEquals(defaultThriftServer.getThriftServerConfiguration(), configuration);
 		defaultThriftServer.run();
-		ThriftClient thriftClient = factory.getThriftClient("localhost", serverPort);
+		ThriftClient thriftClient = factory.getThriftClient(LOCAL_HOST, serverPort);
 		TTransport transport = null;
 		try {
 			transport = thriftClient.getTransport();
@@ -155,7 +157,7 @@ public class ThriftServerTest extends TestCase {
 		ThriftServer defaultThriftServer = factory.getThriftServer(serverName, serverPort,
 				new ThriftSimpleService.Processor<Iface>(new TestThriftServiceImpl()));
 		defaultThriftServer.run();
-		ThriftClient thriftClient = factory.getThriftClient("localhost", serverPort);
+		ThriftClient thriftClient = factory.getThriftClient(LOCAL_HOST, serverPort);
 		TTransport transport = null;
 		try {
 			transport = thriftClient.getTransport();
@@ -181,7 +183,7 @@ public class ThriftServerTest extends TestCase {
 		ThriftServer defaultThriftServer = factory.getThriftServer(serverName, serverPort,
 				new ThriftSimpleService.Processor<Iface>(new TestThriftServiceImpl()));
 		defaultThriftServer.run();
-		ThriftClient thriftClient = factory.getThriftClient("localhost", serverPort);
+		ThriftClient thriftClient = factory.getThriftClient(LOCAL_HOST, serverPort);
 		TTransport transport = null;
 		try {
 			transport = thriftClient.getTransport();

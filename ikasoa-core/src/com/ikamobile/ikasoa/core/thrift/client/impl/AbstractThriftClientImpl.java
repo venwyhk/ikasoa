@@ -56,6 +56,7 @@ public abstract class AbstractThriftClientImpl implements ThriftClient {
 				getServerCheckFailProcessor().process(this);
 			}
 		}
+		// 每次都取一个新的连接.
 		thriftSocket = SocketPool.buildThriftSocket(getServerHost(), getServerPort());
 		return getThriftClientConfiguration().getTransportFactory().getTransport(thriftSocket);
 	}

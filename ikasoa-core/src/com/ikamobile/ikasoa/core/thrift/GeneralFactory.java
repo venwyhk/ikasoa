@@ -82,7 +82,7 @@ public class GeneralFactory implements Factory {
 	public ThriftServer getThriftServer(String serverName, int serverPort, Map<String, Service> serviceMap)
 			throws STException {
 		if (serviceMap != null) {
-			Map<String, TProcessor> processorMap = new HashMap<String, TProcessor>();
+			Map<String, TProcessor> processorMap = new HashMap<>();
 			for (String key : serviceMap.keySet()) {
 				processorMap.put(key, new ServiceProcessor(serviceMap.get(key)));
 			}
@@ -98,7 +98,7 @@ public class GeneralFactory implements Factory {
 	@Override
 	public ThriftServer getThriftServer(int serverPort, Map<String, Service> serviceMap) throws STException {
 		if (serviceMap != null) {
-			Map<String, TProcessor> processorMap = new HashMap<String, TProcessor>();
+			Map<String, TProcessor> processorMap = new HashMap<>();
 			for (String key : serviceMap.keySet()) {
 				processorMap.put(key, new ServiceProcessor(serviceMap.get(key)));
 			}

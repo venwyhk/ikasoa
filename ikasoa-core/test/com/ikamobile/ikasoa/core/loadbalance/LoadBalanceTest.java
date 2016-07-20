@@ -16,34 +16,36 @@ import junit.framework.TestCase;
  */
 public class LoadBalanceTest extends TestCase {
 
+	private static String LOCAL_IP = "127.0.0.1";
+
 	/**
 	 * 轮询负载均衡测试
 	 */
 	@Test
 	public void testPollingLoadBalanceImpl() {
 		int testSize = 10;
-		List<ServerInfo> serverInfoList = new ArrayList<ServerInfo>();
+		List<ServerInfo> serverInfoList = new ArrayList<>();
 		for (int i = 1; i <= testSize; i++) {
-			serverInfoList.add(new ServerInfo("192.168.1." + i, 20000 + i));
+			serverInfoList.add(new ServerInfo(new StringBuilder("192.168.1.").append(i).toString(), 20000 + i));
 		}
 		LoadBalance loadBalance = new PollingLoadBalanceImpl(serverInfoList);
 		for (int j = 1; j <= testSize; j++) {
 			ServerInfo serverInfo = loadBalance.getServerInfo();
 			assertNotNull(serverInfo);
-			assertEquals(serverInfo.getHost(), "192.168.1." + j);
+			assertEquals(serverInfo.getHost(), new StringBuilder("192.168.1.").append(j).toString());
 			assertEquals(serverInfo.getPort(), 20000 + j);
 			serverInfo = loadBalance.getServerInfo();
-			assertEquals(serverInfo.getHost(), "192.168.1." + j);
+			assertEquals(serverInfo.getHost(), new StringBuilder("192.168.1.").append(j).toString());
 			assertEquals(serverInfo.getPort(), 20000 + j);
 			next(loadBalance);
 		}
 		// 测试新增服务器地址
-		serverInfoList.add(new ServerInfo("127.0.0.1", 33333));
+		serverInfoList.add(new ServerInfo(LOCAL_IP, 33333));
 		for (int k = 1; k <= testSize; k++) {
 			next(loadBalance);
 		}
 		ServerInfo serverInfo = loadBalance.getServerInfo();
-		assertEquals(serverInfo.getHost(), "127.0.0.1");
+		assertEquals(serverInfo.getHost(), LOCAL_IP);
 		assertEquals(serverInfo.getPort(), 33333);
 	}
 
@@ -52,7 +54,7 @@ public class LoadBalanceTest extends TestCase {
 	 */
 	@Test
 	public void testWeightPollingLoadBalanceImpl() {
-		List<ServerInfo> serverInfoList = new ArrayList<ServerInfo>();
+		List<ServerInfo> serverInfoList = new ArrayList<>();
 		serverInfoList.add(new ServerInfo("192.168.1.1", 30001, 1));
 		serverInfoList.add(new ServerInfo("192.168.1.2", 30002, 0));
 		serverInfoList.add(new ServerInfo("192.168.1.3", 30003, 1));
@@ -77,11 +79,11 @@ public class LoadBalanceTest extends TestCase {
 		assertEquals(serverInfo.getHost(), "192.168.1.3");
 		assertEquals(serverInfo.getPort(), 30003);
 		// 测试新增服务器地址
-		serverInfoList.add(new ServerInfo("127.0.0.1", 30004, 0));
+		serverInfoList.add(new ServerInfo(LOCAL_IP, 30004, 0));
 		for (int i = 1; i <= 6; i++) {
 			serverInfo = next(loadBalance);
 		}
-		assertEquals(serverInfo.getHost(), "127.0.0.1");
+		assertEquals(serverInfo.getHost(), LOCAL_IP);
 		assertEquals(serverInfo.getPort(), 30004);
 	}
 
@@ -90,7 +92,7 @@ public class LoadBalanceTest extends TestCase {
 	 */
 	@Test
 	public void testRandomLoadBalanceImpl() {
-		List<ServerInfo> serverInfoList = new ArrayList<ServerInfo>();
+		List<ServerInfo> serverInfoList = new ArrayList<>();
 		serverInfoList.add(new ServerInfo("192.168.1.1", 40001));
 		serverInfoList.add(new ServerInfo("192.168.1.2", 40002));
 		serverInfoList.add(new ServerInfo("192.168.1.3", 40003));

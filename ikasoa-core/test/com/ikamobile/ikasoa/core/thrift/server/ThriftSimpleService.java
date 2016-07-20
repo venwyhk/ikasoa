@@ -43,6 +43,7 @@ public class ThriftSimpleService {
 	public static class Client extends org.apache.thrift.TServiceClient implements Iface {
 		public static class Factory implements org.apache.thrift.TServiceClientFactory<Client> {
 			public Factory() {
+				// Do nothing
 			}
 
 			public Client getClient(org.apache.thrift.protocol.TProtocol prot) {
@@ -135,7 +136,7 @@ public class ThriftSimpleService {
 		private static final org.apache.thrift.protocol.TField ARG_FIELD_DESC = new org.apache.thrift.protocol.TField(
 				"arg", org.apache.thrift.protocol.TType.STRING, (short) 1);
 
-		private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
+		private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<>();
 
 		static {
 			schemes.put(StandardScheme.class, new get_argsStandardSchemeFactory());
@@ -151,7 +152,7 @@ public class ThriftSimpleService {
 		public enum _Fields implements org.apache.thrift.TFieldIdEnum {
 			ARG((short) 1, "arg");
 
-			private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
+			private static final Map<String, _Fields> byName = new HashMap<>();
 
 			static {
 				for (_Fields field : EnumSet.allOf(_Fields.class)) {
@@ -222,6 +223,7 @@ public class ThriftSimpleService {
 		}
 
 		public get_args() {
+			// Do nothing
 		}
 
 		public get_args(String arg) {
@@ -283,7 +285,6 @@ public class ThriftSimpleService {
 					setArg((String) value);
 				}
 				break;
-
 			}
 		}
 
@@ -291,7 +292,6 @@ public class ThriftSimpleService {
 			switch (field) {
 			case ARG:
 				return getArg();
-
 			}
 			throw new IllegalStateException();
 		}
@@ -325,8 +325,8 @@ public class ThriftSimpleService {
 			if (that == null)
 				return false;
 
-			boolean this_present_arg = true && this.isSetArg();
-			boolean that_present_arg = true && that.isSetArg();
+			boolean this_present_arg = this.isSetArg();
+			boolean that_present_arg = that.isSetArg();
 			if (this_present_arg || that_present_arg) {
 				if (!(this_present_arg && that_present_arg))
 					return false;
@@ -339,9 +339,9 @@ public class ThriftSimpleService {
 
 		@Override
 		public int hashCode() {
-			List<Object> list = new ArrayList<Object>();
+			List<Object> list = new ArrayList<>();
 
-			boolean present_arg = true && (isSetArg());
+			boolean present_arg = isSetArg();
 			list.add(present_arg);
 			if (present_arg)
 				list.add(arg);
@@ -507,11 +507,6 @@ public class ThriftSimpleService {
 			}
 		}
 
-		@Override
-		public Object clone() throws CloneNotSupportedException {
-			return super.clone();
-		}
-
 	}
 
 	public static class get_result implements org.apache.thrift.TBase<get_result, get_result._Fields>,
@@ -522,7 +517,7 @@ public class ThriftSimpleService {
 		private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField(
 				"success", org.apache.thrift.protocol.TType.STRING, (short) 0);
 
-		private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
+		private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<>();
 
 		static {
 			schemes.put(StandardScheme.class, new get_resultStandardSchemeFactory());
@@ -712,8 +707,8 @@ public class ThriftSimpleService {
 			if (that == null)
 				return false;
 
-			boolean this_present_success = true && this.isSetSuccess();
-			boolean that_present_success = true && that.isSetSuccess();
+			boolean this_present_success = this.isSetSuccess();
+			boolean that_present_success = that.isSetSuccess();
 			if (this_present_success || that_present_success) {
 				if (!(this_present_success && that_present_success))
 					return false;
@@ -726,9 +721,9 @@ public class ThriftSimpleService {
 
 		@Override
 		public int hashCode() {
-			List<Object> list = new ArrayList<Object>();
+			List<Object> list = new ArrayList<>();
 
-			boolean present_success = true && (isSetSuccess());
+			boolean present_success = isSetSuccess();
 			list.add(present_success);
 			if (present_success)
 				list.add(success);
@@ -892,11 +887,6 @@ public class ThriftSimpleService {
 					struct.setSuccessIsSet(true);
 				}
 			}
-		}
-
-		@Override
-		public Object clone() throws CloneNotSupportedException {
-			return super.clone();
 		}
 
 	}

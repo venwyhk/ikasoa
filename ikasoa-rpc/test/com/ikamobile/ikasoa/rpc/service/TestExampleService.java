@@ -61,14 +61,14 @@ public class TestExampleService extends TestCase {
 		try {
 
 			// 获取Ikasoa服务
-			List<ImplClsCon> sList = new ArrayList<ImplClsCon>();
+			List<ImplClsCon> sList = new ArrayList<>();
 			sList.add(new ImplClsCon(ExampleServiceImpl.class));
 			sList.add(new ImplClsCon(ExampleChildServiceImpl.class));
 			IkasoaServer ikasoaServer = ikasoaFactory.getIkasoaServer(sList, port);
 
 			// 启动服务
 			ikasoaServer.run();
-			
+
 			// 启动后等待半秒
 			Thread.sleep(500);
 
@@ -87,7 +87,7 @@ public class TestExampleService extends TestCase {
 			assertEquals(es.getDouble(123), es2.getDouble(123));
 			assertEquals(es.testByStrings("sulei")[0], es2.testByStrings("sulei")[0]);
 			assertEquals(es.testByInts(new Integer[] { 1, 2, 2 }), es2.testByInts(new Integer[] { 1, 2, 2 }));
-			Map<String, ExampleVO> map = new HashMap<String, ExampleVO>();
+			Map<String, ExampleVO> map = new HashMap<>();
 			map.put("sl", new ExampleVO(1, "slslsl"));
 			assertEquals(es.getMap(0, map).get("sl").getString(), es2.getMap(0, map).get("sl").getString());
 

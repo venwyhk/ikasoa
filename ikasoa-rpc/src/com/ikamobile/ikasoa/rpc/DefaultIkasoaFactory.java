@@ -97,7 +97,7 @@ public class DefaultIkasoaFactory extends GeneralFactory implements IkasoaFactor
 
 	@Override
 	public IkasoaServer getIkasoaServer(List<ImplClsCon> implClsConList, int serverPort) throws IkasoaException {
-		Map<String, Service> serviceMap = new HashMap<String, Service>();
+		Map<String, Service> serviceMap = new HashMap<>();
 		for (ImplClsCon implClsCon : implClsConList) {
 			serviceMap.putAll(getServiceMapByImplClass(implClsCon));
 		}
