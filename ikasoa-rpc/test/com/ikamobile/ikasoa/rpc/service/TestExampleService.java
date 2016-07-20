@@ -68,6 +68,9 @@ public class TestExampleService extends TestCase {
 
 			// 启动服务
 			ikasoaServer.run();
+			
+			// 启动后等待半秒
+			Thread.sleep(500);
 
 			// 客户端获取远程接口实现
 			ExampleService es = ikasoaFactory.getIkasoaClient(ExampleService.class, "localhost", port);
