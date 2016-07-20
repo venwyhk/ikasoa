@@ -19,6 +19,7 @@ public class Main {
 			IkasoaServer ikasoaServer = ikasoaFactory.getIkasoaServer(ExampleServiceImpl.class, 9999);
 			// 启动服务
 			ikasoaServer.run();
+			Thread.sleep(500);
 			// 客户端获取远程接口实现
 			ExampleService es = ikasoaFactory.getIkasoaClient(ExampleService.class, "localhost", 9999);
 			// 客户端输出结果
@@ -26,6 +27,8 @@ public class Main {
 			// 停止服务
 			ikasoaServer.stop();
 		} catch (IkasoaException e) {
+			e.printStackTrace();
+		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
 	}

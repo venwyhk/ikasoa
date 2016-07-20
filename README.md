@@ -8,11 +8,11 @@
 
 ikasoa是一套SOA服务化治理解决方案.其中ikasoa-rpc是ikasoa的开源RPC框架,基于apache thrift开发,客户端可以像调用本地接口那样去调用远程接口.
 
-### 开发运行环境要求 ###
+## 开发运行环境要求 ##
 
 - 要求java运行环境为java8
 
-### 工程说明 ###
+## 目录说明 ##
 
 - ikasoa-core:*基础核心包*
 
@@ -20,7 +20,7 @@ ikasoa是一套SOA服务化治理解决方案.其中ikasoa-rpc是ikasoa的开源
 
 - ikasoa-example:*示例代码*
 
-### 环境搭建 ###
+## 环境搭建 ##
 
 - Maven配置
 
@@ -105,6 +105,17 @@ ExampleService.java
     }
 ```
 
+ExampleServiceImpl.java
+```java
+    package com.ikamobile.ikasoa.example.rpc;
+    public class ExampleServiceImpl implements ExampleService {
+        @Override
+        public ExampleVO findVO(int id) {
+            return new ExampleVO(id, “helloworld”);
+        }
+    }
+```
+
 ExampleVO.java
 ```java
     package com.ikamobile.ikasoa.example.rpc;
@@ -132,17 +143,6 @@ ExampleVO.java
     }
 ```
 
-ExampleServiceImpl.java
-```java
-    package com.ikamobile.ikasoa.example.rpc;
-    public class ExampleServiceImpl implements ExampleService {
-        @Override
-        public ExampleVO findVO(int id) {
-            return new ExampleVO(id, “helloworld”);
-        }
-    }
-```
-
 - 创建执行类
 
 Main.java
@@ -160,6 +160,7 @@ Main.java
                 IkasoaServer ikasoaServer = ikasoaFactory.getIkasoaServer(ExampleServiceImpl.class, 9999);
                 // 服务端启动服务
                 ikasoaServer.run();
+                Thread.sleep(500);
                 // 客户端获取远程接口实现
                 ExampleService es = ikasoaFactory.getIkasoaClient(ExampleService.class, "localhost", 9999);
                 // 客户端输出结果
@@ -167,6 +168,8 @@ Main.java
                 // 服务端停止服务
                 ikasoaServer.stop();
             } catch (IkasoaException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
@@ -177,9 +180,9 @@ Main.java
 
     如输出”helloword”则表示执行成功.
 
-    *可参考ikasoa-example下的示例*
+    *可参考ikasoa-example的示例*
 
-### 使用实例 ###
+## 使用实例 ##
 
 *例子程序需要使用到Spring框架.*
 
