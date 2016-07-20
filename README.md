@@ -1,24 +1,24 @@
-![](https://raw.githubusercontent.com/venwyhk/ikasoa/master/ikasoalogo_small.png)<br />&nbsp;Ikasoa Documentation
+![](https://raw.githubusercontent.com/venwyhk/ikasoa/master/ikasoalogo_small.png)<br />&nbsp;<b>Ikamobile Service Oriented Architecture</b>
 
----
+***
 
-&nbsp;[![](https://codeship.com/projects/9cf2f150-1507-0134-ee57-3adebfc67210/status?branch=master)](https://codeship.com/projects/157977)&nbsp;
+&nbsp;[![](https://codeship.com/projects/9cf2f150-1507-0134-ee57-3adebfc67210/status?branch=master)](https://codeship.com/projects/157977)&nbsp;&nbsp;
 
-### 概述 ###
+## 概述 ##
 
-Ikasoa-rpc是一款高性能轻量级的RPC框架,基于apache thrift开发,客户端可以像调用本地接口那样去调用远程接口.
+ikasoa是一套SOA服务化治理解决方案.其中ikasoa-rpc是ikasoa的开源RPC框架,基于apache thrift开发,客户端可以像调用本地接口那样去调用远程接口.
 
 ### 开发运行环境要求 ###
 
-要求java运行环境为java8
+- 要求java运行环境为java8
 
 ### 工程说明 ###
 
-- ikasoa-core *基础核心包*
+- ikasoa-core:*基础核心包*
 
-- ikasoa-rpc *RPC(远程过程调用协议)实现*
+- ikasoa-rpc:*RPC(远程过程调用协议)实现*
 
-- ikasoa-example *示例*
+- ikasoa-example:*示例代码*
 
 ### 环境搭建 ###
 
@@ -90,7 +90,7 @@ pom.xml
 
     执行命令”mvn clean package”打包.
 
-### “helloworld” ###
+## “helloworld” 例子 ##
 
 - 创建接口和实现
 
@@ -98,7 +98,7 @@ pom.xml
 
 ExampleService.java
 ```java
-    package com.ikamobile.ikasoa.example;
+    package com.ikamobile.ikasoa.example.rpc;
     public interface ExampleService {
         // 查询对象
         public ExampleVO findVO(int id);
@@ -107,7 +107,7 @@ ExampleService.java
 
 ExampleVO.java
 ```java
-    package com.ikamobile.ikasoa.example;
+    package com.ikamobile.ikasoa.example.rpc;
     public class ExampleVO {
         private int id;
         private String string;
@@ -134,7 +134,7 @@ ExampleVO.java
 
 ExampleServiceImpl.java
 ```java
-    package com.ikamobile.ikasoa.example;
+    package com.ikamobile.ikasoa.example.rpc;
     public class ExampleServiceImpl implements ExampleService {
         @Override
         public ExampleVO findVO(int id) {
@@ -147,7 +147,7 @@ ExampleServiceImpl.java
 
 Main.java
 ```java
-    package com.ikamobile.ikasoa.example;
+    package com.ikamobile.ikasoa.example.rpc;
     import com.ikamobile.ikasoa.rpc.DefaultIkasoaFactory;
     import com.ikamobile.ikasoa.rpc.IkasoaException;
     import com.ikamobile.ikasoa.rpc.IkasoaFactory;
@@ -158,13 +158,13 @@ Main.java
             try {
                 // 获取Ikasoa服务
                 IkasoaServer ikasoaServer = ikasoaFactory.getIkasoaServer(ExampleServiceImpl.class, 9999);
-                // 启动服务
+                // 服务端启动服务
                 ikasoaServer.run();
                 // 客户端获取远程接口实现
                 ExampleService es = ikasoaFactory.getIkasoaClient(ExampleService.class, "localhost", 9999);
                 // 客户端输出结果
                 System.out.println(es.findVO(1).getString());
-                // 停止服务
+                // 服务端停止服务
                 ikasoaServer.stop();
             } catch (IkasoaException e) {
                 e.printStackTrace();
@@ -176,6 +176,8 @@ Main.java
 - 执行Main.java
 
     如输出”helloword”则表示执行成功.
+
+    *可参考ikasoa-example下的示例*
 
 ### 使用实例 ###
 
@@ -209,9 +211,9 @@ RpcServer.java
     public class RpcServer {
         private IkasoaServer server;
         public RpcServer(IkasoaFactory ikasoaFactory, int serverPort) throws IkasoaException {
-            // 实现类必须最终类,不能是抽象类
+            // 实现类不能是抽象类
             this.server = ikasoaFactory.getIkasoaServer(ExampleServiceImpl.class, serverPort);
-            // 如果已有实例化后的对象(例如通过Spring注入的对象),则可以通过ImplClsCon类进行封装,Ikasoa将会直接引用该类的实例,而不会重新实例化.
+            // 如果已有实例化后的对象(例如通过Spring注入的对象),则可以通过ImplClsCon类进行封装,ikasoa-rpc将会直接引用该类的实例,而不会重新实例化.
             // 例子如下:
             // this.server = ikasoaFactory.getIkasoaServer(new ImplClsCon(ExampleServiceImpl.class, exampleServiceImpl), serverPort);
             // 如有多个接口实现,可以传入List.
@@ -260,7 +262,7 @@ RpcClient.java
 
     如输出”helloword”则表示执行成功.
 
-### ThriftIDL实例 ###
+## Thrift IDL 例子 ##
 
 - 客户端调用Thrift服务端例子
 
@@ -277,6 +279,7 @@ ThriftClientDemo.java
         public static void main(String[] args) {
             ThriftClientConfiguration configuration = new ThriftClientConfiguration();
             configuration.setTransportFactory(new TTransportFactory()); // 协议需要与服务端匹配
+            // 如果只依赖ikasoa-core,这里也可以使用com.ikamobile.ikasoa.core.thrift.GeneralFactory来替代DefaultIkasoaFactory
             ThriftClient thriftClient = new DefaultIkasoaFactory(configuration).getThriftClient("121.40.119.240", 9201); // 配置Thrift的服务器地址和端口
             TTransport transport = null;
             try {
@@ -296,7 +299,80 @@ ThriftClientDemo.java
     }
 ```
 
-### 服务提供类型的选择 ###
+- Spring配置Thrift服务端例子
+
+```xml
+    <?xml version="1.0" encoding="UTF-8"?>
+    <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context" xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
+    ......
+    <!-- Thrift服务配置 -->
+        <bean id="thriftServer2" class="com.ikamobile.ikasoa.core.thrift.server.impl.DefaultThriftServerImpl" init-method="run" destroy-method="stop">
+            <property name="serverName" value="xxxServer" /><!-- 服务名称 -->
+            <property name="serverPort" value="9899" /><!-- 服务端口 -->
+            <property name="thriftServerConfiguration">
+                <bean class="com.ikamobile.ikasoa.core.thrift.server.ThriftServerConfiguration">
+                    <property name="transportFactory"><!-- 指定传输协议工厂(可选,默认为TFramedTransport.Factory) -->
+                        <bean class="org.apache.thrift.transport.TTransportFactory" />
+                    </property>
+                    <property name="serverEventHandler"><!-- 指定事件处理器(可选) -->
+                        <bean class="com.ikamobile.xxx.MonitorServerEventHandler" /><!-- 张成有服务端监控发送ActiveMQ事件的实现,如果需要添加监控就找张成 -->
+                    </property>
+                </bean>
+            </property>
+            <property name="processor">
+                <bean class="com.ikamobile.xxx.service.ThriftService.Processor"><!-- ThriftService为通过idl生成的服务类 -->
+                    <constructor-arg ref="thriftService" />
+                </bean>
+            </property>
+        </bean>
+        <bean id="thriftService" class="com.ikamobile.xxx.ThriftServiceImpl"/><!-- ThriftService.Iface接口的实现 -->
+        ......
+    </beans>
+```
+
+- Spring配置Thrift服务端例子(嵌套方式)
+
+```xml
+    <?xml version="1.0" encoding="UTF-8"?>
+    <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context" xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
+        ......
+        <!-- Thrift服务配置(嵌套方式) -->
+        <bean id="thriftServer1" class="com.ikamobile.ikasoa.core.thrift.server.impl.DefaultThriftServerImpl" init-method="run" destroy-method="stop">
+            <property name="serverName" value="xxxServer" /><!-- 服务名称 -->
+            <property name="serverPort" value="9898" /><!-- 服务端口 -->
+            <property name="thriftServerConfiguration">
+                <bean class="com.ikamobile.ikasoa.core.thrift.server.ThriftServerConfiguration">
+                    <property name="transportFactory"><!-- 指定传输协议工厂(可选,默认为TFramedTransport.Factory) -->
+                        <bean class="org.apache.thrift.transport.TTransportFactory" />
+                    </property>
+                </bean>
+            </property>
+            <property name="processor">
+                <bean class="com.ikamobile.ikasoa.core.thrift.server.MultiplexedProcessor">
+                    <constructor-arg>
+                        <map>
+                            <entry key="Service1"><!-- 这里的key可以随便取,保证唯一就行.Client调用的时候需要用 -->
+                                <bean class="com.ikamobile.xxx.service.ThriftService1.Processor"><!-- ThriftService1和ThriftService2为通过idl生成的服务类 -->
+                                    <constructor-arg ref="thriftService1" />
+                                </bean>
+                            </entry>
+                            <entry key="Service2">
+                                <bean class="com.ikamobile.xxx.service.ThriftService2.Processor">
+                                    <constructor-arg ref="thriftService2" />
+                                </bean>
+                            </entry>
+                        </map>
+                    </constructor-arg>
+                </bean>
+            </property>
+        </bean>
+        <bean id="thriftService1" class="com.ikamobile.xxx.ThriftService1Impl"/><!-- ThriftService1.Iface接口的实现 -->
+        <bean id="thriftService2" class="com.ikamobile.xxx.ThriftService2Impl"/><!-- ThriftService2.Iface接口的实现 -->
+        ......
+    </beans>
+```
+
+## 服务提供类型的选择 ##
 
 *Ikasoa默认使用Thrift作为服务类型的实现,但也提供了Netty以供选择.*
 
@@ -316,7 +392,7 @@ ThriftClientDemo.java
     ......
 ```
 
-### 序列化方式的选择 ###
+## 序列化方式的选择 ##
 
 *Ikasoa提供了3种序列化方式,分别为fastjson,xml,kryo,默认使用fastjson.*
 
@@ -346,7 +422,7 @@ ThriftClientDemo.java
     ......
 ```
 
-### 注意事项 ###
+## 注意事项 ##
 
 - 使用fastjson作为序列化方式时,fastjson依赖版本建议与ikasoa所依赖的版本一致(当前为1.2.12).否则可能出现服务名不能匹配,无法调用服务的情况.
 
@@ -356,6 +432,6 @@ ThriftClientDemo.java
 
 - 使用kryo作为序列化方式时,暂不支持自定义异常对象,如果抛出自定义异常对象,异常类型不能正确识别.
 
----
+***
 
-*sulei@ikamobile.com | 2016-06-12*
+*sulei@ikamobile.com | 2016-07-20*

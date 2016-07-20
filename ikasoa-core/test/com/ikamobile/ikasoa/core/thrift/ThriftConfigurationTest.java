@@ -42,7 +42,7 @@ public class ThriftConfigurationTest extends TestCase {
 		assertEquals(thriftServerConfiguration.getExecutorService(), executorService);
 	}
 
-	class TestServerEventHandler implements TServerEventHandler {
+	private class TestServerEventHandler implements TServerEventHandler {
 
 		@Override
 		public ServerContext createContext(TProtocol arg0, TProtocol arg1) {

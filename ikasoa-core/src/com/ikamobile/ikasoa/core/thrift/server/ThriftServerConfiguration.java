@@ -12,6 +12,8 @@ import com.ikamobile.ikasoa.core.thrift.AbstractThriftConfiguration;
  * @version 0.1
  */
 public class ThriftServerConfiguration extends AbstractThriftConfiguration {
+	
+	private ServerAspect serverAspect;
 
 	/**
 	 * Thrift服务事件处理器，用于扩展其它功能
@@ -26,6 +28,14 @@ public class ThriftServerConfiguration extends AbstractThriftConfiguration {
 	private ExecutorService executorService;
 
 	public ThriftServerConfiguration() {
+	}
+
+	public ServerAspect getServerAspect() {
+		return serverAspect;
+	}
+
+	public void setServerAspect(ServerAspect serverAspect) {
+		this.serverAspect = serverAspect;
 	}
 
 	public TServerEventHandler getServerEventHandler() {

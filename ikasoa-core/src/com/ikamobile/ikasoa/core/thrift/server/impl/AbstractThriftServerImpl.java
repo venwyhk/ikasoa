@@ -64,7 +64,7 @@ public abstract class AbstractThriftServerImpl implements ThriftServer {
 	}
 
 	/**
-	 * 启动一个Thrift服务线程
+	 * 运行一个Thrift服务线程
 	 */
 	@Override
 	public void run() {
@@ -72,6 +72,7 @@ public abstract class AbstractThriftServerImpl implements ThriftServer {
 			executorService = Executors.newSingleThreadExecutor();
 		}
 		if (!isServing()) {
+			beforeStart();
 			executorService.execute(() -> {
 				try {
 					start();
@@ -79,6 +80,7 @@ public abstract class AbstractThriftServerImpl implements ThriftServer {
 					throw new RuntimeException(e);
 				}
 			});
+			afterStart();
 			Runtime.getRuntime().addShutdownHook(new Thread() {
 				@Override
 				public void run() {
@@ -125,13 +127,39 @@ public abstract class AbstractThriftServerImpl implements ThriftServer {
 	@Override
 	public void stop() {
 		if (server != null && server.isServing()) {
+			beforeStop();
 			server.stop();
 			if (executorService != null && !executorService.isShutdown()) {
 				executorService.shutdown();
 			}
 			LOG.info("Stop thrift server ...... (name: " + serverName + ")");
+			afterStop();
 		} else {
 			LOG.info("Thrift server not run. (name: " + serverName + ")");
+		}
+	}
+
+	private void beforeStart() {
+		if (configuration.getServerAspect() != null) {
+			configuration.getServerAspect().beforeStart(serverName, serverPort, configuration, processor, this);
+		}
+	}
+
+	private void afterStart() {
+		if (configuration.getServerAspect() != null) {
+			configuration.getServerAspect().afterStart(serverName, serverPort, configuration, processor, this);
+		}
+	}
+
+	private void beforeStop() {
+		if (configuration.getServerAspect() != null) {
+			configuration.getServerAspect().beforeStop(serverName, serverPort, configuration, processor, this);
+		}
+	}
+
+	private void afterStop() {
+		if (configuration.getServerAspect() != null) {
+			configuration.getServerAspect().afterStop(serverName, serverPort, configuration, processor, this);
 		}
 	}
 

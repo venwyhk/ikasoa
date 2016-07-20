@@ -206,11 +206,71 @@ public class ThriftServerTest extends TestCase {
 		assertEquals(servletThriftServer.getThriftServerConfiguration(), configuration);
 	}
 
+	@Test
+	public void testServerAspect() {
+		int serverPort = 39301;
+		ThriftServerConfiguration configuration = new ThriftServerConfiguration();
+		configuration.setServerAspect(new TestServerAspectImpl());
+		Factory factory = new GeneralFactory(configuration);
+		ThriftServer defaultThriftServer = factory.getThriftServer(serverName, serverPort,
+				new ThriftSimpleService.Processor<Iface>(new TestThriftServiceImpl()));
+		defaultThriftServer.run();
+		defaultThriftServer.stop();
+	}
+
 	private class TestThriftServiceImpl implements ThriftSimpleService.Iface {
 		@Override
 		public String get(String arg) throws TException {
 			return arg;
 		}
+	}
+
+	private class TestServerAspectImpl extends TestCase implements ServerAspect {
+
+		@Test
+		@Override
+		public void beforeStart(String serverName, int serverPort, ThriftServerConfiguration configuration,
+				TProcessor processor, ThriftServer server) {
+			assertEquals(ThriftServerTest.serverName, serverName);
+			assertEquals(39301, serverPort);
+			assertFalse(server.isServing());
+		}
+
+		@Test
+		@Override
+		public void afterStart(String serverName, int serverPort, ThriftServerConfiguration configuration,
+				TProcessor processor, ThriftServer server) {
+			assertEquals(ThriftServerTest.serverName, serverName);
+			assertEquals(39301, serverPort);
+			try {
+				Thread.sleep(500);
+			} catch (InterruptedException e) {
+			}
+			assertTrue(server.isServing());
+		}
+
+		@Test
+		@Override
+		public void beforeStop(String serverName, int serverPort, ThriftServerConfiguration configuration,
+				TProcessor processor, ThriftServer server) {
+			assertEquals(ThriftServerTest.serverName, serverName);
+			assertEquals(39301, serverPort);
+			assertTrue(server.isServing());
+		}
+
+		@Test
+		@Override
+		public void afterStop(String serverName, int serverPort, ThriftServerConfiguration configuration,
+				TProcessor processor, ThriftServer server) {
+			assertEquals(ThriftServerTest.serverName, serverName);
+			assertEquals(39301, serverPort);
+			try {
+				Thread.sleep(500);
+			} catch (InterruptedException e) {
+			}
+			assertFalse(server.isServing());
+		}
+
 	}
 
 }

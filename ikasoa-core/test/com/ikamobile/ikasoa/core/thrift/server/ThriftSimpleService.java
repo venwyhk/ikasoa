@@ -63,6 +63,7 @@ public class ThriftSimpleService {
 			super(iprot, oprot);
 		}
 
+		@Override
 		public String get(String arg) throws org.apache.thrift.TException {
 			send_get(arg);
 			return recv_get();
@@ -506,6 +507,11 @@ public class ThriftSimpleService {
 			}
 		}
 
+		@Override
+		public Object clone() throws CloneNotSupportedException {
+			return super.clone();
+		}
+
 	}
 
 	public static class get_result implements org.apache.thrift.TBase<get_result, get_result._Fields>,
@@ -886,6 +892,11 @@ public class ThriftSimpleService {
 					struct.setSuccessIsSet(true);
 				}
 			}
+		}
+
+		@Override
+		public Object clone() throws CloneNotSupportedException {
+			return super.clone();
 		}
 
 	}

@@ -87,7 +87,8 @@ public class SocketPool {
 			}
 		}
 		if (i >= POOL_SIZE) {
-			LOG.error("No enough pooled connection ! Again retry initiation pool .");
+			// 如果连接不够用,会重新初始化连接池
+			LOG.warn("No enough pooled connection ! Again retry initiation pool .");
 			init(host, port);
 			return buildThriftSocket(host, port);
 		}
