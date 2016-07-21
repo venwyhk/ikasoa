@@ -90,7 +90,7 @@ pom.xml
 
     执行命令”mvn clean package”打包.
 
-## “helloworld” 例子 ##
+## “helloworld”例子 ##
 
 - 创建接口和实现
 
@@ -265,7 +265,7 @@ RpcClient.java
 
     如输出”helloword”则表示执行成功.
 
-## Thrift IDL 例子 ##
+## Thrift使用示例 ##
 
 - 客户端调用Thrift服务端例子
 

@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.ikamobile</groupId>
     <artifactId>ikasoa-example</artifactId>
-    <name>Ikasoa Rpc Example</name>
+    <name>Ikasoa Example</name>
     <version>0.2</version>
     <packaging>war</packaging>
 
