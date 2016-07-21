@@ -180,11 +180,11 @@ Main.java
 
     如输出”helloword”则表示执行成功.
 
-    *可参考ikasoa-example的示例*
+    *可参考ikasoa-example的示例.*
 
-## 使用实例 ##
+## 使用示例 ##
 
-*例子程序需要使用到Spring框架.*
+*此示例程序需要使用到Spring框架.*
 
 - 服务端例子
 
@@ -317,9 +317,6 @@ ThriftClientDemo.java
                     <property name="transportFactory"><!-- 指定传输协议工厂(可选,默认为TFramedTransport.Factory) -->
                         <bean class="org.apache.thrift.transport.TTransportFactory" />
                     </property>
-                    <property name="serverEventHandler"><!-- 指定事件处理器(可选) -->
-                        <bean class="com.ikamobile.xxx.MonitorServerEventHandler" /><!-- 张成有服务端监控发送ActiveMQ事件的实现,如果需要添加监控就找张成 -->
-                    </property>
                 </bean>
             </property>
             <property name="processor">
@@ -354,7 +351,7 @@ ThriftClientDemo.java
                 <bean class="com.ikamobile.ikasoa.core.thrift.server.MultiplexedProcessor">
                     <constructor-arg>
                         <map>
-                            <entry key="Service1"><!-- 这里的key可以随便取,保证唯一就行.Client调用的时候需要用 -->
+                            <entry key="Service1"><!-- 这里的key可以随便取,保证唯一就行,Client调用的时候需要用 -->
                                 <bean class="com.ikamobile.xxx.service.ThriftService1.Processor"><!-- ThriftService1和ThriftService2为通过idl生成的服务类 -->
                                     <constructor-arg ref="thriftService1" />
                                 </bean>
@@ -439,4 +436,4 @@ ThriftClientDemo.java
 
 ***
 
-*sulei@ikamobile.com | 2016-07-20*
+*larry7696@gmail.com | 2016-07-20*
