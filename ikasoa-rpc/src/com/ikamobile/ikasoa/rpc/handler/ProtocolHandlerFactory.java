@@ -1,9 +1,5 @@
 package com.ikamobile.ikasoa.rpc.handler;
 
-import com.ikamobile.ikasoa.rpc.handler.impl.JsonProtocolHandlerImpl;
-import com.ikamobile.ikasoa.rpc.handler.impl.KryoProtocolHandlerImpl;
-import com.ikamobile.ikasoa.rpc.handler.impl.XmlProtocolHandlerImpl;
-
 /**
  * 转换协议处理器工厂
  * 
@@ -12,30 +8,28 @@ import com.ikamobile.ikasoa.rpc.handler.impl.XmlProtocolHandlerImpl;
  */
 public class ProtocolHandlerFactory<T1, T2> {
 
+	private static final String DEFAULT_PROTOCOL_HANDLER_CLASS_STRING = "com.ikamobile.ikasoa.rpc.handler.impl.JsonProtocolHandlerImpl";
+
 	public ProtocolHandler<T1, T2> getProtocolHandler(ReturnData resultData) {
 		return getProtocolHandler(resultData, null);
 	}
 
-	public ProtocolHandler<T1, T2> getProtocolHandler(ReturnData resultData, ProtocolType protocolType) {
-		if (protocolType != null) {
-			switch (protocolType) {
-			case JSON:
-				return new JsonProtocolHandlerImpl<T1, T2>(resultData);
-			case KRYO:
-				return new KryoProtocolHandlerImpl<T1, T2>(resultData);
-			case XML:
-				return new XmlProtocolHandlerImpl<T1, T2>(resultData);
-			default:
-				return new JsonProtocolHandlerImpl<T1, T2>(resultData);
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public ProtocolHandler<T1, T2> getProtocolHandler(ReturnData resultData,
+			Class<ProtocolHandler> protocolHandlerClass) {
+		try {
+			Class[] paramTypes = { ReturnData.class };
+			Object[] params = { resultData };
+			if (protocolHandlerClass == null) {
+				Class defaultProtocolHandlerClass = Class.forName(DEFAULT_PROTOCOL_HANDLER_CLASS_STRING);
+				return (ProtocolHandler<T1, T2>) defaultProtocolHandlerClass.getConstructor(paramTypes)
+						.newInstance(params);
+			} else {
+				return (ProtocolHandler<T1, T2>) protocolHandlerClass.getConstructor(paramTypes).newInstance(params);
 			}
-		} else {
-			return new JsonProtocolHandlerImpl<T1, T2>(resultData);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
 		}
-
-	}
-
-	public enum ProtocolType {
-		JSON, KRYO, XML;
 	}
 
 }

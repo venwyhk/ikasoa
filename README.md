@@ -250,7 +250,7 @@ RpcClient.java
             // 如果接口之间有继承关系,则只需要配置子接口类
             // 设置服务器地址为”hocalhost”,端口为9993
             ExampleService es = new DefaultIkasoaFactory().getIkasoaClient(ExampleService.class, "localhost", 9993);
-            // 如果有多个服务提供者,服务器地址和端口也可以传入List,系统将自动执行负载均衡(默认负载均衡规则为轮询,此外还支持随机).
+            // 如果有多个服务提供者,服务器地址和端口也可以传入List,系统将自动执行负载均衡(默认负载均衡规则为轮询,此外还支持随机,详见'负载均衡'文档目录).
             // 例子如下:
             //  List<ServerInfo> serverInfoList = new ArrayList<ServerInfo>();
             //  serverInfoList.add(new ServerInfo("localhost", 9993));
@@ -307,8 +307,8 @@ ThriftClientDemo.java
 ```xml
     <?xml version="1.0" encoding="UTF-8"?>
     <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context" xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
-    ......
-    <!-- Thrift服务配置 -->
+        ......
+        <!-- Thrift服务配置 -->
         <bean id="thriftServer2" class="com.ikamobile.ikasoa.core.thrift.server.impl.DefaultThriftServerImpl" init-method="run" destroy-method="stop">
             <property name="serverName" value="xxxServer" /><!-- 服务名称 -->
             <property name="serverPort" value="9899" /><!-- 服务端口 -->
@@ -392,7 +392,48 @@ ThriftClientDemo.java
     ......
 ```
 
-## 序列化方式的选择 ##
+## 负载均衡 ##
+
+*Ikasoa提供了2种负载均衡,分别为轮循(含权重)和随机,默认使用轮循.*
+
+- 选择轮循负载均衡(默认)
+
+```java
+    ......
+    XService xs = new DefaultIkasoaFactory().getIkasoaClient(XService.class, serverInfoList);
+    // 也可以写为如下方式:
+    // Class loadBalanceClass = Class.forName("com.ikamobile.ikasoa.core.loadbalance.impl.PollingLoadBalanceImpl");
+    // XService xs = new DefaultIkasoaFactory().getIkasoaClient(XService.class, serverInfoList, loadBalanceClass);
+    ......
+```
+
+*serverInfoList中的元素对象com.ikamobile.ikasoa.core.loadbalance.ServerInfo定义了单个服务信息,其中weightNumber属性为权重值,用于轮循负载均衡.*
+
+- 选择随机负载均衡
+
+```java
+    ......
+    Class loadBalanceClass = Class.forName("com.ikamobile.ikasoa.core.loadbalance.impl.RandomLoadBalanceImpl");
+    XService xs = new DefaultIkasoaFactory().getIkasoaClient(XService.class, serverInfoList, loadBalanceClass);
+    ......
+```
+
+- 自定义负载均衡
+
+  创建自定义序列化类(例如com.xxx.XLoadBalanceImpl).
+
+  自定义序列化类(com.xxx.XLoadBalanceImpl)需实现接口com.ikamobile.ikasoa.core.loadbalance.LoadBalance.
+
+  通过如下方式获取服务:
+
+```java
+    ......
+    Class loadBalanceClass = Class.forName("com.xxx.XLoadBalanceImpl");
+    XService xs = new DefaultIkasoaFactory().getIkasoaClient(XService.class, serverInfoList, loadBalanceClass);
+    ......
+```
+
+## 序列化 ##
 
 *Ikasoa提供了3种序列化方式,分别为fastjson,xml,kryo,默认使用fastjson.*
 
@@ -402,7 +443,8 @@ ThriftClientDemo.java
     ......
     IkasoaFactory ikasoaFactory = new DefaultIkasoaFactory();
     // 也可以写为如下方式:
-    // IkasoaFactory ikasoaFactory = new DefaultIkasoaFactory(new Configurator(ProtocolType.JSON));
+    // Class protocolHandlerClass = Class.forName("com.ikamobile.ikasoa.rpc.handler.impl.JsonProtocolHandlerImpl");
+    // IkasoaFactory ikasoaFactory = new DefaultIkasoaFactory(new Configurator(protocolHandlerClass));
     ......
 ```
 
@@ -410,7 +452,8 @@ ThriftClientDemo.java
 
 ```java
     ......
-    IkasoaFactory ikasoaFactory = new DefaultIkasoaFactory(new Configurator(ProtocolType.XML));
+    Class protocolHandlerClass = Class.forName("com.ikamobile.ikasoa.rpc.handler.impl.XmlProtocolHandlerImpl");
+    IkasoaFactory ikasoaFactory = new DefaultIkasoaFactory(new Configurator(protocolHandlerClass));
     ......
 ```
 
@@ -418,7 +461,23 @@ ThriftClientDemo.java
 
 ```java
     ......
-    IkasoaFactory ikasoaFactory = new DefaultIkasoaFactory(new Configurator(ProtocolType.KRYO));
+    Class protocolHandlerClass = Class.forName("com.ikamobile.ikasoa.rpc.handler.impl.KryoProtocolHandlerImpl");
+    IkasoaFactory ikasoaFactory = new DefaultIkasoaFactory(new Configurator(protocolHandlerClass));
+    ......
+```
+
+- 自定义序列化方式
+
+  创建自定义序列化类(例如com.xxx.XProtocolHandlerImpl).
+
+  自定义序列化类(com.xxx.XProtocolHandlerImpl)需实现接口com.ikamobile.ikasoa.rpc.handler.ProtocolHandler.
+
+  通过如下方式获取IkasoaFactory:
+
+```java
+    ......
+    Class protocolHandlerClass = Class.forName("com.xx.XProtocolHandlerImpl");
+    IkasoaFactory ikasoaFactory = new DefaultIkasoaFactory(new Configurator(protocolHandlerClass));
     ......
 ```
 
@@ -436,4 +495,4 @@ ThriftClientDemo.java
 
 ***
 
-*larry7696@gmail.com | 2016-07-20*
+*larry7696@gmail.com | 2016-08-10*

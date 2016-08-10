@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.ikamobile.ikasoa.core.loadbalance.LoadBalance;
 import com.ikamobile.ikasoa.core.loadbalance.ServerInfo;
 import com.ikamobile.ikasoa.core.thrift.GeneralFactory;
 import com.ikamobile.ikasoa.core.thrift.client.ThriftClient;
@@ -11,7 +13,6 @@ import com.ikamobile.ikasoa.core.thrift.client.ThriftClientConfiguration;
 import com.ikamobile.ikasoa.core.thrift.server.ThriftServerConfiguration;
 import com.ikamobile.ikasoa.rpc.client.IkasoaClientService;
 import com.ikamobile.ikasoa.rpc.handler.ProtocolHandlerFactory;
-import com.ikamobile.ikasoa.rpc.handler.ProtocolHandlerFactory.ProtocolType;
 import com.ikamobile.ikasoa.rpc.handler.ClientInvocationHandler;
 import com.ikamobile.ikasoa.rpc.handler.ProtocolHandler;
 import com.ikamobile.ikasoa.rpc.handler.ReturnData;
@@ -26,7 +27,8 @@ public class BaseGetServiceFactory<T1, T2> extends GeneralFactory {
 
 	private static final Logger LOG = LoggerFactory.getLogger(BaseGetServiceFactory.class);
 
-	private ProtocolType protocolType;
+	@SuppressWarnings("rawtypes")
+	private Class<ProtocolHandler> protocolHandlerClass;
 
 	private ProtocolHandlerFactory<T1, T2> protocolHandlerFactory = new ProtocolHandlerFactory<T1, T2>();
 
@@ -51,7 +53,7 @@ public class BaseGetServiceFactory<T1, T2> extends GeneralFactory {
 	public BaseGetService<T1, T2> getBaseGetService(String serverHost, int serverPort, String serviceKey,
 			ReturnData resultData) {
 		return getBaseGetService(serverHost, serverPort, serviceKey,
-				protocolHandlerFactory.getProtocolHandler(resultData, getProtocolType()));
+				protocolHandlerFactory.getProtocolHandler(resultData, getProtocolHandlerClass()));
 	}
 
 	public BaseGetService<T1, T2> getBaseGetService(String serverHost, int serverPort, String serviceKey,
@@ -62,18 +64,29 @@ public class BaseGetServiceFactory<T1, T2> extends GeneralFactory {
 	public BaseGetService<T1, T2> getBaseGetService(ThriftClient thriftClient, String serviceKey,
 			ReturnData resultData) {
 		return getBaseGetService(thriftClient, serviceKey,
-				protocolHandlerFactory.getProtocolHandler(resultData, getProtocolType()));
+				protocolHandlerFactory.getProtocolHandler(resultData, getProtocolHandlerClass()));
 	}
 
 	public BaseGetService<T1, T2> getBaseGetService(List<ServerInfo> serverInfoList, String serviceKey,
 			ReturnData resultData) {
 		return getBaseGetService(serverInfoList, serviceKey,
-				protocolHandlerFactory.getProtocolHandler(resultData, getProtocolType()));
+				protocolHandlerFactory.getProtocolHandler(resultData, getProtocolHandlerClass()));
 	}
 
 	public BaseGetService<T1, T2> getBaseGetService(List<ServerInfo> serverInfoList, String serviceKey,
 			ProtocolHandler<T1, T2> protocolHandler) {
 		return getBaseGetService(getThriftClient(serverInfoList), serviceKey, protocolHandler);
+	}
+
+	public BaseGetService<T1, T2> getBaseGetService(List<ServerInfo> serverInfoList,
+			Class<LoadBalance> loadBalanceClass, String serviceKey, ReturnData resultData) {
+		return getBaseGetService(serverInfoList, loadBalanceClass, serviceKey,
+				protocolHandlerFactory.getProtocolHandler(resultData, getProtocolHandlerClass()));
+	}
+
+	public BaseGetService<T1, T2> getBaseGetService(List<ServerInfo> serverInfoList,
+			Class<LoadBalance> loadBalanceClass, String serviceKey, ProtocolHandler<T1, T2> protocolHandler) {
+		return getBaseGetService(getThriftClient(serverInfoList, loadBalanceClass), serviceKey, protocolHandler);
 	}
 
 	public BaseGetService<T1, T2> getBaseGetService(ThriftClient thriftClient, String serviceKey,
@@ -88,12 +101,14 @@ public class BaseGetServiceFactory<T1, T2> extends GeneralFactory {
 				clientInvocationHandler);
 	}
 
-	public ProtocolType getProtocolType() {
-		return protocolType;
+	@SuppressWarnings("rawtypes")
+	public Class<ProtocolHandler> getProtocolHandlerClass() {
+		return protocolHandlerClass;
 	}
 
-	public void setProtocolType(ProtocolType protocolType) {
-		this.protocolType = protocolType;
+	@SuppressWarnings("rawtypes")
+	public void setProtocolHandlerClass(Class<ProtocolHandler> protocolHandlerClass) {
+		this.protocolHandlerClass = protocolHandlerClass;
 	}
 
 	public ClientInvocationHandler getClientInvocationHandler() {

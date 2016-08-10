@@ -2,7 +2,6 @@ package com.ikamobile.ikasoa.rpc.handler;
 
 import org.junit.Test;
 
-import com.ikamobile.ikasoa.rpc.handler.ProtocolHandlerFactory.ProtocolType;
 import com.ikamobile.ikasoa.rpc.service.ExampleVO;
 
 import junit.framework.TestCase;
@@ -35,11 +34,13 @@ public class TestProtocolHandler extends TestCase {
 	}
 
 	@Test
-	public void testXmlProtocolHandlerImpl() {
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public void testXmlProtocolHandlerImpl() throws ClassNotFoundException {
 
 		ProtocolHandlerFactory<Object[], ExampleVO> chf = new ProtocolHandlerFactory<Object[], ExampleVO>();
 		ReturnData rd = new ReturnData(ExampleVO.class);
-		ProtocolHandler<Object[], ExampleVO> ch = chf.getProtocolHandler(rd, ProtocolType.XML);
+		Class protocolHandlerClass = Class.forName("com.ikamobile.ikasoa.rpc.handler.impl.XmlProtocolHandlerImpl");
+		ProtocolHandler<Object[], ExampleVO> ch = chf.getProtocolHandler(rd, protocolHandlerClass);
 
 		String as = ch.argToStr(new Object[] { evo });
 		Object[] evoo = ch.strToArg(as);
@@ -56,11 +57,13 @@ public class TestProtocolHandler extends TestCase {
 	}
 
 	@Test
-	public void testKryoProtocolHandlerImpl() {
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public void testKryoProtocolHandlerImpl() throws ClassNotFoundException {
 
 		ProtocolHandlerFactory<Object[], ExampleVO> chf = new ProtocolHandlerFactory<Object[], ExampleVO>();
 		ReturnData rd = new ReturnData(ExampleVO.class);
-		ProtocolHandler<Object[], ExampleVO> ch = chf.getProtocolHandler(rd, ProtocolType.KRYO);
+		Class protocolHandlerClass = Class.forName("com.ikamobile.ikasoa.rpc.handler.impl.KryoProtocolHandlerImpl");
+		ProtocolHandler<Object[], ExampleVO> ch = chf.getProtocolHandler(rd, protocolHandlerClass);
 
 		String as = ch.argToStr(new Object[] { evo });
 		Object[] evoo = ch.strToArg(as);

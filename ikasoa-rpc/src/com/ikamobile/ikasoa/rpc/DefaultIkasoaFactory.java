@@ -9,6 +9,7 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.ikamobile.ikasoa.core.STException;
+import com.ikamobile.ikasoa.core.loadbalance.LoadBalance;
 import com.ikamobile.ikasoa.core.loadbalance.ServerInfo;
 import com.ikamobile.ikasoa.core.thrift.GeneralFactory;
 import com.ikamobile.ikasoa.core.thrift.client.ThriftClient;
@@ -58,13 +59,12 @@ public class DefaultIkasoaFactory extends GeneralFactory implements IkasoaFactor
 		}
 	}
 
-	// 获取一个客户端接口实现
 	@Override
 	@SuppressWarnings("unchecked")
 	public <T> T getIkasoaClient(Class<T> iClass, String serverHost, int serverPort) {
 		BaseGetServiceFactory<Object[], T> bgsFactory = new BaseGetServiceFactory<Object[], T>(
 				super.thriftServerConfiguration, super.thriftClientConfiguration);
-		bgsFactory.setProtocolType(configurator.getProtocolType());
+		bgsFactory.setProtocolHandlerClass(configurator.getProtocolHandlerClass());
 		bgsFactory.setClientInvocationHandler(configurator.getClientInvocationHandler());
 		return (T) Proxy.newProxyInstance(iClass.getClassLoader(), new Class<?>[] { iClass },
 				(proxy, iMethod, args) -> bgsFactory
@@ -77,12 +77,25 @@ public class DefaultIkasoaFactory extends GeneralFactory implements IkasoaFactor
 	public <T> T getIkasoaClient(Class<T> iClass, List<ServerInfo> serverInfoList) {
 		BaseGetServiceFactory<Object[], T> bgsFactory = new BaseGetServiceFactory<Object[], T>(
 				super.thriftServerConfiguration, super.thriftClientConfiguration);
-		bgsFactory.setProtocolType(configurator.getProtocolType());
+		bgsFactory.setProtocolHandlerClass(configurator.getProtocolHandlerClass());
 		bgsFactory.setClientInvocationHandler(configurator.getClientInvocationHandler());
 		return (T) Proxy.newProxyInstance(iClass.getClassLoader(), new Class<?>[] { iClass },
 				(proxy, iMethod, args) -> bgsFactory
 						.getBaseGetService(serverInfoList, getSKey(iClass, iMethod), new ReturnData(iMethod))
 						.get(args));
+	}
+
+	@Override
+	@SuppressWarnings("unchecked")
+	public <T> T getIkasoaClient(Class<T> iClass, List<ServerInfo> serverInfoList,
+			Class<LoadBalance> loadBalanceClass) {
+		BaseGetServiceFactory<Object[], T> bgsFactory = new BaseGetServiceFactory<Object[], T>(
+				super.thriftServerConfiguration, super.thriftClientConfiguration);
+		bgsFactory.setProtocolHandlerClass(configurator.getProtocolHandlerClass());
+		bgsFactory.setClientInvocationHandler(configurator.getClientInvocationHandler());
+		return (T) Proxy.newProxyInstance(iClass.getClassLoader(), new Class<?>[] { iClass },
+				(proxy, iMethod, args) -> bgsFactory.getBaseGetService(serverInfoList, loadBalanceClass,
+						getSKey(iClass, iMethod), new ReturnData(iMethod)).get(args));
 	}
 
 	@Override
@@ -203,7 +216,8 @@ public class DefaultIkasoaFactory extends GeneralFactory implements IkasoaFactor
 				}
 				String sKey = getSKey(iClass, implMethod);
 				Service iss = (Service) IkasoaServerService.class.getDeclaredConstructors()[0].newInstance(implObject,
-						implMethod, protocolHandlerFactory.getProtocolHandler(null, configurator.getProtocolType()));
+						implMethod,
+						protocolHandlerFactory.getProtocolHandler(null, configurator.getProtocolHandlerClass()));
 				LOG.debug("Builder Ikasoa service : " + sKey);
 				serviceMap.put(sKey, iss);
 			}

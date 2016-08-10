@@ -19,7 +19,7 @@ public class SocketPool {
 	private static final Logger LOG = LoggerFactory.getLogger(SocketPool.class);
 
 	// 默认单个连接池容量
-	private static final byte DEFAULT_POOL_SIZE = 1 << 4;
+	private static final byte DEFAULT_POOL_SIZE = 0x10;
 
 	// 默认连接超时时间
 	private static final int DEFAULT_TIMEOUT = 0;

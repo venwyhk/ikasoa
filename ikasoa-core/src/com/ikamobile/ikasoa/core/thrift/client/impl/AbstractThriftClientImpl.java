@@ -93,7 +93,7 @@ public abstract class AbstractThriftClientImpl implements ThriftClient {
 	@Override
 	public int getServerPort() {
 		// 不允许使用1024以内的端口.
-		if (serverPort <= 1024 || serverPort > 65535) {
+		if (serverPort <= 0x400 || serverPort > 0xFFFF) {
 			throw new RuntimeException("serverPort range must is 1025 ~ 65535 . Your port is : " + serverPort + " .");
 		}
 		return serverPort;

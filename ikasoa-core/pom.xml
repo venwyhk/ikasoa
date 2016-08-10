@@ -4,7 +4,7 @@
     <groupId>com.ikamobile</groupId>
     <artifactId>ikasoa-core</artifactId>
     <name>Ikasoa Core</name>
-    <version>0.4.1</version>
+    <version>0.4.2</version>
     <packaging>jar</packaging>
 
     <build>

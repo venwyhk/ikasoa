@@ -3,7 +3,7 @@ package com.ikamobile.ikasoa.rpc;
 import com.ikamobile.ikasoa.core.thrift.client.ThriftClientConfiguration;
 import com.ikamobile.ikasoa.core.thrift.server.ThriftServerConfiguration;
 import com.ikamobile.ikasoa.rpc.handler.ClientInvocationHandler;
-import com.ikamobile.ikasoa.rpc.handler.ProtocolHandlerFactory.ProtocolType;
+import com.ikamobile.ikasoa.rpc.handler.ProtocolHandler;
 
 /**
  * 配置信息
@@ -19,8 +19,9 @@ public class Configurator {
 	// 客户端配置信息
 	private ThriftClientConfiguration thriftClientConfiguration;
 
-	// 转换协议类型
-	private ProtocolType protocolType;
+	// 转换协议实现类
+	@SuppressWarnings("rawtypes")
+	private Class<ProtocolHandler> protocolHandlerClass;
 
 	// 客户端调用拦截器
 	private ClientInvocationHandler clientInvocationHandler;
@@ -28,8 +29,9 @@ public class Configurator {
 	public Configurator() {
 	}
 
-	public Configurator(ProtocolType protocolType) {
-		this.protocolType = protocolType;
+	@SuppressWarnings("rawtypes")
+	public Configurator(Class<ProtocolHandler> protocolHandlerClass) {
+		this.protocolHandlerClass = protocolHandlerClass;
 	}
 
 	public ThriftServerConfiguration getThriftServerConfiguration() {
@@ -48,12 +50,14 @@ public class Configurator {
 		this.thriftClientConfiguration = thriftClientConfiguration;
 	}
 
-	public ProtocolType getProtocolType() {
-		return protocolType;
+	@SuppressWarnings("rawtypes")
+	public Class<ProtocolHandler> getProtocolHandlerClass() {
+		return protocolHandlerClass;
 	}
 
-	public void setProtocolType(ProtocolType protocolType) {
-		this.protocolType = protocolType;
+	@SuppressWarnings("rawtypes")
+	public void setProtocolHandlerClass(Class<ProtocolHandler> protocolHandlerClass) {
+		this.protocolHandlerClass = protocolHandlerClass;
 	}
 
 	public ClientInvocationHandler getClientInvocationHandler() {

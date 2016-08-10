@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.apache.thrift.TProcessor;
 import com.ikamobile.ikasoa.core.STException;
+import com.ikamobile.ikasoa.core.loadbalance.LoadBalance;
 import com.ikamobile.ikasoa.core.loadbalance.ServerInfo;
 import com.ikamobile.ikasoa.core.thrift.client.ThriftClient;
 import com.ikamobile.ikasoa.core.thrift.server.ThriftServer;
@@ -103,6 +104,17 @@ public interface Factory {
 	 * @return ThriftClient Thrift客户端
 	 */
 	public ThriftClient getThriftClient(List<ServerInfo> serverInfoList);
+
+	/**
+	 * 获取带负载均衡的ThriftClient对象
+	 * 
+	 * @param serverInfoList
+	 *            服务器信息列表
+	 * @param loadBalanceClass
+	 *            负载均衡实现类
+	 * @return ThriftClient Thrift客户端
+	 */
+	public ThriftClient getThriftClient(List<ServerInfo> serverInfoList, Class<LoadBalance> loadBalanceClass);
 
 	/**
 	 * 获取客户端Service对象

@@ -1,12 +1,13 @@
 package com.ikamobile.ikasoa.core.thrift;
 
+import java.lang.reflect.Constructor;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.thrift.TProcessor;
 import com.ikamobile.ikasoa.core.STException;
-import com.ikamobile.ikasoa.core.loadbalance.impl.PollingLoadBalanceImpl;
+import com.ikamobile.ikasoa.core.loadbalance.LoadBalance;
 import com.ikamobile.ikasoa.core.loadbalance.ServerInfo;
 import com.ikamobile.ikasoa.core.thrift.client.ThriftClient;
 import com.ikamobile.ikasoa.core.thrift.client.ThriftClientConfiguration;
@@ -33,6 +34,8 @@ public class GeneralFactory implements Factory {
 	protected ThriftServerConfiguration thriftServerConfiguration = new ThriftServerConfiguration();
 	// 客户端配置
 	protected ThriftClientConfiguration thriftClientConfiguration = new ThriftClientConfiguration();
+	// 默认负载均衡实现
+	private static final String DEFAULT_LOAD_BALANCE_CLASS_STRING = "com.ikamobile.ikasoa.core.loadbalance.impl.PollingLoadBalanceImpl";
 
 	public GeneralFactory() {
 	}
@@ -121,8 +124,30 @@ public class GeneralFactory implements Factory {
 	 * 获取带负载均衡的ThriftClient对象
 	 */
 	@Override
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public ThriftClient getThriftClient(List<ServerInfo> serverInfoList) {
-		return new LoadBalanceThriftClientImpl(new PollingLoadBalanceImpl(serverInfoList), thriftClientConfiguration);
+		try {
+			Class cls = Class.forName(DEFAULT_LOAD_BALANCE_CLASS_STRING);
+			return getThriftClient(serverInfoList, cls);
+		} catch (ClassNotFoundException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	/**
+	 * 获取带负载均衡的ThriftClient对象
+	 */
+	@Override
+	@SuppressWarnings("rawtypes")
+	public ThriftClient getThriftClient(List<ServerInfo> serverInfoList, Class<LoadBalance> loadBalanceClass) {
+		try {
+			Class[] paramTypes = { List.class };
+			Object[] params = { serverInfoList };
+			Constructor con = loadBalanceClass.getConstructor(paramTypes);
+			return new LoadBalanceThriftClientImpl((LoadBalance) con.newInstance(params), thriftClientConfiguration);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	/**
