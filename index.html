@@ -119,7 +119,7 @@
             &lt;<span class="pl-ent">dependency</span>&gt;
                 &lt;<span class="pl-ent">groupId</span>&gt;com.ikamobile&lt;/<span class="pl-ent">groupId</span>&gt;
                 &lt;<span class="pl-ent">artifactId</span>&gt;ikasoa-rpc&lt;/<span class="pl-ent">artifactId</span>&gt;
-                &lt;<span class="pl-ent">version</span>&gt;0.2-BETA&lt;/<span class="pl-ent">version</span>&gt;
+                &lt;<span class="pl-ent">version</span>&gt;0.3-ALPHA&lt;/<span class="pl-ent">version</span>&gt;
             &lt;/<span class="pl-ent">dependency</span>&gt;
             ......
         &lt;/<span class="pl-ent">dependencies</span>&gt;
@@ -136,7 +136,7 @@
 </ul>
 
 <h2>
-<a id="helloworld例子" class="anchor" href="#helloworld%E4%BE%8B%E5%AD%90" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>“helloworld”例子</h2>
+<a id="helloworld" class="anchor" href="#helloworld" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>“helloworld”</h2>
 
 <ul>
 <li>
@@ -305,7 +305,7 @@
             <span class="pl-c">// 如果接口之间有继承关系,则只需要配置子接口类</span>
             <span class="pl-c">// 设置服务器地址为”hocalhost”,端口为9993</span>
             <span class="pl-smi">ExampleService</span> es <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-smi">DefaultIkasoaFactory</span>()<span class="pl-k">.</span>getIkasoaClient(<span class="pl-smi">ExampleService</span><span class="pl-k">.</span>class, <span class="pl-s"><span class="pl-pds">"</span>localhost<span class="pl-pds">"</span></span>, <span class="pl-c1">9993</span>);
-            <span class="pl-c">// 如果有多个服务提供者,服务器地址和端口也可以传入List,系统将自动执行负载均衡(默认负载均衡规则为轮询,此外还支持随机).</span>
+            <span class="pl-c">// 如果有多个服务提供者,服务器地址和端口也可以传入List,系统将自动执行负载均衡(默认负载均衡规则为轮询,此外还支持随机,详见'负载均衡'文档目录).</span>
             <span class="pl-c">// 例子如下:</span>
             <span class="pl-c">//  List&lt;ServerInfo&gt; serverInfoList = new ArrayList&lt;ServerInfo&gt;();</span>
             <span class="pl-c">//  serverInfoList.add(new ServerInfo("localhost", 9993));</span>
@@ -368,8 +368,8 @@
 
 <div class="highlight highlight-text-xml"><pre>    &lt;?<span class="pl-ent">xml</span><span class="pl-e"> version</span>=<span class="pl-s"><span class="pl-pds">"</span>1.0<span class="pl-pds">"</span></span><span class="pl-e"> encoding</span>=<span class="pl-s"><span class="pl-pds">"</span>UTF-8<span class="pl-pds">"</span></span>?&gt;
     &lt;<span class="pl-ent">beans</span> <span class="pl-e">xmlns</span>=<span class="pl-s"><span class="pl-pds">"</span>http://www.springframework.org/schema/beans<span class="pl-pds">"</span></span> <span class="pl-e">xmlns</span><span class="pl-e">:</span><span class="pl-e">xsi</span>=<span class="pl-s"><span class="pl-pds">"</span>http://www.w3.org/2001/XMLSchema-instance<span class="pl-pds">"</span></span> <span class="pl-e">xmlns</span><span class="pl-e">:</span><span class="pl-e">context</span>=<span class="pl-s"><span class="pl-pds">"</span>http://www.springframework.org/schema/context<span class="pl-pds">"</span></span> <span class="pl-e">xsi</span><span class="pl-e">:</span><span class="pl-e">schemaLocation</span>=<span class="pl-s"><span class="pl-pds">"</span>http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd<span class="pl-pds">"</span></span>&gt;
-    ......
-    <span class="pl-c">&lt;!-- Thrift服务配置 --&gt;</span>
+        ......
+        <span class="pl-c">&lt;!-- Thrift服务配置 --&gt;</span>
         &lt;<span class="pl-ent">bean</span> <span class="pl-e">id</span>=<span class="pl-s"><span class="pl-pds">"</span>thriftServer2<span class="pl-pds">"</span></span> <span class="pl-e">class</span>=<span class="pl-s"><span class="pl-pds">"</span>com.ikamobile.ikasoa.core.thrift.server.impl.DefaultThriftServerImpl<span class="pl-pds">"</span></span> <span class="pl-e">init-method</span>=<span class="pl-s"><span class="pl-pds">"</span>run<span class="pl-pds">"</span></span> <span class="pl-e">destroy-method</span>=<span class="pl-s"><span class="pl-pds">"</span>stop<span class="pl-pds">"</span></span>&gt;
             &lt;<span class="pl-ent">property</span> <span class="pl-e">name</span>=<span class="pl-s"><span class="pl-pds">"</span>serverName<span class="pl-pds">"</span></span> <span class="pl-e">value</span>=<span class="pl-s"><span class="pl-pds">"</span>xxxServer<span class="pl-pds">"</span></span> /&gt;<span class="pl-c">&lt;!-- 服务名称 --&gt;</span>
             &lt;<span class="pl-ent">property</span> <span class="pl-e">name</span>=<span class="pl-s"><span class="pl-pds">"</span>serverPort<span class="pl-pds">"</span></span> <span class="pl-e">value</span>=<span class="pl-s"><span class="pl-pds">"</span>9899<span class="pl-pds">"</span></span> /&gt;<span class="pl-c">&lt;!-- 服务端口 --&gt;</span>
@@ -433,7 +433,7 @@
     &lt;/<span class="pl-ent">beans</span>&gt;</pre></div>
 
 <h2>
-<a id="服务提供类型的选择" class="anchor" href="#%E6%9C%8D%E5%8A%A1%E6%8F%90%E4%BE%9B%E7%B1%BB%E5%9E%8B%E7%9A%84%E9%80%89%E6%8B%A9" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>服务提供类型的选择</h2>
+<a id="服务实现类型" class="anchor" href="#%E6%9C%8D%E5%8A%A1%E5%AE%9E%E7%8E%B0%E7%B1%BB%E5%9E%8B" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>服务实现类型</h2>
 
 <p><em>Ikasoa默认使用Thrift作为服务类型的实现,但也提供了Netty以供选择.</em></p>
 
@@ -454,7 +454,51 @@
     <span class="pl-c1">......</span></pre></div>
 
 <h2>
-<a id="序列化方式的选择" class="anchor" href="#%E5%BA%8F%E5%88%97%E5%8C%96%E6%96%B9%E5%BC%8F%E7%9A%84%E9%80%89%E6%8B%A9" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>序列化方式的选择</h2>
+<a id="负载均衡" class="anchor" href="#%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>负载均衡</h2>
+
+<p><em>Ikasoa提供了2种负载均衡,分别为轮循(含权重)和随机,默认使用轮循.</em></p>
+
+<ul>
+<li>选择轮循负载均衡(默认)</li>
+</ul>
+
+<div class="highlight highlight-source-java"><pre>    <span class="pl-c1">......</span>
+    <span class="pl-smi">XService</span> xs <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-smi">DefaultIkasoaFactory</span>()<span class="pl-k">.</span>getIkasoaClient(<span class="pl-smi">XService</span><span class="pl-k">.</span>class, serverInfoList);
+    <span class="pl-c">// 也可以写为如下方式:</span>
+    <span class="pl-c">// Class loadBalanceClass = Class.forName("com.ikamobile.ikasoa.core.loadbalance.impl.PollingLoadBalanceImpl");</span>
+    <span class="pl-c">// XService xs = new DefaultIkasoaFactory().getIkasoaClient(XService.class, serverInfoList, loadBalanceClass);</span>
+    <span class="pl-c1">......</span></pre></div>
+
+<p><em>serverInfoList中的元素对象com.ikamobile.ikasoa.core.loadbalance.ServerInfo定义了单个服务信息,其中weightNumber属性为权重值,用于轮循负载均衡.</em></p>
+
+<ul>
+<li>选择随机负载均衡</li>
+</ul>
+
+<div class="highlight highlight-source-java"><pre>    <span class="pl-c1">......</span>
+    <span class="pl-smi">Class</span> loadBalanceClass <span class="pl-k">=</span> <span class="pl-smi">Class</span><span class="pl-k">.</span>forName(<span class="pl-s"><span class="pl-pds">"</span>com.ikamobile.ikasoa.core.loadbalance.impl.RandomLoadBalanceImpl<span class="pl-pds">"</span></span>);
+    <span class="pl-smi">XService</span> xs <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-smi">DefaultIkasoaFactory</span>()<span class="pl-k">.</span>getIkasoaClient(<span class="pl-smi">XService</span><span class="pl-k">.</span>class, serverInfoList, loadBalanceClass);
+    <span class="pl-c1">......</span></pre></div>
+
+<ul>
+<li>
+<p>自定义负载均衡</p>
+
+<p>创建自定义序列化类(例如com.xxx.XLoadBalanceImpl).</p>
+
+<p>自定义序列化类(com.xxx.XLoadBalanceImpl)需实现接口com.ikamobile.ikasoa.core.loadbalance.LoadBalance.</p>
+
+<p>通过如下方式获取服务:</p>
+</li>
+</ul>
+
+<div class="highlight highlight-source-java"><pre>    <span class="pl-c1">......</span>
+    <span class="pl-smi">Class</span> loadBalanceClass <span class="pl-k">=</span> <span class="pl-smi">Class</span><span class="pl-k">.</span>forName(<span class="pl-s"><span class="pl-pds">"</span>com.xxx.XLoadBalanceImpl<span class="pl-pds">"</span></span>);
+    <span class="pl-smi">XService</span> xs <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-smi">DefaultIkasoaFactory</span>()<span class="pl-k">.</span>getIkasoaClient(<span class="pl-smi">XService</span><span class="pl-k">.</span>class, serverInfoList, loadBalanceClass);
+    <span class="pl-c1">......</span></pre></div>
+
+<h2>
+<a id="序列化" class="anchor" href="#%E5%BA%8F%E5%88%97%E5%8C%96" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>序列化</h2>
 
 <p><em>Ikasoa提供了3种序列化方式,分别为fastjson,xml,kryo,默认使用fastjson.</em></p>
 
@@ -465,7 +509,8 @@
 <div class="highlight highlight-source-java"><pre>    <span class="pl-c1">......</span>
     <span class="pl-smi">IkasoaFactory</span> ikasoaFactory <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-smi">DefaultIkasoaFactory</span>();
     <span class="pl-c">// 也可以写为如下方式:</span>
-    <span class="pl-c">// IkasoaFactory ikasoaFactory = new DefaultIkasoaFactory(new Configurator(ProtocolType.JSON));</span>
+    <span class="pl-c">// Class protocolHandlerClass = Class.forName("com.ikamobile.ikasoa.rpc.handler.impl.JsonProtocolHandlerImpl");</span>
+    <span class="pl-c">// IkasoaFactory ikasoaFactory = new DefaultIkasoaFactory(new Configurator(protocolHandlerClass));</span>
     <span class="pl-c1">......</span></pre></div>
 
 <ul>
@@ -473,7 +518,8 @@
 </ul>
 
 <div class="highlight highlight-source-java"><pre>    <span class="pl-c1">......</span>
-    <span class="pl-smi">IkasoaFactory</span> ikasoaFactory <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-smi">DefaultIkasoaFactory</span>(<span class="pl-k">new</span> <span class="pl-smi">Configurator</span>(<span class="pl-smi">ProtocolType</span><span class="pl-c1"><span class="pl-k">.</span>XML</span>));
+    <span class="pl-smi">Class</span> protocolHandlerClass <span class="pl-k">=</span> <span class="pl-smi">Class</span><span class="pl-k">.</span>forName(<span class="pl-s"><span class="pl-pds">"</span>com.ikamobile.ikasoa.rpc.handler.impl.XmlProtocolHandlerImpl<span class="pl-pds">"</span></span>);
+    <span class="pl-smi">IkasoaFactory</span> ikasoaFactory <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-smi">DefaultIkasoaFactory</span>(<span class="pl-k">new</span> <span class="pl-smi">Configurator</span>(protocolHandlerClass));
     <span class="pl-c1">......</span></pre></div>
 
 <ul>
@@ -481,7 +527,25 @@
 </ul>
 
 <div class="highlight highlight-source-java"><pre>    <span class="pl-c1">......</span>
-    <span class="pl-smi">IkasoaFactory</span> ikasoaFactory <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-smi">DefaultIkasoaFactory</span>(<span class="pl-k">new</span> <span class="pl-smi">Configurator</span>(<span class="pl-smi">ProtocolType</span><span class="pl-c1"><span class="pl-k">.</span>KRYO</span>));
+    <span class="pl-smi">Class</span> protocolHandlerClass <span class="pl-k">=</span> <span class="pl-smi">Class</span><span class="pl-k">.</span>forName(<span class="pl-s"><span class="pl-pds">"</span>com.ikamobile.ikasoa.rpc.handler.impl.KryoProtocolHandlerImpl<span class="pl-pds">"</span></span>);
+    <span class="pl-smi">IkasoaFactory</span> ikasoaFactory <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-smi">DefaultIkasoaFactory</span>(<span class="pl-k">new</span> <span class="pl-smi">Configurator</span>(protocolHandlerClass));
+    <span class="pl-c1">......</span></pre></div>
+
+<ul>
+<li>
+<p>自定义序列化方式</p>
+
+<p>创建自定义序列化类(例如com.xxx.XProtocolHandlerImpl).</p>
+
+<p>自定义序列化类(com.xxx.XProtocolHandlerImpl)需实现接口com.ikamobile.ikasoa.rpc.handler.ProtocolHandler.</p>
+
+<p>通过如下方式获取IkasoaFactory:</p>
+</li>
+</ul>
+
+<div class="highlight highlight-source-java"><pre>    <span class="pl-c1">......</span>
+    <span class="pl-smi">Class</span> protocolHandlerClass <span class="pl-k">=</span> <span class="pl-smi">Class</span><span class="pl-k">.</span>forName(<span class="pl-s"><span class="pl-pds">"</span>com.xx.XProtocolHandlerImpl<span class="pl-pds">"</span></span>);
+    <span class="pl-smi">IkasoaFactory</span> ikasoaFactory <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-smi">DefaultIkasoaFactory</span>(<span class="pl-k">new</span> <span class="pl-smi">Configurator</span>(protocolHandlerClass));
     <span class="pl-c1">......</span></pre></div>
 
 <h2>
@@ -497,7 +561,7 @@
 
 <hr>
 
-<p><em><a href="mailto:larry7696@gmail.com">larry7696@gmail.com</a> | 2016-07-20</em></p>
+<p><em><a href="mailto:larry7696@gmail.com">larry7696@gmail.com</a> | 2016-08-10</em></p>
       </section>
       <footer>
         <p><small>Hosted on <a href="https://pages.github.com">GitHub Pages</a> using the Dinky theme</small></p>
