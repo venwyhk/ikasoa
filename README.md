@@ -77,7 +77,7 @@ pom.xml
             <dependency>
                 <groupId>com.ikamobile</groupId>
                 <artifactId>ikasoa-rpc</artifactId>
-                <version>0.2-BETA</version>
+                <version>0.3-ALPHA</version>
             </dependency>
             ......
         </dependencies>
@@ -90,7 +90,7 @@ pom.xml
 
     执行命令”mvn clean package”打包.
 
-## “helloworld”例子 ##
+## “helloworld” ##
 
 - 创建接口和实现
 
@@ -372,7 +372,7 @@ ThriftClientDemo.java
     </beans>
 ```
 
-## 服务提供类型的选择 ##
+## 服务实现类型 ##
 
 *Ikasoa默认使用Thrift作为服务类型的实现,但也提供了Netty以供选择.*
 

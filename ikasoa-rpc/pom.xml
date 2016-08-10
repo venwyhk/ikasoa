@@ -4,7 +4,7 @@
     <groupId>com.ikamobile</groupId>
     <artifactId>ikasoa-rpc</artifactId>
     <name>Ikasoa RPC</name>
-    <version>0.3-SNAPSHOT</version>
+    <version>0.3-ALPHA</version>
     <packaging>jar</packaging>
 
     <build>
