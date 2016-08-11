@@ -1,7 +1,7 @@
 ﻿<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.ikamobile</groupId>
+    <groupId>com.ikasoa</groupId>
     <artifactId>ikasoa-core</artifactId>
     <name>Ikasoa Core</name>
     <version>0.4.2</version>
@@ -35,17 +35,16 @@
             </plugin>
         </plugins>
     </build>
-
+    
     <distributionManagement>
-        <repository>
-            <id>ikamobile-nexus</id>
-            <name>Internal Releases</name>
-            <url>http://repo.ikamobile.cn:8081/nexus/content/repositories/releases/</url>
-        </repository>
         <snapshotRepository>
-            <id>sulei-snapshots</id>
-            <url>http://repo.ikamobile.cn:8081/nexus/content/repositories/sulei-snapshots</url>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
         </snapshotRepository>
+        <repository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        </repository>
     </distributionManagement>
 
     <dependencies>

@@ -33,49 +33,22 @@ pom.xml
         <!-- 配置Nexus私服 -->
         <repositories>
             <repository>
-                <id>ikamobile-nexus</id>
-                <name>ikamobile Nexus Repository</name>
-                <url>http://repo.ikamobile.cn:8081/nexus/content/groups/public/</url>
-            </repository>
-            <repository>
-                <snapshots>
-                    <enabled>true</enabled>
-                </snapshots>
-                <id>public</id>
-                <name>Public Repositories</name>
-                <url>http://repo.ikamobile.cn:8081/nexus/content/repositories/snapshots/</url>
+                <id>ossrh</id>
+                <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
             </repository>
         </repositories>
         <pluginRepositories>
             <pluginRepository>
-                <id>ikamobile-nexus</id>
-                <name>ikamobile Nexus Repository</name>
-                <url>http://repo.ikamobile.cn:8081/nexus/content/groups/public/</url>
-            </pluginRepository>
-            <pluginRepository>
-		    	<id>public</id>
-		    	<name>Public Repositories</name>
-		    	<url>http://repo.ikamobile.cn:8081/nexus/content/repositories/snapshots/</url>
+                <id>ossrh</id>
+                <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
             </pluginRepository>
         </pluginRepositories>
-        <distributionManagement>
-            <repository>
-                <id>ikamobile-nexus</id>
-                <name>Internal Releases</name>
-                <url>http://repo.ikamobile.cn:8081/nexus/content/repositories/releases/</url>
-            </repository>
-            <snapshotRepository>
-                <id>ikamobile-nexus</id>
-                <name>ikamobile Snapshots</name>
-                <url>http://repo.ikamobile.cn:8081/nexus/content/repositories/snapshots</url>
-            </snapshotRepository>
-        </distributionManagement>
         ......
         <dependencies>
             ......
             <!-- 在这里添加对ikasoa的依赖 -->
             <dependency>
-                <groupId>com.ikamobile</groupId>
+                <groupId>com.ikasoa</groupId>
                 <artifactId>ikasoa-rpc</artifactId>
                 <version>0.3-ALPHA</version>
             </dependency>
