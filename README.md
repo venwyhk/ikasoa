@@ -24,7 +24,7 @@ ikasoa是一套SOA服务化治理解决方案.其中ikasoa-rpc是ikasoa的开源
 
 - Maven配置
 
-    需要配置Ikamobile的Nexus私服,并添加ikasoa的依赖:
+    需要配置sonatype的Nexus服务器,并添加ikasoa的依赖:
     
 pom.xml
 ```xml
