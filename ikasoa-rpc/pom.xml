@@ -5,7 +5,24 @@
     <artifactId>ikasoa-rpc</artifactId>
     <name>Ikasoa RPC</name>
     <version>0.3-ALPHA</version>
+    <url>http://ikasoa.com/</url>
     <packaging>jar</packaging>
+
+    <licenses>
+        <license>
+            <name>The MIT License</name>
+            <url>http://www.opensource.org/licenses/mit-license.php</url>
+        </license>
+    </licenses>
+    
+    <developers>
+        <developer>
+            <name>Larry</name>
+            <email>larry7696@gmail.com</email>
+            <organization>ikamobile</organization>
+            <organizationUrl>http://www.ikamobile.com/</organizationUrl>
+        </developer>
+    </developers>
 
     <build>
         <sourceDirectory>src</sourceDirectory>
