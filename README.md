@@ -33,13 +33,13 @@ pom.xml
         <repositories>
             <repository>
                 <id>ossrh</id>
-                <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+                <url>https://oss.sonatype.org/content/groups/public/</url>
             </repository>
         </repositories>
         <pluginRepositories>
             <pluginRepository>
                 <id>ossrh</id>
-                <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+                <url>https://oss.sonatype.org/content/groups/public/</url>
             </pluginRepository>
         </pluginRepositories>
         ......
