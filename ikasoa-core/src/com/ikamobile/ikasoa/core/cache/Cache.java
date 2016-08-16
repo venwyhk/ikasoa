@@ -25,7 +25,9 @@ public interface Cache<K, V> {
 	 * 向缓存添加value对象,其在缓存中生存时间为默认值
 	 * 
 	 * @param key
+	 *            缓存标识
 	 * @param value
+	 *            缓存值
 	 */
 	void put(K key, V value);
 
@@ -33,7 +35,9 @@ public interface Cache<K, V> {
 	 * 向缓存添加value对象,并指定存活时间
 	 * 
 	 * @param key
+	 *            缓存标识
 	 * @param value
+	 *            缓存值
 	 * @param expire
 	 *            过期时间
 	 */
@@ -43,6 +47,7 @@ public interface Cache<K, V> {
 	 * 查找缓存对象
 	 * 
 	 * @param key
+	 *            缓存标识
 	 * @return V
 	 */
 	V get(K key);
@@ -65,6 +70,7 @@ public interface Cache<K, V> {
 	 * 删除缓存对象
 	 * 
 	 * @param key
+	 *            缓存标识
 	 */
 	void remove(K key);
 

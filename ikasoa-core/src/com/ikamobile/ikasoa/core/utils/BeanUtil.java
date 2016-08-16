@@ -29,6 +29,7 @@ public class BeanUtil {
 	 * @param source
 	 *            原始对象
 	 * @exception STException
+	 *                异常
 	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public static void copyProperties(Object target, Object source) throws STException {

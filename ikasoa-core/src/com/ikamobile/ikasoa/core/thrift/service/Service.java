@@ -20,6 +20,7 @@ public interface Service {
 	 *            参数
 	 * @return String 返回值
 	 * @exception STException
+	 *                异常
 	 */
 	public String get(String arg) throws STException;
 

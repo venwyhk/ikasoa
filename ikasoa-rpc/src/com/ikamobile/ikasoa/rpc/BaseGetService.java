@@ -15,6 +15,7 @@ public interface BaseGetService<T1, T2> {
 	 *            参数对象
 	 * @return T2 返回对象
 	 * @exception Throwable
+	 *                抛出
 	 */
 	public T2 get(T1 arg) throws Throwable;
 

@@ -28,7 +28,7 @@ public interface LoadBalance {
 	 * 方法获取的服务器信息为切换过后的信息,可能会与之前的不同.
 	 * 
 	 * @return ServerInfo
-	 * @exception STException
+	 * @exception STException 异常
 	 * @version 0.2
 	 */
 	public ServerInfo next() throws STException;

@@ -3,10 +3,11 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.ikasoa</groupId>
     <artifactId>ikasoa-rpc</artifactId>
-    <name>Ikasoa RPC</name>
     <version>0.3-ALPHA</version>
-    <url>http://ikasoa.com/</url>
     <packaging>jar</packaging>
+    <name>Ikasoa RPC</name>
+    <description>ikasoa is a java distributed service framework.</description>
+    <url>http://ikasoa.com/</url>
 
     <licenses>
         <license>
@@ -24,6 +25,12 @@
         </developer>
     </developers>
 
+    <scm>
+        <connection>scm:git:git://github.com/venwyhk/ikasoa.git</connection>
+        <developerConnection>scm:git:ssh://github.com:venwyhk/ikasoa.git</developerConnection>
+        <url>http://github.com/venwyhk/ikasoa/tree/master</url>
+    </scm>
+
     <build>
         <sourceDirectory>src</sourceDirectory>
         <testSourceDirectory>test</testSourceDirectory>
@@ -38,17 +45,56 @@
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.19.1</version>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>2.2.1</version>
+                <configuration>
+                    <attach>true</attach>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
                 <version>2.10.4</version>
                 <configuration>
-                    <outputDirectory>target\javadoc</outputDirectory>
-                    <reportOutputDirectory>target\javadoc</reportOutputDirectory>
+                    <aggregate>true</aggregate>
+                    <charset>UTF-8</charset>
+                    <encoding>UTF-8</encoding>
+                    <docencoding>UTF-8</docencoding>
                 </configuration>
+                <executions>
+                    <execution>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-gpg-plugin</artifactId>
+                <version>1.6</version>
+                <executions>
+                    <execution>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>sign</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+			<plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.19.1</version>
             </plugin>
         </plugins>
     </build>

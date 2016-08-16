@@ -68,6 +68,8 @@ public interface Factory {
 	 *            <p>
 	 *            如果需要多个服务共享一个服务器对象时就需要使用此集合对象
 	 * @return ThriftServer Thrift服务器
+	 * @throws STException
+	 *             异常
 	 */
 	public ThriftServer getThriftServer(String serverName, int serverPort, Map<String, Service> serviceMap)
 			throws STException;
@@ -82,6 +84,8 @@ public interface Factory {
 	 *            <p>
 	 *            如果需要多个服务共享一个服务器对象时就需要使用此集合对象
 	 * @return ThriftServer Thrift服务器
+	 * @throws STException
+	 *             异常
 	 */
 	public ThriftServer getThriftServer(int serverPort, Map<String, Service> serviceMap) throws STException;
 
@@ -124,6 +128,8 @@ public interface Factory {
 	 * @param thriftClient
 	 *            Thrift客户端
 	 * @return Service 通用服务
+	 * @throws STException
+	 *             异常
 	 */
 	public Service getService(ThriftClient thriftClient) throws STException;
 
@@ -135,6 +141,8 @@ public interface Factory {
 	 * @param serviceName
 	 *            服务名
 	 * @return Service 通用服务
+	 * @throws STException
+	 *             异常
 	 */
 	public Service getService(ThriftClient thriftClient, String serviceName) throws STException;
 

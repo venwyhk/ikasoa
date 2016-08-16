@@ -22,6 +22,7 @@ public interface ThriftServer {
 	 * 
 	 * @return TServerTransport 服务传输类型
 	 * @exception TTransportException
+	 *                TransportExceptions
 	 */
 	public TServerTransport getTransport() throws TTransportException;
 

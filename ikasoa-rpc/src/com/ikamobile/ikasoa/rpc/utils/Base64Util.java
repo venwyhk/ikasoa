@@ -15,6 +15,10 @@ public class Base64Util {
 
 	/**
 	 * 编码
+	 * 
+	 * @param bstr
+	 *            待编码数据
+	 * @return String 编码后数据
 	 */
 	public static String encode(byte[] bstr) {
 		return new BASE64Encoder().encode(bstr);
@@ -22,6 +26,10 @@ public class Base64Util {
 
 	/**
 	 * 解码
+	 * 
+	 * @param str
+	 *            待解码数据
+	 * @return byte[] 解码后数据
 	 */
 	public static byte[] decode(String str) {
 		byte[] bt = null;

@@ -19,6 +19,7 @@ public interface ThriftClient {
 	 * 
 	 * @return TTransport 传输类型
 	 * @exception STException
+	 *                异常
 	 */
 	public TTransport getTransport() throws STException;
 

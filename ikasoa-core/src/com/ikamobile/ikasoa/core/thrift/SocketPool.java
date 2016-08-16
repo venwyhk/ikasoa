@@ -33,6 +33,12 @@ public class SocketPool {
 
 	/**
 	 * 初始化连接池
+	 * 
+	 * @param host
+	 *            地址
+	 * @param port
+	 *            端口
+	 * @return SocketPool 池对象
 	 */
 	public static synchronized SocketPool init(String host, int port) {
 		if (!checkHostAndPort(host, port)) {
@@ -50,6 +56,11 @@ public class SocketPool {
 
 	/**
 	 * 创建连接池
+	 * 
+	 * @param host
+	 *            地址
+	 * @param port
+	 *            端口
 	 */
 	public synchronized static void buildThriftSocketPool(String host, int port) {
 		if (!checkHostAndPort(host, port)) {
@@ -73,6 +84,12 @@ public class SocketPool {
 
 	/**
 	 * 从连接池中获取一个空闲的连接
+	 * 
+	 * @param host
+	 *            地址
+	 * @param port
+	 *            端口
+	 * @return SocketPool 池对象
 	 */
 	public synchronized static ThriftSocket buildThriftSocket(String host, int port) {
 		if (!checkHostAndPort(host, port)) {
@@ -123,17 +140,29 @@ public class SocketPool {
 	 * 将用完的连接放回池中,并调整为空闲状态
 	 * <p>
 	 * 服务地址和IP将从Socket中获取.
+	 * 
+	 * @param thriftSocket
+	 *            ThriftSocket对象
 	 */
-	public synchronized static void releaseThriftSocket(ThriftSocket socket) {
-		if (socket == null || socket.getSocket() == null || socket.getSocket().getInetAddress() == null) {
+	public synchronized static void releaseThriftSocket(ThriftSocket thriftSocket) {
+		if (thriftSocket == null || thriftSocket.getSocket() == null
+				|| thriftSocket.getSocket().getInetAddress() == null) {
 			LOG.warn("Release unsuccessful .");
 			return;
 		}
-		releaseThriftSocket(socket, socket.getSocket().getInetAddress().getHostName(), socket.getSocket().getPort());
+		releaseThriftSocket(thriftSocket, thriftSocket.getSocket().getInetAddress().getHostName(),
+				thriftSocket.getSocket().getPort());
 	}
 
 	/**
 	 * 将用完的连接放回池中,并调整为空闲状态
+	 * 
+	 * @param thriftSocket
+	 *            ThriftSocket对象
+	 * @param host
+	 *            地址
+	 * @param port
+	 *            端口
 	 */
 	public synchronized static void releaseThriftSocket(ThriftSocket thriftSocket, String host, int port) {
 		if (thriftSocket == null || !checkHostAndPort(host, port)) {

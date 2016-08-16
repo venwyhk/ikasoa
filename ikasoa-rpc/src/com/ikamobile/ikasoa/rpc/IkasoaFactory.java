@@ -19,6 +19,8 @@ public interface IkasoaFactory extends Factory {
 	/**
 	 * 获取IKASOA客户端
 	 * 
+	 * @param <T>
+	 *            IKASOA客户端类型
 	 * @param iClass
 	 *            应用接口类
 	 * @param serverHost
@@ -32,6 +34,8 @@ public interface IkasoaFactory extends Factory {
 	/**
 	 * 获取IKASOA客户端
 	 * 
+	 * @param <T>
+	 *            IKASOA客户端类型
 	 * @param iClass
 	 *            应用接口类
 	 * @param serverInfoList
@@ -43,6 +47,8 @@ public interface IkasoaFactory extends Factory {
 	/**
 	 * 获取IKASOA客户端
 	 * 
+	 * @param <T>
+	 *            IKASOA客户端类型
 	 * @param iClass
 	 *            应用接口类
 	 * @param serverInfoList
@@ -62,6 +68,7 @@ public interface IkasoaFactory extends Factory {
 	 *            服务端口
 	 * @return IkasoaServer IKASOA服务端
 	 * @exception IkasoaException
+	 *                异常
 	 */
 	public IkasoaServer getIkasoaServer(Class<?> implClass, int serverPort) throws IkasoaException;
 
@@ -74,6 +81,7 @@ public interface IkasoaFactory extends Factory {
 	 *            服务端口
 	 * @return IkasoaServer IKASOA服务端
 	 * @exception IkasoaException
+	 *                异常
 	 */
 	public IkasoaServer getIkasoaServer(ImplClsCon implClsCon, int serverPort) throws IkasoaException;
 
@@ -86,6 +94,7 @@ public interface IkasoaFactory extends Factory {
 	 *            服务端口
 	 * @return IkasoaServer IKASOA服务端
 	 * @exception IkasoaException
+	 *                异常
 	 */
 	public IkasoaServer getIkasoaServer(List<ImplClsCon> ImplClsConList, int serverPort) throws IkasoaException;
 
@@ -98,6 +107,7 @@ public interface IkasoaFactory extends Factory {
 	 *            服务Map
 	 * @return IkasoaServer IKASOA服务端
 	 * @exception IkasoaException
+	 *                异常
 	 */
 	public IkasoaServer getIkasoaServer(int serverPort, Map<String, Service> serviceMap) throws IkasoaException;
 

@@ -92,6 +92,9 @@ public abstract class AbstractThriftServerImpl implements ThriftServer {
 
 	/**
 	 * 启动Thrift服务
+	 * 
+	 * @exception STException
+	 *                异常
 	 */
 	public void start() throws STException {
 		if (server == null) {
