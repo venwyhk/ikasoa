@@ -64,7 +64,7 @@
 <li>
 <p>Maven配置</p>
 
-<p>需要配置sonatype的Nexus服务器,并添加ikasoa的依赖:</p>
+<p>需要修改pom.xml文件,添加ikasoa-rpc的依赖:</p>
 </li>
 </ul>
 
@@ -75,6 +75,24 @@
         &lt;<span class="pl-ent">groupId</span>&gt;com.ikasoa&lt;/<span class="pl-ent">groupId</span>&gt;
         &lt;<span class="pl-ent">artifactId</span>&gt;ikasoa-rpc&lt;/<span class="pl-ent">artifactId</span>&gt;
         &lt;<span class="pl-ent">version</span>&gt;0.3-ALPHA&lt;/<span class="pl-ent">version</span>&gt;
+    &lt;/<span class="pl-ent">dependency</span>&gt;
+    ......</pre></div>
+
+<ul>
+<li>
+<p>Maven配置(ikasoa-core)</p>
+
+<p>如果仅使用thrift兼容方式,则可以只添加ikasoa-core依赖:</p>
+</li>
+</ul>
+
+<p>pom.xml</p>
+
+<div class="highlight highlight-text-xml"><pre>    ......
+    &lt;<span class="pl-ent">dependency</span>&gt;
+        &lt;<span class="pl-ent">groupId</span>&gt;com.ikasoa&lt;/<span class="pl-ent">groupId</span>&gt;
+        &lt;<span class="pl-ent">artifactId</span>&gt;ikasoa-core&lt;/<span class="pl-ent">artifactId</span>&gt;
+        &lt;<span class="pl-ent">version</span>&gt;0.4.2&lt;/<span class="pl-ent">version</span>&gt;
     &lt;/<span class="pl-ent">dependency</span>&gt;
     ......</pre></div>
 
