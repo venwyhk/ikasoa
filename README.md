@@ -28,32 +28,13 @@ ikasoa是一套SOA服务化治理解决方案.其中ikasoa-rpc是ikasoa的开源
     
 pom.xml
 ```xml
-    <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-        ......
-        <repositories>
-            <repository>
-                <id>ossrh</id>
-                <url>https://oss.sonatype.org/content/groups/public/</url>
-            </repository>
-        </repositories>
-        <pluginRepositories>
-            <pluginRepository>
-                <id>ossrh</id>
-                <url>https://oss.sonatype.org/content/groups/public/</url>
-            </pluginRepository>
-        </pluginRepositories>
-        ......
-        <dependencies>
-            ......
-            <!-- 在这里添加对ikasoa的依赖 -->
-            <dependency>
-                <groupId>com.ikasoa</groupId>
-                <artifactId>ikasoa-rpc</artifactId>
-                <version>0.3-ALPHA</version>
-            </dependency>
-            ......
-        </dependencies>
-    </project>
+    ......
+    <dependency>
+        <groupId>com.ikasoa</groupId>
+        <artifactId>ikasoa-rpc</artifactId>
+        <version>0.3-ALPHA</version>
+    </dependency>
+    ......
 ```
 
 - 导入工程&编译代码
