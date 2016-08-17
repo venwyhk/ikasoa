@@ -24,7 +24,7 @@ ikasoa是一套SOA服务化治理解决方案.其中ikasoa-rpc是ikasoa的开源
 
 - Maven配置
 
-    需要配置sonatype的Nexus服务器,并添加ikasoa的依赖:
+    需要修改pom.xml文件,添加ikasoa-rpc的依赖:
     
 pom.xml
 ```xml
@@ -33,6 +33,21 @@ pom.xml
         <groupId>com.ikasoa</groupId>
         <artifactId>ikasoa-rpc</artifactId>
         <version>0.3-ALPHA</version>
+    </dependency>
+    ......
+```
+
+- Maven配置(ikasoa-core)
+
+    如果仅使用thrift兼容方式,则可以只添加ikasoa-core依赖:
+
+pom.xml
+```xml
+    ......
+    <dependency>
+        <groupId>com.ikasoa</groupId>
+        <artifactId>ikasoa-core</artifactId>
+        <version>0.4.2</version>
     </dependency>
     ......
 ```
