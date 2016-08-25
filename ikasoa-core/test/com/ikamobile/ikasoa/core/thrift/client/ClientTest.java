@@ -15,11 +15,11 @@ import com.ikamobile.ikasoa.core.thrift.client.impl.LoadBalanceThriftClientImpl;
 import junit.framework.TestCase;
 
 /**
- * Thrift客户端单元测试
+ * 客户端单元测试
  * <p>
  * 仅测试基础属性读写
  */
-public class ThriftClientTest extends TestCase {
+public class ClientTest extends TestCase {
 
 	private ThriftClientConfiguration configuration = new ThriftClientConfiguration();
 

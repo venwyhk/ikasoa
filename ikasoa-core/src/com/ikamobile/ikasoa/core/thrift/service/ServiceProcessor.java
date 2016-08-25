@@ -7,7 +7,6 @@ import org.apache.thrift.ProcessFunction;
 import org.apache.thrift.TBase;
 import org.apache.thrift.TBaseProcessor;
 import org.apache.thrift.TException;
-import org.apache.thrift.TProcessor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.ikamobile.ikasoa.core.STException;
@@ -20,13 +19,11 @@ import com.ikamobile.ikasoa.core.thrift.service.base.ResultThriftBase;
  * @author <a href="mailto:larry7696@gmail.com">Larry</a>
  * @version 0.2
  */
-public class ServiceProcessor extends TBaseProcessor<Service> implements TProcessor {
-
-	private static final String FUNCTION_NAME = "get";
+public class ServiceProcessor extends TBaseProcessor<Service> implements SProcessor {
 
 	@SuppressWarnings("rawtypes")
-	public ServiceProcessor(Service GeneralService) {
-		super(GeneralService, getProcessMap(new HashMap<String, ProcessFunction<Service, ? extends TBase>>()));
+	public ServiceProcessor(Service service) {
+		super(service, getProcessMap(new HashMap<String, ProcessFunction<Service, ? extends TBase>>()));
 	}
 
 	@SuppressWarnings("rawtypes")

@@ -1,14 +1,20 @@
 package com.ikamobile.ikasoa.core.thrift;
 
+import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.thrift.TProcessor;
+import org.apache.thrift.protocol.TCompactProtocol;
+import org.apache.thrift.protocol.TProtocolFactory;
+import org.apache.thrift.transport.TNonblockingTransport;
+
 import com.ikamobile.ikasoa.core.STException;
 import com.ikamobile.ikasoa.core.loadbalance.LoadBalance;
 import com.ikamobile.ikasoa.core.loadbalance.ServerInfo;
+import com.ikamobile.ikasoa.core.thrift.client.AsyncMultiplexedProtocolFactory;
 import com.ikamobile.ikasoa.core.thrift.client.ThriftClient;
 import com.ikamobile.ikasoa.core.thrift.client.ThriftClientConfiguration;
 import com.ikamobile.ikasoa.core.thrift.client.impl.DefaultThriftClientImpl;
@@ -17,8 +23,11 @@ import com.ikamobile.ikasoa.core.thrift.server.MultiplexedProcessor;
 import com.ikamobile.ikasoa.core.thrift.server.ThriftServer;
 import com.ikamobile.ikasoa.core.thrift.server.ThriftServerConfiguration;
 import com.ikamobile.ikasoa.core.thrift.server.impl.DefaultThriftServerImpl;
+import com.ikamobile.ikasoa.core.thrift.server.impl.NonblockingThriftServerImpl;
+import com.ikamobile.ikasoa.core.thrift.service.AsyncService;
 import com.ikamobile.ikasoa.core.thrift.service.Service;
 import com.ikamobile.ikasoa.core.thrift.service.ServiceProcessor;
+import com.ikamobile.ikasoa.core.thrift.service.impl.AsyncServiceClientImpl;
 import com.ikamobile.ikasoa.core.thrift.service.impl.ServiceClientImpl;
 import com.ikamobile.ikasoa.core.utils.StringUtil;
 
@@ -63,6 +72,14 @@ public class GeneralFactory implements Factory {
 	}
 
 	/**
+	 * 获取NIO的ThriftServer对象
+	 */
+	@Override
+	public ThriftServer getNonblockingThriftServer(String serverName, int serverPort, TProcessor processor) {
+		return new NonblockingThriftServerImpl(serverName, serverPort, thriftServerConfiguration, processor);
+	}
+
+	/**
 	 * 获取默认的ThriftServer对象
 	 */
 	@Override
@@ -84,15 +101,14 @@ public class GeneralFactory implements Factory {
 	@Override
 	public ThriftServer getThriftServer(String serverName, int serverPort, Map<String, Service> serviceMap)
 			throws STException {
-		if (serviceMap != null) {
-			Map<String, TProcessor> processorMap = new HashMap<>();
-			for (String key : serviceMap.keySet()) {
-				processorMap.put(key, new ServiceProcessor(serviceMap.get(key)));
-			}
-			return getThriftServer(serverName, serverPort, new MultiplexedProcessor(processorMap));
-		} else {
-			throw new STException("serviceMap is null .");
+		if (serviceMap == null) {
+			throw new STException("serviceMap is null !");
 		}
+		Map<String, TProcessor> processorMap = new HashMap<>();
+		for (String key : serviceMap.keySet()) {
+			processorMap.put(key, new ServiceProcessor(serviceMap.get(key)));
+		}
+		return getThriftServer(serverName, serverPort, new MultiplexedProcessor(processorMap));
 	}
 
 	/**
@@ -100,16 +116,7 @@ public class GeneralFactory implements Factory {
 	 */
 	@Override
 	public ThriftServer getThriftServer(int serverPort, Map<String, Service> serviceMap) throws STException {
-		if (serviceMap != null) {
-			Map<String, TProcessor> processorMap = new HashMap<>();
-			for (String key : serviceMap.keySet()) {
-				processorMap.put(key, new ServiceProcessor(serviceMap.get(key)));
-			}
-			return getThriftServer("DefaultThriftServer-" + serverPort, serverPort,
-					new MultiplexedProcessor(processorMap));
-		} else {
-			throw new STException("serviceMap is null .");
-		}
+		return getThriftServer("DefaultThriftServer-" + serverPort, serverPort, serviceMap);
 	}
 
 	/**
@@ -159,17 +166,44 @@ public class GeneralFactory implements Factory {
 	}
 
 	/**
+	 * 获取客户端AsyncService对象
+	 */
+	@Override
+	public AsyncService getAsyncService(TNonblockingTransport transport) throws STException {
+		return getAsyncService(transport, null);
+	}
+
+	/**
 	 * 获取客户端Service对象
 	 */
 	@Override
 	public Service getService(ThriftClient thriftClient, String serviceName) throws STException {
 		if (thriftClient == null) {
-			throw new STException("thriftClient is null .");
+			throw new STException("thriftClient is null !");
 		}
 		if (StringUtil.isEmpty(serviceName)) {
 			return new ServiceClientImpl(thriftClient.getProtocol(thriftClient.getTransport()));
 		} else {
 			return new ServiceClientImpl(thriftClient.getProtocol(thriftClient.getTransport(), serviceName));
+		}
+	}
+
+	/**
+	 * 获取客户端AsyncService对象
+	 */
+	@Override
+	public AsyncService getAsyncService(TNonblockingTransport transport, String serviceName) throws STException {
+		if (transport == null) {
+			throw new STException("transport is null !");
+		}
+		try {
+			if (StringUtil.isEmpty(serviceName)) {
+				return new AsyncServiceClientImpl((TProtocolFactory) new TCompactProtocol.Factory(), transport);
+			} else {
+				return new AsyncServiceClientImpl(new AsyncMultiplexedProtocolFactory(serviceName), transport);
+			}
+		} catch (IOException e) {
+			throw new STException(e);
 		}
 	}
 

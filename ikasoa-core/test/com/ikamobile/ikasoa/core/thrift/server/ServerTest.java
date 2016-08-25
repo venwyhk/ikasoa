@@ -24,7 +24,7 @@ import junit.framework.TestCase;
 /**
  * Thrift服务端单元测试
  */
-public class ThriftServerTest extends TestCase {
+public class ServerTest extends TestCase {
 
 	private static String LOCAL_HOST = "localhost";
 
@@ -233,7 +233,7 @@ public class ThriftServerTest extends TestCase {
 		@Override
 		public void beforeStart(String serverName, int serverPort, ThriftServerConfiguration configuration,
 				TProcessor processor, ThriftServer server) {
-			assertEquals(ThriftServerTest.serverName, serverName);
+			assertEquals(ServerTest.serverName, serverName);
 			assertEquals(39301, serverPort);
 			assertFalse(server.isServing());
 		}
@@ -242,7 +242,7 @@ public class ThriftServerTest extends TestCase {
 		@Override
 		public void afterStart(String serverName, int serverPort, ThriftServerConfiguration configuration,
 				TProcessor processor, ThriftServer server) {
-			assertEquals(ThriftServerTest.serverName, serverName);
+			assertEquals(ServerTest.serverName, serverName);
 			assertEquals(39301, serverPort);
 			try {
 				Thread.sleep(500);
@@ -255,7 +255,7 @@ public class ThriftServerTest extends TestCase {
 		@Override
 		public void beforeStop(String serverName, int serverPort, ThriftServerConfiguration configuration,
 				TProcessor processor, ThriftServer server) {
-			assertEquals(ThriftServerTest.serverName, serverName);
+			assertEquals(ServerTest.serverName, serverName);
 			assertEquals(39301, serverPort);
 			assertTrue(server.isServing());
 		}
@@ -264,7 +264,7 @@ public class ThriftServerTest extends TestCase {
 		@Override
 		public void afterStop(String serverName, int serverPort, ThriftServerConfiguration configuration,
 				TProcessor processor, ThriftServer server) {
-			assertEquals(ThriftServerTest.serverName, serverName);
+			assertEquals(ServerTest.serverName, serverName);
 			assertEquals(39301, serverPort);
 			try {
 				Thread.sleep(500);

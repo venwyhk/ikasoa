@@ -1,6 +1,7 @@
 package com.ikamobile.ikasoa.core.thrift.client;
 
 import org.apache.thrift.protocol.TProtocol;
+import org.apache.thrift.protocol.TProtocolFactory;
 import org.apache.thrift.transport.TTransport;
 import com.ikamobile.ikasoa.core.STException;
 

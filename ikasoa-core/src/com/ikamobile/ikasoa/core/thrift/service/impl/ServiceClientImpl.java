@@ -48,7 +48,7 @@ public class ServiceClientImpl extends TServiceClient implements Service {
 		sendBase("get", new ArgsThriftBase(arg));
 	}
 
-	private String recvGet() throws TException {
+	String recvGet() throws TException {
 		ResultThriftBase result = new ResultThriftBase();
 		receiveBase(result, "get");
 		if (result.isSet(null)) {

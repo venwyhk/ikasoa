@@ -2,6 +2,7 @@ package com.ikamobile.ikasoa.core.thrift.server;
 
 import java.util.concurrent.ExecutorService;
 
+import org.apache.thrift.TProcessorFactory;
 import org.apache.thrift.server.TServerEventHandler;
 import com.ikamobile.ikasoa.core.thrift.AbstractThriftConfiguration;
 
@@ -12,6 +13,11 @@ import com.ikamobile.ikasoa.core.thrift.AbstractThriftConfiguration;
  * @version 0.1
  */
 public class ThriftServerConfiguration extends AbstractThriftConfiguration {
+
+	/**
+	 * Thrift处理器工厂
+	 */
+	private TProcessorFactory processorFactory;
 
 	private ServerAspect serverAspect;
 
@@ -28,6 +34,14 @@ public class ThriftServerConfiguration extends AbstractThriftConfiguration {
 	private ExecutorService executorService;
 
 	public ThriftServerConfiguration() {
+	}
+
+	public void setProcessorFactory(TProcessorFactory processorFactory) {
+		this.processorFactory = processorFactory;
+	}
+
+	public TProcessorFactory getProcessorFactory() {
+		return this.processorFactory;
 	}
 
 	public ServerAspect getServerAspect() {

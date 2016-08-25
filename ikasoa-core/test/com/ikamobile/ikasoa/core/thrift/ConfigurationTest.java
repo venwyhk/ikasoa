@@ -14,9 +14,9 @@ import com.ikamobile.ikasoa.core.thrift.server.ThriftServerConfiguration;
 import junit.framework.TestCase;
 
 /**
- * Thrift配置对象单元测试
+ * 配置对象单元测试
  */
-public class ThriftConfigurationTest extends TestCase {
+public class ConfigurationTest extends TestCase {
 
 	@Test
 	public void testThriftClientConfiguration() {

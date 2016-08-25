@@ -135,7 +135,7 @@ public abstract class AbstractThriftBase
 	 * <p>
 	 * 标准服务中的参数与返回值都为单个<i>String</i>,所以在这里只设置了<i>VALUE</i>一个值.
 	 */
-	protected enum FieldsEnum implements TFieldIdEnum {
+	public enum FieldsEnum implements TFieldIdEnum {
 
 		VALUE((short) 0, "value");
 

@@ -4,6 +4,7 @@ import org.apache.thrift.TException;
 import org.apache.thrift.protocol.TBinaryProtocol;
 import org.apache.thrift.transport.TMemoryBuffer;
 import org.junit.Test;
+
 import com.ikamobile.ikasoa.core.STException;
 import com.ikamobile.ikasoa.core.thrift.Factory;
 import com.ikamobile.ikasoa.core.thrift.GeneralFactory;
@@ -25,12 +26,12 @@ public class ServiceTest extends TestCase {
 	public void testDefaultServiceImpl() {
 		int serverPort = 49000;
 		Factory factory = new GeneralFactory();
-		ThriftServer thriftServer = factory.getThriftServer(serverPort, new ServiceImpl());
+		ThriftServer thriftServer = factory.getThriftServer(serverPort, new TestService());
 		thriftServer.run();
 		ThriftClient thriftClient = factory.getThriftClient("localhost", serverPort);
 		try {
-			Service service = factory.getService(thriftClient);
 			Thread.sleep(500);
+			Service service = factory.getService(thriftClient);
 			assertEquals(service.get(testString), testString);
 		} catch (Exception e) {
 			fail();
@@ -52,8 +53,9 @@ public class ServiceTest extends TestCase {
 			fail();
 		}
 	}
+	
+	private class TestService implements Service {
 
-	private class ServiceImpl implements Service {
 		@Override
 		public String get(String arg) throws STException {
 			return arg;
