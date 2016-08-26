@@ -5,18 +5,24 @@ import java.util.Map;
 
 import org.apache.thrift.TException;
 import org.apache.thrift.TProcessor;
+import org.apache.thrift.TProcessorFactory;
+import org.apache.thrift.async.AsyncMethodCallback;
+import org.apache.thrift.async.TAsyncClientManager;
+import org.apache.thrift.protocol.TCompactProtocol;
+import org.apache.thrift.transport.TNonblockingSocket;
 import org.apache.thrift.transport.TTransport;
 import org.junit.Test;
+
 import com.ikamobile.ikasoa.core.thrift.Factory;
 import com.ikamobile.ikasoa.core.thrift.GeneralFactory;
 import com.ikamobile.ikasoa.core.thrift.client.CompactThriftClientConfiguration;
 import com.ikamobile.ikasoa.core.thrift.client.ThriftClient;
 import com.ikamobile.ikasoa.core.thrift.client.TupleThriftClientConfiguration;
 import com.ikamobile.ikasoa.core.thrift.server.impl.DefaultThriftServerImpl;
-import com.ikamobile.ikasoa.core.thrift.server.impl.NonblockingThriftServerImpl;
 import com.ikamobile.ikasoa.core.thrift.server.impl.ServletThriftServerImpl;
 import com.ikamobile.ikasoa.core.thrift.server.impl.SimpleThriftServerImpl;
 import com.ikamobile.ikasoa.core.thrift.server.ThriftSimpleService;
+import com.ikamobile.ikasoa.core.thrift.server.ThriftSimpleService.AsyncClient.get_call;
 import com.ikamobile.ikasoa.core.thrift.server.ThriftSimpleService.Iface;
 
 import junit.framework.TestCase;
@@ -66,7 +72,7 @@ public class ServerTest extends TestCase {
 	@Test
 	public void testNonblockingThriftServerImpl() {
 		int serverPort = 39002;
-		ThriftServer nioThriftServer = new NonblockingThriftServerImpl(serverName, serverPort, configuration,
+		ThriftServer nioThriftServer = factory.getNonblockingThriftServer(serverName, serverPort,
 				new ThriftSimpleService.Processor<Iface>(new TestThriftServiceImpl()));
 		assertEquals(nioThriftServer.getServerName(), serverName);
 		assertEquals(nioThriftServer.getServerPort(), serverPort);
@@ -115,6 +121,31 @@ public class ServerTest extends TestCase {
 				transport.close();
 			}
 			simpleThriftServer.stop();
+		}
+	}
+
+	@Test
+	public void testAysncDefaultThriftServerImpl() {
+		int serverPort = 39004;
+		TProcessor p = new ThriftSimpleService.Processor<Iface>(new TestThriftServiceImpl());
+		ThriftServerConfiguration thriftServerConfiguration = new ThriftServerConfiguration();
+		thriftServerConfiguration.setProtocolFactory(new TCompactProtocol.Factory());
+		thriftServerConfiguration.setProcessorFactory(new TProcessorFactory(p));
+		Factory factory = new GeneralFactory(thriftServerConfiguration);
+		ThriftServer thriftServer = factory.getThriftServer(serverName, serverPort, p);
+		thriftServer.run();
+		try {
+			ThriftSimpleService.AsyncClient thriftClient = new ThriftSimpleService.AsyncClient(
+					new TCompactProtocol.Factory(), new TAsyncClientManager(),
+					new TNonblockingSocket(LOCAL_HOST, serverPort));
+			Thread.sleep(500);
+			TestCallback callback = new TestCallback();
+			thriftClient.get(testString, callback);
+			Thread.sleep(1000);
+		} catch (Exception e) {
+			fail();
+		} finally {
+			thriftServer.stop();
 		}
 	}
 
@@ -224,6 +255,23 @@ public class ServerTest extends TestCase {
 		@Override
 		public String get(String arg) throws TException {
 			return arg;
+		}
+	}
+
+	private class TestCallback implements AsyncMethodCallback<get_call> {
+
+		@Override
+		public void onComplete(get_call response) {
+			try {
+				assertEquals(response.getResult(), testString);
+			} catch (TException e) {
+				fail();
+			}
+		}
+
+		@Override
+		public void onError(Exception exception) {
+			fail();
 		}
 	}
 

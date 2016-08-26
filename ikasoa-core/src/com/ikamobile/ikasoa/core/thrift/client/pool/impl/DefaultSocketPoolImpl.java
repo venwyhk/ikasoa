@@ -1,4 +1,4 @@
-package com.ikamobile.ikasoa.core.thrift;
+package com.ikamobile.ikasoa.core.thrift.client.pool.impl;
 
 import java.util.HashMap;
 import java.util.Hashtable;
@@ -8,46 +8,57 @@ import java.util.Map.Entry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.ikamobile.ikasoa.core.thrift.ThriftSocket;
+import com.ikamobile.ikasoa.core.thrift.client.pool.SocketPool;
+
 /**
- * Socket连接池
+ * Socket连接池默认实现
  * 
  * @author <a href="mailto:larry7696@gmail.com">Larry</a>
  * @version 0.3.3
  */
-public class SocketPool {
+public class DefaultSocketPoolImpl implements SocketPool {
 
-	private static final Logger LOG = LoggerFactory.getLogger(SocketPool.class);
+	private static final Logger LOG = LoggerFactory.getLogger(DefaultSocketPoolImpl.class);
 
-	// 默认单个连接池容量
-	private static final byte DEFAULT_POOL_SIZE = 0x10;
+	// 单个池容量
+	private byte size = 0x10;
 
-	// 默认连接超时时间
-	private static final int DEFAULT_TIMEOUT = 0;
+	// 连接超时时间
+	private int time = 0;
 
-	private static Map<String, SocketPool> selfMap = new HashMap<>();
+	private static Map<String, DefaultSocketPoolImpl> selfMap = new HashMap<>();
 
 	// 是否空闲 (true: 不空闲, false: 空闲)
 	private boolean[] socketStatusArray = null;
 
 	private Hashtable<Byte, ThriftSocket> socketPool = null;
 
+	public DefaultSocketPoolImpl() {
+	}
+
+	public DefaultSocketPoolImpl(byte size, int time) {
+		this.size = size;
+		this.time = time;
+	}
+
 	/**
 	 * 初始化连接池
 	 * 
 	 * @param host
-	 *            地址
+	 *            服务器地址
 	 * @param port
-	 *            端口
-	 * @return SocketPool 池对象
+	 *            服务器端口
+	 * @return DefaultSocketPoolImpl 默认的连接池对象
 	 */
-	public static synchronized SocketPool init(String host, int port) {
+	public synchronized DefaultSocketPoolImpl init(String host, int port) {
 		if (!checkHostAndPort(host, port)) {
 			throw new RuntimeException("Server host or port is null !");
 		}
-		SocketPool self = new SocketPool();
+		DefaultSocketPoolImpl self = new DefaultSocketPoolImpl();
 		selfMap.put(getPoolKey(host, port), self);
-		self.socketPool = new Hashtable<Byte, ThriftSocket>(DEFAULT_POOL_SIZE);
-		self.socketStatusArray = new boolean[DEFAULT_POOL_SIZE];
+		self.socketPool = new Hashtable<Byte, ThriftSocket>(size);
+		self.socketStatusArray = new boolean[size];
 		// 初始化连接池
 		LOG.debug("Initiation pool ......");
 		buildThriftSocketPool(host, port);
@@ -58,22 +69,22 @@ public class SocketPool {
 	 * 创建连接池
 	 * 
 	 * @param host
-	 *            地址
+	 *            服务器地址
 	 * @param port
-	 *            端口
+	 *            服务器端口
 	 */
-	public synchronized static void buildThriftSocketPool(String host, int port) {
+	public synchronized void buildThriftSocketPool(String host, int port) {
 		if (!checkHostAndPort(host, port)) {
 			throw new RuntimeException("Server host or port is null !");
 		}
-		SocketPool self = selfMap.get(getPoolKey(host, port));
+		DefaultSocketPoolImpl self = selfMap.get(getPoolKey(host, port));
 		if (self == null) {
 			self = init(host, port);
 		}
 		ThriftSocket socket = null;
 		try {
-			for (byte i = 0; i < DEFAULT_POOL_SIZE; i++) {
-				socket = new ThriftSocket(host, port, DEFAULT_TIMEOUT);
+			for (byte i = 0; i < size; i++) {
+				socket = new ThriftSocket(host, port, time);
 				self.socketPool.put(new Byte(i), socket);
 				self.socketStatusArray[i] = false;
 			}
@@ -83,24 +94,19 @@ public class SocketPool {
 	}
 
 	/**
-	 * 从连接池中获取一个空闲的连接
-	 * 
-	 * @param host
-	 *            地址
-	 * @param port
-	 *            端口
-	 * @return SocketPool 池对象
+	 * 从连接池中获取一个空闲的ThriftSocket连接
 	 */
-	public synchronized static ThriftSocket buildThriftSocket(String host, int port) {
+	@Override
+	public synchronized ThriftSocket buildThriftSocket(String host, int port) {
 		if (!checkHostAndPort(host, port)) {
 			throw new RuntimeException("Server host or port is null !");
 		}
-		SocketPool self = selfMap.get(getPoolKey(host, port));
+		DefaultSocketPoolImpl self = selfMap.get(getPoolKey(host, port));
 		if (self == null || self.socketStatusArray == null) {
 			self = init(host, port);
 		}
 		byte i = 0;
-		for (; i < DEFAULT_POOL_SIZE; i++) {
+		for (; i < size; i++) {
 			if (!self.socketStatusArray[i]) {
 				self.socketStatusArray[i] = true;
 				return getThriftSocket(self, i, host, port);
@@ -108,11 +114,11 @@ public class SocketPool {
 		}
 		// 如果连接不够用,就初始化连接池.
 		try {
-			for (i = 0; i < DEFAULT_POOL_SIZE; i++) {
+			for (i = 0; i < size; i++) {
 				ThriftSocket thriftSocket = self.socketPool.get(i);
 				if (self.socketStatusArray[i] && (thriftSocket == null || thriftSocket.getSocket() == null
 						|| (thriftSocket.isOpen() && thriftSocket.getSocket().isClosed()))) {
-					thriftSocket = new ThriftSocket(host, port, DEFAULT_TIMEOUT);
+					thriftSocket = new ThriftSocket(host, port, time);
 					return thriftSocket;
 				}
 			}
@@ -124,7 +130,7 @@ public class SocketPool {
 		return buildThriftSocket(host, port);
 	}
 
-	private static ThriftSocket getThriftSocket(SocketPool self, byte i, String host, int port) {
+	private ThriftSocket getThriftSocket(DefaultSocketPoolImpl self, byte i, String host, int port) {
 		LOG.debug("Get socket number is " + i + " .");
 		ThriftSocket thriftSocket = self.socketPool.get(new Byte(i));
 		if (thriftSocket != null) {
@@ -137,14 +143,10 @@ public class SocketPool {
 	}
 
 	/**
-	 * 将用完的连接放回池中,并调整为空闲状态
-	 * <p>
-	 * 服务地址和IP将从Socket中获取.
-	 * 
-	 * @param thriftSocket
-	 *            ThriftSocket对象
+	 * 回收ThriftSocket连接
 	 */
-	public synchronized static void releaseThriftSocket(ThriftSocket thriftSocket) {
+	@Override
+	public synchronized void releaseThriftSocket(ThriftSocket thriftSocket) {
 		if (thriftSocket == null || thriftSocket.getSocket() == null
 				|| thriftSocket.getSocket().getInetAddress() == null) {
 			LOG.warn("Release unsuccessful .");
@@ -155,25 +157,19 @@ public class SocketPool {
 	}
 
 	/**
-	 * 将用完的连接放回池中,并调整为空闲状态
-	 * 
-	 * @param thriftSocket
-	 *            ThriftSocket对象
-	 * @param host
-	 *            地址
-	 * @param port
-	 *            端口
+	 * 回收ThriftSocket连接
 	 */
-	public synchronized static void releaseThriftSocket(ThriftSocket thriftSocket, String host, int port) {
+	@Override
+	public synchronized void releaseThriftSocket(ThriftSocket thriftSocket, String host, int port) {
 		if (thriftSocket == null || !checkHostAndPort(host, port)) {
 			LOG.error("Server host or port is null ! Release unsuccessful .");
 			return;
 		}
-		SocketPool self = selfMap.get(getPoolKey(host, port));
+		DefaultSocketPoolImpl self = selfMap.get(getPoolKey(host, port));
 		if (self == null) {
 			self = init(host, port);
 		}
-		for (byte i = 0; i < DEFAULT_POOL_SIZE; i++) {
+		for (byte i = 0; i < size; i++) {
 			if (self.socketPool.get(new Byte(i)) == thriftSocket) {
 				self.socketStatusArray[i] = false;
 				break;
@@ -182,16 +178,19 @@ public class SocketPool {
 	}
 
 	/**
-	 * 断开池中所有连接
+	 * 回收所有ThriftSocket连接
+	 * <p>
+	 * 会断开所有连接.
 	 */
-	public synchronized static void releaseAllThriftSocket() {
+	@Override
+	public synchronized void releaseAllThriftSocket() {
 		if (selfMap == null || selfMap.size() == 0) {
 			return;
 		}
 		ThriftSocket socket = null;
-		for (Entry<String, SocketPool> entry : selfMap.entrySet()) {
-			SocketPool self = entry.getValue();
-			for (byte i = 0; i < DEFAULT_POOL_SIZE; i++) {
+		for (Entry<String, DefaultSocketPoolImpl> entry : selfMap.entrySet()) {
+			DefaultSocketPoolImpl self = entry.getValue();
+			for (byte i = 0; i < size; i++) {
 				socket = self.socketPool.get(new Byte(i));
 				try {
 					socket.close();
@@ -203,11 +202,11 @@ public class SocketPool {
 		}
 	}
 
-	private static boolean checkHostAndPort(String host, int port) {
+	private boolean checkHostAndPort(String host, int port) {
 		return (host != null && port > 0);
 	}
 
-	private static String getPoolKey(String host, int port) {
+	private String getPoolKey(String host, int port) {
 		return new StringBuilder(host).append(":").append(port).toString();
 	}
 }

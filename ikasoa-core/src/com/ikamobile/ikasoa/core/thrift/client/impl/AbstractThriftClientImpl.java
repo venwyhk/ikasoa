@@ -2,14 +2,12 @@ package com.ikamobile.ikasoa.core.thrift.client.impl;
 
 import org.apache.thrift.protocol.TMultiplexedProtocol;
 import org.apache.thrift.protocol.TProtocol;
-import org.apache.thrift.protocol.TProtocolFactory;
 import org.apache.thrift.transport.TTransport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.ikamobile.ikasoa.core.STException;
 import com.ikamobile.ikasoa.core.ServerCheck;
 import com.ikamobile.ikasoa.core.ServerCheckFailProcessor;
-import com.ikamobile.ikasoa.core.thrift.SocketPool;
 import com.ikamobile.ikasoa.core.thrift.ThriftSocket;
 import com.ikamobile.ikasoa.core.thrift.client.ThriftClient;
 import com.ikamobile.ikasoa.core.thrift.client.ThriftClientConfiguration;
@@ -58,8 +56,9 @@ public abstract class AbstractThriftClientImpl implements ThriftClient {
 			}
 		}
 		// 每次都取一个新的连接.
-		thriftSocket = SocketPool.buildThriftSocket(getServerHost(), getServerPort());
-		return getThriftClientConfiguration().getTransportFactory().getTransport(thriftSocket);
+		ThriftClientConfiguration configuration = getThriftClientConfiguration();
+		thriftSocket = configuration.getSocketPool().buildThriftSocket(getServerHost(), getServerPort());
+		return configuration.getTransportFactory().getTransport(thriftSocket);
 	}
 
 	@Override
@@ -152,7 +151,8 @@ public abstract class AbstractThriftClientImpl implements ThriftClient {
 	@Override
 	public void close() {
 		// 仅回收连接,并没有断开
-		SocketPool.releaseThriftSocket(thriftSocket, getServerHost(), getServerPort());
+		getThriftClientConfiguration().getSocketPool().releaseThriftSocket(thriftSocket, getServerHost(),
+				getServerPort());
 	}
 
 	/**

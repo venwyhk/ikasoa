@@ -25,7 +25,7 @@ import com.ikamobile.ikasoa.core.thrift.service.impl.CallBack;
  * @author <a href="mailto:larry7696@gmail.com">Larry</a>
  * @version 0.4.2
  */
-public class AsyncServiceProcessor extends TBaseAsyncProcessor<AsyncService> implements SProcessor {
+public class AsyncServiceProcessor extends TBaseAsyncProcessor<AsyncService> implements Processor {
 
 	@SuppressWarnings("rawtypes")
 	public AsyncServiceProcessor(AsyncService service) {

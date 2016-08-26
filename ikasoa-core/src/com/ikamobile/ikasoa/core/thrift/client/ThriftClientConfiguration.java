@@ -1,6 +1,8 @@
 package com.ikamobile.ikasoa.core.thrift.client;
 
 import com.ikamobile.ikasoa.core.thrift.AbstractThriftConfiguration;
+import com.ikamobile.ikasoa.core.thrift.client.pool.SocketPool;
+import com.ikamobile.ikasoa.core.thrift.client.pool.impl.DefaultSocketPoolImpl;
 import com.ikamobile.ikasoa.core.ServerCheck;
 import com.ikamobile.ikasoa.core.ServerCheckFailProcessor;
 
@@ -11,6 +13,8 @@ import com.ikamobile.ikasoa.core.ServerCheckFailProcessor;
  * @version 0.1
  */
 public class ThriftClientConfiguration extends AbstractThriftConfiguration {
+
+	private SocketPool socketPool = new DefaultSocketPoolImpl();
 
 	/**
 	 * 服务器可用性检测接口
@@ -25,6 +29,14 @@ public class ThriftClientConfiguration extends AbstractThriftConfiguration {
 	private ServerCheckFailProcessor serverCheckFailProcessor;
 
 	public ThriftClientConfiguration() {
+	}
+
+	public SocketPool getSocketPool() {
+		return socketPool;
+	}
+
+	public void setSocketPool(SocketPool socketPool) {
+		this.socketPool = socketPool;
 	}
 
 	public ServerCheck getServerCheck() {

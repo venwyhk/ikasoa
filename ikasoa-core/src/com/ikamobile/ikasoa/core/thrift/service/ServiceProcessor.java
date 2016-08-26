@@ -19,7 +19,7 @@ import com.ikamobile.ikasoa.core.thrift.service.base.ResultThriftBase;
  * @author <a href="mailto:larry7696@gmail.com">Larry</a>
  * @version 0.2
  */
-public class ServiceProcessor extends TBaseProcessor<Service> implements SProcessor {
+public class ServiceProcessor extends TBaseProcessor<Service> implements Processor {
 
 	@SuppressWarnings("rawtypes")
 	public ServiceProcessor(Service service) {
