@@ -62,6 +62,9 @@ public class ServerTest extends TestCase {
 		} catch (Exception e) {
 			fail();
 		} finally {
+			if (thriftClient != null) {
+				thriftClient.close();
+			}
 			if (transport != null) {
 				transport.close();
 			}
@@ -90,6 +93,9 @@ public class ServerTest extends TestCase {
 			e.printStackTrace();
 			fail();
 		} finally {
+			if (thriftClient != null) {
+				thriftClient.close();
+			}
 			if (transport != null) {
 				transport.close();
 			}
@@ -117,6 +123,9 @@ public class ServerTest extends TestCase {
 		} catch (Exception e) {
 			fail();
 		} finally {
+			if (thriftClient != null) {
+				thriftClient.close();
+			}
 			if (transport != null) {
 				transport.close();
 			}
@@ -173,6 +182,9 @@ public class ServerTest extends TestCase {
 		} catch (Exception e) {
 			fail();
 		} finally {
+			if (thriftClient != null) {
+				thriftClient.close();
+			}
 			if (transport != null) {
 				transport.close();
 			}
@@ -199,6 +211,9 @@ public class ServerTest extends TestCase {
 		} catch (Exception e) {
 			fail();
 		} finally {
+			if (thriftClient != null) {
+				thriftClient.close();
+			}
 			if (transport != null) {
 				transport.close();
 			}
@@ -225,6 +240,9 @@ public class ServerTest extends TestCase {
 		} catch (Exception e) {
 			fail();
 		} finally {
+			if (thriftClient != null) {
+				thriftClient.close();
+			}
 			if (transport != null) {
 				transport.close();
 			}

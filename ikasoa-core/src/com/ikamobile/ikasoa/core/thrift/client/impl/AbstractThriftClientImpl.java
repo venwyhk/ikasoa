@@ -11,6 +11,7 @@ import com.ikamobile.ikasoa.core.ServerCheckFailProcessor;
 import com.ikamobile.ikasoa.core.thrift.ThriftSocket;
 import com.ikamobile.ikasoa.core.thrift.client.ThriftClient;
 import com.ikamobile.ikasoa.core.thrift.client.ThriftClientConfiguration;
+import com.ikamobile.ikasoa.core.thrift.client.pool.SocketPool;
 import com.ikamobile.ikasoa.core.utils.StringUtil;
 
 /**
@@ -23,7 +24,7 @@ public abstract class AbstractThriftClientImpl implements ThriftClient {
 
 	private static final Logger LOG = LoggerFactory.getLogger(AbstractThriftClientImpl.class);
 
-	protected ThriftSocket thriftSocket;
+	protected ThreadLocal<ThriftSocket> thriftSocket = new ThreadLocal<>();
 
 	/**
 	 * 需连接的Thrift服务地址
@@ -49,16 +50,14 @@ public abstract class AbstractThriftClientImpl implements ThriftClient {
 	@Override
 	public TTransport getTransport() throws STException {
 		ServerCheck serverCheck = getServerCheck();
-		if (serverCheck != null) {
+		if (serverCheck != null && !serverCheck.check(serverHost, serverPort)) {
 			// 如果服务器检测不可用,需要做相应的处理.默认为抛异常.
-			if (!serverCheck.check(serverHost, serverPort)) {
-				getServerCheckFailProcessor().process(this);
-			}
+			getServerCheckFailProcessor().process(this);
 		}
 		// 每次都取一个新的连接.
-		ThriftClientConfiguration configuration = getThriftClientConfiguration();
-		thriftSocket = configuration.getSocketPool().buildThriftSocket(getServerHost(), getServerPort());
-		return configuration.getTransportFactory().getTransport(thriftSocket);
+		SocketPool pool = getThriftClientConfiguration().getSocketPool();
+		thriftSocket.set(pool.buildThriftSocket(getServerHost(), getServerPort()));
+		return configuration.getTransportFactory().getTransport(thriftSocket.get());
 	}
 
 	@Override
@@ -151,7 +150,7 @@ public abstract class AbstractThriftClientImpl implements ThriftClient {
 	@Override
 	public void close() {
 		// 仅回收连接,并没有断开
-		getThriftClientConfiguration().getSocketPool().releaseThriftSocket(thriftSocket, getServerHost(),
+		getThriftClientConfiguration().getSocketPool().releaseThriftSocket(thriftSocket.get(), getServerHost(),
 				getServerPort());
 	}
 

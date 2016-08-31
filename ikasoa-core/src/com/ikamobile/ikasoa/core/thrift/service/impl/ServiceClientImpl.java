@@ -8,6 +8,7 @@ import org.apache.thrift.transport.TTransport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.ikamobile.ikasoa.core.STException;
+import com.ikamobile.ikasoa.core.thrift.service.Processor;
 import com.ikamobile.ikasoa.core.thrift.service.Service;
 import com.ikamobile.ikasoa.core.thrift.service.base.ArgsThriftBase;
 import com.ikamobile.ikasoa.core.thrift.service.base.ResultThriftBase;
@@ -45,12 +46,12 @@ public class ServiceClientImpl extends TServiceClient implements Service {
 	}
 
 	private void sendGet(String arg) throws TException {
-		sendBase("get", new ArgsThriftBase(arg));
+		sendBase(Processor.FUNCTION_NAME, new ArgsThriftBase(arg));
 	}
 
 	String recvGet() throws TException {
 		ResultThriftBase result = new ResultThriftBase();
-		receiveBase(result, "get");
+		receiveBase(result, Processor.FUNCTION_NAME);
 		if (result.isSet(null)) {
 			return result.getStr();
 		} else {

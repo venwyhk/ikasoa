@@ -10,6 +10,7 @@ import com.ikamobile.ikasoa.core.loadbalance.LoadBalance;
 import com.ikamobile.ikasoa.core.loadbalance.ServerInfo;
 import com.ikamobile.ikasoa.core.thrift.client.ThriftClient;
 import com.ikamobile.ikasoa.core.thrift.client.ThriftClientConfiguration;
+import com.ikamobile.ikasoa.core.thrift.client.pool.SocketPool;
 
 /**
  * 负载均衡Thrift客户端实现
@@ -64,8 +65,9 @@ public class LoadBalanceThriftClientImpl extends AbstractThriftClientImpl {
 			}
 		}
 		ThriftClientConfiguration configuration = super.getThriftClientConfiguration();
-		thriftSocket = configuration.getSocketPool().buildThriftSocket(getServerHost(), getServerPort());
-		TTransport transport = configuration.getTransportFactory().getTransport(thriftSocket);
+		SocketPool pool = super.getThriftClientConfiguration().getSocketPool();
+		thriftSocket.set(pool.buildThriftSocket(getServerHost(), getServerPort()));
+		TTransport transport = configuration.getTransportFactory().getTransport(thriftSocket.get());
 		loadBalance.next();
 		return transport;
 	}

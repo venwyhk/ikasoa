@@ -32,7 +32,7 @@ public class DefaultSocketPoolImpl implements SocketPool {
 	// 是否空闲 (true: 不空闲, false: 空闲)
 	private boolean[] socketStatusArray = null;
 
-	private Hashtable<Byte, ThriftSocket> socketPool = null;
+	private Hashtable<Byte, ThriftSocket> socketPool;
 
 	public DefaultSocketPoolImpl() {
 	}
@@ -57,7 +57,7 @@ public class DefaultSocketPoolImpl implements SocketPool {
 		}
 		DefaultSocketPoolImpl self = new DefaultSocketPoolImpl();
 		selfMap.put(getPoolKey(host, port), self);
-		self.socketPool = new Hashtable<Byte, ThriftSocket>(size);
+		self.socketPool = new Hashtable<>(size);
 		self.socketStatusArray = new boolean[size];
 		// 初始化连接池
 		LOG.debug("Initiation pool ......");
@@ -147,11 +147,6 @@ public class DefaultSocketPoolImpl implements SocketPool {
 	 */
 	@Override
 	public synchronized void releaseThriftSocket(ThriftSocket thriftSocket) {
-		if (thriftSocket == null || thriftSocket.getSocket() == null
-				|| thriftSocket.getSocket().getInetAddress() == null) {
-			LOG.warn("Release unsuccessful .");
-			return;
-		}
 		releaseThriftSocket(thriftSocket, thriftSocket.getSocket().getInetAddress().getHostName(),
 				thriftSocket.getSocket().getPort());
 	}
@@ -161,10 +156,16 @@ public class DefaultSocketPoolImpl implements SocketPool {
 	 */
 	@Override
 	public synchronized void releaseThriftSocket(ThriftSocket thriftSocket, String host, int port) {
-		if (thriftSocket == null || !checkHostAndPort(host, port)) {
+		if (thriftSocket == null || thriftSocket.getSocket() == null
+				|| thriftSocket.getSocket().getInetAddress() == null) {
+			LOG.warn("Release unsuccessful .");
+			return;
+		}
+		if (!checkHostAndPort(host, port)) {
 			LOG.error("Server host or port is null ! Release unsuccessful .");
 			return;
 		}
+		LOG.debug("Release socket , host is " + host + " and port is " + port + " .");
 		DefaultSocketPoolImpl self = selfMap.get(getPoolKey(host, port));
 		if (self == null) {
 			self = init(host, port);
@@ -187,7 +188,7 @@ public class DefaultSocketPoolImpl implements SocketPool {
 		if (selfMap == null || selfMap.size() == 0) {
 			return;
 		}
-		ThriftSocket socket = null;
+		ThriftSocket socket;
 		for (Entry<String, DefaultSocketPoolImpl> entry : selfMap.entrySet()) {
 			DefaultSocketPoolImpl self = entry.getValue();
 			for (byte i = 0; i < size; i++) {
@@ -203,7 +204,7 @@ public class DefaultSocketPoolImpl implements SocketPool {
 	}
 
 	private boolean checkHostAndPort(String host, int port) {
-		return (host != null && port > 0);
+		return host != null && port > 0;
 	}
 
 	private String getPoolKey(String host, int port) {

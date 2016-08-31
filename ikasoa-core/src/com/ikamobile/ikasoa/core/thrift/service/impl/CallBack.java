@@ -11,6 +11,7 @@ import org.apache.thrift.protocol.TProtocolFactory;
 import org.apache.thrift.transport.TMemoryInputTransport;
 import org.apache.thrift.transport.TNonblockingTransport;
 
+import com.ikamobile.ikasoa.core.thrift.service.Processor;
 import com.ikamobile.ikasoa.core.thrift.service.base.AbstractThriftBase;
 import com.ikamobile.ikasoa.core.thrift.service.base.ArgsThriftBase;
 
@@ -31,7 +32,7 @@ public class CallBack extends TAsyncMethodCall<CallBack> {
 	}
 
 	public void write_args(TProtocol prot) throws TException {
-		prot.writeMessageBegin(new TMessage("get", TMessageType.CALL, 0));
+		prot.writeMessageBegin(new TMessage(Processor.FUNCTION_NAME, TMessageType.CALL, 0));
 		ArgsThriftBase args = new ArgsThriftBase();
 		args.setFieldValue(AbstractThriftBase.FieldsEnum.VALUE, arg);
 		args.write(prot);
