@@ -479,5 +479,4 @@ ThriftClientDemo.java
 
 ***
 
-*larry7696@gmail.com | 2016-09-01*
-
+*larry7696@gmail.com | 2016-08-10*
