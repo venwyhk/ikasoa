@@ -1,6 +1,4 @@
-![](https://raw.githubusercontent.com/venwyhk/ikasoa/master/ikasoalogo_small.png)<br />&nbsp;<b>Ikamobile Service Oriented Architecture</b>
-
-&nbsp;[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.ikasoa/ikasoa-rpc/badge.svg?style=plastic)](https://maven-badges.herokuapp.com/maven-central/com.ikasoa/ikasoa-rpc)&nbsp;&nbsp;[![](https://codeship.com/projects/9cf2f150-1507-0134-ee57-3adebfc67210/status?branch=master)](https://codeship.com/projects/157977)&nbsp;&nbsp;
+p;[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.ikasoa/ikasoa-rpc/badge.svg?style=plastic)](https://maven-badges.herokuapp.com/maven-central/com.ikasoa/ikasoa-rpc)&nbsp;&nbsp;[![](https://codeship.com/projects/9cf2f150-1507-0134-ee57-3adebfc67210/status?branch=master)](https://codeship.com/projects/157977)&nbsp;&nbsp;
 
 ***
 
@@ -8,7 +6,7 @@
 * [开发运行环境要求](#开发运行环境要求)
 * [目录说明](#目录说明)
 * [环境搭建](#环境搭建)
-* [“helloworld”](#“helloworld”)
+* [HelloWorld](#HelloWorld)
 * [使用示例](#使用示例)
 * [Thrift使用示例](#Thrift使用示例)
 * [服务实现类型](#服务实现类型)
@@ -74,7 +72,7 @@ pom.xml
 
     执行命令”mvn clean package”打包.
 
-## “helloworld” ##
+## HelloWorld ##
 
 ##### 创建接口和实现 #####
 
@@ -162,7 +160,7 @@ Main.java
 
 ##### 执行Main.java #####
 
-    如输出”helloword”则表示执行成功.
+    如输出“helloworld”则表示执行成功.
 
     *可参考ikasoa-example的示例.*
 
@@ -479,4 +477,5 @@ ThriftClientDemo.java
 
 ***
 
-*larry7696@gmail.com | 2016-08-10*
+*larry7696@gmail.com | 2016-09-01*
+
