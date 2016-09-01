@@ -247,7 +247,7 @@ RpcClient.java
 
 ##### 执行RpcClient.java #####
 
-  如输出”helloword”则表示执行成功.
+  如输出”helloworld”则表示执行成功.
 
 ## Thrift使用示例 ##
 
