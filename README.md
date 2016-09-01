@@ -20,7 +20,7 @@
 
 ## 概述 ##
 
-ikasoa是一套SOA服务化治理解决方案.其中ikasoa-rpc是ikasoa的开源RPC框架,基于apache thrift开发,客户端可以像调用本地接口那样去调用远程接口.
+  ikasoa是一套SOA服务化治理解决方案.其中ikasoa-rpc是ikasoa的开源RPC框架,基于apache thrift开发,客户端可以像调用本地接口那样去调用远程接口.
 
 ## 开发运行环境要求 ##
 
@@ -40,7 +40,7 @@ ikasoa是一套SOA服务化治理解决方案.其中ikasoa-rpc是ikasoa的开源
 
 ##### Maven配置 #####
 
-    需要修改pom.xml文件,添加ikasoa-rpc的依赖:
+  需要修改pom.xml文件,添加ikasoa-rpc的依赖:
     
 pom.xml
 ```xml
@@ -55,7 +55,7 @@ pom.xml
 
 ##### Maven配置(ikasoa-core) #####
 
-    如果仅使用thrift兼容方式,则可以只添加ikasoa-core依赖:
+  如果仅使用thrift兼容方式,则可以只添加ikasoa-core依赖:
 
 pom.xml
 ```xml
@@ -70,15 +70,15 @@ pom.xml
 
 ##### 导入工程&编译代码 #####
 
-    工程目录下命令行执行”mvn eclipse:eclipse”,并导入eclipse.(如果IDE非eclipse,则使用相对应的方式导入)
+  工程目录下命令行执行”mvn eclipse:eclipse”,并导入eclipse.(如果IDE非eclipse,则使用相对应的方式导入)
 
-    执行命令”mvn clean package”打包.
+  执行命令”mvn clean package”打包.
 
 ## HelloWorld ##
 
 ##### 创建接口和实现 #####
 
-    新建例子接口(ExampleService.java),对象(ExampleVO.java)和实现 (ExampleServiceImpl.java)类:
+  新建例子接口(ExampleService.java),对象(ExampleVO.java)和实现 (ExampleServiceImpl.java)类:
 
 ExampleService.java
 ```java
@@ -162,13 +162,13 @@ Main.java
 
 ##### 执行Main.java #####
 
-    如输出“helloworld”则表示执行成功.
+  如输出“helloworld”则表示执行成功.
 
-    *可参考ikasoa-example的示例.*
+  *可参考ikasoa-example的示例.*
 
 ## 使用示例 ##
 
-*此示例程序需要使用到Spring框架.*
+  *此示例程序需要使用到Spring框架.*
 
 ##### 服务端例子 #####
 
@@ -247,7 +247,7 @@ RpcClient.java
 
 ##### 执行RpcClient.java #####
 
-    如输出”helloword”则表示执行成功.
+  如输出”helloword”则表示执行成功.
 
 ## Thrift使用示例 ##
 
@@ -358,7 +358,7 @@ ThriftClientDemo.java
 
 ## 服务实现类型 ##
 
-*Ikasoa默认使用Thrift作为服务类型的实现,但也提供了Netty以供选择.*
+  *Ikasoa默认使用Thrift作为服务类型的实现,但也提供了Netty以供选择.*
 
 ##### 使用Thrift服务 #####
 
@@ -378,7 +378,7 @@ ThriftClientDemo.java
 
 ## 负载均衡 ##
 
-*Ikasoa提供了2种负载均衡,分别为轮循(含权重)和随机,默认使用轮循.*
+  *Ikasoa提供了2种负载均衡,分别为轮循(含权重)和随机,默认使用轮循.*
 
 ##### 使用轮循负载均衡(默认) #####
 
@@ -391,7 +391,7 @@ ThriftClientDemo.java
     ......
 ```
 
-*serverInfoList中的元素对象com.ikamobile.ikasoa.core.loadbalance.ServerInfo定义了单个服务信息,其中weightNumber属性为权重值,用于轮循负载均衡.*
+  *serverInfoList中的元素对象com.ikamobile.ikasoa.core.loadbalance.ServerInfo定义了单个服务信息,其中weightNumber属性为权重值,用于轮循负载均衡.*
 
 ##### 使用随机负载均衡 #####
 
@@ -406,7 +406,7 @@ ThriftClientDemo.java
 
   创建自定义序列化类(例如com.xxx.XLoadBalanceImpl).
 
-  自定义序列化类(com.xxx.XLoadBalanceImpl)需实现接口com.ikamobile.ikasoa.core.loadbalance.LoadBalance.
+  自定义序列化类(com.xxx.XLoadBalanceImpl)需实现接口 com.ikamobile.ikasoa.core.loadbalance.LoadBalance.
 
   通过如下方式获取服务:
 
@@ -479,4 +479,4 @@ ThriftClientDemo.java
 
 ***
 
-*larry7696@gmail.com | 2016-08-10*
+*larry7696@gmail.com | 2016-09-01*
