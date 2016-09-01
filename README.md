@@ -4,6 +4,20 @@
 
 ***
 
+* [概述](#概述)
+* [开发运行环境要求](#开发运行环境要求)
+* [目录说明](#目录说明)
+* [环境搭建](#环境搭建)
+* [“helloworld”](#“helloworld”)
+* [使用示例](#使用示例)
+* [Thrift使用示例](#Thrift使用示例)
+* [服务实现类型](#服务实现类型)
+* [负载均衡](#负载均衡)
+* [序列化](#序列化)
+* [注意事项](#注意事项)
+
+</br>
+
 ## 概述 ##
 
 ikasoa是一套SOA服务化治理解决方案.其中ikasoa-rpc是ikasoa的开源RPC框架,基于apache thrift开发,客户端可以像调用本地接口那样去调用远程接口.
@@ -14,15 +28,17 @@ ikasoa是一套SOA服务化治理解决方案.其中ikasoa-rpc是ikasoa的开源
 
 ## 目录说明 ##
 
+- ikasoa-admin:*服务管理相关代码(利用Zookeeper注册和管理服务)*
+
 - ikasoa-core:*基础核心包*
 
-- ikasoa-rpc:*RPC(远程过程调用协议)实现*
+- ikasoa-rpc:*实现RPC功能的代码*
 
 - ikasoa-example:*示例代码*
 
 ## 环境搭建 ##
 
-- Maven配置
+##### Maven配置 #####
 
     需要修改pom.xml文件,添加ikasoa-rpc的依赖:
     
@@ -37,7 +53,7 @@ pom.xml
     ......
 ```
 
-- Maven配置(ikasoa-core)
+##### Maven配置(ikasoa-core) #####
 
     如果仅使用thrift兼容方式,则可以只添加ikasoa-core依赖:
 
@@ -47,12 +63,12 @@ pom.xml
     <dependency>
         <groupId>com.ikasoa</groupId>
         <artifactId>ikasoa-core</artifactId>
-        <version>0.4.2</version>
+        <version>0.4.4</version>
     </dependency>
     ......
 ```
 
-- 导入工程&编译代码
+##### 导入工程&编译代码 #####
 
     工程目录下命令行执行”mvn eclipse:eclipse”,并导入eclipse.(如果IDE非eclipse,则使用相对应的方式导入)
 
@@ -60,7 +76,7 @@ pom.xml
 
 ## “helloworld” ##
 
-- 创建接口和实现
+##### 创建接口和实现 #####
 
     新建例子接口(ExampleService.java),对象(ExampleVO.java)和实现 (ExampleServiceImpl.java)类:
 
@@ -111,7 +127,7 @@ ExampleVO.java
     }
 ```
 
-- 创建执行类
+##### 创建执行类 #####
 
 Main.java
 ```java
@@ -144,7 +160,7 @@ Main.java
     }
 ```
 
-- 执行Main.java
+##### 执行Main.java #####
 
     如输出”helloword”则表示执行成功.
 
@@ -154,7 +170,7 @@ Main.java
 
 *此示例程序需要使用到Spring框架.*
 
-- 服务端例子
+##### 服务端例子 #####
 
 bean.xml
 ```xml
@@ -207,7 +223,7 @@ RpcServer.java
     }
 ```
 
-- 客户端例子
+##### 客户端例子 #####
 
 RpcClient.java
 ```java
@@ -229,13 +245,13 @@ RpcClient.java
     }
 ```
 
-- 执行RpcClient.java
+##### 执行RpcClient.java #####
 
     如输出”helloword”则表示执行成功.
 
 ## Thrift使用示例 ##
 
-- 客户端调用Thrift服务端例子
+##### 客户端调用Thrift服务端例子 #####
 
 ThriftClientDemo.java
 ```java
@@ -270,7 +286,7 @@ ThriftClientDemo.java
     }
 ```
 
-- Spring配置Thrift服务端例子
+##### Spring配置Thrift服务端例子 #####
 
 ```xml
     <?xml version="1.0" encoding="UTF-8"?>
@@ -298,7 +314,7 @@ ThriftClientDemo.java
     </beans>
 ```
 
-- Spring配置Thrift服务端例子(嵌套方式)
+##### Spring配置Thrift服务端例子(嵌套方式) #####
 
 ```xml
     <?xml version="1.0" encoding="UTF-8"?>
@@ -344,7 +360,7 @@ ThriftClientDemo.java
 
 *Ikasoa默认使用Thrift作为服务类型的实现,但也提供了Netty以供选择.*
 
-- 使用Thrift服务
+##### 使用Thrift服务 #####
 
 ```java
     ......
@@ -352,7 +368,7 @@ ThriftClientDemo.java
     ......
 ```
 
-- 使用Netty服务
+##### 使用Netty服务 #####
 
 ```java
     ......
@@ -364,7 +380,7 @@ ThriftClientDemo.java
 
 *Ikasoa提供了2种负载均衡,分别为轮循(含权重)和随机,默认使用轮循.*
 
-- 选择轮循负载均衡(默认)
+##### 使用轮循负载均衡(默认) #####
 
 ```java
     ......
@@ -377,7 +393,7 @@ ThriftClientDemo.java
 
 *serverInfoList中的元素对象com.ikamobile.ikasoa.core.loadbalance.ServerInfo定义了单个服务信息,其中weightNumber属性为权重值,用于轮循负载均衡.*
 
-- 选择随机负载均衡
+##### 使用随机负载均衡 #####
 
 ```java
     ......
@@ -386,7 +402,7 @@ ThriftClientDemo.java
     ......
 ```
 
-- 自定义负载均衡
+##### 自定义负载均衡 #####
 
   创建自定义序列化类(例如com.xxx.XLoadBalanceImpl).
 
@@ -405,7 +421,7 @@ ThriftClientDemo.java
 
 *Ikasoa提供了3种序列化方式,分别为fastjson,xml,kryo,默认使用fastjson.*
 
-- 选择fastjson作为序列化方式(默认)
+##### 使用fastjson作为序列化方式(默认) #####
 
 ```java
     ......
@@ -416,7 +432,7 @@ ThriftClientDemo.java
     ......
 ```
 
-- 选择xml作为序列化方式
+##### 使用xml作为序列化方式 #####
 
 ```java
     ......
@@ -425,7 +441,7 @@ ThriftClientDemo.java
     ......
 ```
 
-- 选择kryo作为序列化方式
+##### 使用kryo作为序列化方式 #####
 
 ```java
     ......
@@ -434,7 +450,7 @@ ThriftClientDemo.java
     ......
 ```
 
-- 自定义序列化方式
+##### 自定义序列化方式 #####
 
   创建自定义序列化类(例如com.xxx.XProtocolHandlerImpl).
 
