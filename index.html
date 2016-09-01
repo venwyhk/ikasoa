@@ -36,6 +36,22 @@
 
 <hr>
 
+<ul>
+<li><a href="#%E6%A6%82%E8%BF%B0">概述</a></li>
+<li><a href="#%E5%BC%80%E5%8F%91%E8%BF%90%E8%A1%8C%E7%8E%AF%E5%A2%83%E8%A6%81%E6%B1%82">开发运行环境要求</a></li>
+<li><a href="#%E7%9B%AE%E5%BD%95%E8%AF%B4%E6%98%8E">目录说明</a></li>
+<li><a href="#%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA">环境搭建</a></li>
+<li><a href="#%E2%80%9Chelloworld%E2%80%9D">“helloworld”</a></li>
+<li><a href="#%E4%BD%BF%E7%94%A8%E7%A4%BA%E4%BE%8B">使用示例</a></li>
+<li><a href="#Thrift%E4%BD%BF%E7%94%A8%E7%A4%BA%E4%BE%8B">Thrift使用示例</a></li>
+<li><a href="#%E6%9C%8D%E5%8A%A1%E5%AE%9E%E7%8E%B0%E7%B1%BB%E5%9E%8B">服务实现类型</a></li>
+<li><a href="#%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1">负载均衡</a></li>
+<li><a href="#%E5%BA%8F%E5%88%97%E5%8C%96">序列化</a></li>
+<li><a href="#%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9">注意事项</a></li>
+</ul>
+
+<p></p>
+
 <h2>
 <a id="概述" class="anchor" href="#%E6%A6%82%E8%BF%B0" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>概述</h2>
 
@@ -52,21 +68,20 @@
 <a id="目录说明" class="anchor" href="#%E7%9B%AE%E5%BD%95%E8%AF%B4%E6%98%8E" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>目录说明</h2>
 
 <ul>
+<li><p>ikasoa-admin:<em>服务管理相关代码(利用Zookeeper注册和管理服务)</em></p></li>
 <li><p>ikasoa-core:<em>基础核心包</em></p></li>
-<li><p>ikasoa-rpc:<em>RPC(远程过程调用协议)实现</em></p></li>
+<li><p>ikasoa-rpc:<em>实现RPC功能的代码</em></p></li>
 <li><p>ikasoa-example:<em>示例代码</em></p></li>
 </ul>
 
 <h2>
 <a id="环境搭建" class="anchor" href="#%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>环境搭建</h2>
 
-<ul>
-<li>
-<p>Maven配置</p>
+<h5>
+<a id="maven配置" class="anchor" href="#maven%E9%85%8D%E7%BD%AE" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Maven配置</h5>
 
-<p>需要修改pom.xml文件,添加ikasoa-rpc的依赖:</p>
-</li>
-</ul>
+<pre><code>需要修改pom.xml文件,添加ikasoa-rpc的依赖:
+</code></pre>
 
 <p>pom.xml</p>
 
@@ -78,13 +93,11 @@
     &lt;/<span class="pl-ent">dependency</span>&gt;
     ......</pre></div>
 
-<ul>
-<li>
-<p>Maven配置(ikasoa-core)</p>
+<h5>
+<a id="maven配置ikasoa-core" class="anchor" href="#maven%E9%85%8D%E7%BD%AEikasoa-core" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Maven配置(ikasoa-core)</h5>
 
-<p>如果仅使用thrift兼容方式,则可以只添加ikasoa-core依赖:</p>
-</li>
-</ul>
+<pre><code>如果仅使用thrift兼容方式,则可以只添加ikasoa-core依赖:
+</code></pre>
 
 <p>pom.xml</p>
 
@@ -92,30 +105,26 @@
     &lt;<span class="pl-ent">dependency</span>&gt;
         &lt;<span class="pl-ent">groupId</span>&gt;com.ikasoa&lt;/<span class="pl-ent">groupId</span>&gt;
         &lt;<span class="pl-ent">artifactId</span>&gt;ikasoa-core&lt;/<span class="pl-ent">artifactId</span>&gt;
-        &lt;<span class="pl-ent">version</span>&gt;0.4.2&lt;/<span class="pl-ent">version</span>&gt;
+        &lt;<span class="pl-ent">version</span>&gt;0.4.4&lt;/<span class="pl-ent">version</span>&gt;
     &lt;/<span class="pl-ent">dependency</span>&gt;
     ......</pre></div>
 
-<ul>
-<li>
-<p>导入工程&amp;编译代码</p>
+<h5>
+<a id="导入工程编译代码" class="anchor" href="#%E5%AF%BC%E5%85%A5%E5%B7%A5%E7%A8%8B%E7%BC%96%E8%AF%91%E4%BB%A3%E7%A0%81" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>导入工程&amp;编译代码</h5>
 
-<p>工程目录下命令行执行”mvn eclipse:eclipse”,并导入eclipse.(如果IDE非eclipse,则使用相对应的方式导入)</p>
+<pre><code>工程目录下命令行执行”mvn eclipse:eclipse”,并导入eclipse.(如果IDE非eclipse,则使用相对应的方式导入)
 
-<p>执行命令”mvn clean package”打包.</p>
-</li>
-</ul>
+执行命令”mvn clean package”打包.
+</code></pre>
 
 <h2>
 <a id="helloworld" class="anchor" href="#helloworld" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>“helloworld”</h2>
 
-<ul>
-<li>
-<p>创建接口和实现</p>
+<h5>
+<a id="创建接口和实现" class="anchor" href="#%E5%88%9B%E5%BB%BA%E6%8E%A5%E5%8F%A3%E5%92%8C%E5%AE%9E%E7%8E%B0" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>创建接口和实现</h5>
 
-<p>新建例子接口(ExampleService.java),对象(ExampleVO.java)和实现 (ExampleServiceImpl.java)类:</p>
-</li>
-</ul>
+<pre><code>新建例子接口(ExampleService.java),对象(ExampleVO.java)和实现 (ExampleServiceImpl.java)类:
+</code></pre>
 
 <p>ExampleService.java</p>
 
@@ -161,9 +170,8 @@
         }
     }</pre></div>
 
-<ul>
-<li>创建执行类</li>
-</ul>
+<h5>
+<a id="创建执行类" class="anchor" href="#%E5%88%9B%E5%BB%BA%E6%89%A7%E8%A1%8C%E7%B1%BB" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>创建执行类</h5>
 
 <p>Main.java</p>
 
@@ -195,24 +203,21 @@
         }
     }</pre></div>
 
-<ul>
-<li>
-<p>执行Main.java</p>
+<h5>
+<a id="执行mainjava" class="anchor" href="#%E6%89%A7%E8%A1%8Cmainjava" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>执行Main.java</h5>
 
-<p>如输出”helloword”则表示执行成功.</p>
+<pre><code>如输出”helloword”则表示执行成功.
 
-<p><em>可参考ikasoa-example的示例.</em></p>
-</li>
-</ul>
+*可参考ikasoa-example的示例.*
+</code></pre>
 
 <h2>
 <a id="使用示例" class="anchor" href="#%E4%BD%BF%E7%94%A8%E7%A4%BA%E4%BE%8B" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>使用示例</h2>
 
 <p><em>此示例程序需要使用到Spring框架.</em></p>
 
-<ul>
-<li>服务端例子</li>
-</ul>
+<h5>
+<a id="服务端例子" class="anchor" href="#%E6%9C%8D%E5%8A%A1%E7%AB%AF%E4%BE%8B%E5%AD%90" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>服务端例子</h5>
 
 <p>bean.xml</p>
 
@@ -263,9 +268,8 @@
         }
     }</pre></div>
 
-<ul>
-<li>客户端例子</li>
-</ul>
+<h5>
+<a id="客户端例子" class="anchor" href="#%E5%AE%A2%E6%88%B7%E7%AB%AF%E4%BE%8B%E5%AD%90" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>客户端例子</h5>
 
 <p>RpcClient.java</p>
 
@@ -286,20 +290,17 @@
         }
     }</pre></div>
 
-<ul>
-<li>
-<p>执行RpcClient.java</p>
+<h5>
+<a id="执行rpcclientjava" class="anchor" href="#%E6%89%A7%E8%A1%8Crpcclientjava" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>执行RpcClient.java</h5>
 
-<p>如输出”helloword”则表示执行成功.</p>
-</li>
-</ul>
+<pre><code>如输出”helloword”则表示执行成功.
+</code></pre>
 
 <h2>
 <a id="thrift使用示例" class="anchor" href="#thrift%E4%BD%BF%E7%94%A8%E7%A4%BA%E4%BE%8B" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Thrift使用示例</h2>
 
-<ul>
-<li>客户端调用Thrift服务端例子</li>
-</ul>
+<h5>
+<a id="客户端调用thrift服务端例子" class="anchor" href="#%E5%AE%A2%E6%88%B7%E7%AB%AF%E8%B0%83%E7%94%A8thrift%E6%9C%8D%E5%8A%A1%E7%AB%AF%E4%BE%8B%E5%AD%90" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>客户端调用Thrift服务端例子</h5>
 
 <p>ThriftClientDemo.java</p>
 
@@ -333,9 +334,8 @@
         }
     }</pre></div>
 
-<ul>
-<li>Spring配置Thrift服务端例子</li>
-</ul>
+<h5>
+<a id="spring配置thrift服务端例子" class="anchor" href="#spring%E9%85%8D%E7%BD%AEthrift%E6%9C%8D%E5%8A%A1%E7%AB%AF%E4%BE%8B%E5%AD%90" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Spring配置Thrift服务端例子</h5>
 
 <div class="highlight highlight-text-xml"><pre>    &lt;?<span class="pl-ent">xml</span><span class="pl-e"> version</span>=<span class="pl-s"><span class="pl-pds">"</span>1.0<span class="pl-pds">"</span></span><span class="pl-e"> encoding</span>=<span class="pl-s"><span class="pl-pds">"</span>UTF-8<span class="pl-pds">"</span></span>?&gt;
     &lt;<span class="pl-ent">beans</span> <span class="pl-e">xmlns</span>=<span class="pl-s"><span class="pl-pds">"</span>http://www.springframework.org/schema/beans<span class="pl-pds">"</span></span> <span class="pl-e">xmlns</span><span class="pl-e">:</span><span class="pl-e">xsi</span>=<span class="pl-s"><span class="pl-pds">"</span>http://www.w3.org/2001/XMLSchema-instance<span class="pl-pds">"</span></span> <span class="pl-e">xmlns</span><span class="pl-e">:</span><span class="pl-e">context</span>=<span class="pl-s"><span class="pl-pds">"</span>http://www.springframework.org/schema/context<span class="pl-pds">"</span></span> <span class="pl-e">xsi</span><span class="pl-e">:</span><span class="pl-e">schemaLocation</span>=<span class="pl-s"><span class="pl-pds">"</span>http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd<span class="pl-pds">"</span></span>&gt;
@@ -361,9 +361,8 @@
         ......
     &lt;/<span class="pl-ent">beans</span>&gt;</pre></div>
 
-<ul>
-<li>Spring配置Thrift服务端例子(嵌套方式)</li>
-</ul>
+<h5>
+<a id="spring配置thrift服务端例子嵌套方式" class="anchor" href="#spring%E9%85%8D%E7%BD%AEthrift%E6%9C%8D%E5%8A%A1%E7%AB%AF%E4%BE%8B%E5%AD%90%E5%B5%8C%E5%A5%97%E6%96%B9%E5%BC%8F" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Spring配置Thrift服务端例子(嵌套方式)</h5>
 
 <div class="highlight highlight-text-xml"><pre>    &lt;?<span class="pl-ent">xml</span><span class="pl-e"> version</span>=<span class="pl-s"><span class="pl-pds">"</span>1.0<span class="pl-pds">"</span></span><span class="pl-e"> encoding</span>=<span class="pl-s"><span class="pl-pds">"</span>UTF-8<span class="pl-pds">"</span></span>?&gt;
     &lt;<span class="pl-ent">beans</span> <span class="pl-e">xmlns</span>=<span class="pl-s"><span class="pl-pds">"</span>http://www.springframework.org/schema/beans<span class="pl-pds">"</span></span> <span class="pl-e">xmlns</span><span class="pl-e">:</span><span class="pl-e">xsi</span>=<span class="pl-s"><span class="pl-pds">"</span>http://www.w3.org/2001/XMLSchema-instance<span class="pl-pds">"</span></span> <span class="pl-e">xmlns</span><span class="pl-e">:</span><span class="pl-e">context</span>=<span class="pl-s"><span class="pl-pds">"</span>http://www.springframework.org/schema/context<span class="pl-pds">"</span></span> <span class="pl-e">xsi</span><span class="pl-e">:</span><span class="pl-e">schemaLocation</span>=<span class="pl-s"><span class="pl-pds">"</span>http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd<span class="pl-pds">"</span></span>&gt;
@@ -408,17 +407,15 @@
 
 <p><em>Ikasoa默认使用Thrift作为服务类型的实现,但也提供了Netty以供选择.</em></p>
 
-<ul>
-<li>使用Thrift服务</li>
-</ul>
+<h5>
+<a id="使用thrift服务" class="anchor" href="#%E4%BD%BF%E7%94%A8thrift%E6%9C%8D%E5%8A%A1" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>使用Thrift服务</h5>
 
 <div class="highlight highlight-source-java"><pre>    <span class="pl-c1">......</span>
     <span class="pl-smi">IkasoaFactory</span> ikasoaFactory <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-smi">DefaultIkasoaFactory</span>();
     <span class="pl-c1">......</span></pre></div>
 
-<ul>
-<li>使用Netty服务</li>
-</ul>
+<h5>
+<a id="使用netty服务" class="anchor" href="#%E4%BD%BF%E7%94%A8netty%E6%9C%8D%E5%8A%A1" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>使用Netty服务</h5>
 
 <div class="highlight highlight-source-java"><pre>    <span class="pl-c1">......</span>
     <span class="pl-smi">IkasoaFactory</span> ikasoaFactory <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-smi">NettyIkasoaFactory</span>();
@@ -429,9 +426,8 @@
 
 <p><em>Ikasoa提供了2种负载均衡,分别为轮循(含权重)和随机,默认使用轮循.</em></p>
 
-<ul>
-<li>选择轮循负载均衡(默认)</li>
-</ul>
+<h5>
+<a id="使用轮循负载均衡默认" class="anchor" href="#%E4%BD%BF%E7%94%A8%E8%BD%AE%E5%BE%AA%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E9%BB%98%E8%AE%A4" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>使用轮循负载均衡(默认)</h5>
 
 <div class="highlight highlight-source-java"><pre>    <span class="pl-c1">......</span>
     <span class="pl-smi">XService</span> xs <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-smi">DefaultIkasoaFactory</span>()<span class="pl-k">.</span>getIkasoaClient(<span class="pl-smi">XService</span><span class="pl-k">.</span>class, serverInfoList);
@@ -442,26 +438,22 @@
 
 <p><em>serverInfoList中的元素对象com.ikamobile.ikasoa.core.loadbalance.ServerInfo定义了单个服务信息,其中weightNumber属性为权重值,用于轮循负载均衡.</em></p>
 
-<ul>
-<li>选择随机负载均衡</li>
-</ul>
+<h5>
+<a id="使用随机负载均衡" class="anchor" href="#%E4%BD%BF%E7%94%A8%E9%9A%8F%E6%9C%BA%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>使用随机负载均衡</h5>
 
 <div class="highlight highlight-source-java"><pre>    <span class="pl-c1">......</span>
     <span class="pl-smi">Class</span> loadBalanceClass <span class="pl-k">=</span> <span class="pl-smi">Class</span><span class="pl-k">.</span>forName(<span class="pl-s"><span class="pl-pds">"</span>com.ikamobile.ikasoa.core.loadbalance.impl.RandomLoadBalanceImpl<span class="pl-pds">"</span></span>);
     <span class="pl-smi">XService</span> xs <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-smi">DefaultIkasoaFactory</span>()<span class="pl-k">.</span>getIkasoaClient(<span class="pl-smi">XService</span><span class="pl-k">.</span>class, serverInfoList, loadBalanceClass);
     <span class="pl-c1">......</span></pre></div>
 
-<ul>
-<li>
-<p>自定义负载均衡</p>
+<h5>
+<a id="自定义负载均衡" class="anchor" href="#%E8%87%AA%E5%AE%9A%E4%B9%89%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>自定义负载均衡</h5>
 
 <p>创建自定义序列化类(例如com.xxx.XLoadBalanceImpl).</p>
 
 <p>自定义序列化类(com.xxx.XLoadBalanceImpl)需实现接口com.ikamobile.ikasoa.core.loadbalance.LoadBalance.</p>
 
 <p>通过如下方式获取服务:</p>
-</li>
-</ul>
 
 <div class="highlight highlight-source-java"><pre>    <span class="pl-c1">......</span>
     <span class="pl-smi">Class</span> loadBalanceClass <span class="pl-k">=</span> <span class="pl-smi">Class</span><span class="pl-k">.</span>forName(<span class="pl-s"><span class="pl-pds">"</span>com.xxx.XLoadBalanceImpl<span class="pl-pds">"</span></span>);
@@ -473,9 +465,8 @@
 
 <p><em>Ikasoa提供了3种序列化方式,分别为fastjson,xml,kryo,默认使用fastjson.</em></p>
 
-<ul>
-<li>选择fastjson作为序列化方式(默认)</li>
-</ul>
+<h5>
+<a id="使用fastjson作为序列化方式默认" class="anchor" href="#%E4%BD%BF%E7%94%A8fastjson%E4%BD%9C%E4%B8%BA%E5%BA%8F%E5%88%97%E5%8C%96%E6%96%B9%E5%BC%8F%E9%BB%98%E8%AE%A4" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>使用fastjson作为序列化方式(默认)</h5>
 
 <div class="highlight highlight-source-java"><pre>    <span class="pl-c1">......</span>
     <span class="pl-smi">IkasoaFactory</span> ikasoaFactory <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-smi">DefaultIkasoaFactory</span>();
@@ -484,35 +475,30 @@
     <span class="pl-c">// IkasoaFactory ikasoaFactory = new DefaultIkasoaFactory(new Configurator(protocolHandlerClass));</span>
     <span class="pl-c1">......</span></pre></div>
 
-<ul>
-<li>选择xml作为序列化方式</li>
-</ul>
+<h5>
+<a id="使用xml作为序列化方式" class="anchor" href="#%E4%BD%BF%E7%94%A8xml%E4%BD%9C%E4%B8%BA%E5%BA%8F%E5%88%97%E5%8C%96%E6%96%B9%E5%BC%8F" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>使用xml作为序列化方式</h5>
 
 <div class="highlight highlight-source-java"><pre>    <span class="pl-c1">......</span>
     <span class="pl-smi">Class</span> protocolHandlerClass <span class="pl-k">=</span> <span class="pl-smi">Class</span><span class="pl-k">.</span>forName(<span class="pl-s"><span class="pl-pds">"</span>com.ikamobile.ikasoa.rpc.handler.impl.XmlProtocolHandlerImpl<span class="pl-pds">"</span></span>);
     <span class="pl-smi">IkasoaFactory</span> ikasoaFactory <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-smi">DefaultIkasoaFactory</span>(<span class="pl-k">new</span> <span class="pl-smi">Configurator</span>(protocolHandlerClass));
     <span class="pl-c1">......</span></pre></div>
 
-<ul>
-<li>选择kryo作为序列化方式</li>
-</ul>
+<h5>
+<a id="使用kryo作为序列化方式" class="anchor" href="#%E4%BD%BF%E7%94%A8kryo%E4%BD%9C%E4%B8%BA%E5%BA%8F%E5%88%97%E5%8C%96%E6%96%B9%E5%BC%8F" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>使用kryo作为序列化方式</h5>
 
 <div class="highlight highlight-source-java"><pre>    <span class="pl-c1">......</span>
     <span class="pl-smi">Class</span> protocolHandlerClass <span class="pl-k">=</span> <span class="pl-smi">Class</span><span class="pl-k">.</span>forName(<span class="pl-s"><span class="pl-pds">"</span>com.ikamobile.ikasoa.rpc.handler.impl.KryoProtocolHandlerImpl<span class="pl-pds">"</span></span>);
     <span class="pl-smi">IkasoaFactory</span> ikasoaFactory <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-smi">DefaultIkasoaFactory</span>(<span class="pl-k">new</span> <span class="pl-smi">Configurator</span>(protocolHandlerClass));
     <span class="pl-c1">......</span></pre></div>
 
-<ul>
-<li>
-<p>自定义序列化方式</p>
+<h5>
+<a id="自定义序列化方式" class="anchor" href="#%E8%87%AA%E5%AE%9A%E4%B9%89%E5%BA%8F%E5%88%97%E5%8C%96%E6%96%B9%E5%BC%8F" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>自定义序列化方式</h5>
 
 <p>创建自定义序列化类(例如com.xxx.XProtocolHandlerImpl).</p>
 
 <p>自定义序列化类(com.xxx.XProtocolHandlerImpl)需实现接口com.ikamobile.ikasoa.rpc.handler.ProtocolHandler.</p>
 
 <p>通过如下方式获取IkasoaFactory:</p>
-</li>
-</ul>
 
 <div class="highlight highlight-source-java"><pre>    <span class="pl-c1">......</span>
     <span class="pl-smi">Class</span> protocolHandlerClass <span class="pl-k">=</span> <span class="pl-smi">Class</span><span class="pl-k">.</span>forName(<span class="pl-s"><span class="pl-pds">"</span>com.xx.XProtocolHandlerImpl<span class="pl-pds">"</span></span>);
