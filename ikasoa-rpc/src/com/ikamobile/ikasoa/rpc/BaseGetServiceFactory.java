@@ -1,12 +1,8 @@
 package com.ikamobile.ikasoa.rpc;
 
-import java.util.List;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.ikamobile.ikasoa.core.loadbalance.LoadBalance;
-import com.ikamobile.ikasoa.core.loadbalance.ServerInfo;
 import com.ikamobile.ikasoa.core.thrift.GeneralFactory;
 import com.ikamobile.ikasoa.core.thrift.client.ThriftClient;
 import com.ikamobile.ikasoa.core.thrift.client.ThriftClientConfiguration;
@@ -50,43 +46,10 @@ public class BaseGetServiceFactory<T1, T2> extends GeneralFactory {
 		super(thriftServerConfiguration, thriftClientConfiguration);
 	}
 
-	public BaseGetService<T1, T2> getBaseGetService(String serverHost, int serverPort, String serviceKey,
-			ReturnData resultData) {
-		return getBaseGetService(serverHost, serverPort, serviceKey,
-				protocolHandlerFactory.getProtocolHandler(resultData, getProtocolHandlerClass()));
-	}
-
-	public BaseGetService<T1, T2> getBaseGetService(String serverHost, int serverPort, String serviceKey,
-			ProtocolHandler<T1, T2> protocolHandler) {
-		return getBaseGetService(getThriftClient(serverHost, serverPort), serviceKey, protocolHandler);
-	}
-
 	public BaseGetService<T1, T2> getBaseGetService(ThriftClient thriftClient, String serviceKey,
 			ReturnData resultData) {
 		return getBaseGetService(thriftClient, serviceKey,
 				protocolHandlerFactory.getProtocolHandler(resultData, getProtocolHandlerClass()));
-	}
-
-	public BaseGetService<T1, T2> getBaseGetService(List<ServerInfo> serverInfoList, String serviceKey,
-			ReturnData resultData) {
-		return getBaseGetService(serverInfoList, serviceKey,
-				protocolHandlerFactory.getProtocolHandler(resultData, getProtocolHandlerClass()));
-	}
-
-	public BaseGetService<T1, T2> getBaseGetService(List<ServerInfo> serverInfoList, String serviceKey,
-			ProtocolHandler<T1, T2> protocolHandler) {
-		return getBaseGetService(getThriftClient(serverInfoList), serviceKey, protocolHandler);
-	}
-
-	public BaseGetService<T1, T2> getBaseGetService(List<ServerInfo> serverInfoList,
-			Class<LoadBalance> loadBalanceClass, String serviceKey, ReturnData resultData) {
-		return getBaseGetService(serverInfoList, loadBalanceClass, serviceKey,
-				protocolHandlerFactory.getProtocolHandler(resultData, getProtocolHandlerClass()));
-	}
-
-	public BaseGetService<T1, T2> getBaseGetService(List<ServerInfo> serverInfoList,
-			Class<LoadBalance> loadBalanceClass, String serviceKey, ProtocolHandler<T1, T2> protocolHandler) {
-		return getBaseGetService(getThriftClient(serverInfoList, loadBalanceClass), serviceKey, protocolHandler);
 	}
 
 	public BaseGetService<T1, T2> getBaseGetService(ThriftClient thriftClient, String serviceKey,

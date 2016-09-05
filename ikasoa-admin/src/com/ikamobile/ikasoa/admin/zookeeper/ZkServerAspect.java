@@ -19,8 +19,8 @@ import com.ikamobile.ikasoa.core.thrift.server.ThriftServerConfiguration;
  */
 public class ZkServerAspect extends ZkBase implements ServerAspect {
 
-	public ZkServerAspect(String zkServer, String zkNode) {
-		super(zkServer, zkNode);
+	public ZkServerAspect(String zkServerString, String zkNode) {
+		super(zkServerString, zkNode);
 	}
 
 	@Override
@@ -35,10 +35,29 @@ public class ZkServerAspect extends ZkBase implements ServerAspect {
 			zkClient.createPersistent(zkNode, "ikasoa_node");
 		}
 		try {
-			String ip = InetAddress.getLocalHost().getHostAddress();
-			String n = new StringBuilder(zkNode).append("/").append(serverName).append("-").append(ip).append("-")
-					.append(serverPort).append(" ").toString();
-			zkClient.createEphemeralSequential(n, new ZkServerNodeObject(serverName, ip, serverPort));
+			String serverHost = InetAddress.getLocalHost().getHostAddress();
+			String n = new StringBuilder(zkNode).append("/").append(serverName).append("-").append(serverHost)
+					.append("-").append(serverPort).append(" ").toString();
+			if (isExistNode(serverName, serverHost, serverPort)) {
+				throw new RuntimeException("Thrift server already register ! (name: " + serverName + " , host : "
+						+ serverHost + " , port : " + serverPort + ")");
+			}
+			ZkServerNode zksn = new ZkServerNode(serverName, serverHost, serverPort);
+			if (configuration != null) {
+				if (configuration.getTransportFactory() != null) {
+					zksn.setTransportFactoryClassName(configuration.getTransportFactory().getClass().getName());
+				}
+				if (configuration.getProtocolFactory() != null) {
+					zksn.setTransportFactoryClassName(configuration.getProtocolFactory().getClass().getName());
+				}
+				if (configuration.getProcessorFactory() != null) {
+					zksn.setTransportFactoryClassName(configuration.getProcessorFactory().getClass().getName());
+				}
+			}
+			if (processor != null) {
+				zksn.setProcessorClassName(processor.getClass().getName());
+			}
+			zkClient.createEphemeralSequential(n, zksn);
 		} catch (UnknownHostException e) {
 			throw new RuntimeException(e);
 		}

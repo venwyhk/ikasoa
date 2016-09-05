@@ -8,10 +8,11 @@ import org.slf4j.LoggerFactory;
 import com.ikamobile.ikasoa.core.STException;
 import com.ikamobile.ikasoa.core.ServerCheck;
 import com.ikamobile.ikasoa.core.ServerCheckFailProcessor;
-import com.ikamobile.ikasoa.core.thrift.ThriftSocket;
 import com.ikamobile.ikasoa.core.thrift.client.ThriftClient;
 import com.ikamobile.ikasoa.core.thrift.client.ThriftClientConfiguration;
 import com.ikamobile.ikasoa.core.thrift.client.pool.SocketPool;
+import com.ikamobile.ikasoa.core.thrift.client.socket.ThriftSocket;
+import com.ikamobile.ikasoa.core.utils.ServerUtil;
 import com.ikamobile.ikasoa.core.utils.StringUtil;
 
 /**
@@ -24,7 +25,7 @@ public abstract class AbstractThriftClientImpl implements ThriftClient {
 
 	private static final Logger LOG = LoggerFactory.getLogger(AbstractThriftClientImpl.class);
 
-	protected ThreadLocal<ThriftSocket> thriftSocket = new ThreadLocal<>();
+	protected ThreadLocal<ThriftSocket> socketThread = new ThreadLocal<>();
 
 	/**
 	 * 需连接的Thrift服务地址
@@ -41,7 +42,11 @@ public abstract class AbstractThriftClientImpl implements ThriftClient {
 	 */
 	private ThriftClientConfiguration configuration = new ThriftClientConfiguration();
 
+	/**
+	 * 服务器可用性检测
+	 */
 	private ServerCheck serverCheck;
+
 	/**
 	 * 连接失败异常处理器
 	 */
@@ -50,14 +55,17 @@ public abstract class AbstractThriftClientImpl implements ThriftClient {
 	@Override
 	public TTransport getTransport() throws STException {
 		ServerCheck serverCheck = getServerCheck();
-		if (serverCheck != null && !serverCheck.check(serverHost, serverPort)) {
+		if (serverCheck != null && !serverCheck.check(getServerHost(), getServerPort())) {
 			// 如果服务器检测不可用,需要做相应的处理.默认为抛异常.
 			getServerCheckFailProcessor().process(this);
 		}
-		// 每次都取一个新的连接.
+		return getTransport(getServerHost(), getServerPort());
+	}
+
+	protected TTransport getTransport(String serverHost, int serverPort) throws STException {
 		SocketPool pool = getThriftClientConfiguration().getSocketPool();
-		thriftSocket.set(pool.buildThriftSocket(getServerHost(), getServerPort()));
-		return configuration.getTransportFactory().getTransport(thriftSocket.get());
+		socketThread.set(pool.buildThriftSocket(serverHost, serverPort));
+		return getThriftClientConfiguration().getTransportFactory().getTransport(socketThread.get());
 	}
 
 	@Override
@@ -91,8 +99,7 @@ public abstract class AbstractThriftClientImpl implements ThriftClient {
 
 	@Override
 	public int getServerPort() {
-		// 不允许使用1024以内的端口.
-		if (serverPort <= 0x400 || serverPort > 0xFFFF) {
+		if (!ServerUtil.isSocketPort(serverPort)) {
 			throw new RuntimeException("serverPort range must is 1025 ~ 65535 . Your port is : " + serverPort + " .");
 		}
 		return serverPort;
@@ -150,7 +157,7 @@ public abstract class AbstractThriftClientImpl implements ThriftClient {
 	@Override
 	public void close() {
 		// 仅回收连接,并没有断开
-		getThriftClientConfiguration().getSocketPool().releaseThriftSocket(thriftSocket.get(), getServerHost(),
+		getThriftClientConfiguration().getSocketPool().releaseThriftSocket(socketThread.get(), getServerHost(),
 				getServerPort());
 	}
 

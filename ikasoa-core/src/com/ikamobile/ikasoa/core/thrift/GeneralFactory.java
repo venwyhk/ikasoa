@@ -17,6 +17,8 @@ import com.ikamobile.ikasoa.core.loadbalance.ServerInfo;
 import com.ikamobile.ikasoa.core.thrift.client.AsyncMultiplexedProtocolFactory;
 import com.ikamobile.ikasoa.core.thrift.client.ThriftClient;
 import com.ikamobile.ikasoa.core.thrift.client.ThriftClientConfiguration;
+import com.ikamobile.ikasoa.core.thrift.client.impl.LoadBalanceNonblockingThriftClientImpl;
+import com.ikamobile.ikasoa.core.thrift.client.impl.NonblockingThriftClientImpl;
 import com.ikamobile.ikasoa.core.thrift.client.impl.DefaultThriftClientImpl;
 import com.ikamobile.ikasoa.core.thrift.client.impl.LoadBalanceThriftClientImpl;
 import com.ikamobile.ikasoa.core.thrift.server.MultiplexedProcessor;
@@ -99,6 +101,14 @@ public class GeneralFactory implements Factory {
 	 * 获取默认的ThriftServer对象
 	 */
 	@Override
+	public ThriftServer getThriftServer(int serverPort, Map<String, Service> serviceMap) throws STException {
+		return getThriftServer("DefaultThriftServer-" + serverPort, serverPort, serviceMap);
+	}
+
+	/**
+	 * 获取默认的ThriftServer对象
+	 */
+	@Override
 	public ThriftServer getThriftServer(String serverName, int serverPort, Map<String, Service> serviceMap)
 			throws STException {
 		if (serviceMap == null) {
@@ -109,14 +119,6 @@ public class GeneralFactory implements Factory {
 			processorMap.put(key, new ServiceProcessor(serviceMap.get(key)));
 		}
 		return getThriftServer(serverName, serverPort, new MultiplexedProcessor(processorMap));
-	}
-
-	/**
-	 * 获取默认的ThriftServer对象
-	 */
-	@Override
-	public ThriftServer getThriftServer(int serverPort, Map<String, Service> serviceMap) throws STException {
-		return getThriftServer("DefaultThriftServer-" + serverPort, serverPort, serviceMap);
 	}
 
 	/**
@@ -152,6 +154,46 @@ public class GeneralFactory implements Factory {
 			Object[] params = { serverInfoList };
 			Constructor con = loadBalanceClass.getConstructor(paramTypes);
 			return new LoadBalanceThriftClientImpl((LoadBalance) con.newInstance(params), thriftClientConfiguration);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	/**
+	 * 获取NonblockingThriftClient对象
+	 */
+	@Override
+	public ThriftClient getNonblockingThriftClient(String serverHost, int serverPort) {
+		return new NonblockingThriftClientImpl(serverHost, serverPort, thriftClientConfiguration);
+	}
+
+	/**
+	 * 获取带负载均衡的NonblockingThriftClient对象
+	 */
+	@Override
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public ThriftClient getNonblockingThriftClient(List<ServerInfo> serverInfoList) {
+		try {
+			Class cls = Class.forName(DEFAULT_LOAD_BALANCE_CLASS_STRING);
+			return getNonblockingThriftClient(serverInfoList, cls);
+		} catch (ClassNotFoundException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	/**
+	 * 获取带负载均衡的NonblockingThriftClient对象
+	 */
+	@Override
+	@SuppressWarnings("rawtypes")
+	public ThriftClient getNonblockingThriftClient(List<ServerInfo> serverInfoList,
+			Class<LoadBalance> loadBalanceClass) {
+		try {
+			Class[] paramTypes = { List.class };
+			Object[] params = { serverInfoList };
+			Constructor con = loadBalanceClass.getConstructor(paramTypes);
+			return new LoadBalanceNonblockingThriftClientImpl((LoadBalance) con.newInstance(params),
+					thriftClientConfiguration);
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}

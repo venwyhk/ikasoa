@@ -13,17 +13,17 @@ import com.ikamobile.ikasoa.core.loadbalance.ServerInfo;
  */
 public class ZkClientTools extends ZkBase {
 
-	public ZkClientTools(String zkServer, String zkNode) {
-		super(zkServer, zkNode);
+	public ZkClientTools(String zkServerString, String zkNode) {
+		super(zkServerString, zkNode);
 	}
 
 	public List<ServerInfo> getServerInfoList() {
 		List<ServerInfo> serverInfoList = new ArrayList<>();
 		List<String> nList = zkClient.getChildren(zkNode);
 		for (String n : nList) {
-			ZkServerNodeObject sno = (ZkServerNodeObject) zkClient
+			ZkServerNode zksn = (ZkServerNode) zkClient
 					.readData(new StringBuilder(zkNode).append("/").append(n).toString());
-			serverInfoList.add(new ServerInfo(sno.getServerHost(), sno.getServerPort()));
+			serverInfoList.add(new ServerInfo(zksn.getServerHost(), zksn.getServerPort()));
 		}
 		return serverInfoList;
 	}

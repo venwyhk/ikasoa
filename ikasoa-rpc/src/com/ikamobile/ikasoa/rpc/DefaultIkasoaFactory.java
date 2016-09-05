@@ -62,40 +62,30 @@ public class DefaultIkasoaFactory extends GeneralFactory implements IkasoaFactor
 	@Override
 	@SuppressWarnings("unchecked")
 	public <T> T getIkasoaClient(Class<T> iClass, String serverHost, int serverPort) {
-		BaseGetServiceFactory<Object[], T> bgsFactory = new BaseGetServiceFactory<Object[], T>(
-				super.thriftServerConfiguration, super.thriftClientConfiguration);
-		bgsFactory.setProtocolHandlerClass(configurator.getProtocolHandlerClass());
-		bgsFactory.setClientInvocationHandler(configurator.getClientInvocationHandler());
 		return (T) Proxy.newProxyInstance(iClass.getClassLoader(), new Class<?>[] { iClass },
-				(proxy, iMethod, args) -> bgsFactory
-						.getBaseGetService(serverHost, serverPort, getSKey(iClass, iMethod), new ReturnData(iMethod))
+				(proxy, iMethod, args) -> getBaseGetServiceFactory()
+						.getBaseGetService(getThriftClient(serverHost, serverPort), getSKey(iClass, iMethod),
+								new ReturnData(iMethod))
 						.get(args));
 	}
 
 	@Override
 	@SuppressWarnings("unchecked")
 	public <T> T getIkasoaClient(Class<T> iClass, List<ServerInfo> serverInfoList) {
-		BaseGetServiceFactory<Object[], T> bgsFactory = new BaseGetServiceFactory<Object[], T>(
-				super.thriftServerConfiguration, super.thriftClientConfiguration);
-		bgsFactory.setProtocolHandlerClass(configurator.getProtocolHandlerClass());
-		bgsFactory.setClientInvocationHandler(configurator.getClientInvocationHandler());
 		return (T) Proxy.newProxyInstance(iClass.getClassLoader(), new Class<?>[] { iClass },
-				(proxy, iMethod, args) -> bgsFactory
-						.getBaseGetService(serverInfoList, getSKey(iClass, iMethod), new ReturnData(iMethod))
-						.get(args));
+				(proxy, iMethod, args) -> getBaseGetServiceFactory().getBaseGetService(getThriftClient(serverInfoList),
+						getSKey(iClass, iMethod), new ReturnData(iMethod)).get(args));
 	}
 
 	@Override
 	@SuppressWarnings("unchecked")
 	public <T> T getIkasoaClient(Class<T> iClass, List<ServerInfo> serverInfoList,
 			Class<LoadBalance> loadBalanceClass) {
-		BaseGetServiceFactory<Object[], T> bgsFactory = new BaseGetServiceFactory<Object[], T>(
-				super.thriftServerConfiguration, super.thriftClientConfiguration);
-		bgsFactory.setProtocolHandlerClass(configurator.getProtocolHandlerClass());
-		bgsFactory.setClientInvocationHandler(configurator.getClientInvocationHandler());
 		return (T) Proxy.newProxyInstance(iClass.getClassLoader(), new Class<?>[] { iClass },
-				(proxy, iMethod, args) -> bgsFactory.getBaseGetService(serverInfoList, loadBalanceClass,
-						getSKey(iClass, iMethod), new ReturnData(iMethod)).get(args));
+				(proxy, iMethod, args) -> getBaseGetServiceFactory()
+						.getBaseGetService(getThriftClient(serverInfoList, loadBalanceClass), getSKey(iClass, iMethod),
+								new ReturnData(iMethod))
+						.get(args));
 	}
 
 	@Override
@@ -224,6 +214,14 @@ public class DefaultIkasoaFactory extends GeneralFactory implements IkasoaFactor
 		} catch (Exception e) {
 			throw new IkasoaException("Builder Ikasoa service exception !", e);
 		}
+	}
+
+	private <T> BaseGetServiceFactory<Object[], T> getBaseGetServiceFactory() {
+		BaseGetServiceFactory<Object[], T> bgsFactory = new BaseGetServiceFactory<Object[], T>(
+				super.thriftServerConfiguration, super.thriftClientConfiguration);
+		bgsFactory.setProtocolHandlerClass(configurator.getProtocolHandlerClass());
+		bgsFactory.setClientInvocationHandler(configurator.getClientInvocationHandler());
+		return bgsFactory;
 	}
 
 	// 比较两个方法是否相同

@@ -54,8 +54,10 @@ public class BeanUtil {
 				}
 			}
 			if (fields[i].getType() == targetField.getType()) {
-				String getMethodName = "get" + fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1);
-				String setMethodName = "set" + fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1);
+				String getMethodName = new StringBuilder("get").append(fieldName.substring(0, 1).toUpperCase())
+						.append(fieldName.substring(1)).toString();
+				String setMethodName = new StringBuilder("set").append(fieldName.substring(0, 1).toUpperCase())
+						.append(fieldName.substring(1)).toString();
 				Method getMethod;
 				Method setMethod;
 				try {

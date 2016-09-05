@@ -8,19 +8,19 @@ import java.util.Map.Entry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.ikamobile.ikasoa.core.thrift.client.pool.SocketPool;
-import com.ikamobile.ikasoa.core.thrift.client.socket.ThriftSocket;
+import com.ikamobile.ikasoa.core.thrift.client.pool.SocketChannelPool;
+import com.ikamobile.ikasoa.core.thrift.client.socket.ThriftSocketChannel;
 import com.ikamobile.ikasoa.core.utils.ServerUtil;
 
 /**
- * Socket连接池默认实现
+ * SocketChannel连接池默认实现
  * 
  * @author <a href="mailto:larry7696@gmail.com">Larry</a>
- * @version 0.3.3
+ * @version 0.4.5
  */
-public class DefaultSocketPoolImpl implements SocketPool {
+public class DefaultSocketChannelPoolImpl implements SocketChannelPool {
 
-	private static final Logger LOG = LoggerFactory.getLogger(DefaultSocketPoolImpl.class);
+	private static final Logger LOG = LoggerFactory.getLogger(DefaultSocketChannelPoolImpl.class);
 
 	// 单个池容量
 	private byte size = 0x10;
@@ -28,25 +28,25 @@ public class DefaultSocketPoolImpl implements SocketPool {
 	// 连接超时时间
 	private int time = 0;
 
-	private static Map<String, DefaultSocketPoolImpl> selfMap = new HashMap<>();
+	private static Map<String, DefaultSocketChannelPoolImpl> selfMap = new HashMap<>();
 
 	// 是否空闲 (true: 不空闲, false: 空闲)
 	private boolean[] socketStatusArray = null;
 
-	private Hashtable<Byte, ThriftSocket> socketPool;
+	private Hashtable<Byte, ThriftSocketChannel> socketChannelPool;
 
-	public DefaultSocketPoolImpl() {
+	public DefaultSocketChannelPoolImpl() {
 	}
 
-	public DefaultSocketPoolImpl(byte size) {
+	public DefaultSocketChannelPoolImpl(byte size) {
 		this.size = size;
 	}
 
-	public DefaultSocketPoolImpl(int time) {
+	public DefaultSocketChannelPoolImpl(int time) {
 		this.time = time;
 	}
 
-	public DefaultSocketPoolImpl(byte size, int time) {
+	public DefaultSocketChannelPoolImpl(byte size, int time) {
 		this.size = size;
 		this.time = time;
 	}
@@ -58,19 +58,19 @@ public class DefaultSocketPoolImpl implements SocketPool {
 	 *            服务器地址
 	 * @param port
 	 *            服务器端口
-	 * @return DefaultSocketPoolImpl 默认的连接池对象
+	 * @return DefaultSocketChannelPoolImpl 默认的连接池对象
 	 */
-	public synchronized DefaultSocketPoolImpl init(String host, int port) {
+	public synchronized DefaultSocketChannelPoolImpl init(String host, int port) {
 		if (!ServerUtil.checkHostAndPort(host, port)) {
 			throw new RuntimeException("Server host or port is null !");
 		}
-		DefaultSocketPoolImpl self = new DefaultSocketPoolImpl();
+		DefaultSocketChannelPoolImpl self = new DefaultSocketChannelPoolImpl();
 		selfMap.put(ServerUtil.getKey(host, port), self);
-		self.socketPool = new Hashtable<>(size);
+		self.socketChannelPool = new Hashtable<>(size);
 		self.socketStatusArray = new boolean[size];
 		// 初始化连接池
 		LOG.debug("Initiation pool ......");
-		buildThriftSocketPool(host, port);
+		buildThriftSocketChannelPool(host, port);
 		return self;
 	}
 
@@ -82,17 +82,17 @@ public class DefaultSocketPoolImpl implements SocketPool {
 	 * @param port
 	 *            服务器端口
 	 */
-	public synchronized void buildThriftSocketPool(String host, int port) {
+	public synchronized void buildThriftSocketChannelPool(String host, int port) {
 		if (!ServerUtil.checkHostAndPort(host, port)) {
 			throw new RuntimeException("Server host or port is null !");
 		}
-		DefaultSocketPoolImpl self = selfMap.get(ServerUtil.getKey(host, port));
+		DefaultSocketChannelPoolImpl self = selfMap.get(ServerUtil.getKey(host, port));
 		if (self == null) {
 			self = init(host, port);
 		}
 		try {
 			for (byte i = 0; i < size; i++) {
-				self.socketPool.put(new Byte(i), new ThriftSocket(host, port, time));
+				self.socketChannelPool.put(new Byte(i), new ThriftSocketChannel(host, port, time));
 				self.socketStatusArray[i] = false;
 			}
 		} catch (Exception e) {
@@ -101,14 +101,14 @@ public class DefaultSocketPoolImpl implements SocketPool {
 	}
 
 	/**
-	 * 从连接池中获取一个空闲的ThriftSocket连接
+	 * 从连接池中获取一个空闲的ThriftSocketChannel连接
 	 */
 	@Override
-	public synchronized ThriftSocket buildThriftSocket(String host, int port) {
+	public synchronized ThriftSocketChannel buildThriftSocketChannel(String host, int port) {
 		if (!ServerUtil.checkHostAndPort(host, port)) {
 			throw new RuntimeException("Server host or port is null !");
 		}
-		DefaultSocketPoolImpl self = selfMap.get(ServerUtil.getKey(host, port));
+		DefaultSocketChannelPoolImpl self = selfMap.get(ServerUtil.getKey(host, port));
 		if (self == null || self.socketStatusArray == null) {
 			self = init(host, port);
 		}
@@ -116,17 +116,16 @@ public class DefaultSocketPoolImpl implements SocketPool {
 		for (; i < size; i++) {
 			if (!self.socketStatusArray[i]) {
 				self.socketStatusArray[i] = true;
-				return getThriftSocket(self, i, host, port);
+				return getThriftSocketChannel(self, i, host, port);
 			}
 		}
 		// 如果连接不够用,就初始化连接池.
 		try {
 			for (i = 0; i < size; i++) {
-				ThriftSocket thriftSocket = self.socketPool.get(i);
-				if (self.socketStatusArray[i] && (thriftSocket == null || thriftSocket.getSocket() == null
-						|| (thriftSocket.isOpen() && thriftSocket.getSocket().isClosed()))) {
-					thriftSocket = new ThriftSocket(host, port, time);
-					return thriftSocket;
+				ThriftSocketChannel thriftSocketChannel = self.socketChannelPool.get(i);
+				if (self.socketStatusArray[i] && thriftSocketChannel == null) {
+					thriftSocketChannel = new ThriftSocketChannel(host, port, time);
+					return thriftSocketChannel;
 				}
 			}
 		} catch (Exception e) {
@@ -134,37 +133,29 @@ public class DefaultSocketPoolImpl implements SocketPool {
 		}
 		LOG.warn("Not enough pooled connection ! Again retry initiation pool .");
 		init(host, port);
-		return buildThriftSocket(host, port);
+		return buildThriftSocketChannel(host, port);
 	}
 
-	private ThriftSocket getThriftSocket(DefaultSocketPoolImpl self, byte i, String host, int port) {
+	private ThriftSocketChannel getThriftSocketChannel(DefaultSocketChannelPoolImpl self, byte i, String host,
+			int port) {
 		LOG.debug("Get socket number is " + i + " .");
-		ThriftSocket thriftSocket = self.socketPool.get(new Byte(i));
-		if (thriftSocket != null) {
-			return thriftSocket;
+		ThriftSocketChannel thriftSocketChannel = self.socketChannelPool.get(new Byte(i));
+		if (thriftSocketChannel != null) {
+			return thriftSocketChannel;
 		} else {
 			LOG.warn("Pool is null ! Again retry initiation pool .");
 			init(host, port);
-			return buildThriftSocket(host, port);
+			return buildThriftSocketChannel(host, port);
 		}
 	}
 
 	/**
-	 * 回收ThriftSocket连接
+	 * 回收ThriftSocketChannel连接
 	 */
 	@Override
-	public synchronized void releaseThriftSocket(ThriftSocket thriftSocket) {
-		releaseThriftSocket(thriftSocket, thriftSocket.getSocket().getInetAddress().getHostName(),
-				thriftSocket.getSocket().getPort());
-	}
-
-	/**
-	 * 回收ThriftSocket连接
-	 */
-	@Override
-	public synchronized void releaseThriftSocket(ThriftSocket thriftSocket, String host, int port) {
-		if (thriftSocket == null || thriftSocket.getSocket() == null
-				|| thriftSocket.getSocket().getInetAddress() == null) {
+	public synchronized void releaseThriftSocketChannel(ThriftSocketChannel thriftSocketChannel, String host,
+			int port) {
+		if (thriftSocketChannel == null) {
 			LOG.warn("Release unsuccessful .");
 			return;
 		}
@@ -173,12 +164,12 @@ public class DefaultSocketPoolImpl implements SocketPool {
 			return;
 		}
 		LOG.debug("Release socket , host is " + host + " and port is " + port + " .");
-		DefaultSocketPoolImpl self = selfMap.get(ServerUtil.getKey(host, port));
+		DefaultSocketChannelPoolImpl self = selfMap.get(ServerUtil.getKey(host, port));
 		if (self == null) {
 			self = init(host, port);
 		}
 		for (byte i = 0; i < size; i++) {
-			if (self.socketPool.get(new Byte(i)) == thriftSocket) {
+			if (self.socketChannelPool.get(new Byte(i)) == thriftSocketChannel) {
 				self.socketStatusArray[i] = false;
 				break;
 			}
@@ -186,22 +177,22 @@ public class DefaultSocketPoolImpl implements SocketPool {
 	}
 
 	/**
-	 * 回收所有ThriftSocket连接
+	 * 回收所有ThriftSocketChannel连接
 	 * <p>
 	 * 会断开所有连接.
 	 */
 	@Override
-	public synchronized void releaseAllThriftSocket() {
+	public synchronized void releaseAllThriftSocketChannel() {
 		if (selfMap == null || selfMap.size() == 0) {
 			return;
 		}
-		ThriftSocket socket;
-		for (Entry<String, DefaultSocketPoolImpl> entry : selfMap.entrySet()) {
-			DefaultSocketPoolImpl self = entry.getValue();
+		ThriftSocketChannel socketChannel;
+		for (Entry<String, DefaultSocketChannelPoolImpl> entry : selfMap.entrySet()) {
+			DefaultSocketChannelPoolImpl self = entry.getValue();
 			for (byte i = 0; i < size; i++) {
-				socket = self.socketPool.get(new Byte(i));
+				socketChannel = self.socketChannelPool.get(new Byte(i));
 				try {
-					socket.close();
+					socketChannel.close();
 					self.socketStatusArray[i] = false;
 				} catch (Exception e) {
 					LOG.error(e.getMessage());

@@ -55,7 +55,7 @@ public class PollingLoadBalanceImpl implements LoadBalance {
 	}
 
 	@Override
-	public ServerInfo next() throws STException {
+	public synchronized ServerInfo next() throws STException {
 		int size = serverInfoList.size();
 		if (size == 0) {
 			throw new STException("Get server host failed !");

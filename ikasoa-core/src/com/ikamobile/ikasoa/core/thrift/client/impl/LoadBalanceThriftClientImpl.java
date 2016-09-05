@@ -10,7 +10,6 @@ import com.ikamobile.ikasoa.core.loadbalance.LoadBalance;
 import com.ikamobile.ikasoa.core.loadbalance.ServerInfo;
 import com.ikamobile.ikasoa.core.thrift.client.ThriftClient;
 import com.ikamobile.ikasoa.core.thrift.client.ThriftClientConfiguration;
-import com.ikamobile.ikasoa.core.thrift.client.pool.SocketPool;
 
 /**
  * 负载均衡Thrift客户端实现
@@ -58,16 +57,11 @@ public class LoadBalanceThriftClientImpl extends AbstractThriftClientImpl {
 		ServerCheck serverCheck = getServerCheck();
 		// 如果有配置检测实现,则在建立连接前尝试检测服务器,如果服务器不可用则尝试切换到另一台服务器,切换规则取决于负载均衡实现.
 		// 需要注意,如果列表中的服务器全都不可用,则会无限循环下去,直到有可用的服务为止.
-		if (serverCheck != null) {
-			if (!serverCheck.check(getServerHost(), getServerPort())) {
-				serverCheckFailProcessor.process(this);
-				return getTransport();
-			}
+		if (serverCheck != null && !serverCheck.check(getServerHost(), getServerPort())) {
+			serverCheckFailProcessor.process(this);
+			return getTransport();
 		}
-		ThriftClientConfiguration configuration = super.getThriftClientConfiguration();
-		SocketPool pool = super.getThriftClientConfiguration().getSocketPool();
-		thriftSocket.set(pool.buildThriftSocket(getServerHost(), getServerPort()));
-		TTransport transport = configuration.getTransportFactory().getTransport(thriftSocket.get());
+		TTransport transport = super.getTransport(getServerHost(), getServerPort());
 		loadBalance.next();
 		return transport;
 	}

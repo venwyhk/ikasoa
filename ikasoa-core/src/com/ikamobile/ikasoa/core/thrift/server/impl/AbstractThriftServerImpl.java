@@ -11,8 +11,10 @@ import org.apache.thrift.transport.TTransportException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.ikamobile.ikasoa.core.STException;
+import com.ikamobile.ikasoa.core.thrift.server.ServerAspect;
 import com.ikamobile.ikasoa.core.thrift.server.ThriftServer;
 import com.ikamobile.ikasoa.core.thrift.server.ThriftServerConfiguration;
+import com.ikamobile.ikasoa.core.utils.ServerUtil;
 
 /**
  * Thrift服务实现抽象
@@ -72,7 +74,7 @@ public abstract class AbstractThriftServerImpl implements ThriftServer {
 			executorService = Executors.newSingleThreadExecutor();
 		}
 		if (!isServing()) {
-			beforeStart();
+			beforeStart(getThriftServerConfiguration().getServerAspect());
 			executorService.execute(() -> {
 				try {
 					start();
@@ -80,13 +82,13 @@ public abstract class AbstractThriftServerImpl implements ThriftServer {
 					throw new RuntimeException(e);
 				}
 			});
-			afterStart();
 			Runtime.getRuntime().addShutdownHook(new Thread() {
 				@Override
 				public void run() {
 					AbstractThriftServerImpl.this.stop();
 				}
 			});
+			afterStart(getThriftServerConfiguration().getServerAspect());
 		}
 	}
 
@@ -100,7 +102,7 @@ public abstract class AbstractThriftServerImpl implements ThriftServer {
 		if (server == null) {
 			LOG.debug("Thrift server configuration : " + configuration);
 			// 不允许使用1024以内的端口.
-			if (serverPort <= 0x400 || serverPort > 0xFFFF) {
+			if (!ServerUtil.isSocketPort(serverPort)) {
 				throw new STException(
 						"Thrift server initialize failed ! Port range must is 1025 ~ 65535 . Your port is : "
 								+ serverPort + " .");
@@ -130,39 +132,39 @@ public abstract class AbstractThriftServerImpl implements ThriftServer {
 	@Override
 	public void stop() {
 		if (server != null && server.isServing()) {
-			beforeStop();
+			beforeStop(getThriftServerConfiguration().getServerAspect());
 			server.stop();
 			if (executorService != null && !executorService.isShutdown()) {
 				executorService.shutdown();
 			}
 			LOG.info("Stop thrift server ...... (name: " + serverName + ")");
-			afterStop();
+			afterStop(getThriftServerConfiguration().getServerAspect());
 		} else {
 			LOG.info("Thrift server not run. (name: " + serverName + ")");
 		}
 	}
 
-	private void beforeStart() {
-		if (configuration.getServerAspect() != null) {
-			configuration.getServerAspect().beforeStart(serverName, serverPort, configuration, processor, this);
+	private void beforeStart(ServerAspect serverAspect) {
+		if (serverAspect != null) {
+			serverAspect.beforeStart(serverName, serverPort, configuration, processor, this);
 		}
 	}
 
-	private void afterStart() {
-		if (configuration.getServerAspect() != null) {
-			configuration.getServerAspect().afterStart(serverName, serverPort, configuration, processor, this);
+	private void afterStart(ServerAspect serverAspect) {
+		if (serverAspect != null) {
+			serverAspect.afterStart(serverName, serverPort, configuration, processor, this);
 		}
 	}
 
-	private void beforeStop() {
-		if (configuration.getServerAspect() != null) {
-			configuration.getServerAspect().beforeStop(serverName, serverPort, configuration, processor, this);
+	private void beforeStop(ServerAspect serverAspect) {
+		if (serverAspect != null) {
+			serverAspect.beforeStop(serverName, serverPort, configuration, processor, this);
 		}
 	}
 
-	private void afterStop() {
-		if (configuration.getServerAspect() != null) {
-			configuration.getServerAspect().afterStop(serverName, serverPort, configuration, processor, this);
+	private void afterStop(ServerAspect serverAspect) {
+		if (serverAspect != null) {
+			serverAspect.afterStop(serverName, serverPort, configuration, processor, this);
 		}
 	}
 

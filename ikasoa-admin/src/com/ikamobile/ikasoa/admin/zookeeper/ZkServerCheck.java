@@ -1,7 +1,5 @@
 package com.ikamobile.ikasoa.admin.zookeeper;
 
-import java.util.List;
-
 import com.ikamobile.ikasoa.core.ServerCheck;
 
 /**
@@ -12,19 +10,13 @@ import com.ikamobile.ikasoa.core.ServerCheck;
  */
 public class ZkServerCheck extends ZkBase implements ServerCheck {
 
-	public ZkServerCheck(String zkServer, String zkNode) {
-		super(zkServer, zkNode);
+	public ZkServerCheck(String zkServerString, String zkNode) {
+		super(zkServerString, zkNode);
 	}
 
 	@Override
 	public boolean check(String serverHost, int serverPort) {
-		List<String> nList = zkClient.getChildren(zkNode);
-		for (String n : nList) {
-			if (n.contains(new StringBuilder(serverHost).append("-").append(serverPort).toString())) {
-				return true;
-			}
-		}
-		return false;
+		return isExistNode("", serverHost, serverPort);
 	}
 
 }

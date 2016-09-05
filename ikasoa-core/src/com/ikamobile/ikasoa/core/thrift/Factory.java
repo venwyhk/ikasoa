@@ -133,6 +133,38 @@ public interface Factory {
 	public ThriftClient getThriftClient(List<ServerInfo> serverInfoList, Class<LoadBalance> loadBalanceClass);
 
 	/**
+	 * 获取NonblockingThriftClient对象
+	 * 
+	 * @param serverHost
+	 *            服务器地址
+	 * @param serverPort
+	 *            服务器端口
+	 * @return ThriftClient Thrift客户端
+	 */
+	public ThriftClient getNonblockingThriftClient(String serverHost, int serverPort);
+
+	/**
+	 * 获取带负载均衡的NonblockingThriftClient对象
+	 * 
+	 * @param serverInfoList
+	 *            服务器信息列表
+	 * @return ThriftClient Thrift客户端
+	 */
+	public ThriftClient getNonblockingThriftClient(List<ServerInfo> serverInfoList);
+
+	/**
+	 * 获取带负载均衡的NonblockingThriftClient对象
+	 * 
+	 * @param serverInfoList
+	 *            服务器信息列表
+	 * @param loadBalanceClass
+	 *            负载均衡实现类
+	 * @return ThriftClient Thrift客户端
+	 */
+	public ThriftClient getNonblockingThriftClient(List<ServerInfo> serverInfoList,
+			Class<LoadBalance> loadBalanceClass);
+
+	/**
 	 * 获取客户端Service对象
 	 * <p>
 	 * 如果需要使用负载均衡,则每次需要调用此方法重新获取服务对象.

@@ -10,6 +10,8 @@ import org.apache.thrift.protocol.TProtocol;
 import org.apache.thrift.protocol.TStruct;
 import org.apache.thrift.protocol.TType;
 
+import com.ikamobile.ikasoa.core.utils.StringUtil;
+
 /**
  * Thrift基础对象抽象类
  * 
@@ -40,23 +42,23 @@ public abstract class AbstractThriftBase
 	protected abstract TStruct getTStruct();
 
 	@Override
-	public FieldsEnum fieldForId(int arg0) {
+	public FieldsEnum fieldForId(int i) {
 		return FieldsEnum.VALUE;
 	}
 
 	@Override
-	public Object getFieldValue(FieldsEnum arg0) {
+	public Object getFieldValue(FieldsEnum fieldsEnum) {
 		return str;
 	}
 
 	@Override
-	public void setFieldValue(FieldsEnum arg0, Object arg1) {
-		str = (String) arg1;
+	public void setFieldValue(FieldsEnum fieldsEnum, Object obj) {
+		str = (String) obj;
 	}
 
 	@Override
-	public boolean isSet(FieldsEnum arg0) {
-		return str != null;
+	public boolean isSet(FieldsEnum fieldsEnum) {
+		return StringUtil.isNotEmpty(str);
 	}
 
 	@Override
@@ -108,9 +110,9 @@ public abstract class AbstractThriftBase
 	}
 
 	@Override
-	public int compareTo(AbstractThriftBase o) {
-		if (!getClass().equals(o.getClass())) {
-			return getClass().getName().compareTo(o.getClass().getName());
+	public int compareTo(AbstractThriftBase other) {
+		if (!getClass().equals(other.getClass())) {
+			return getClass().getName().compareTo(other.getClass().getName());
 		}
 		int lastComparison = 0;
 		lastComparison = Boolean.valueOf(isSet(null)).compareTo(isSet(null));
@@ -118,7 +120,7 @@ public abstract class AbstractThriftBase
 			return lastComparison;
 		}
 		if (isSet(null)) {
-			lastComparison = TBaseHelper.compareTo(str, o.getStr());
+			lastComparison = TBaseHelper.compareTo(str, other.getStr());
 			if (lastComparison != 0) {
 				return lastComparison;
 			}

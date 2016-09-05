@@ -6,11 +6,11 @@ import org.junit.Test;
 
 import com.ikamobile.ikasoa.core.thrift.Factory;
 import com.ikamobile.ikasoa.core.thrift.GeneralFactory;
-import com.ikamobile.ikasoa.core.thrift.ThriftSocket;
 import com.ikamobile.ikasoa.core.thrift.client.ThriftClient;
 import com.ikamobile.ikasoa.core.thrift.client.ThriftClientConfiguration;
 import com.ikamobile.ikasoa.core.thrift.client.pool.impl.DefaultSocketPoolImpl;
 import com.ikamobile.ikasoa.core.thrift.client.pool.impl.SimpleSocketPoolImpl;
+import com.ikamobile.ikasoa.core.thrift.client.socket.ThriftSocket;
 
 import junit.framework.TestCase;
 

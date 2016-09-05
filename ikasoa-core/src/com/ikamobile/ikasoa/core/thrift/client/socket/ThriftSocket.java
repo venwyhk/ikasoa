@@ -1,4 +1,4 @@
-package com.ikamobile.ikasoa.core.thrift;
+package com.ikamobile.ikasoa.core.thrift.client.socket;
 
 import java.net.Socket;
 

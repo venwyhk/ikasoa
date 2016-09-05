@@ -1,6 +1,6 @@
 package com.ikamobile.ikasoa.core.thrift.client.pool;
 
-import com.ikamobile.ikasoa.core.thrift.ThriftSocket;
+import com.ikamobile.ikasoa.core.thrift.client.socket.ThriftSocket;
 
 /**
  * Socket连接池
