@@ -20,7 +20,7 @@ public interface SocketChannelPool {
 	 * @param port
 	 *            服务器端口
 	 * @return ThriftSocketChannel ThriftSocketChannel连接对象
-	 * @exception IOException
+	 * @exception IOException IO异常
 	 */
 	public ThriftSocketChannel buildThriftSocketChannel(String host, int port) throws IOException;
 
