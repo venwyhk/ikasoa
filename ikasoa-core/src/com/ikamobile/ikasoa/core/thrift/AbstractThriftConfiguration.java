@@ -16,18 +16,18 @@ public abstract class AbstractThriftConfiguration {
 	/**
 	 * Thrift服务传输协议工厂
 	 */
-	private TProtocolFactory protocolFactory;
+	private TProtocolFactory protocolFactory = new TBinaryProtocol.Factory();
 
 	/**
 	 * Thrift传输类型工厂
 	 * <p>
 	 * 如果提供非阻塞服务,则必须为<code>new TFramedTransport.Factory()</code>
 	 */
-	private TTransportFactory transportFactory;
+	private TTransportFactory transportFactory = new TFramedTransport.Factory();
 
 	public TProtocolFactory getProtocolFactory() {
 		// 默认使用二进制方式
-		return protocolFactory == null ? new TBinaryProtocol.Factory() : protocolFactory;
+		return protocolFactory;
 	}
 
 	public void setProtocolFactory(TProtocolFactory protocolFactory) {
@@ -35,7 +35,7 @@ public abstract class AbstractThriftConfiguration {
 	}
 
 	public TTransportFactory getTransportFactory() {
-		return transportFactory == null ? new TFramedTransport.Factory() : transportFactory;
+		return transportFactory;
 	}
 
 	public void setTransportFactory(TTransportFactory transportFactory) {

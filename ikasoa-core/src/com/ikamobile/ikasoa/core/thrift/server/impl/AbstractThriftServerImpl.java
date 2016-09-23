@@ -2,6 +2,7 @@ package com.ikamobile.ikasoa.core.thrift.server.impl;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.thrift.TProcessor;
 import org.apache.thrift.server.TServer;
@@ -136,6 +137,15 @@ public abstract class AbstractThriftServerImpl implements ThriftServer {
 			server.stop();
 			if (executorService != null && !executorService.isShutdown()) {
 				executorService.shutdown();
+				try {
+					while (!executorService.isTerminated()) {
+						executorService.awaitTermination(10, TimeUnit.SECONDS);
+					}
+				} catch (InterruptedException e) {
+					LOG.debug("Thrift server thread shutdown exception !", e);
+					executorService.shutdownNow();
+					Thread.currentThread().interrupt();
+				}
 			}
 			LOG.info("Stop thrift server ...... (name: " + serverName + ")");
 			afterStop(getThriftServerConfiguration().getServerAspect());

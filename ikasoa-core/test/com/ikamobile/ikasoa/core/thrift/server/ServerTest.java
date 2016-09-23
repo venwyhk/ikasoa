@@ -9,6 +9,7 @@ import org.apache.thrift.TProcessorFactory;
 import org.apache.thrift.async.AsyncMethodCallback;
 import org.apache.thrift.async.TAsyncClientManager;
 import org.apache.thrift.protocol.TCompactProtocol;
+import org.apache.thrift.server.TThreadPoolServer;
 import org.apache.thrift.transport.TNonblockingSocket;
 import org.apache.thrift.transport.TTransport;
 import org.junit.Test;
@@ -140,6 +141,13 @@ public class ServerTest extends TestCase {
 		ThriftServerConfiguration thriftServerConfiguration = new ThriftServerConfiguration();
 		thriftServerConfiguration.setProtocolFactory(new TCompactProtocol.Factory());
 		thriftServerConfiguration.setProcessorFactory(new TProcessorFactory(p));
+		thriftServerConfiguration.setServerArgsAspect(new ServerArgsAspect() {
+			@Override
+			public TThreadPoolServer.Args TThreadPoolServerArgsAspect(TThreadPoolServer.Args args) {
+				args.stopTimeoutVal = 1;
+				return args;
+			}
+		});
 		Factory factory = new GeneralFactory(thriftServerConfiguration);
 		ThriftServer thriftServer = factory.getThriftServer(serverName, serverPort, p);
 		thriftServer.run();

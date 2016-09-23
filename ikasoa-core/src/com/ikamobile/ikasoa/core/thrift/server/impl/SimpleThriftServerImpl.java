@@ -33,7 +33,7 @@ public class SimpleThriftServerImpl extends AbstractThriftServerImpl {
 		args.transportFactory(configuration.getTransportFactory());
 		args.protocolFactory(configuration.getProtocolFactory());
 		args.processor(getProcessor());
-		server = new TSimpleServer(args);
+		server = new TSimpleServer(configuration.getServerArgsAspect().TServerArgsAspect(args));
 		if (configuration.getServerEventHandler() != null) {
 			server.setServerEventHandler(configuration.getServerEventHandler());
 		}

@@ -8,6 +8,7 @@ import org.apache.thrift.TProcessor;
 import org.apache.thrift.TProcessorFactory;
 import org.apache.thrift.async.AsyncMethodCallback;
 import org.apache.thrift.protocol.TCompactProtocol;
+import org.apache.thrift.server.TThreadPoolServer;
 import org.apache.thrift.transport.TNonblockingSocket;
 import org.junit.Test;
 
@@ -15,6 +16,7 @@ import com.ikamobile.ikasoa.core.STException;
 import com.ikamobile.ikasoa.core.thrift.Factory;
 import com.ikamobile.ikasoa.core.thrift.GeneralFactory;
 import com.ikamobile.ikasoa.core.thrift.server.MultiplexedProcessor;
+import com.ikamobile.ikasoa.core.thrift.server.ServerArgsAspect;
 import com.ikamobile.ikasoa.core.thrift.server.ThriftServer;
 import com.ikamobile.ikasoa.core.thrift.server.ThriftServerConfiguration;
 import com.ikamobile.ikasoa.core.thrift.service.impl.CallBack;
@@ -39,6 +41,13 @@ public class AysncServiceTest extends TestCase {
 		ThriftServerConfiguration thriftServerConfiguration = new ThriftServerConfiguration();
 		thriftServerConfiguration.setProtocolFactory(new TCompactProtocol.Factory());
 		thriftServerConfiguration.setProcessorFactory(new TProcessorFactory(p));
+		thriftServerConfiguration.setServerArgsAspect(new ServerArgsAspect() {
+			@Override
+			public TThreadPoolServer.Args TThreadPoolServerArgsAspect(TThreadPoolServer.Args args) {
+				args.stopTimeoutVal = 1;
+				return args;
+			}
+		});
 		Factory factory = new GeneralFactory(thriftServerConfiguration);
 		ThriftServer thriftServer = factory.getThriftServer(serverPort, new TestThriftServiceImpl1());
 		thriftServer.run();
@@ -65,6 +74,13 @@ public class AysncServiceTest extends TestCase {
 		ThriftServerConfiguration thriftServerConfiguration = new ThriftServerConfiguration();
 		thriftServerConfiguration.setProtocolFactory(new TCompactProtocol.Factory());
 		thriftServerConfiguration.setProcessorFactory(new TProcessorFactory(p));
+		thriftServerConfiguration.setServerArgsAspect(new ServerArgsAspect() {
+			@Override
+			public TThreadPoolServer.Args TThreadPoolServerArgsAspect(TThreadPoolServer.Args args) {
+				args.stopTimeoutVal = 1;
+				return args;
+			}
+		});
 		Factory factory = new GeneralFactory(thriftServerConfiguration);
 		ThriftServer thriftServer = factory.getThriftServer("testAysncMultiplexedService", serverPort, p);
 		thriftServer.run();

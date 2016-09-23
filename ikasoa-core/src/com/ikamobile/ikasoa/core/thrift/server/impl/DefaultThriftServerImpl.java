@@ -13,11 +13,6 @@ import com.ikamobile.ikasoa.core.thrift.server.ThriftServerConfiguration;
  */
 public class DefaultThriftServerImpl extends AbstractThriftServerImpl {
 
-	/**
-	 * 最大线程数
-	 */
-	private final static int MAX_WORKER_THREADA = Integer.MAX_VALUE;
-
 	public DefaultThriftServerImpl() {
 	}
 
@@ -50,9 +45,8 @@ public class DefaultThriftServerImpl extends AbstractThriftServerImpl {
 		if (configuration.getExecutorService() != null) {
 			args.executorService(configuration.getExecutorService());
 		}
-		// 最大线程数,如果有自定义ExecutorService则该值无效.
-		args.maxWorkerThreads(MAX_WORKER_THREADA);
-		server = new TThreadPoolServer(args.processor(getProcessor()));
+		server = new TThreadPoolServer(
+				configuration.getServerArgsAspect().TThreadPoolServerArgsAspect(args).processor(getProcessor()));
 		if (configuration.getServerEventHandler() != null) {
 			server.setServerEventHandler(configuration.getServerEventHandler());
 		}

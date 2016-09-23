@@ -33,6 +33,8 @@ public class ThriftServerConfiguration extends AbstractThriftConfiguration {
 	 */
 	private ExecutorService executorService;
 
+	private ServerArgsAspect serverArgsAspect = new ServerArgsAspect();
+
 	public ThriftServerConfiguration() {
 	}
 
@@ -66,6 +68,14 @@ public class ThriftServerConfiguration extends AbstractThriftConfiguration {
 
 	public void setExecutorService(ExecutorService executorService) {
 		this.executorService = executorService;
+	}
+
+	public ServerArgsAspect getServerArgsAspect() {
+		return serverArgsAspect;
+	}
+
+	public void setServerArgsAspect(ServerArgsAspect serverArgsAspect) {
+		this.serverArgsAspect = serverArgsAspect;
 	}
 
 }
