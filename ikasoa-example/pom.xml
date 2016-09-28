@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.ikasoa</groupId>
     <artifactId>ikasoa-example</artifactId>
-    <version>0.2</version>
+    <version>0.3</version>
     <packaging>war</packaging>
     <name>Ikasoa Example</name>
     <description>ikasoa is a java distributed service framework.</description>
