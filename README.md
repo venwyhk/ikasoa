@@ -129,15 +129,15 @@ Server.java
                 if (ikasoaServer == null) {
                     ikasoaServer = new DefaultIkasoaFactory().getIkasoaServer(ExampleServiceImpl.class, 9999);
                 }
+                // 启动服务
                 ikasoaServer.run();
                 } catch (IkasoaException e) {
                     e.printStackTrace();
                 }
         }
-
-        // 停止服务
         public static void stop() {
             if (ikasoaServer != null && ikasoaServer.isServing()) {
+                // 停止服务
                 ikasoaServer.stop();
             }
         }
