@@ -167,15 +167,15 @@
                 <span class="pl-k">if</span> (ikasoaServer <span class="pl-k">==</span> <span class="pl-c1">null</span>) {
                     ikasoaServer <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-smi">DefaultIkasoaFactory</span>()<span class="pl-k">.</span>getIkasoaServer(<span class="pl-smi">ExampleServiceImpl</span><span class="pl-k">.</span>class, <span class="pl-c1">9999</span>);
                 }
+                <span class="pl-c">// 启动服务</span>
                 ikasoaServer<span class="pl-k">.</span>run();
                 } <span class="pl-k">catch</span> (<span class="pl-smi">IkasoaException</span> e) {
                     e<span class="pl-k">.</span>printStackTrace();
                 }
         }
-
-        <span class="pl-c">// 停止服务</span>
         <span class="pl-k">public</span> <span class="pl-k">static</span> <span class="pl-k">void</span> <span class="pl-en">stop</span>() {
             <span class="pl-k">if</span> (ikasoaServer <span class="pl-k">!=</span> <span class="pl-c1">null</span> <span class="pl-k">&amp;&amp;</span> ikasoaServer<span class="pl-k">.</span>isServing()) {
+                <span class="pl-c">// 停止服务</span>
                 ikasoaServer<span class="pl-k">.</span>stop();
             }
         }
