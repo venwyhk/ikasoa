@@ -32,9 +32,9 @@
       <section>
         <p><img src="https://raw.githubusercontent.com/venwyhk/ikasoa/master/ikasoalogo_small.png" alt=""><br> <b>Ikamobile Service Oriented Architecture</b></p>
 
-<p> <a href="https://maven-badges.herokuapp.com/maven-central/com.ikasoa/ikasoa-rpc"><img src="https://maven-badges.herokuapp.com/maven-central/com.ikasoa/ikasoa-rpc/badge.svg?style=plastic" alt="Maven Central"></a>  <a href="https://codeship.com/projects/157977"><img src="https://codeship.com/projects/9cf2f150-1507-0134-ee57-3adebfc67210/status?branch=master" alt=""></a>  </p>
-
 <hr>
+
+<p> <a href="https://maven-badges.herokuapp.com/maven-central/com.ikasoa/ikasoa-rpc"><img src="https://maven-badges.herokuapp.com/maven-central/com.ikasoa/ikasoa-rpc/badge.svg?style=plastic" alt="Maven Central"></a>  <a href="https://codeship.com/projects/157977"><img src="https://codeship.com/projects/9cf2f150-1507-0134-ee57-3adebfc67210/status?branch=master" alt=""></a>  </p>
 
 <p></p>
 
@@ -122,7 +122,7 @@
     <span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-en">ExampleServiceImpl</span> <span class="pl-k">implements</span> <span class="pl-e">ExampleService</span> {
         <span class="pl-k">@Override</span>
         <span class="pl-k">public</span> <span class="pl-smi">ExampleVO</span> <span class="pl-en">findVO</span>(<span class="pl-k">int</span> <span class="pl-v">id</span>) {
-            <span class="pl-k">return</span> <span class="pl-k">new</span> <span class="pl-smi">ExampleVO</span>(id, “helloworld”);
+            <span class="pl-k">return</span> <span class="pl-k">new</span> <span class="pl-smi">ExampleVO</span>(id, <span class="pl-s"><span class="pl-pds">"</span>helloworld<span class="pl-pds">"</span></span>);
         }
     }</pre></div>
 
@@ -153,40 +153,75 @@
     }</pre></div>
 
 <h5>
-<a id="创建执行类" class="anchor" href="#%E5%88%9B%E5%BB%BA%E6%89%A7%E8%A1%8C%E7%B1%BB" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>创建执行类</h5>
+<a id="服务端" class="anchor" href="#%E6%9C%8D%E5%8A%A1%E7%AB%AF" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>服务端</h5>
 
-<p>Main.java</p>
+<p>Server.java</p>
 
-<div class="highlight highlight-source-java"><pre>    <span class="pl-k">package</span> <span class="pl-smi">com.ikamobile.ikasoa.example.rpc</span>;
-    <span class="pl-k">import</span> <span class="pl-smi">com.ikamobile.ikasoa.rpc.DefaultIkasoaFactory</span>;
+<div class="highlight highlight-source-java"><pre>    <span class="pl-k">import</span> <span class="pl-smi">com.ikamobile.ikasoa.rpc.DefaultIkasoaFactory</span>;
     <span class="pl-k">import</span> <span class="pl-smi">com.ikamobile.ikasoa.rpc.IkasoaException</span>;
-    <span class="pl-k">import</span> <span class="pl-smi">com.ikamobile.ikasoa.rpc.IkasoaFactory</span>;
     <span class="pl-k">import</span> <span class="pl-smi">com.ikamobile.ikasoa.rpc.IkasoaServer</span>;
-    <span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-en">Main</span> {
-        <span class="pl-k">public</span> <span class="pl-k">static</span> <span class="pl-k">void</span> <span class="pl-en">main</span>(<span class="pl-k">String</span>[] <span class="pl-v">args</span>) {
-            <span class="pl-smi">IkasoaFactory</span> ikasoaFactory <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-smi">DefaultIkasoaFactory</span>();
+    <span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-en">Server</span> {
+        <span class="pl-k">private</span> <span class="pl-k">static</span> <span class="pl-smi">IkasoaServer</span> ikasoaServer;
+        <span class="pl-k">public</span> <span class="pl-k">static</span> <span class="pl-k">void</span> <span class="pl-en">start</span>() {
             <span class="pl-k">try</span> {
-                <span class="pl-c">// 获取Ikasoa服务</span>
-                <span class="pl-smi">IkasoaServer</span> ikasoaServer <span class="pl-k">=</span> ikasoaFactory<span class="pl-k">.</span>getIkasoaServer(<span class="pl-smi">ExampleServiceImpl</span><span class="pl-k">.</span>class, <span class="pl-c1">9999</span>);
-                <span class="pl-c">// 服务端启动服务</span>
+                <span class="pl-k">if</span> (ikasoaServer <span class="pl-k">==</span> <span class="pl-c1">null</span>) {
+                    ikasoaServer <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-smi">DefaultIkasoaFactory</span>()<span class="pl-k">.</span>getIkasoaServer(<span class="pl-smi">ExampleServiceImpl</span><span class="pl-k">.</span>class, <span class="pl-c1">9999</span>);
+                }
                 ikasoaServer<span class="pl-k">.</span>run();
-                <span class="pl-smi">Thread</span><span class="pl-k">.</span>sleep(<span class="pl-c1">100</span>);
-                <span class="pl-c">// 客户端获取远程接口实现</span>
-                <span class="pl-smi">ExampleService</span> es <span class="pl-k">=</span> ikasoaFactory<span class="pl-k">.</span>getIkasoaClient(<span class="pl-smi">ExampleService</span><span class="pl-k">.</span>class, <span class="pl-s"><span class="pl-pds">"</span>localhost<span class="pl-pds">"</span></span>, <span class="pl-c1">9999</span>);
-                <span class="pl-c">// 客户端输出结果</span>
-                <span class="pl-smi">System</span><span class="pl-k">.</span>out<span class="pl-k">.</span>println(es<span class="pl-k">.</span>findVO(<span class="pl-c1">1</span>)<span class="pl-k">.</span>getString());
-                <span class="pl-c">// 服务端停止服务</span>
+                } <span class="pl-k">catch</span> (<span class="pl-smi">IkasoaException</span> e) {
+                    e<span class="pl-k">.</span>printStackTrace();
+                }
+        }
+
+        <span class="pl-c">// 停止服务</span>
+        <span class="pl-k">public</span> <span class="pl-k">static</span> <span class="pl-k">void</span> <span class="pl-en">stop</span>() {
+            <span class="pl-k">if</span> (ikasoaServer <span class="pl-k">!=</span> <span class="pl-c1">null</span> <span class="pl-k">&amp;&amp;</span> ikasoaServer<span class="pl-k">.</span>isServing()) {
                 ikasoaServer<span class="pl-k">.</span>stop();
-            } <span class="pl-k">catch</span> (<span class="pl-smi">IkasoaException</span> e) {
-                e<span class="pl-k">.</span>printStackTrace();
-            } <span class="pl-k">catch</span> (<span class="pl-smi">InterruptedException</span> e) {
-                e<span class="pl-k">.</span>printStackTrace();
             }
         }
     }</pre></div>
 
 <h5>
-<a id="执行mainjava" class="anchor" href="#%E6%89%A7%E8%A1%8Cmainjava" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>执行Main.java</h5>
+<a id="客户端" class="anchor" href="#%E5%AE%A2%E6%88%B7%E7%AB%AF" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>客户端</h5>
+
+<p>Client.java</p>
+
+<div class="highlight highlight-source-java"><pre>    <span class="pl-k">import</span> <span class="pl-smi">com.ikamobile.ikasoa.rpc.DefaultIkasoaFactory</span>;
+    <span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-en">Client</span> {
+        <span class="pl-k">public</span> <span class="pl-k">static</span> <span class="pl-k">void</span> <span class="pl-en">call</span>() {
+            <span class="pl-c">// 客户端获取远程接口实现</span>
+            <span class="pl-smi">ExampleService</span> es <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-smi">DefaultIkasoaFactory</span>()<span class="pl-k">.</span>getIkasoaClient(<span class="pl-smi">ExampleService</span><span class="pl-k">.</span>class, <span class="pl-s"><span class="pl-pds">"</span>localhost<span class="pl-pds">"</span></span>, <span class="pl-c1">9999</span>);
+            <span class="pl-c">// 客户端输出结果</span>
+            <span class="pl-smi">System</span><span class="pl-k">.</span>out<span class="pl-k">.</span>println(es<span class="pl-k">.</span>findVO(<span class="pl-c1">1</span>)<span class="pl-k">.</span>getString());
+        }
+    }</pre></div>
+
+<h5>
+<a id="执行类" class="anchor" href="#%E6%89%A7%E8%A1%8C%E7%B1%BB" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>执行类</h5>
+
+<p>Main.java</p>
+
+<div class="highlight highlight-source-java"><pre>    <span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-en">Main</span> {
+        <span class="pl-k">public</span> <span class="pl-k">static</span> <span class="pl-k">void</span> <span class="pl-en">main</span>(<span class="pl-k">String</span>[] <span class="pl-v">args</span>) {
+            <span class="pl-k">try</span> {
+                <span class="pl-c">// 启动服务</span>
+                <span class="pl-smi">Server</span><span class="pl-k">.</span>start();
+                <span class="pl-smi">Thread</span><span class="pl-k">.</span>sleep(<span class="pl-c1">100</span>);
+                <span class="pl-c">// 客户端调用</span>
+                <span class="pl-smi">Client</span><span class="pl-k">.</span>call();
+            } <span class="pl-k">catch</span> (<span class="pl-smi">Exception</span> e) {
+                e<span class="pl-k">.</span>printStackTrace();
+            } <span class="pl-k">finally</span> {
+                <span class="pl-c">// 停止服务</span>
+                <span class="pl-smi">Server</span><span class="pl-k">.</span>stop();
+            }
+        }
+    }</pre></div>
+
+<h5>
+<a id="执行" class="anchor" href="#%E6%89%A7%E8%A1%8C" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>执行</h5>
+
+<p>可以执行Main.java,或单独调用Server.start()启动服务后再调用Client.call()执行.</p>
 
 <p>如输出“helloworld”则表示执行成功.</p>
 
