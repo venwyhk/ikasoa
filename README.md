@@ -1,8 +1,8 @@
 ![](https://raw.githubusercontent.com/venwyhk/ikasoa/master/ikasoalogo_small.png)<br />&nbsp;<b>Ikamobile Service Oriented Architecture</b>
 
-&nbsp;[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.ikasoa/ikasoa-rpc/badge.svg?style=plastic)](https://maven-badges.herokuapp.com/maven-central/com.ikasoa/ikasoa-rpc)&nbsp;&nbsp;[![](https://codeship.com/projects/9cf2f150-1507-0134-ee57-3adebfc67210/status?branch=master)](https://codeship.com/projects/157977)&nbsp;&nbsp;
-
 ***
+
+&nbsp;[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.ikasoa/ikasoa-rpc/badge.svg?style=plastic)](https://maven-badges.herokuapp.com/maven-central/com.ikasoa/ikasoa-rpc)&nbsp;&nbsp;[![](https://codeship.com/projects/9cf2f150-1507-0134-ee57-3adebfc67210/status?branch=master)](https://codeship.com/projects/157977)&nbsp;&nbsp;
 
 </br>
 
@@ -83,7 +83,7 @@ ExampleServiceImpl.java
     public class ExampleServiceImpl implements ExampleService {
         @Override
         public ExampleVO findVO(int id) {
-            return new ExampleVO(id, “helloworld”);
+            return new ExampleVO(id, "helloworld");
         }
     }
 ```
@@ -115,40 +115,75 @@ ExampleVO.java
     }
 ```
 
-##### 创建执行类 #####
+##### 服务端 #####
 
-Main.java
+Server.java
 ```java
-    package com.ikamobile.ikasoa.example.rpc;
     import com.ikamobile.ikasoa.rpc.DefaultIkasoaFactory;
     import com.ikamobile.ikasoa.rpc.IkasoaException;
-    import com.ikamobile.ikasoa.rpc.IkasoaFactory;
     import com.ikamobile.ikasoa.rpc.IkasoaServer;
-    public class Main {
-        public static void main(String[] args) {
-            IkasoaFactory ikasoaFactory = new DefaultIkasoaFactory();
+    public class Server {
+        private static IkasoaServer ikasoaServer;
+        public static void start() {
             try {
-                // 获取Ikasoa服务
-                IkasoaServer ikasoaServer = ikasoaFactory.getIkasoaServer(ExampleServiceImpl.class, 9999);
-                // 服务端启动服务
+                if (ikasoaServer == null) {
+                    ikasoaServer = new DefaultIkasoaFactory().getIkasoaServer(ExampleServiceImpl.class, 9999);
+                }
                 ikasoaServer.run();
-                Thread.sleep(100);
-                // 客户端获取远程接口实现
-                ExampleService es = ikasoaFactory.getIkasoaClient(ExampleService.class, "localhost", 9999);
-                // 客户端输出结果
-                System.out.println(es.findVO(1).getString());
-                // 服务端停止服务
+                } catch (IkasoaException e) {
+                    e.printStackTrace();
+                }
+        }
+
+        // 停止服务
+        public static void stop() {
+            if (ikasoaServer != null && ikasoaServer.isServing()) {
                 ikasoaServer.stop();
-            } catch (IkasoaException e) {
-                e.printStackTrace();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
             }
         }
     }
 ```
 
-##### 执行Main.java #####
+##### 客户端 #####
+
+Client.java
+```java
+    import com.ikamobile.ikasoa.rpc.DefaultIkasoaFactory;
+    public class Client {
+        public static void call() {
+            // 客户端获取远程接口实现
+            ExampleService es = new DefaultIkasoaFactory().getIkasoaClient(ExampleService.class, "localhost", 9999);
+            // 客户端输出结果
+            System.out.println(es.findVO(1).getString());
+        }
+    }
+```
+
+##### 执行类 #####
+
+Main.java
+```java
+    public class Main {
+        public static void main(String[] args) {
+            try {
+                // 启动服务
+                Server.start();
+                Thread.sleep(100);
+                // 客户端调用
+                Client.call();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } finally {
+                // 停止服务
+                Server.stop();
+            }
+        }
+    }
+```
+
+##### 执行 #####
+
+  可以执行Main.java,或单独调用Server.start()启动服务后再调用Client.call()执行.
 
   如输出“helloworld”则表示执行成功.
 
