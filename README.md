@@ -171,7 +171,7 @@ Main.java
                 Thread.sleep(100);
                 // 客户端调用
                 Client.call();
-            } catch (InterruptedException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             } finally {
                 // 停止服务
