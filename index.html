@@ -169,9 +169,9 @@
                 }
                 <span class="pl-c">// 启动服务</span>
                 ikasoaServer<span class="pl-k">.</span>run();
-                } <span class="pl-k">catch</span> (<span class="pl-smi">IkasoaException</span> e) {
-                    e<span class="pl-k">.</span>printStackTrace();
-                }
+            } <span class="pl-k">catch</span> (<span class="pl-smi">IkasoaException</span> e) {
+                e<span class="pl-k">.</span>printStackTrace();
+            }
         }
         <span class="pl-k">public</span> <span class="pl-k">static</span> <span class="pl-k">void</span> <span class="pl-en">stop</span>() {
             <span class="pl-k">if</span> (ikasoaServer <span class="pl-k">!=</span> <span class="pl-c1">null</span> <span class="pl-k">&amp;&amp;</span> ikasoaServer<span class="pl-k">.</span>isServing()) {
@@ -221,7 +221,7 @@
 <h5>
 <a id="执行" class="anchor" href="#%E6%89%A7%E8%A1%8C" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>执行</h5>
 
-<p>可以执行Main.java,或单独调用Server.start()启动服务后再调用Client.call()执行.</p>
+<p>执行Main.java,或单独调用Server.start()启动服务后再调用Client.call()执行.</p>
 
 <p>如输出“helloworld”则表示执行成功.</p>
 
