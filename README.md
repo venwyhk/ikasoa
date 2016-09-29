@@ -131,9 +131,9 @@ Server.java
                 }
                 // 启动服务
                 ikasoaServer.run();
-                } catch (IkasoaException e) {
-                    e.printStackTrace();
-                }
+            } catch (IkasoaException e) {
+                e.printStackTrace();
+            }
         }
         public static void stop() {
             if (ikasoaServer != null && ikasoaServer.isServing()) {
@@ -183,7 +183,7 @@ Main.java
 
 ##### 执行 #####
 
-  可以执行Main.java,或单独调用Server.start()启动服务后再调用Client.call()执行.
+  执行Main.java,或单独调用Server.start()启动服务后再调用Client.call()执行.
 
   如输出“helloworld”则表示执行成功.
 
