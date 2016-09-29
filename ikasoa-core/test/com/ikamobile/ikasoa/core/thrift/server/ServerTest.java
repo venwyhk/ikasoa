@@ -18,7 +18,9 @@ import com.ikamobile.ikasoa.core.thrift.Factory;
 import com.ikamobile.ikasoa.core.thrift.GeneralFactory;
 import com.ikamobile.ikasoa.core.thrift.client.CompactThriftClientConfiguration;
 import com.ikamobile.ikasoa.core.thrift.client.ThriftClient;
+import com.ikamobile.ikasoa.core.thrift.client.ThriftClientConfiguration;
 import com.ikamobile.ikasoa.core.thrift.client.TupleThriftClientConfiguration;
+import com.ikamobile.ikasoa.core.thrift.protocol.SecurityCompactProtocol;
 import com.ikamobile.ikasoa.core.thrift.server.impl.DefaultThriftServerImpl;
 import com.ikamobile.ikasoa.core.thrift.server.impl.ServletThriftServerImpl;
 import com.ikamobile.ikasoa.core.thrift.server.impl.SimpleThriftServerImpl;
@@ -37,7 +39,7 @@ public class ServerTest extends TestCase {
 
 	private static String serverName = "TestThriftServer";
 
-	private static String testString = "12345678abcdefg";
+	private static String testString = "12345678abcdefgABCDEFG一二三四五~!@#$%^&*()_+";
 
 	private static ThriftServerConfiguration configuration = new ThriftServerConfiguration();
 
@@ -246,6 +248,40 @@ public class ServerTest extends TestCase {
 			ThriftSimpleService.Client client = new ThriftSimpleService.Client(thriftClient.getProtocol(transport));
 			assertEquals(testString, client.get(testString));
 		} catch (Exception e) {
+			fail();
+		} finally {
+			if (thriftClient != null) {
+				thriftClient.close();
+			}
+			if (transport != null) {
+				transport.close();
+			}
+			defaultThriftServer.stop();
+		}
+	}
+
+	@Test
+	public void testSecurityCompactDefaultThriftServerImpl() {
+		int serverPort = 39203;
+		String key = "12345678";
+		ThriftServerConfiguration serverConfiguration = new ThriftServerConfiguration();
+		serverConfiguration.setProtocolFactory(new SecurityCompactProtocol.Factory(key));
+		ThriftClientConfiguration clientConfiguration = new ThriftClientConfiguration();
+		clientConfiguration.setProtocolFactory(new SecurityCompactProtocol.Factory(key));
+		Factory factory = new GeneralFactory(serverConfiguration, clientConfiguration);
+		ThriftServer defaultThriftServer = factory.getThriftServer(serverName, serverPort,
+				new ThriftSimpleService.Processor<Iface>(new TestThriftServiceImpl()));
+		defaultThriftServer.run();
+		ThriftClient thriftClient = factory.getThriftClient(LOCAL_HOST, serverPort);
+		TTransport transport = null;
+		try {
+			transport = thriftClient.getTransport();
+			Thread.sleep(500);
+			transport.open();
+			ThriftSimpleService.Client client = new ThriftSimpleService.Client(thriftClient.getProtocol(transport));
+			assertEquals(testString, client.get(testString));
+		} catch (Exception e) {
+			e.printStackTrace();
 			fail();
 		} finally {
 			if (thriftClient != null) {
