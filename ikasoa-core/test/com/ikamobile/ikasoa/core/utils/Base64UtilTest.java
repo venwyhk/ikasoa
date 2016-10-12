@@ -15,4 +15,5 @@ public class Base64UtilTest extends TestCase {
 	public void test() {
 		assertEquals(testString, new String(Base64Util.decode(Base64Util.encode(testString.getBytes()).toCharArray())));
 	}
+
 }

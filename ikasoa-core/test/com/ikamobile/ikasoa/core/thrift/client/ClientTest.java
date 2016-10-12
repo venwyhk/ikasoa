@@ -18,7 +18,7 @@ import junit.framework.TestCase;
 /**
  * 客户端单元测试
  * <p>
- * 仅测试基础属性读写
+ * 仅测试基础属性读写.
  */
 public class ClientTest extends TestCase {
 

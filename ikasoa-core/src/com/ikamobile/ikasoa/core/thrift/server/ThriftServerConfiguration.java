@@ -36,6 +36,7 @@ public class ThriftServerConfiguration extends AbstractThriftConfiguration {
 	private ServerArgsAspect serverArgsAspect = new ServerArgsAspect();
 
 	public ThriftServerConfiguration() {
+		// Do nothing
 	}
 
 	public void setProcessorFactory(TProcessorFactory processorFactory) {

@@ -85,6 +85,7 @@ public class SocketChannelPoolTest extends TestCase {
 
 		@Override
 		public void releaseAllThriftSocketChannel() {
+			// Do nothing
 		}
 
 	}

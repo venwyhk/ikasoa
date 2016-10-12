@@ -54,8 +54,7 @@ public abstract class AbstractThriftClientImpl implements ThriftClient {
 
 	@Override
 	public TTransport getTransport() throws STException {
-		ServerCheck serverCheck = getServerCheck();
-		if (serverCheck != null && !serverCheck.check(getServerHost(), getServerPort())) {
+		if (getServerCheck() != null && !getServerCheck().check(getServerHost(), getServerPort())) {
 			// 如果服务器检测不可用,需要做相应的处理.默认为抛异常.
 			getServerCheckFailProcessor().process(this);
 		}

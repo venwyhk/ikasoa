@@ -17,6 +17,7 @@ public class SimpleSocketChannelPoolImpl implements SocketChannelPool {
 	private int time = 0;
 
 	public SimpleSocketChannelPoolImpl() {
+		// Do nothing
 	}
 
 	public SimpleSocketChannelPoolImpl(int time) {
@@ -37,6 +38,7 @@ public class SimpleSocketChannelPoolImpl implements SocketChannelPool {
 
 	@Override
 	public void releaseAllThriftSocketChannel() {
+		// Do nothing
 	}
 
 }

@@ -121,7 +121,7 @@ public abstract class AbstractThriftServerImpl implements ThriftServer {
 				return;
 			}
 			server.serve();
-			LOG.info("Starting thrift server ...... (name: " + serverName + " , port : " + serverPort + ")");
+			LOG.info("Starting thrift server ...... (name : " + serverName + " , port : " + serverPort + ")");
 		} else {
 			LOG.warn("Starting thrift server failed !");
 		}

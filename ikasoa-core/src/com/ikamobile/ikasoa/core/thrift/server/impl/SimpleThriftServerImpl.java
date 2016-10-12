@@ -17,6 +17,7 @@ import com.ikamobile.ikasoa.core.thrift.server.ThriftServerConfiguration;
 public class SimpleThriftServerImpl extends AbstractThriftServerImpl {
 
 	public SimpleThriftServerImpl() {
+		// Do nothing
 	}
 
 	public SimpleThriftServerImpl(String serverName, int serverPort, ThriftServerConfiguration configuration,

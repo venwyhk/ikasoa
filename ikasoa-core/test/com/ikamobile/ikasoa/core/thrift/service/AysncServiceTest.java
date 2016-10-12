@@ -10,6 +10,8 @@ import org.apache.thrift.async.AsyncMethodCallback;
 import org.apache.thrift.protocol.TCompactProtocol;
 import org.apache.thrift.server.TThreadPoolServer;
 import org.apache.thrift.transport.TNonblockingSocket;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
 import com.ikamobile.ikasoa.core.STException;
@@ -34,13 +36,12 @@ public class AysncServiceTest extends TestCase {
 
 	private String testString2 = "1234567890-= ";
 
-	@Test
-	public void testAysncServiceImpl() {
-		int serverPort = 49001;
-		TProcessor p = new ServiceProcessor(new TestThriftServiceImpl1());
-		ThriftServerConfiguration thriftServerConfiguration = new ThriftServerConfiguration();
+	private ThriftServerConfiguration thriftServerConfiguration;
+
+	@Before
+	public void setUp() {
+		thriftServerConfiguration = new ThriftServerConfiguration();
 		thriftServerConfiguration.setProtocolFactory(new TCompactProtocol.Factory());
-		thriftServerConfiguration.setProcessorFactory(new TProcessorFactory(p));
 		thriftServerConfiguration.setServerArgsAspect(new ServerArgsAspect() {
 			@Override
 			public TThreadPoolServer.Args TThreadPoolServerArgsAspect(TThreadPoolServer.Args args) {
@@ -48,6 +49,13 @@ public class AysncServiceTest extends TestCase {
 				return args;
 			}
 		});
+	}
+
+	@Test
+	public void testAysncServiceImpl() {
+		int serverPort = 49001;
+		TProcessor p = new ServiceProcessor(new TestThriftServiceImpl1());
+		thriftServerConfiguration.setProcessorFactory(new TProcessorFactory(p));
 		Factory factory = new GeneralFactory(thriftServerConfiguration);
 		ThriftServer thriftServer = factory.getThriftServer(serverPort, new TestThriftServiceImpl1());
 		thriftServer.run();
@@ -71,16 +79,7 @@ public class AysncServiceTest extends TestCase {
 		processorMap.put("testAysncService1", new ServiceProcessor(new TestThriftServiceImpl1()));
 		processorMap.put("testAysncService2", new ServiceProcessor(new TestThriftServiceImpl2()));
 		MultiplexedProcessor p = new MultiplexedProcessor(processorMap);
-		ThriftServerConfiguration thriftServerConfiguration = new ThriftServerConfiguration();
-		thriftServerConfiguration.setProtocolFactory(new TCompactProtocol.Factory());
 		thriftServerConfiguration.setProcessorFactory(new TProcessorFactory(p));
-		thriftServerConfiguration.setServerArgsAspect(new ServerArgsAspect() {
-			@Override
-			public TThreadPoolServer.Args TThreadPoolServerArgsAspect(TThreadPoolServer.Args args) {
-				args.stopTimeoutVal = 1;
-				return args;
-			}
-		});
 		Factory factory = new GeneralFactory(thriftServerConfiguration);
 		ThriftServer thriftServer = factory.getThriftServer("testAysncMultiplexedService", serverPort, p);
 		thriftServer.run();
@@ -102,12 +101,18 @@ public class AysncServiceTest extends TestCase {
 		}
 	}
 
+	@After
+	public void tearDown() {
+		thriftServerConfiguration = null;
+	}
+
 	private class TestThriftServiceImpl1 implements Service {
 
 		@Override
 		public String get(String arg) throws STException {
 			return arg;
 		}
+
 	}
 
 	private class TestThriftServiceImpl2 implements Service {
@@ -116,6 +121,7 @@ public class AysncServiceTest extends TestCase {
 		public String get(String arg) throws STException {
 			return testString1 + arg;
 		}
+
 	}
 
 	private class TestCallback1 implements AsyncMethodCallback<CallBack> {
@@ -133,6 +139,7 @@ public class AysncServiceTest extends TestCase {
 		public void onError(Exception exception) {
 			fail();
 		}
+
 	}
 
 	private class TestCallback2 implements AsyncMethodCallback<CallBack> {
@@ -150,5 +157,7 @@ public class AysncServiceTest extends TestCase {
 		public void onError(Exception exception) {
 			fail();
 		}
+
 	}
+
 }

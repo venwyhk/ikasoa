@@ -5,6 +5,7 @@ import java.lang.reflect.Constructor;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.apache.thrift.TProcessor;
 import org.apache.thrift.protocol.TCompactProtocol;
@@ -49,6 +50,7 @@ public class GeneralFactory implements Factory {
 	private static final String DEFAULT_LOAD_BALANCE_CLASS_STRING = "com.ikamobile.ikasoa.core.loadbalance.impl.PollingLoadBalanceImpl";
 
 	public GeneralFactory() {
+		// Do nothing
 	}
 
 	public GeneralFactory(ThriftServerConfiguration thriftServerConfiguration) {
@@ -115,8 +117,8 @@ public class GeneralFactory implements Factory {
 			throw new STException("serviceMap is null !");
 		}
 		Map<String, TProcessor> processorMap = new HashMap<>();
-		for (String key : serviceMap.keySet()) {
-			processorMap.put(key, new ServiceProcessor(serviceMap.get(key)));
+		for (Entry<String, Service> e : serviceMap.entrySet()) {
+			processorMap.put(e.getKey(), new ServiceProcessor(serviceMap.get(e.getKey())));
 		}
 		return getThriftServer(serverName, serverPort, new MultiplexedProcessor(processorMap));
 	}

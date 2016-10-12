@@ -26,6 +26,7 @@ public abstract class AbstractThriftBase
 	private String str;
 
 	public AbstractThriftBase() {
+		// Do nothing
 	}
 
 	public AbstractThriftBase(String str) {

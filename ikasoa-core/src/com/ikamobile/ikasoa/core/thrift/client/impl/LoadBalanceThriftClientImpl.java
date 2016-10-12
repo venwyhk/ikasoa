@@ -28,6 +28,7 @@ public class LoadBalanceThriftClientImpl extends AbstractThriftClientImpl {
 	private ServerCheckFailProcessor serverCheckFailProcessor = getServerCheckFailProcessor(new NextProcessImpl());
 
 	public LoadBalanceThriftClientImpl() {
+		// Do nothing
 	}
 
 	public LoadBalanceThriftClientImpl(LoadBalance loadBalance, ThriftClientConfiguration configuration) {
@@ -78,6 +79,7 @@ public class LoadBalanceThriftClientImpl extends AbstractThriftClientImpl {
 		}
 		setServerHost(serverInfo.getHost());
 		setServerPort(serverInfo.getPort());
+		LOG.debug("Update server info . (" + serverInfo.toString() + ")");
 	}
 
 	/**

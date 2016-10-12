@@ -24,13 +24,13 @@
             <organizationUrl>http://www.ikamobile.com/</organizationUrl>
         </developer>
     </developers>
-
+    
     <scm>
         <connection>scm:git:git://github.com/venwyhk/ikasoa.git</connection>
         <developerConnection>scm:git:ssh://github.com:venwyhk/ikasoa.git</developerConnection>
         <url>http://github.com/venwyhk/ikasoa/tree/master</url>
     </scm>
-
+    
     <build>
         <sourceDirectory>src</sourceDirectory>
         <plugins>

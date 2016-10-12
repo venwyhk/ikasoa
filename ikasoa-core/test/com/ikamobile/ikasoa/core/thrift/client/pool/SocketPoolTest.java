@@ -80,6 +80,7 @@ public class SocketPoolTest extends TestCase {
 
 		@Override
 		public void releaseAllThriftSocket() {
+			// Do nothing
 		}
 
 	}

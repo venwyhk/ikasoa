@@ -1,7 +1,7 @@
 package com.ikamobile.ikasoa.core.thrift;
 
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.Executors;
 
 import org.apache.thrift.protocol.TProtocol;
 import org.apache.thrift.server.ServerContext;
@@ -37,7 +37,7 @@ public class ConfigurationTest extends TestCase {
 		thriftServerConfiguration.setServerEventHandler(testServerEventHandler);
 		assertEquals(thriftServerConfiguration.getServerEventHandler(), testServerEventHandler);
 		// 测试线程池配置
-		ExecutorService executorService = new ScheduledThreadPoolExecutor(0);
+		ExecutorService executorService = Executors.newSingleThreadExecutor();
 		thriftServerConfiguration.setExecutorService(executorService);
 		assertEquals(thriftServerConfiguration.getExecutorService(), executorService);
 	}
@@ -51,14 +51,17 @@ public class ConfigurationTest extends TestCase {
 
 		@Override
 		public void deleteContext(ServerContext arg0, TProtocol arg1, TProtocol arg2) {
+			// Do nothing
 		}
 
 		@Override
 		public void preServe() {
+			// Do nothing
 		}
 
 		@Override
 		public void processContext(ServerContext arg0, TTransport arg1, TTransport arg2) {
+			// Do nothing
 		}
 	}
 

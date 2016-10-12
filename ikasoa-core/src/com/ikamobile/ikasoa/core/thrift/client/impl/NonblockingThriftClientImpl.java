@@ -20,6 +20,7 @@ public class NonblockingThriftClientImpl extends DefaultThriftClientImpl {
 	protected ThreadLocal<ThriftSocketChannel> socketChannelThread = new ThreadLocal<>();
 
 	public NonblockingThriftClientImpl() {
+		// Do nothing
 	}
 
 	public NonblockingThriftClientImpl(String serverHost, int serverPort, ThriftClientConfiguration configuration) {

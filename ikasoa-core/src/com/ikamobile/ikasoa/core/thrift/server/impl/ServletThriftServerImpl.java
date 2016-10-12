@@ -34,6 +34,7 @@ public class ServletThriftServerImpl implements ThriftServer {
 	private TProcessor processor;
 
 	public ServletThriftServerImpl() {
+		// Do nothing
 	}
 
 	public ServletThriftServerImpl(String serverName, ThriftServerConfiguration configuration, TProcessor processor) {
@@ -49,10 +50,12 @@ public class ServletThriftServerImpl implements ThriftServer {
 
 	@Override
 	public void run() {
+		// Do nothing
 	}
 
 	@Override
 	public void stop() {
+		// Do nothing
 	}
 
 	@Override

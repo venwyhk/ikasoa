@@ -52,4 +52,9 @@ public class ServerInfo {
 		this.weightNumber = weightNumber;
 	}
 
+	public String toString() {
+		return new StringBuilder("host : ").append(host).append(" , port : ").append(port).append(" , weightNumber : ")
+				.append(weightNumber).toString();
+	}
+
 }

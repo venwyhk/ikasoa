@@ -2,6 +2,7 @@ package com.ikamobile.ikasoa.core.thrift.service;
 
 import org.apache.thrift.TException;
 import org.apache.thrift.protocol.TBinaryProtocol;
+import org.apache.thrift.server.TThreadPoolServer;
 import org.apache.thrift.transport.TMemoryBuffer;
 import org.junit.Test;
 
@@ -9,7 +10,9 @@ import com.ikamobile.ikasoa.core.STException;
 import com.ikamobile.ikasoa.core.thrift.Factory;
 import com.ikamobile.ikasoa.core.thrift.GeneralFactory;
 import com.ikamobile.ikasoa.core.thrift.client.ThriftClient;
+import com.ikamobile.ikasoa.core.thrift.server.ServerArgsAspect;
 import com.ikamobile.ikasoa.core.thrift.server.ThriftServer;
+import com.ikamobile.ikasoa.core.thrift.server.ThriftServerConfiguration;
 import com.ikamobile.ikasoa.core.thrift.service.base.ArgsThriftBase;
 import com.ikamobile.ikasoa.core.thrift.service.base.ResultThriftBase;
 
@@ -25,7 +28,15 @@ public class ServiceTest extends TestCase {
 	@Test
 	public void testDefaultServiceImpl() {
 		int serverPort = 49000;
-		Factory factory = new GeneralFactory();
+		ThriftServerConfiguration thriftServerConfiguration = new ThriftServerConfiguration();
+		thriftServerConfiguration.setServerArgsAspect(new ServerArgsAspect() {
+			@Override
+			public TThreadPoolServer.Args TThreadPoolServerArgsAspect(TThreadPoolServer.Args args) {
+				args.stopTimeoutVal = 1;
+				return args;
+			}
+		});
+		Factory factory = new GeneralFactory(thriftServerConfiguration);
 		ThriftServer thriftServer = factory.getThriftServer(serverPort, new TestService());
 		thriftServer.run();
 		ThriftClient thriftClient = factory.getThriftClient("localhost", serverPort);
@@ -53,13 +64,14 @@ public class ServiceTest extends TestCase {
 			fail();
 		}
 	}
-	
+
 	private class TestService implements Service {
 
 		@Override
 		public String get(String arg) throws STException {
 			return arg;
 		}
+
 	}
 
 }

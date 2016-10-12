@@ -30,6 +30,7 @@ public class BeanUtilTest extends TestCase {
 	}
 
 	class ClassA {
+
 		private String str1;
 		private String str2;
 		private int int1;
@@ -57,9 +58,11 @@ public class BeanUtilTest extends TestCase {
 		public void setInt1(int int1) {
 			this.int1 = int1;
 		}
+
 	}
 
 	class ClassB {
+
 		private String str1;
 		private String str2;
 		private int int1;
@@ -87,6 +90,7 @@ public class BeanUtilTest extends TestCase {
 		public void setInt1(int int1) {
 			this.int1 = int1;
 		}
+
 	}
 
 }

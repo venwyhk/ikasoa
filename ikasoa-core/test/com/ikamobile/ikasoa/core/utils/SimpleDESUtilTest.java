@@ -22,4 +22,5 @@ public class SimpleDESUtilTest extends TestCase {
 			fail();
 		}
 	}
+	
 }

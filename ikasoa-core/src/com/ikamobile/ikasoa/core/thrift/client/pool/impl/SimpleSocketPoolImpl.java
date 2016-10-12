@@ -6,7 +6,7 @@ import com.ikamobile.ikasoa.core.thrift.client.socket.ThriftSocket;
 /**
  * Socket连接池简单实现
  * <p>
- * 此实现不会使用连接池,每次都建立新的连接
+ * 此实现不会使用连接池,每次都建立新的连接.
  * 
  * @author <a href="mailto:larry7696@gmail.com">Larry</a>
  * @version 0.4.4
@@ -17,6 +17,7 @@ public class SimpleSocketPoolImpl implements SocketPool {
 	private int time = 0;
 
 	public SimpleSocketPoolImpl() {
+		// Do nothing
 	}
 
 	public SimpleSocketPoolImpl(int time) {
@@ -44,6 +45,7 @@ public class SimpleSocketPoolImpl implements SocketPool {
 
 	@Override
 	public void releaseAllThriftSocket() {
+		// Do nothing
 	}
 
 }

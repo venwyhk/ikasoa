@@ -36,6 +36,7 @@ public class DefaultSocketPoolImpl implements SocketPool {
 	private Hashtable<Byte, ThriftSocket> socketPool;
 
 	public DefaultSocketPoolImpl() {
+		// Do nothing
 	}
 
 	public DefaultSocketPoolImpl(byte size) {

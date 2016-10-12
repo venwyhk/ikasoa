@@ -17,7 +17,7 @@ public interface ThriftServer {
 	 * Thrift服务传输类型
 	 * <p>
 	 * 通常为<i>org.apache.thrift.transport.TServerSocket</i>
-	 * ,但如果采用NonblockingServer来实现Thrift服务,这里就需要用 <i>TNonblockingServerSocket</i>
+	 * ,但如果采用NonblockingServer来实现Thrift服务,这里就需要用 <i>TNonblockingServerSocket</i>.
 	 * .
 	 * 
 	 * @return TServerTransport 服务传输类型

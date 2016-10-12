@@ -36,6 +36,7 @@ public class DefaultSocketChannelPoolImpl implements SocketChannelPool {
 	private Hashtable<Byte, ThriftSocketChannel> socketChannelPool;
 
 	public DefaultSocketChannelPoolImpl() {
+		// Do nothing
 	}
 
 	public DefaultSocketChannelPoolImpl(byte size) {

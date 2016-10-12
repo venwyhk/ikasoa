@@ -11,6 +11,7 @@ import com.ikamobile.ikasoa.core.thrift.client.ThriftClientConfiguration;
 public class DefaultThriftClientImpl extends AbstractThriftClientImpl {
 
 	public DefaultThriftClientImpl() {
+		// Do nothing
 	}
 
 	public DefaultThriftClientImpl(String serverHost, int serverPort, ThriftClientConfiguration configuration) {

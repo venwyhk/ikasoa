@@ -1,6 +1,7 @@
 package com.ikamobile.ikasoa.core.thrift.server;
 
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.apache.thrift.TMultiplexedProcessor;
 import org.apache.thrift.TProcessor;
@@ -24,8 +25,8 @@ public class MultiplexedProcessor extends TMultiplexedProcessor {
 
 	public MultiplexedProcessor(Map<String, TProcessor> processorMap) {
 		if (processorMap != null) {
-			for (String key : processorMap.keySet()) {
-				registerProcessor(key, processorMap.get(key));
+			for (Entry<String, TProcessor> e : processorMap.entrySet()) {
+				registerProcessor(e.getKey(), e.getValue());
 			}
 		} else {
 			LOG.warn("processorMap is null !");

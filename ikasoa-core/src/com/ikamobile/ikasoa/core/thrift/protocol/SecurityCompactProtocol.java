@@ -13,7 +13,7 @@ import com.ikamobile.ikasoa.core.utils.StringUtil;
 /**
  * 基于DES加密的序列化实现
  * <p>
- * 继承于<code>TCompactProtocol</code>
+ * 继承于<code>TCompactProtocol</code>,仅对String类型加密.
  * 
  * @author <a href="mailto:larry7696@gmail.com">Larry</a>
  * @version 0.4.5

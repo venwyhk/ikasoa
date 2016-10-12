@@ -19,6 +19,7 @@ public class NonblockingThriftServerImpl extends AbstractThriftServerImpl {
 	private TNonblockingServerSocket serverSocket;
 
 	public NonblockingThriftServerImpl() {
+		// Do nothing
 	}
 
 	public NonblockingThriftServerImpl(String serverName, int serverPort, ThriftServerConfiguration configuration,

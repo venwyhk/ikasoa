@@ -21,6 +21,7 @@ public class LoadBalanceNonblockingThriftClientImpl extends LoadBalanceThriftCli
 	protected ThreadLocal<ThriftSocketChannel> socketChannelThread = new ThreadLocal<>();
 
 	public LoadBalanceNonblockingThriftClientImpl() {
+		// Do nothing
 	}
 
 	public LoadBalanceNonblockingThriftClientImpl(LoadBalance loadBalance, ThriftClientConfiguration configuration) {
