@@ -32,7 +32,7 @@ public class AysncServiceTest extends TestCase {
 
 	private static String LOCAL_HOST = "localhost";
 
-	private String testString1 = "12345678abcdefgABCDEFG一二三四五~!@#$%^&*()_+";
+	private String testString1 = "12345678abcdefgABCDEFG~!@#$%^&*()_+";
 
 	private String testString2 = "1234567890-= ";
 

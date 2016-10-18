@@ -6,7 +6,6 @@ import org.apache.thrift.protocol.TProtocol;
 import org.apache.thrift.protocol.TProtocolFactory;
 import org.apache.thrift.transport.TTransport;
 
-import com.ikamobile.ikasoa.core.utils.Base64Util;
 import com.ikamobile.ikasoa.core.utils.SimpleDESUtil;
 import com.ikamobile.ikasoa.core.utils.StringUtil;
 
@@ -59,7 +58,7 @@ public class SecurityCompactProtocol extends TCompactProtocol {
 			super.writeString(str);
 		}
 		try {
-			super.writeString(Base64Util.encode(SimpleDESUtil.encrypt(str.getBytes(), getKey())));
+			super.writeString(SimpleDESUtil.encrypt(str, getKey()));
 		} catch (Exception e) {
 			throw new TException(e);
 		}
@@ -72,7 +71,7 @@ public class SecurityCompactProtocol extends TCompactProtocol {
 			return str;
 		}
 		try {
-			return new String(SimpleDESUtil.decrypt(Base64Util.decode(str.toCharArray()), getKey()));
+			return new String(SimpleDESUtil.decrypt(str, getKey()));
 		} catch (Exception e) {
 			throw new TException(e);
 		}

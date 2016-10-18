@@ -1,6 +1,9 @@
 package com.ikamobile.ikasoa.core.utils;
 
+import java.security.SecureRandom;
+
 import javax.crypto.Cipher;
+import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.DESKeySpec;
 
@@ -12,40 +15,99 @@ import javax.crypto.spec.DESKeySpec;
  */
 public class SimpleDESUtil {
 
-	private static final String ALGORITHM_DES = "DES";
+	/**
+	 * 加密算法
+	 */
+	private final static String ALGORITHM = "DES";
 
 	/**
-	 * 加密
+	 * 对数据进行DES加密.
 	 * 
 	 * @param data
-	 *            待加密数据
+	 *            待进行DES加密的数据
 	 * @param key
-	 *            密钥
-	 * @return byte[] 加密后数据
-	 * @exception Exception
+	 *            DES加密的key
+	 * @return 返回经过DES加密后的数据
+	 * @throws Exception
 	 */
-	public static byte[] encrypt(byte[] data, String key) throws Exception {
-		Cipher cipher = Cipher.getInstance(ALGORITHM_DES);
-		cipher.init(Cipher.ENCRYPT_MODE,
-				SecretKeyFactory.getInstance(ALGORITHM_DES).generateSecret(new DESKeySpec(key.getBytes())));
+	public final static String decrypt(String data, String key) throws Exception {
+		return new String(decrypt(hex2byte(data.getBytes()), key.getBytes()));
+	}
+
+	/**
+	 * 对用DES加密过的数据进行解密.
+	 * 
+	 * @param data
+	 *            DES加密数据
+	 * @param DES加密的key
+	 * @return 返回解密后的数据
+	 * @throws Exception
+	 */
+	public final static String encrypt(String data, String key) throws Exception {
+		return byte2hex(encrypt(data.getBytes(), key.getBytes()));
+	}
+
+	/**
+	 * 用指定的key对数据进行DES加密.
+	 * 
+	 * @param data
+	 *            待加密的数据
+	 * @param key
+	 *            DES加密的key
+	 * @return 返回DES加密后的数据
+	 * @throws Exception
+	 */
+	private static byte[] encrypt(byte[] data, byte[] key) throws Exception {
+		SecureRandom sr = new SecureRandom();
+		DESKeySpec dks = new DESKeySpec(key);
+		SecretKeyFactory keyFactory = SecretKeyFactory.getInstance(ALGORITHM);
+		SecretKey securekey = keyFactory.generateSecret(dks);
+		Cipher cipher = Cipher.getInstance(ALGORITHM);
+		cipher.init(Cipher.ENCRYPT_MODE, securekey, sr);
 		return cipher.doFinal(data);
 	}
 
 	/**
-	 * 解密
+	 * 用指定的key对数据进行DES解密.
 	 * 
 	 * @param data
-	 *            待解密数据
+	 *            待解密的数据
 	 * @param key
-	 *            密钥
-	 * @return byte[] 解密后数据
-	 * @exception Exception
+	 *            DES解密的key
+	 * @return 返回DES解密后的数据
+	 * @throws Exception
 	 */
-	public static byte[] decrypt(byte[] data, String key) throws Exception {
-		Cipher cipher = Cipher.getInstance(ALGORITHM_DES);
-		cipher.init(Cipher.DECRYPT_MODE,
-				SecretKeyFactory.getInstance(ALGORITHM_DES).generateSecret(new DESKeySpec(key.getBytes())));
+	private static byte[] decrypt(byte[] data, byte[] key) throws Exception {
+		SecureRandom sr = new SecureRandom();
+		DESKeySpec dks = new DESKeySpec(key);
+		SecretKeyFactory keyFactory = SecretKeyFactory.getInstance(ALGORITHM);
+		SecretKey securekey = keyFactory.generateSecret(dks);
+		Cipher cipher = Cipher.getInstance(ALGORITHM);
+		cipher.init(Cipher.DECRYPT_MODE, securekey, sr);
 		return cipher.doFinal(data);
 	}
 
+	private static byte[] hex2byte(byte[] b) {
+		if ((b.length % 2) != 0)
+			throw new IllegalArgumentException("Data length is not even number !");
+		byte[] b2 = new byte[b.length / 2];
+		for (int n = 0; n < b.length; n += 2) {
+			String item = new String(b, n, 2);
+			b2[n / 2] = (byte) Integer.parseInt(item, 16);
+		}
+		return b2;
+	}
+
+	private static String byte2hex(byte[] b) {
+		String hs = "";
+		String stmp = "";
+		for (int n = 0; n < b.length; n++) {
+			stmp = (java.lang.Integer.toHexString(b[n] & 0XFF));
+			if (stmp.length() == 1)
+				hs = hs + "0" + stmp;
+			else
+				hs = hs + stmp;
+		}
+		return hs.toUpperCase();
+	}
 }

@@ -39,7 +39,7 @@ public class ServerTest extends TestCase {
 
 	private static String serverName = "TestThriftServer";
 
-	private static String testString = "12345678abcdefgABCDEFG一二三四五~!@#$%^&*()_+";
+	private static String testString = "12345678abcdefgABCDEFG~!@#$%^&*()_+";
 
 	private static ThriftServerConfiguration configuration = new ThriftServerConfiguration();
 

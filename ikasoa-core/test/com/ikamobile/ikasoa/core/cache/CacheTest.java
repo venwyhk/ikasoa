@@ -18,9 +18,9 @@ public class CacheTest extends TestCase {
 	@Test
 	public void testFIFOCacheImpl() {
 		Cache<String, String> cache = new FIFOCacheImpl<String, String>(2, 0);
-		cache.put("1", "一");
-		cache.put("2", "二");
-		cache.put("3", "三");
+		cache.put("1", "a");
+		cache.put("2", "b");
+		cache.put("3", "c");
 		assertNull(cache.get("1"));
 	}
 
@@ -30,14 +30,14 @@ public class CacheTest extends TestCase {
 	@Test
 	public void testLFUCacheImpl() {
 		Cache<String, String> cache = new LFUCacheImpl<String, String>(2, 0);
-		cache.put("1", "一");
+		cache.put("1", "a");
 		cache.get("1");
 		cache.get("1");
-		cache.put("2", "二");
+		cache.put("2", "b");
 		cache.get("1");
 		cache.get("2");
 		cache.get("2");
-		cache.put("3", "三");
+		cache.put("3", "c");
 		assertNull(cache.get("2"));
 	}
 
@@ -47,16 +47,16 @@ public class CacheTest extends TestCase {
 	@Test
 	public void testLRUCacheImpl() {
 		Cache<String, String> cache = new LRUCacheImpl<String, String>(3, 0);
-		cache.put("1", "一");
+		cache.put("1", "a");
 		cache.get("1");
 		cache.get("1");
-		cache.put("2", "二");
+		cache.put("2", "b");
 		cache.get("1");
 		cache.get("2");
-		cache.put("3", "三");
+		cache.put("3", "c");
 		cache.get("3");
 		cache.get("3");
-		cache.put("4", "四");
+		cache.put("4", "d");
 		assertNull(cache.get("1"));
 	}
 
