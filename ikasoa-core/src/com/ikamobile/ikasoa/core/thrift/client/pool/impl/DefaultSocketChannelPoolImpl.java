@@ -141,12 +141,12 @@ public class DefaultSocketChannelPoolImpl implements SocketChannelPool {
 			int port) {
 		LOG.debug("Get socket number is " + i + " .");
 		ThriftSocketChannel thriftSocketChannel = self.socketChannelPool.get(new Byte(i));
-		if (thriftSocketChannel != null) {
-			return thriftSocketChannel;
-		} else {
-			LOG.warn("Pool is null ! Again retry initiation pool .");
+		if (thriftSocketChannel == null || thriftSocketChannel.getSocketChannel() == null) {
+			LOG.warn("Socket is null ! Again retry initiation pool .");
 			init(host, port);
 			return buildThriftSocketChannel(host, port);
+		} else {
+			return thriftSocketChannel;
 		}
 	}
 

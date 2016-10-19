@@ -141,12 +141,12 @@ public class DefaultSocketPoolImpl implements SocketPool {
 	private ThriftSocket getThriftSocket(DefaultSocketPoolImpl self, byte i, String host, int port) {
 		LOG.debug("Get socket number is " + i + " .");
 		ThriftSocket thriftSocket = self.socketPool.get(new Byte(i));
-		if (thriftSocket != null) {
-			return thriftSocket;
-		} else {
-			LOG.warn("Pool is null ! Again retry initiation pool .");
+		if (thriftSocket == null || thriftSocket.getSocket() == null) {
+			LOG.warn("Socket is null ! Again retry initiation pool .");
 			init(host, port);
 			return buildThriftSocket(host, port);
+		} else {
+			return thriftSocket;
 		}
 	}
 
