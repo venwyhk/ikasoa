@@ -29,6 +29,7 @@ public class SimpleDESUtil {
 	 *            DES加密的key
 	 * @return 返回经过DES加密后的数据
 	 * @throws Exception
+	 *             异常
 	 */
 	public final static String decrypt(String data, String key) throws Exception {
 		return new String(decrypt(hex2byte(data.getBytes()), key.getBytes()));
@@ -39,9 +40,11 @@ public class SimpleDESUtil {
 	 * 
 	 * @param data
 	 *            DES加密数据
-	 * @param DES加密的key
+	 * @param key
+	 *            DES加密的key
 	 * @return 返回解密后的数据
 	 * @throws Exception
+	 *             异常
 	 */
 	public final static String encrypt(String data, String key) throws Exception {
 		return byte2hex(encrypt(data.getBytes(), key.getBytes()));
@@ -56,6 +59,7 @@ public class SimpleDESUtil {
 	 *            DES加密的key
 	 * @return 返回DES加密后的数据
 	 * @throws Exception
+	 *             异常
 	 */
 	private static byte[] encrypt(byte[] data, byte[] key) throws Exception {
 		SecureRandom sr = new SecureRandom();
@@ -76,6 +80,7 @@ public class SimpleDESUtil {
 	 *            DES解密的key
 	 * @return 返回DES解密后的数据
 	 * @throws Exception
+	 *             异常
 	 */
 	private static byte[] decrypt(byte[] data, byte[] key) throws Exception {
 		SecureRandom sr = new SecureRandom();
