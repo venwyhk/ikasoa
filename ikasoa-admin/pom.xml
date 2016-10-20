@@ -104,7 +104,7 @@
         <dependency>
             <groupId>com.ikasoa</groupId>
             <artifactId>ikasoa-core</artifactId>
-            <version>0.4.4</version>
+            <version>0.4.5</version>
         </dependency>
         <dependency>
             <groupId>com.github.sgroschupf</groupId>

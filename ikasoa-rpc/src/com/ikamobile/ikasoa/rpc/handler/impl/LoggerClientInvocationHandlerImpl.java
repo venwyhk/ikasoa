@@ -7,7 +7,7 @@ import com.ikamobile.ikasoa.rpc.handler.ClientInvocationContext;
 import com.ikamobile.ikasoa.rpc.handler.ClientInvocationHandler;
 
 /**
- * 日志输出拦截器实现
+ * 日志输出拦截器实现(测试用)
  * 
  * @author <a href="mailto:larry7696@gmail.com">Larry</a>
  * @version 0.1
@@ -26,8 +26,12 @@ public class LoggerClientInvocationHandlerImpl implements ClientInvocationHandle
 			sb.append("接口名: " + context.getServiceKey());
 		}
 		sb.append(".");
-		System.out.println(sb.toString());
 		LOG.info(sb.toString());
+		return context;
+	}
+
+	@Override
+	public ClientInvocationContext invoke(ClientInvocationContext context) {
 		return context;
 	}
 
@@ -39,7 +43,6 @@ public class LoggerClientInvocationHandlerImpl implements ClientInvocationHandle
 		}
 		sb.append("耗时: ").append(System.currentTimeMillis() - time).append("毫秒 .");
 		LOG.info(sb.toString());
-		System.out.println(sb.toString());
 	}
 
 	@Override
@@ -50,7 +53,6 @@ public class LoggerClientInvocationHandlerImpl implements ClientInvocationHandle
 		}
 		sb.append("异常信息: ").append(throwable.getMessage());
 		LOG.info(sb.toString());
-		System.out.println(sb.toString());
 	}
 
 }

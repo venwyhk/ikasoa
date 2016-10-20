@@ -105,7 +105,7 @@ public class TestExampleService extends TestCase {
 
 			// 测试文件下载
 			// long startTime = System.currentTimeMillis();
-			// InputStream is = StreamChangeUtil.bytesToInputStream(es.down());
+			// InputStream is = StreamUtil.bytesToInputStream(es.down());
 			// long endTime = System.currentTimeMillis();
 			// FileOutputStream fos = new FileOutputStream("C:/2.jpg");
 			// int ch = 0;

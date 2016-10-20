@@ -36,7 +36,7 @@ pom.xml
     <dependency>
         <groupId>com.ikasoa</groupId>
         <artifactId>ikasoa-rpc</artifactId>
-        <version>0.3-ALPHA</version>
+        <version>0.3-BETA</version>
     </dependency>
     ......
 ```
@@ -490,7 +490,7 @@ ThriftClientDemo.java
 
 ## 注意事项 ##
 
-- 使用fastjson作为序列化方式时,fastjson依赖版本建议与ikasoa所依赖的版本一致(当前为1.2.12).否则可能出现服务名不能匹配,无法调用服务的情况.
+- 使用fastjson作为序列化方式时,fastjson依赖版本建议与ikasoa所依赖的版本一致.否则可能出现服务名不能匹配,无法调用服务的情况.
 
 - 使用kryo作为序列化方式时,如果参数或返回值以父类(或抽象类)的形式传递,转换为子类时可能会丢失子类属性值,建议尽量以子类形式传递参数.fastjson方式非集合类参数或返回值没有问题,xml方式都没有问题.
 

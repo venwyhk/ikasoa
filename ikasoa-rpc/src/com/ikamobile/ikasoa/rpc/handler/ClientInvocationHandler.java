@@ -18,6 +18,15 @@ public interface ClientInvocationHandler {
 	public ClientInvocationContext before(ClientInvocationContext context);
 
 	/**
+	 * 执行前
+	 * 
+	 * @param context
+	 *            上下文
+	 * @return ClientInvocationContext
+	 */
+	public ClientInvocationContext invoke(ClientInvocationContext context);
+
+	/**
 	 * 正常结束
 	 * 
 	 * @param context

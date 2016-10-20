@@ -28,8 +28,6 @@ public class IkasoaClientService<T1, T2> implements BaseGetService<T1, T2> {
 	// TODO:sulei
 	protected ClientInvocationHandler invocationHandler;
 
-	private ClientInvocationContext context = new ClientInvocationContext();
-
 	public IkasoaClientService(Factory factory, ThriftClient thriftClient, ProtocolHandler<T1, T2> protocolHandler) {
 		this.factory = factory;
 		this.thriftClient = thriftClient;
@@ -47,12 +45,14 @@ public class IkasoaClientService<T1, T2> implements BaseGetService<T1, T2> {
 
 	@Override
 	public T2 get(T1 arg) throws Throwable {
+		ClientInvocationContext context = null;
 		if (invocationHandler != null) {
+			context = new ClientInvocationContext();
 			context.setServerHost(thriftClient.getServerHost());
 			context.setServerPort(thriftClient.getServerPort());
 			context.setServiceKey(serviceKey);
 			context.setArgObject(arg);
-			invocationHandler.before(context);
+			context = invocationHandler.before(context);
 		}
 		// 参数转换
 		if (protocolHandler == null) {
@@ -64,7 +64,10 @@ public class IkasoaClientService<T1, T2> implements BaseGetService<T1, T2> {
 		} catch (Throwable t) {
 			throw new IkasoaException("Execute 'argToStr' function exception !", t);
 		}
-		context.setArgStr(argStr);
+		if (invocationHandler != null) {
+			context.setArgStr(argStr);
+			argStr = invocationHandler.invoke(context).getArgStr();
+		}
 		// 执行操作,获取返回值
 		String resultStr = "";
 		try {
@@ -74,7 +77,9 @@ public class IkasoaClientService<T1, T2> implements BaseGetService<T1, T2> {
 		} finally {
 			thriftClient.close();
 		}
-		context.setResultStr(resultStr);
+		if (invocationHandler != null) {
+			context.setResultStr(resultStr);
+		}
 		// 返回值转换
 		Throwable throwable = null;
 		try {
@@ -86,6 +91,7 @@ public class IkasoaClientService<T1, T2> implements BaseGetService<T1, T2> {
 		if (throwable != null) {
 			if (invocationHandler != null) {
 				invocationHandler.exception(context, throwable);
+				context = null;
 			}
 			throw throwable;
 		}
@@ -95,6 +101,7 @@ public class IkasoaClientService<T1, T2> implements BaseGetService<T1, T2> {
 			if (invocationHandler != null) {
 				context.setResultObject(result);
 				invocationHandler.after(context);
+				context = null;
 			}
 			return result;
 		} catch (Throwable t) {

@@ -60,7 +60,7 @@
         <dependency>
             <groupId>com.ikasoa</groupId>
             <artifactId>ikasoa-rpc</artifactId>
-            <version>0.3-ALPHA</version>
+            <version>0.3-BETA</version>
         </dependency>
     </dependencies>
 </project>
