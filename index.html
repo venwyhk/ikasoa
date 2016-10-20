@@ -34,7 +34,7 @@
 
 <hr>
 
-<p> <a href="https://maven-badges.herokuapp.com/maven-central/com.ikasoa/ikasoa-rpc"><img src="https://maven-badges.herokuapp.com/maven-central/com.ikasoa/ikasoa-rpc/badge.svg?style=plastic" alt="Maven Central"></a>  <a href="https://codeship.com/projects/157977"><img src="https://codeship.com/projects/9cf2f150-1507-0134-ee57-3adebfc67210/status?branch=master" alt=""></a>  </p>
+<p> <a href="https://maven-badges.herokuapp.com/maven-central/com.ikasoa/ikasoa-rpc"><img src="https://maven-badges.herokuapp.com/maven-central/com.ikasoa/ikasoa-core/badge.svg?style=plastic" alt="Maven Central"></a>  <a href="https://codeship.com/projects/157977"><img src="https://codeship.com/projects/9cf2f150-1507-0134-ee57-3adebfc67210/status?branch=master" alt=""></a>  </p>
 
 <p></p>
 
@@ -74,7 +74,7 @@
     &lt;<span class="pl-ent">dependency</span>&gt;
         &lt;<span class="pl-ent">groupId</span>&gt;com.ikasoa&lt;/<span class="pl-ent">groupId</span>&gt;
         &lt;<span class="pl-ent">artifactId</span>&gt;ikasoa-rpc&lt;/<span class="pl-ent">artifactId</span>&gt;
-        &lt;<span class="pl-ent">version</span>&gt;0.3-ALPHA&lt;/<span class="pl-ent">version</span>&gt;
+        &lt;<span class="pl-ent">version</span>&gt;0.3-BETA&lt;/<span class="pl-ent">version</span>&gt;
     &lt;/<span class="pl-ent">dependency</span>&gt;
     ......</pre></div>
 
@@ -89,7 +89,7 @@
     &lt;<span class="pl-ent">dependency</span>&gt;
         &lt;<span class="pl-ent">groupId</span>&gt;com.ikasoa&lt;/<span class="pl-ent">groupId</span>&gt;
         &lt;<span class="pl-ent">artifactId</span>&gt;ikasoa-core&lt;/<span class="pl-ent">artifactId</span>&gt;
-        &lt;<span class="pl-ent">version</span>&gt;0.4.4&lt;/<span class="pl-ent">version</span>&gt;
+        &lt;<span class="pl-ent">version</span>&gt;0.4.5&lt;/<span class="pl-ent">version</span>&gt;
     &lt;/<span class="pl-ent">dependency</span>&gt;
     ......</pre></div>
 
@@ -524,7 +524,7 @@
 <a id="注意事项" class="anchor" href="#%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>注意事项</h2>
 
 <ul>
-<li><p>使用fastjson作为序列化方式时,fastjson依赖版本建议与ikasoa所依赖的版本一致(当前为1.2.12).否则可能出现服务名不能匹配,无法调用服务的情况.</p></li>
+<li><p>使用fastjson作为序列化方式时,fastjson依赖版本建议与ikasoa所依赖的版本一致.否则可能出现服务名不能匹配,无法调用服务的情况.</p></li>
 <li><p>使用kryo作为序列化方式时,如果参数或返回值以父类(或抽象类)的形式传递,转换为子类时可能会丢失子类属性值,建议尽量以子类形式传递参数.fastjson方式非集合类参数或返回值没有问题,xml方式都没有问题.</p></li>
 <li><p>使用fastjson作为序列化方式时,传递的Bean对象必须要有默认构造方法(建议使用类似lombok这样的工具来处理Bean对象).</p></li>
 <li><p>使用kryo作为序列化方式时,暂不支持自定义异常对象,如果抛出自定义异常对象,异常类型不能正确识别.</p></li>
@@ -533,7 +533,7 @@
 
 <hr>
 
-<p><em><a href="mailto:larry7696@gmail.com">larry7696@gmail.com</a> | 2016-09-01</em></p>
+<p><em><a href="mailto:larry7696@gmail.com">larry7696@gmail.com</a> | 2016-10-20</em></p>
       </section>
       <footer>
         <p><small>Hosted on <a href="https://pages.github.com">GitHub Pages</a> using the Dinky theme</small></p>
