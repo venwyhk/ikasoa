@@ -54,10 +54,10 @@
 <a id="目录说明" class="anchor" href="#%E7%9B%AE%E5%BD%95%E8%AF%B4%E6%98%8E" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>目录说明</h2>
 
 <ul>
-<li><p>ikasoa-admin:<em>服务管理相关代码(利用Zookeeper注册和管理服务)</em></p></li>
-<li><p>ikasoa-core:<em>基础核心包</em></p></li>
-<li><p>ikasoa-rpc:<em>实现RPC功能的代码</em></p></li>
-<li><p>ikasoa-example:<em>示例代码</em></p></li>
+<li><p><code>ikasoa-admin</code> : <em>服务管理相关代码(利用Zookeeper注册和管理服务)</em></p></li>
+<li><p><code>ikasoa-core</code> : <em>基础核心包</em></p></li>
+<li><p><code>ikasoa-rpc</code> : <em>实现RPC功能的代码</em></p></li>
+<li><p><code>ikasoa-example</code> : <em>示例代码</em></p></li>
 </ul>
 
 <h2>
@@ -89,7 +89,7 @@
     &lt;<span class="pl-ent">dependency</span>&gt;
         &lt;<span class="pl-ent">groupId</span>&gt;com.ikasoa&lt;/<span class="pl-ent">groupId</span>&gt;
         &lt;<span class="pl-ent">artifactId</span>&gt;ikasoa-core&lt;/<span class="pl-ent">artifactId</span>&gt;
-        &lt;<span class="pl-ent">version</span>&gt;0.4.5&lt;/<span class="pl-ent">version</span>&gt;
+        &lt;<span class="pl-ent">version</span>&gt;0.4.6&lt;/<span class="pl-ent">version</span>&gt;
     &lt;/<span class="pl-ent">dependency</span>&gt;
     ......</pre></div>
 
@@ -420,7 +420,7 @@
 <h2>
 <a id="服务实现类型" class="anchor" href="#%E6%9C%8D%E5%8A%A1%E5%AE%9E%E7%8E%B0%E7%B1%BB%E5%9E%8B" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>服务实现类型</h2>
 
-<p><em>Ikasoa默认使用Thrift作为服务类型的实现,但也提供了Netty以供选择.</em></p>
+<p><em>ikasoa默认使用Thrift作为服务类型的实现,但也提供了Netty以供选择.</em></p>
 
 <h5>
 <a id="使用thrift服务" class="anchor" href="#%E4%BD%BF%E7%94%A8thrift%E6%9C%8D%E5%8A%A1" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>使用Thrift服务</h5>
@@ -439,7 +439,7 @@
 <h2>
 <a id="负载均衡" class="anchor" href="#%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>负载均衡</h2>
 
-<p><em>Ikasoa提供了2种负载均衡,分别为轮循(含权重)和随机,默认使用轮循.</em></p>
+<p><em>ikasoa提供了2种负载均衡,分别为轮循(含权重)和随机,默认使用轮循.</em></p>
 
 <h5>
 <a id="使用轮循负载均衡默认" class="anchor" href="#%E4%BD%BF%E7%94%A8%E8%BD%AE%E5%BE%AA%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E9%BB%98%E8%AE%A4" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>使用轮循负载均衡(默认)</h5>
@@ -466,7 +466,7 @@
 
 <p>创建自定义序列化类(例如com.xxx.XLoadBalanceImpl).</p>
 
-<p>自定义序列化类(com.xxx.XLoadBalanceImpl)需实现接口 com.ikamobile.ikasoa.core.loadbalance.LoadBalance.</p>
+<p>自定义序列化类(com.xxx.XLoadBalanceImpl)需实现接口com.ikamobile.ikasoa.core.loadbalance.LoadBalance.</p>
 
 <p>通过如下方式获取服务:</p>
 
@@ -478,7 +478,7 @@
 <h2>
 <a id="序列化" class="anchor" href="#%E5%BA%8F%E5%88%97%E5%8C%96" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>序列化</h2>
 
-<p><em>Ikasoa提供了3种序列化方式,分别为fastjson,xml,kryo,默认使用fastjson.</em></p>
+<p><em>ikasoa提供了3种序列化方式,分别为fastjson,xml,kryo,默认使用fastjson.</em></p>
 
 <h5>
 <a id="使用fastjson作为序列化方式默认" class="anchor" href="#%E4%BD%BF%E7%94%A8fastjson%E4%BD%9C%E4%B8%BA%E5%BA%8F%E5%88%97%E5%8C%96%E6%96%B9%E5%BC%8F%E9%BB%98%E8%AE%A4" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>使用fastjson作为序列化方式(默认)</h5>
