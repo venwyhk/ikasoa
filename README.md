@@ -16,13 +16,13 @@
 
 ## 目录说明 ##
 
-- ikasoa-admin:*服务管理相关代码(利用Zookeeper注册和管理服务)*
+- `ikasoa-admin` : *服务管理相关代码(利用Zookeeper注册和管理服务)*
 
-- ikasoa-core:*基础核心包*
+- `ikasoa-core` : *基础核心包*
 
-- ikasoa-rpc:*实现RPC功能的代码*
+- `ikasoa-rpc` : *实现RPC功能的代码*
 
-- ikasoa-example:*示例代码*
+- `ikasoa-example` : *示例代码*
 
 ## 环境搭建 ##
 
@@ -51,7 +51,7 @@ pom.xml
     <dependency>
         <groupId>com.ikasoa</groupId>
         <artifactId>ikasoa-core</artifactId>
-        <version>0.4.5</version>
+        <version>0.4.6</version>
     </dependency>
     ......
 ```
@@ -381,7 +381,7 @@ ThriftClientDemo.java
 
 ## 服务实现类型 ##
 
-  *Ikasoa默认使用Thrift作为服务类型的实现,但也提供了Netty以供选择.*
+  *ikasoa默认使用Thrift作为服务类型的实现,但也提供了Netty以供选择.*
 
 ##### 使用Thrift服务 #####
 
@@ -401,7 +401,7 @@ ThriftClientDemo.java
 
 ## 负载均衡 ##
 
-  *Ikasoa提供了2种负载均衡,分别为轮循(含权重)和随机,默认使用轮循.*
+  *ikasoa提供了2种负载均衡,分别为轮循(含权重)和随机,默认使用轮循.*
 
 ##### 使用轮循负载均衡(默认) #####
 
@@ -429,7 +429,7 @@ ThriftClientDemo.java
 
   创建自定义序列化类(例如com.xxx.XLoadBalanceImpl).
 
-  自定义序列化类(com.xxx.XLoadBalanceImpl)需实现接口 com.ikamobile.ikasoa.core.loadbalance.LoadBalance.
+  自定义序列化类(com.xxx.XLoadBalanceImpl)需实现接口com.ikamobile.ikasoa.core.loadbalance.LoadBalance.
 
   通过如下方式获取服务:
 
@@ -442,7 +442,7 @@ ThriftClientDemo.java
 
 ## 序列化 ##
 
-*Ikasoa提供了3种序列化方式,分别为fastjson,xml,kryo,默认使用fastjson.*
+  *ikasoa提供了3种序列化方式,分别为fastjson,xml,kryo,默认使用fastjson.*
 
 ##### 使用fastjson作为序列化方式(默认) #####
 

@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.ikasoa</groupId>
     <artifactId>ikasoa-rpc</artifactId>
-    <version>0.3-BETA</version>
+    <version>0.4-SNAPSHOTS</version>
     <packaging>jar</packaging>
     <name>Ikasoa RPC</name>
     <description>ikasoa is a java distributed service framework.</description>
@@ -116,7 +116,7 @@
         <dependency>
             <groupId>com.ikasoa</groupId>
             <artifactId>ikasoa-core</artifactId>
-            <version>0.4.5</version>
+            <version>0.4.6</version>
         </dependency>
         <dependency>
             <groupId>io.netty</groupId>
