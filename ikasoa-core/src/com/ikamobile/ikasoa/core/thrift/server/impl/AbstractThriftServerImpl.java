@@ -147,6 +147,9 @@ public abstract class AbstractThriftServerImpl implements ThriftServer {
 					Thread.currentThread().interrupt();
 				}
 			}
+			server = null;
+			serverSocket = null;
+			executorService = null;
 			LOG.info("Stop thrift server ...... (name: " + serverName + ")");
 			afterStop(getThriftServerConfiguration().getServerAspect());
 		} else {

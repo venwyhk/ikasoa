@@ -116,8 +116,12 @@ public class DefaultSocketPoolImpl implements SocketPool {
 		byte i = 0;
 		for (; i < size; i++) {
 			if (!self.socketStatusArray[i]) {
+				ThriftSocket thriftSocket = getThriftSocket(self, i, host, port);
+				if (!thriftSocket.isOpen()) {
+					thriftSocket = new ThriftSocket(host, port, time);
+				}
 				self.socketStatusArray[i] = true;
-				return getThriftSocket(self, i, host, port);
+				return thriftSocket;
 			}
 		}
 		// 如果连接不够用,就初始化连接池.

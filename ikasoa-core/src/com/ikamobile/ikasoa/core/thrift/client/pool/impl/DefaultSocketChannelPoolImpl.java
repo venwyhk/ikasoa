@@ -1,5 +1,6 @@
 package com.ikamobile.ikasoa.core.thrift.client.pool.impl;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Map;
@@ -116,8 +117,16 @@ public class DefaultSocketChannelPoolImpl implements SocketChannelPool {
 		byte i = 0;
 		for (; i < size; i++) {
 			if (!self.socketStatusArray[i]) {
+				ThriftSocketChannel thriftSocketChannel = getThriftSocketChannel(self, i, host, port);
+				if (!thriftSocketChannel.isOpen()) {
+					try {
+						thriftSocketChannel = new ThriftSocketChannel(host, port, time);
+					} catch (IOException e) {
+						throw new RuntimeException(e);
+					}
+				}
 				self.socketStatusArray[i] = true;
-				return getThriftSocketChannel(self, i, host, port);
+				return thriftSocketChannel;
 			}
 		}
 		// 如果连接不够用,就初始化连接池.
