@@ -18,6 +18,8 @@ public class ZkBase {
 
 	protected String zkNode;
 
+	protected static String ZK_ROOT_NODE = "/";
+
 	public ZkBase(String zkServerString, String zkNode) {
 		if (StringUtil.isEmpty(zkServerString)) {
 			throw new RuntimeException("zkServerString is null !");
@@ -25,7 +27,7 @@ public class ZkBase {
 			this.zkClient = new ZkClient(zkServerString);
 		}
 		if (StringUtil.isEmpty(zkNode)) {
-			this.zkNode = "/";
+			this.zkNode = ZK_ROOT_NODE;
 		} else {
 			this.zkNode = zkNode;
 		}
