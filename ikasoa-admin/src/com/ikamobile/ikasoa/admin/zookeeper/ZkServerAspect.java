@@ -32,7 +32,7 @@ public class ZkServerAspect extends ZkBase implements ServerAspect {
 	public void afterStart(String serverName, int serverPort, ThriftServerConfiguration configuration,
 			TProcessor processor, ThriftServer server) {
 		if (!zkClient.exists(zkNode)) {
-			zkClient.createPersistent(zkNode, "ikasoa_node");
+			zkClient.createPersistent(zkNode, "/ikasoa_node");
 		}
 		try {
 			String serverHost = InetAddress.getLocalHost().getHostAddress();

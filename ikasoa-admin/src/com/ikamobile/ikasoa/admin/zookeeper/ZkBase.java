@@ -25,7 +25,7 @@ public class ZkBase {
 			this.zkClient = new ZkClient(zkServerString);
 		}
 		if (StringUtil.isEmpty(zkNode)) {
-			this.zkNode = "";
+			this.zkNode = "/";
 		} else {
 			this.zkNode = zkNode;
 		}
