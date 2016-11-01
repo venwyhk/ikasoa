@@ -5,11 +5,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.thrift.server.TThreadPoolServer;
+import org.junit.Before;
 import org.junit.Test;
 import com.ikamobile.ikasoa.rpc.IkasoaServer;
 import com.ikamobile.ikasoa.rpc.ImplClsCon;
 import com.ikamobile.ikasoa.rpc.NettyIkasoaFactory;
-import com.ikamobile.ikasoa.rpc.handler.impl.LoggerClientInvocationHandlerImpl;
+import com.ikamobile.ikasoa.core.thrift.server.ServerArgsAspect;
+import com.ikamobile.ikasoa.core.thrift.server.ThriftServerConfiguration;
 import com.ikamobile.ikasoa.rpc.Configurator;
 import com.ikamobile.ikasoa.rpc.DefaultIkasoaFactory;
 import com.ikamobile.ikasoa.rpc.IkasoaFactory;
@@ -24,11 +27,26 @@ import junit.framework.TestCase;
  */
 public class TestExampleService extends TestCase {
 
+	private Configurator configurator = new Configurator();
+
+	@Before
+	public void setUp() {
+		// configurator.setClientInvocationHandler(new
+		// LoggerClientInvocationHandlerImpl());
+		ThriftServerConfiguration thriftServerConfiguration = new ThriftServerConfiguration();
+		thriftServerConfiguration.setServerArgsAspect(new ServerArgsAspect() {
+			@Override
+			public TThreadPoolServer.Args TThreadPoolServerArgsAspect(TThreadPoolServer.Args args) {
+				args.stopTimeoutVal = 1;
+				return args;
+			}
+		});
+		configurator.setThriftServerConfiguration(thriftServerConfiguration);
+	}
+
 	@Test
 	public void testDefaultService() {
-		Configurator configurator = new Configurator();
-		configurator.setClientInvocationHandler(new LoggerClientInvocationHandlerImpl());
-		invoke(new DefaultIkasoaFactory(), 9992);
+		invoke(new DefaultIkasoaFactory(configurator), 9992);
 	}
 
 	@Test
@@ -40,7 +58,8 @@ public class TestExampleService extends TestCase {
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void testDefaultKryoService() throws ClassNotFoundException {
 		Class protocolHandlerClass = Class.forName("com.ikamobile.ikasoa.rpc.handler.impl.KryoProtocolHandlerImpl");
-		invoke(new DefaultIkasoaFactory(new Configurator(protocolHandlerClass)), 9996);
+		configurator.setProtocolHandlerClass(protocolHandlerClass);
+		invoke(new DefaultIkasoaFactory(configurator), 9996);
 	}
 
 	@Test
@@ -54,7 +73,8 @@ public class TestExampleService extends TestCase {
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void testDefaultXmlService() throws ClassNotFoundException {
 		Class protocolHandlerClass = Class.forName("com.ikamobile.ikasoa.rpc.handler.impl.XmlProtocolHandlerImpl");
-		invoke(new DefaultIkasoaFactory(new Configurator(protocolHandlerClass)), 9994);
+		configurator.setProtocolHandlerClass(protocolHandlerClass);
+		invoke(new DefaultIkasoaFactory(configurator), 9994);
 	}
 
 	@Test
