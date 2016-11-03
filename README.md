@@ -1,14 +1,14 @@
-![](https://raw.githubusercontent.com/venwyhk/ikasoa/master/ikasoalogo_small.png)<br />&nbsp;<b>Ikamobile Service Oriented Architecture</b>
+![](https://raw.githubusercontent.com/venwyhk/ikasoa/master/ikasoalogo_small.png)<br />&nbsp;<b>Ika Service Oriented Architecture</b>
 
 ***
 
-&nbsp;[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.ikasoa/ikasoa-rpc/badge.svg?style=plastic)](https://maven-badges.herokuapp.com/maven-central/com.ikasoa/ikasoa-rpc)&nbsp;&nbsp;[![](https://codeship.com/projects/9cf2f150-1507-0134-ee57-3adebfc67210/status?branch=master)](https://codeship.com/projects/157977)&nbsp;&nbsp;
+&nbsp;[![](https://codeship.com/projects/9cf2f150-1507-0134-ee57-3adebfc67210/status?branch=master)](https://codeship.com/projects/157977)&nbsp;&nbsp;[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.ikasoa/ikasoa-rpc/badge.svg?style=plastic)](https://maven-badges.herokuapp.com/maven-central/com.ikasoa/ikasoa-rpc)&nbsp;&nbsp;
 
 </br>
 
 ## 概述 ##
 
-  ikasoa是一套SOA服务化治理解决方案.其中ikasoa-rpc是ikasoa的开源RPC框架,基于apache thrift开发,客户端可以像调用本地接口那样去调用远程接口.
+  ikasoa是一套java分布式服务化治理解决方案,基于thrift框架开发.其中ikasoa-rpc是ikasoa的开源RPC框架,客户端可以像调用本地接口那样去调用远程接口.
 
 ## 开发运行环境要求 ##
 
@@ -16,13 +16,13 @@
 
 ## 目录说明 ##
 
-- `ikasoa-admin` : *服务管理相关代码(利用Zookeeper注册和管理服务)*
+- ikasoa-admin : *利用Zookeeper注册和管理服务*
 
-- `ikasoa-core` : *基础核心包*
+- ikasoa-core : *基础核心包*
 
-- `ikasoa-rpc` : *实现RPC功能的代码*
+- ikasoa-rpc : *实现RPC功能的代码*
 
-- `ikasoa-example` : *示例代码*
+- ikasoa-example : *示例代码*
 
 ## 环境搭建 ##
 
@@ -58,9 +58,9 @@ pom.xml
 
 ##### 导入工程&编译代码 #####
 
-  工程目录下命令行执行”mvn eclipse:eclipse”,并导入eclipse.(如果IDE非eclipse,则使用相对应的方式导入)
+  工程目录下命令行执行命令`mvn eclipse:eclipse`,并导入eclipse.(如果IDE非eclipse,则使用相对应的方式导入)
 
-  执行命令”mvn clean package”打包.
+  执行命令`mvn clean package`打包.
 
 ## HelloWorld ##
 
@@ -183,7 +183,7 @@ Main.java
 
 ##### 执行 #####
 
-  执行Main.java,或单独调用Server.start()启动服务后再调用Client.call()执行.
+  执行Main.java,或单独调用`Server.start()`启动服务后再调用`Client.call()`执行.
 
   如输出“helloworld”则表示执行成功.
 
@@ -295,7 +295,7 @@ ThriftClientDemo.java
             try {
                 transport = thriftClient.getTransport();
                 transport.open();
-                // GeneralThriftAcceptor为IDL中配置的service
+                // GeneralThriftAcceptor为ThriftIDL配置所生成的service
                 GeneralThriftAcceptor.Client client = new GeneralThriftAcceptor.Client(
                 thriftClient.getProtocol(transport, "GeneralThriftAcceptor")); // 参数"GeneralThriftAcceptor"为服务的key,如果没有则可以不传
                 // 打印结果
@@ -414,7 +414,7 @@ ThriftClientDemo.java
     ......
 ```
 
-  *serverInfoList中的元素对象com.ikamobile.ikasoa.core.loadbalance.ServerInfo定义了单个服务信息,其中weightNumber属性为权重值,用于轮循负载均衡.*
+  *serverInfoList中的元素对象`com.ikamobile.ikasoa.core.loadbalance.ServerInfo`定义了单个服务信息,其中`weightNumber`属性为权重值,用于轮循负载均衡.*
 
 ##### 使用随机负载均衡 #####
 
@@ -429,7 +429,7 @@ ThriftClientDemo.java
 
   创建自定义序列化类(例如com.xxx.XLoadBalanceImpl).
 
-  自定义序列化类(com.xxx.XLoadBalanceImpl)需实现接口com.ikamobile.ikasoa.core.loadbalance.LoadBalance.
+  自定义序列化类(com.xxx.XLoadBalanceImpl)需实现接口`com.ikamobile.ikasoa.core.loadbalance.LoadBalance`.
 
   通过如下方式获取服务:
 
@@ -477,7 +477,7 @@ ThriftClientDemo.java
 
   创建自定义序列化类(例如com.xxx.XProtocolHandlerImpl).
 
-  自定义序列化类(com.xxx.XProtocolHandlerImpl)需实现接口com.ikamobile.ikasoa.rpc.handler.ProtocolHandler.
+  自定义序列化类(com.xxx.XProtocolHandlerImpl)需实现接口`com.ikamobile.ikasoa.rpc.handler.ProtocolHandler`.
 
   通过如下方式获取IkasoaFactory:
 
@@ -502,4 +502,4 @@ ThriftClientDemo.java
 
 ***
 
-*larry7696@gmail.com | 2016-10-20*
+*larry7696@gmail.com*
