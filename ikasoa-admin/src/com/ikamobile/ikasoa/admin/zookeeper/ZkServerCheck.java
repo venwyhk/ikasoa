@@ -8,15 +8,18 @@ import com.ikamobile.ikasoa.core.ServerCheck;
  * @author <a href="mailto:larry7696@gmail.com">Larry</a>
  * @version 0.1
  */
-public class ZkServerCheck extends ZkBase implements ServerCheck {
+public class ZkServerCheck implements ServerCheck {
+
+	private ZkBase zkBase;
 
 	public ZkServerCheck(String zkServerString, String zkNode) {
-		super(zkServerString, zkNode);
+		this.zkBase = new ZkBase(zkServerString, zkNode);
 	}
 
 	@Override
 	public boolean check(String serverHost, int serverPort) {
-		return isExistNode("", serverHost, serverPort);
+		// TODO: Larry
+		return zkBase.isExistNode("", serverHost, serverPort);
 	}
 
 }

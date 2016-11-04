@@ -26,14 +26,13 @@ import junit.framework.TestCase;
  * @version 0.1
  */
 public class TestExampleService extends TestCase {
-
-	private Configurator configurator = new Configurator();
+	
+	private ThriftServerConfiguration thriftServerConfiguration = new ThriftServerConfiguration();
 
 	@Before
 	public void setUp() {
 		// configurator.setClientInvocationHandler(new
 		// LoggerClientInvocationHandlerImpl());
-		ThriftServerConfiguration thriftServerConfiguration = new ThriftServerConfiguration();
 		thriftServerConfiguration.setServerArgsAspect(new ServerArgsAspect() {
 			@Override
 			public TThreadPoolServer.Args TThreadPoolServerArgsAspect(TThreadPoolServer.Args args) {
@@ -41,11 +40,15 @@ public class TestExampleService extends TestCase {
 				return args;
 			}
 		});
-		configurator.setThriftServerConfiguration(thriftServerConfiguration);
 	}
 
 	@Test
 	public void testDefaultService() {
+		Configurator configurator = new Configurator();
+		configurator.setThriftServerConfiguration(thriftServerConfiguration);
+		invoke(new DefaultIkasoaFactory(configurator), 9992);
+		// 测试NIO方式
+		configurator.setNonBlockingIO(true);
 		invoke(new DefaultIkasoaFactory(configurator), 9992);
 	}
 
@@ -57,8 +60,13 @@ public class TestExampleService extends TestCase {
 	@Test
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void testDefaultKryoService() throws ClassNotFoundException {
+		Configurator configurator = new Configurator();
+		configurator.setThriftServerConfiguration(thriftServerConfiguration);
 		Class protocolHandlerClass = Class.forName("com.ikamobile.ikasoa.rpc.handler.impl.KryoProtocolHandlerImpl");
 		configurator.setProtocolHandlerClass(protocolHandlerClass);
+		invoke(new DefaultIkasoaFactory(configurator), 9996);
+		// 测试NIO方式
+		configurator.setNonBlockingIO(true);
 		invoke(new DefaultIkasoaFactory(configurator), 9996);
 	}
 
@@ -72,8 +80,13 @@ public class TestExampleService extends TestCase {
 	@Test
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void testDefaultXmlService() throws ClassNotFoundException {
+		Configurator configurator = new Configurator();
+		configurator.setThriftServerConfiguration(thriftServerConfiguration);
 		Class protocolHandlerClass = Class.forName("com.ikamobile.ikasoa.rpc.handler.impl.XmlProtocolHandlerImpl");
 		configurator.setProtocolHandlerClass(protocolHandlerClass);
+		invoke(new DefaultIkasoaFactory(configurator), 9994);
+		// 测试NIO方式
+		configurator.setNonBlockingIO(true);
 		invoke(new DefaultIkasoaFactory(configurator), 9994);
 	}
 

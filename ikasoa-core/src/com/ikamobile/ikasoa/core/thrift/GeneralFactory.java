@@ -18,8 +18,6 @@ import com.ikamobile.ikasoa.core.loadbalance.ServerInfo;
 import com.ikamobile.ikasoa.core.thrift.client.AsyncMultiplexedProtocolFactory;
 import com.ikamobile.ikasoa.core.thrift.client.ThriftClient;
 import com.ikamobile.ikasoa.core.thrift.client.ThriftClientConfiguration;
-import com.ikamobile.ikasoa.core.thrift.client.impl.LoadBalanceNonblockingThriftClientImpl;
-import com.ikamobile.ikasoa.core.thrift.client.impl.NonblockingThriftClientImpl;
 import com.ikamobile.ikasoa.core.thrift.client.impl.DefaultThriftClientImpl;
 import com.ikamobile.ikasoa.core.thrift.client.impl.LoadBalanceThriftClientImpl;
 import com.ikamobile.ikasoa.core.thrift.server.MultiplexedProcessor;
@@ -92,11 +90,27 @@ public class GeneralFactory implements Factory {
 	}
 
 	/**
+	 * 获取NIO的ThriftServer对象
+	 */
+	@Override
+	public ThriftServer getNonblockingThriftServer(String serverName, int serverPort, Service service) {
+		return getNonblockingThriftServer(serverName, serverPort, new ServiceProcessor(service));
+	}
+
+	/**
 	 * 获取默认的ThriftServer对象
 	 */
 	@Override
 	public ThriftServer getThriftServer(int serverPort, Service service) {
-		return getThriftServer("DefaultThriftServer-" + serverPort, serverPort, service);
+		return getThriftServer("DefaultServer-" + serverPort, serverPort, service);
+	}
+
+	/**
+	 * 获取NIO的ThriftServer对象
+	 */
+	@Override
+	public ThriftServer getNonblockingThriftServer(int serverPort, Service service) {
+		return getNonblockingThriftServer("DefaultNonblockingServer-" + serverPort, serverPort, service);
 	}
 
 	/**
@@ -104,7 +118,15 @@ public class GeneralFactory implements Factory {
 	 */
 	@Override
 	public ThriftServer getThriftServer(int serverPort, Map<String, Service> serviceMap) throws STException {
-		return getThriftServer("DefaultThriftServer-" + serverPort, serverPort, serviceMap);
+		return getThriftServer("DefaultServer-" + serverPort, serverPort, serviceMap);
+	}
+
+	/**
+	 * 获取NIO的ThriftServer对象
+	 */
+	@Override
+	public ThriftServer getNonblockingThriftServer(int serverPort, Map<String, Service> serviceMap) throws STException {
+		return getNonblockingThriftServer("DefaultNonblockingServer-" + serverPort, serverPort, serviceMap);
 	}
 
 	/**
@@ -113,14 +135,16 @@ public class GeneralFactory implements Factory {
 	@Override
 	public ThriftServer getThriftServer(String serverName, int serverPort, Map<String, Service> serviceMap)
 			throws STException {
-		if (serviceMap == null) {
-			throw new STException("serviceMap is null !");
-		}
-		Map<String, TProcessor> processorMap = new HashMap<>();
-		for (Entry<String, Service> e : serviceMap.entrySet()) {
-			processorMap.put(e.getKey(), new ServiceProcessor(serviceMap.get(e.getKey())));
-		}
-		return getThriftServer(serverName, serverPort, new MultiplexedProcessor(processorMap));
+		return getThriftServer(serverName, serverPort, buildMultiplexedProcessor(serviceMap));
+	}
+
+	/**
+	 * 获取NIO的ThriftServer对象
+	 */
+	@Override
+	public ThriftServer getNonblockingThriftServer(String serverName, int serverPort, Map<String, Service> serviceMap)
+			throws STException {
+		return getNonblockingThriftServer(serverName, serverPort, buildMultiplexedProcessor(serviceMap));
 	}
 
 	/**
@@ -156,46 +180,6 @@ public class GeneralFactory implements Factory {
 			Object[] params = { serverInfoList };
 			Constructor con = loadBalanceClass.getConstructor(paramTypes);
 			return new LoadBalanceThriftClientImpl((LoadBalance) con.newInstance(params), thriftClientConfiguration);
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
-	}
-
-	/**
-	 * 获取NonblockingThriftClient对象
-	 */
-	@Override
-	public ThriftClient getNonblockingThriftClient(String serverHost, int serverPort) {
-		return new NonblockingThriftClientImpl(serverHost, serverPort, thriftClientConfiguration);
-	}
-
-	/**
-	 * 获取带负载均衡的NonblockingThriftClient对象
-	 */
-	@Override
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public ThriftClient getNonblockingThriftClient(List<ServerInfo> serverInfoList) {
-		try {
-			Class cls = Class.forName(DEFAULT_LOAD_BALANCE_CLASS_STRING);
-			return getNonblockingThriftClient(serverInfoList, cls);
-		} catch (ClassNotFoundException e) {
-			throw new RuntimeException(e);
-		}
-	}
-
-	/**
-	 * 获取带负载均衡的NonblockingThriftClient对象
-	 */
-	@Override
-	@SuppressWarnings("rawtypes")
-	public ThriftClient getNonblockingThriftClient(List<ServerInfo> serverInfoList,
-			Class<LoadBalance> loadBalanceClass) {
-		try {
-			Class[] paramTypes = { List.class };
-			Object[] params = { serverInfoList };
-			Constructor con = loadBalanceClass.getConstructor(paramTypes);
-			return new LoadBalanceNonblockingThriftClientImpl((LoadBalance) con.newInstance(params),
-					thriftClientConfiguration);
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
@@ -249,6 +233,17 @@ public class GeneralFactory implements Factory {
 		} catch (IOException e) {
 			throw new STException(e);
 		}
+	}
+
+	private MultiplexedProcessor buildMultiplexedProcessor(Map<String, Service> serviceMap) throws STException {
+		if (serviceMap == null) {
+			throw new STException("serviceMap is null !");
+		}
+		Map<String, TProcessor> processorMap = new HashMap<>();
+		for (Entry<String, Service> e : serviceMap.entrySet()) {
+			processorMap.put(e.getKey(), new ServiceProcessor(serviceMap.get(e.getKey())));
+		}
+		return new MultiplexedProcessor(processorMap);
 	}
 
 }

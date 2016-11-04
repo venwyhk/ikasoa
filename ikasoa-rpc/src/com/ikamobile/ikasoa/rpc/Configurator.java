@@ -26,6 +26,9 @@ public class Configurator {
 	// 客户端调用拦截器
 	private ClientInvocationHandler clientInvocationHandler;
 
+	// 是否使用阻塞式IO
+	private boolean isNonBlockingIO = false;
+
 	public Configurator() {
 	}
 
@@ -66,6 +69,14 @@ public class Configurator {
 
 	public void setClientInvocationHandler(ClientInvocationHandler clientInvocationHandler) {
 		this.clientInvocationHandler = clientInvocationHandler;
+	}
+
+	public boolean isNonBlockingIO() {
+		return isNonBlockingIO;
+	}
+
+	public void setNonBlockingIO(boolean isNonBlockingIO) {
+		this.isNonBlockingIO = isNonBlockingIO;
 	}
 
 }

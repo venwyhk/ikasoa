@@ -53,7 +53,7 @@ public class NettyIkasoaFactory extends DefaultIkasoaFactory {
 
 	@Override
 	public ThriftServer getThriftServer(String serverName, int serverPort, TProcessor processor) {
-		return new NiftyThriftServerImpl("NiftyThriftServer-" + serverPort, serverPort, processor);
+		return new NiftyThriftServerImpl("NiftyServer-" + serverPort, serverPort, processor);
 	}
 
 	public NettyServerConfig getNettyServerConfig() {

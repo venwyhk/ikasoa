@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.thrift.TProcessor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.ikamobile.ikasoa.core.STException;
@@ -155,6 +156,13 @@ public class DefaultIkasoaFactory extends GeneralFactory implements IkasoaFactor
 	public ThriftServer getThriftServer(String serverName, int serverPort, Map<String, Service> serviceMap)
 			throws STException {
 		return super.getThriftServer(serverName, serverPort, serviceMap);
+	}
+
+	@Override
+	public ThriftServer getThriftServer(String serverName, int serverPort, TProcessor processor) {
+		return configurator.isNonBlockingIO()
+				? super.getNonblockingThriftServer(serverName += " (non-blocking io)", serverPort, processor)
+				: super.getThriftServer(serverName, serverPort, processor);
 	}
 
 	private Map<String, Service> getServiceMapByImplClass(ImplClsCon implClsCon) throws IkasoaException {
