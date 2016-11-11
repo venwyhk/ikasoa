@@ -36,7 +36,7 @@ pom.xml
     <dependency>
         <groupId>com.ikasoa</groupId>
         <artifactId>ikasoa-rpc</artifactId>
-        <version>0.3-BETA</version>
+        <version>0.3-BETA2</version>
     </dependency>
     ......
 ```
@@ -51,7 +51,7 @@ pom.xml
     <dependency>
         <groupId>com.ikasoa</groupId>
         <artifactId>ikasoa-core</artifactId>
-        <version>0.4.6</version>
+        <version>0.4.7</version>
     </dependency>
     ......
 ```
@@ -396,6 +396,20 @@ ThriftClientDemo.java
 ```java
     ......
     IkasoaFactory ikasoaFactory = new NettyIkasoaFactory();
+    ......
+```
+
+## 阻塞式IO与非阻塞式IO ##
+
+  *ikasoa服务端默认使用的是阻塞式IO,在高并发场景中建议改为非阻塞式IO方式.*
+
+##### 使用非阻塞式IO #####
+
+```java
+    ......
+    Configurator configurator = new Configurator();
+    configurator.setNonBlockingIO(true);
+    IkasoaFactory ikasoaFactory = new DefaultIkasoaFactory(configurator);
     ......
 ```
 
