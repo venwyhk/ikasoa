@@ -116,7 +116,7 @@
         <dependency>
             <groupId>com.ikasoa</groupId>
             <artifactId>ikasoa-core</artifactId>
-            <version>0.4.6</version>
+            <version>0.4.7</version>
         </dependency>
         <dependency>
             <groupId>io.netty</groupId>
@@ -131,7 +131,7 @@
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
-            <version>1.2.18</version>
+            <version>1.2.20</version>
         </dependency>
         <dependency>
             <groupId>com.esotericsoftware.kryo</groupId>
