@@ -46,7 +46,7 @@ public class TestExampleService extends TestCase {
 	public void testDefaultService() {
 		Configurator configurator = new Configurator();
 		configurator.setThriftServerConfiguration(thriftServerConfiguration);
-		invoke(new DefaultIkasoaFactory(configurator), 9992);
+		invoke(new DefaultIkasoaFactory(configurator), 9991);
 		// 测试NIO方式
 		configurator.setNonBlockingIO(true);
 		invoke(new DefaultIkasoaFactory(configurator), 9992);
@@ -64,17 +64,17 @@ public class TestExampleService extends TestCase {
 		configurator.setThriftServerConfiguration(thriftServerConfiguration);
 		Class protocolHandlerClass = Class.forName("com.ikamobile.ikasoa.rpc.handler.impl.KryoProtocolHandlerImpl");
 		configurator.setProtocolHandlerClass(protocolHandlerClass);
-		invoke(new DefaultIkasoaFactory(configurator), 9996);
+		invoke(new DefaultIkasoaFactory(configurator), 9994);
 		// 测试NIO方式
 		configurator.setNonBlockingIO(true);
-		invoke(new DefaultIkasoaFactory(configurator), 9996);
+		invoke(new DefaultIkasoaFactory(configurator), 9995);
 	}
 
 	@Test
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void testNettyKryoService() throws ClassNotFoundException {
 		Class protocolHandlerClass = Class.forName("com.ikamobile.ikasoa.rpc.handler.impl.KryoProtocolHandlerImpl");
-		invoke(new NettyIkasoaFactory(new Configurator(protocolHandlerClass)), 9997);
+		invoke(new NettyIkasoaFactory(new Configurator(protocolHandlerClass)), 9996);
 	}
 
 	@Test
@@ -84,17 +84,17 @@ public class TestExampleService extends TestCase {
 		configurator.setThriftServerConfiguration(thriftServerConfiguration);
 		Class protocolHandlerClass = Class.forName("com.ikamobile.ikasoa.rpc.handler.impl.XmlProtocolHandlerImpl");
 		configurator.setProtocolHandlerClass(protocolHandlerClass);
-		invoke(new DefaultIkasoaFactory(configurator), 9994);
+		invoke(new DefaultIkasoaFactory(configurator), 9997);
 		// 测试NIO方式
 		configurator.setNonBlockingIO(true);
-		invoke(new DefaultIkasoaFactory(configurator), 9994);
+		invoke(new DefaultIkasoaFactory(configurator), 9998);
 	}
 
 	@Test
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void testNettyXmlService() throws ClassNotFoundException {
 		Class protocolHandlerClass = Class.forName("com.ikamobile.ikasoa.rpc.handler.impl.XmlProtocolHandlerImpl");
-		invoke(new NettyIkasoaFactory(new Configurator(protocolHandlerClass)), 9995);
+		invoke(new NettyIkasoaFactory(new Configurator(protocolHandlerClass)), 9999);
 	}
 
 	private void invoke(IkasoaFactory ikasoaFactory, int port) {
