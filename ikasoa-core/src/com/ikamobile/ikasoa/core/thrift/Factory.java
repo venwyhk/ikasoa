@@ -115,8 +115,6 @@ public interface Factory {
 	/**
 	 * 获取NIO的ThriftServer对象
 	 * 
-	 * @param serverName
-	 *            服务器名称
 	 * @param serverPort
 	 *            服务器端口
 	 * @param serviceMap
@@ -143,6 +141,8 @@ public interface Factory {
 	/**
 	 * 获取NIO的ThriftServer对象
 	 * 
+	 * @param serverName
+	 *            服务器名称
 	 * @param serverPort
 	 *            服务器端口
 	 * @param serviceMap
