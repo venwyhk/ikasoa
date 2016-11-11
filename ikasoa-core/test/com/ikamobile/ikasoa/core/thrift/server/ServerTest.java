@@ -20,7 +20,7 @@ import com.ikamobile.ikasoa.core.thrift.client.CompactThriftClientConfiguration;
 import com.ikamobile.ikasoa.core.thrift.client.ThriftClient;
 import com.ikamobile.ikasoa.core.thrift.client.ThriftClientConfiguration;
 import com.ikamobile.ikasoa.core.thrift.client.TupleThriftClientConfiguration;
-import com.ikamobile.ikasoa.core.thrift.protocol.SecurityCompactProtocol;
+import com.ikamobile.ikasoa.core.thrift.protocol.DESCompactProtocol;
 import com.ikamobile.ikasoa.core.thrift.server.impl.DefaultThriftServerImpl;
 import com.ikamobile.ikasoa.core.thrift.server.impl.ServletThriftServerImpl;
 import com.ikamobile.ikasoa.core.thrift.server.impl.SimpleThriftServerImpl;
@@ -261,13 +261,13 @@ public class ServerTest extends TestCase {
 	}
 
 	@Test
-	public void testSecurityCompactDefaultThriftServerImpl() {
+	public void testDESCompactDefaultThriftServerImpl() {
 		int serverPort = 39203;
 		String key = "12345678";
 		ThriftServerConfiguration serverConfiguration = new ThriftServerConfiguration();
-		serverConfiguration.setProtocolFactory(new SecurityCompactProtocol.Factory(key));
+		serverConfiguration.setProtocolFactory(new DESCompactProtocol.Factory(key));
 		ThriftClientConfiguration clientConfiguration = new ThriftClientConfiguration();
-		clientConfiguration.setProtocolFactory(new SecurityCompactProtocol.Factory(key));
+		clientConfiguration.setProtocolFactory(new DESCompactProtocol.Factory(key));
 		Factory factory = new GeneralFactory(serverConfiguration, clientConfiguration);
 		ThriftServer defaultThriftServer = factory.getThriftServer(serverName, serverPort,
 				new ThriftSimpleService.Processor<Iface>(new TestThriftServiceImpl()));

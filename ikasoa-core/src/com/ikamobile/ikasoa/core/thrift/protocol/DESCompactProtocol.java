@@ -17,7 +17,7 @@ import com.ikamobile.ikasoa.core.utils.StringUtil;
  * @author <a href="mailto:larry7696@gmail.com">Larry</a>
  * @version 0.4.5
  */
-public class SecurityCompactProtocol extends TCompactProtocol {
+public class DESCompactProtocol extends TCompactProtocol {
 
 	private final String key;
 
@@ -36,11 +36,11 @@ public class SecurityCompactProtocol extends TCompactProtocol {
 		}
 
 		public TProtocol getProtocol(TTransport trans) {
-			return new SecurityCompactProtocol(trans, key_);
+			return new DESCompactProtocol(trans, key_);
 		}
 	}
 
-	public SecurityCompactProtocol(TTransport transport, String key) {
+	public DESCompactProtocol(TTransport transport, String key) {
 		super(transport);
 		if (StringUtil.isEmpty(key)) {
 			throw new RuntimeException("Key is null !");
