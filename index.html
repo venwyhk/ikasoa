@@ -74,7 +74,7 @@
     &lt;<span class="pl-ent">dependency</span>&gt;
         &lt;<span class="pl-ent">groupId</span>&gt;com.ikasoa&lt;/<span class="pl-ent">groupId</span>&gt;
         &lt;<span class="pl-ent">artifactId</span>&gt;ikasoa-rpc&lt;/<span class="pl-ent">artifactId</span>&gt;
-        &lt;<span class="pl-ent">version</span>&gt;0.3-BETA&lt;/<span class="pl-ent">version</span>&gt;
+        &lt;<span class="pl-ent">version</span>&gt;0.3-BETA2&lt;/<span class="pl-ent">version</span>&gt;
     &lt;/<span class="pl-ent">dependency</span>&gt;
     ......</pre></div>
 
@@ -89,7 +89,7 @@
     &lt;<span class="pl-ent">dependency</span>&gt;
         &lt;<span class="pl-ent">groupId</span>&gt;com.ikasoa&lt;/<span class="pl-ent">groupId</span>&gt;
         &lt;<span class="pl-ent">artifactId</span>&gt;ikasoa-core&lt;/<span class="pl-ent">artifactId</span>&gt;
-        &lt;<span class="pl-ent">version</span>&gt;0.4.6&lt;/<span class="pl-ent">version</span>&gt;
+        &lt;<span class="pl-ent">version</span>&gt;0.4.7&lt;/<span class="pl-ent">version</span>&gt;
     &lt;/<span class="pl-ent">dependency</span>&gt;
     ......</pre></div>
 
@@ -434,6 +434,20 @@
 
 <div class="highlight highlight-source-java"><pre>    <span class="pl-c1">......</span>
     <span class="pl-smi">IkasoaFactory</span> ikasoaFactory <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-smi">NettyIkasoaFactory</span>();
+    <span class="pl-c1">......</span></pre></div>
+
+<h2>
+<a id="阻塞式io与非阻塞式io" class="anchor" href="#%E9%98%BB%E5%A1%9E%E5%BC%8Fio%E4%B8%8E%E9%9D%9E%E9%98%BB%E5%A1%9E%E5%BC%8Fio" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>阻塞式IO与非阻塞式IO</h2>
+
+<p><em>ikasoa服务端默认使用的是阻塞式IO,在高并发场景中建议改为非阻塞式IO方式.</em></p>
+
+<h5>
+<a id="使用非阻塞式io" class="anchor" href="#%E4%BD%BF%E7%94%A8%E9%9D%9E%E9%98%BB%E5%A1%9E%E5%BC%8Fio" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>使用非阻塞式IO</h5>
+
+<div class="highlight highlight-source-java"><pre>    <span class="pl-c1">......</span>
+    <span class="pl-smi">Configurator</span> configurator <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-smi">Configurator</span>();
+    configurator<span class="pl-k">.</span>setNonBlockingIO(<span class="pl-c1">true</span>);
+    <span class="pl-smi">IkasoaFactory</span> ikasoaFactory <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-smi">DefaultIkasoaFactory</span>(configurator);
     <span class="pl-c1">......</span></pre></div>
 
 <h2>
