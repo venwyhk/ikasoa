@@ -131,6 +131,8 @@ public class TestExampleService extends TestCase {
 			map.put("sl", new ExampleVO(1, "slslsl"));
 			assertEquals(es.getMap(0, map).get("sl").getString(), es2.getMap(0, map).get("sl").getString());
 			es.tVoid();
+			assertEquals("value", es.testtestContainerType().get(0).get("key"));
+			assertEquals("oooo", es.testtestContainerType2().get(0).get(0));
 			
 			// 测试接口实现继承
 			ExampleChildService childEs = ikasoaFactory.getIkasoaClient(ExampleChildService.class, "localhost", port);

@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -96,6 +97,24 @@ public class ExampleServiceImpl implements ExampleService {
 		ExampleVO evo = (ExampleVO) esvo;
 		System.out.println(evo.getId());
 		return esvo;
+	}
+	
+	@Override
+	public List<Map<String, Object>> testtestContainerType() {
+		List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("key", "value");
+		list.add(map);
+		return list;
+	}
+	
+	@Override
+	public List<List<String>> testtestContainerType2() {
+		List<List<String>> list = new ArrayList<List<String>>();
+		List<String> l = new ArrayList<String>();
+		l.add("oooo");
+		list.add(l);
+		return list;
 	}
 
 	@Override

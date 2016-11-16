@@ -48,6 +48,10 @@ public interface ExampleService {
 
 	public ExampleSuperVO getExampleSuperVO(ExampleSuperVO esvo);
 	
+	public List<Map<String,Object>> testtestContainerType();
+	
+	public List<List<String>> testtestContainerType2();
+	
 	public void tVoid();
 
 }
