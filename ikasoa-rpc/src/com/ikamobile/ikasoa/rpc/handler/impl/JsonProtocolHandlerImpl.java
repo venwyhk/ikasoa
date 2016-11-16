@@ -27,6 +27,9 @@ public class JsonProtocolHandlerImpl<T1, T2> implements ProtocolHandler<T1, T2> 
 	// 异常标识符
 	private final static String E = "E__";
 
+	// 空标识符
+	private final static String VOID = "_VOID_";
+
 	public JsonProtocolHandlerImpl(ReturnData resultData) {
 		this.resultData = resultData;
 	}
@@ -72,7 +75,11 @@ public class JsonProtocolHandlerImpl<T1, T2> implements ProtocolHandler<T1, T2> 
 		Object[] args = (Object[]) arg;
 		Class<?>[] argClasses = new Class<?>[args.length];
 		for (int i = 0; i < args.length; i++) {
-			argClasses[i] = args[i].getClass();
+			if (args[i] != null) {
+				argClasses[i] = args[i].getClass();
+			} else {
+				continue;
+			}
 		}
 		return new StringBuilder(JSON.toJSONString(argClasses)).append(CT).append(JSON.toJSONString(arg)).toString();
 	}
@@ -86,7 +93,7 @@ public class JsonProtocolHandlerImpl<T1, T2> implements ProtocolHandler<T1, T2> 
 				return new StringBuilder(result.getClass().getName()).append(CT).append(JSON.toJSONString(result))
 						.toString();
 			} else {
-				return null;
+				return VOID;
 			}
 		}
 	}
@@ -96,6 +103,9 @@ public class JsonProtocolHandlerImpl<T1, T2> implements ProtocolHandler<T1, T2> 
 	public T2 strToResult(String str) {
 		if (str == null) {
 			throw new RuntimeException("result string is null !");
+		}
+		if (VOID.equals(str)) {
+			return null;
 		}
 		String[] strs = str.split(CT);
 		if (strs.length != 2) {

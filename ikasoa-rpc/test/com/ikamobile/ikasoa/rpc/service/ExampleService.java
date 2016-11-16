@@ -47,5 +47,7 @@ public interface ExampleService {
 	public byte[] down() throws FileNotFoundException;
 
 	public ExampleSuperVO getExampleSuperVO(ExampleSuperVO esvo);
+	
+	public void tVoid();
 
 }

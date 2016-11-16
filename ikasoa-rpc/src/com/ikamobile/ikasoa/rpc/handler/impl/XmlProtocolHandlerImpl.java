@@ -22,6 +22,8 @@ public class XmlProtocolHandlerImpl<T1, T2> implements ProtocolHandler<T1, T2> {
 
 	private final static String E = "<!--E-->";
 
+	private final static String VOID = "_VOID_";
+
 	public XmlProtocolHandlerImpl(ReturnData resultData) {
 		this.resultData = resultData;
 	}
@@ -42,13 +44,20 @@ public class XmlProtocolHandlerImpl<T1, T2> implements ProtocolHandler<T1, T2> {
 		if (result instanceof Throwable) {
 			return new StringBuilder(E).append(formatXML(result)).toString();
 		} else {
-			return formatXML(result);
+			if (result != null) {
+				return formatXML(result);
+			} else {
+				return VOID;
+			}
 		}
 	}
 
 	@Override
 	@SuppressWarnings("unchecked")
 	public T2 strToResult(String str) {
+		if (VOID.equals(str)) {
+			return null;
+		}
 		return (T2) parserXML(str);
 	}
 

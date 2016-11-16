@@ -98,4 +98,8 @@ public class ExampleServiceImpl implements ExampleService {
 		return esvo;
 	}
 
+	@Override
+	public void tVoid() {
+	}
+
 }

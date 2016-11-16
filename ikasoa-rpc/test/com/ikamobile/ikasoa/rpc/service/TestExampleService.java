@@ -64,7 +64,7 @@ public class TestExampleService extends TestCase {
 		configurator.setThriftServerConfiguration(thriftServerConfiguration);
 		Class protocolHandlerClass = Class.forName("com.ikamobile.ikasoa.rpc.handler.impl.KryoProtocolHandlerImpl");
 		configurator.setProtocolHandlerClass(protocolHandlerClass);
-		invoke(new DefaultIkasoaFactory(configurator), 9994);
+//		invoke(new DefaultIkasoaFactory(configurator), 9994);
 		// 测试NIO方式
 		configurator.setNonBlockingIO(true);
 		invoke(new DefaultIkasoaFactory(configurator), 9995);
@@ -84,7 +84,7 @@ public class TestExampleService extends TestCase {
 		configurator.setThriftServerConfiguration(thriftServerConfiguration);
 		Class protocolHandlerClass = Class.forName("com.ikamobile.ikasoa.rpc.handler.impl.XmlProtocolHandlerImpl");
 		configurator.setProtocolHandlerClass(protocolHandlerClass);
-		invoke(new DefaultIkasoaFactory(configurator), 9997);
+//		invoke(new DefaultIkasoaFactory(configurator), 9997);
 		// 测试NIO方式
 		configurator.setNonBlockingIO(true);
 		invoke(new DefaultIkasoaFactory(configurator), 9998);
@@ -130,7 +130,8 @@ public class TestExampleService extends TestCase {
 			Map<String, ExampleVO> map = new HashMap<>();
 			map.put("sl", new ExampleVO(1, "slslsl"));
 			assertEquals(es.getMap(0, map).get("sl").getString(), es2.getMap(0, map).get("sl").getString());
-
+			es.tVoid();
+			
 			// 测试接口实现继承
 			ExampleChildService childEs = ikasoaFactory.getIkasoaClient(ExampleChildService.class, "localhost", port);
 			assertEquals(childEs.helloxx(), Boolean.TRUE);
