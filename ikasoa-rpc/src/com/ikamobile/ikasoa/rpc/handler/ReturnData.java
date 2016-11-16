@@ -26,6 +26,8 @@ public class ReturnData {
 	// 异常类型树组
 	private Class<?>[] excetionClassTypes;
 
+	private boolean isContainerType = false;
+
 	public ReturnData(Method method) {
 		className = getClassNameByTypeName(method.getReturnType().getName());
 		if (StringUtil.isEmpty(className)) {
@@ -35,7 +37,19 @@ public class ReturnData {
 			Type[] types = ((ParameterizedType) method.getGenericReturnType()).getActualTypeArguments();
 			classTypes = new Class<?>[types.length];
 			for (int i = 0; i < types.length; i++) {
-				classTypes[i] = (Class<?>) types[i];
+				Type type = types[i];
+				if (type.getTypeName().indexOf("java.util.List") == 0) {
+					classTypes[i] = List.class;
+					setContainerType(true);
+				} else if (type.getTypeName().indexOf("java.util.Set") == 0) {
+					classTypes[i] = Set.class;
+					setContainerType(true);
+				} else if (type.getTypeName().indexOf("java.util.Map") == 0) {
+					classTypes[i] = Map.class;
+					setContainerType(true);
+				} else {
+					classTypes[i] = (Class<?>) types[i];
+				}
 			}
 		} catch (Exception e) {
 			try {
@@ -108,6 +122,14 @@ public class ReturnData {
 
 	public void setExcetionClassTypes(Class<?>[] excetionClassTypes) {
 		this.excetionClassTypes = excetionClassTypes;
+	}
+
+	public boolean isContainerType() {
+		return isContainerType;
+	}
+
+	public void setContainerType(boolean isContainerType) {
+		this.isContainerType = isContainerType;
 	}
 
 	private String getClassNameByTypeName(String ClassTypeName) {

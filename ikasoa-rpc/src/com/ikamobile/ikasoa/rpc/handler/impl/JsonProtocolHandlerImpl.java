@@ -118,14 +118,14 @@ public class JsonProtocolHandlerImpl<T1, T2> implements ProtocolHandler<T1, T2> 
 		String resultStr = strs[1];
 		T2 result = null;
 		if (resultData.isArray()) {
-			if (List.class.getName().equals(resultData.getClassType().getName())
-					|| Set.class.getName().equals(resultData.getClassType().getName())) {
+			if (!resultData.isContainerType() && (List.class.getName().equals(resultData.getClassType().getName())
+					|| Set.class.getName().equals(resultData.getClassType().getName()))) {
 				throw new RuntimeException("'List' or 'Set' must appoint type ! eg : 'List<String>' .");
 			}
 			result = (T2) JSON.parseArray(resultStr, resultData.getClassType());
 		} else if (resultData.isMap()) {
-			if (Map.class.getName().equals(resultData.getClassType().getName())
-					&& resultData.getClassTypes().length != 2) {
+			if (!resultData.isContainerType() && (Map.class.getName().equals(resultData.getClassType().getName())
+					&& resultData.getClassTypes().length != 2)) {
 				throw new RuntimeException("'Map' must appoint type ! eg : 'Map<String, String>' .");
 			}
 			JSONObject jsonMap = JSON.parseObject(resultStr);
