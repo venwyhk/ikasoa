@@ -58,6 +58,10 @@ public class JsonProtocolHandlerImpl<T1, T2> implements ProtocolHandler<T1, T2> 
 		for (int i = 0; i < argClasses.length; i++) {
 			String s = argStrs[i];
 			Class<?> c = argClasses[i];
+			if (StringUtil.isEmpty(s) || c == null) {
+				objs[i] = null;
+				continue;
+			}
 			if (isAppendQuotes(s)) {
 				objs[i] = JSON.parseObject(new StringBuilder("\"").append(s).append("\"").toString(), c);
 			} else {
