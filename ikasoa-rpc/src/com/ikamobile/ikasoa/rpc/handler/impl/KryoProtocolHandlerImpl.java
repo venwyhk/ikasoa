@@ -79,7 +79,7 @@ public class KryoProtocolHandlerImpl<T1, T2> implements ProtocolHandler<T1, T2> 
 
 	@Override
 	public Throwable strToThrowable(String str) {
-		// TODO:该实现暂不对异常返回做处理
+		// TODO: 该实现暂不对异常返回做处理
 		return null;
 	}
 
