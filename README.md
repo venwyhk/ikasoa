@@ -36,7 +36,7 @@ pom.xml
     <dependency>
         <groupId>com.ikasoa</groupId>
         <artifactId>ikasoa-rpc</artifactId>
-        <version>0.3-BETA2</version>
+        <version>0.3-BETA3</version>
     </dependency>
     ......
 ```
