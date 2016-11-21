@@ -43,15 +43,15 @@ public interface ExampleService {
 	// 测试自定义异常
 	public int getInt() throws IkasoaTestException, Exception;
 
+	public ExampleSuperVO getExampleSuperVO(ExampleSuperVO esvo);
+
+	public List<Map<String, Object>> testtestContainerType();
+
+	public List<List<String>> testtestContainerType2();
+
 	// 下载文件
 	public byte[] down() throws FileNotFoundException;
 
-	public ExampleSuperVO getExampleSuperVO(ExampleSuperVO esvo);
-	
-	public List<Map<String,Object>> testtestContainerType();
-	
-	public List<List<String>> testtestContainerType2();
-	
 	public void tVoid();
 
 }

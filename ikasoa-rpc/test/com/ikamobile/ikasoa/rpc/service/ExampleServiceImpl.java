@@ -17,7 +17,7 @@ public class ExampleServiceImpl implements ExampleService {
 	public ExampleVO findVO(int id) {
 		ExampleVO evo = new ExampleVO();
 		evo.setId(id);
-		evo.setString("阿里爸爸");
+		evo.setString("alibaba88alibaba88");
 		return evo;
 	}
 
@@ -26,14 +26,14 @@ public class ExampleServiceImpl implements ExampleService {
 		List<ExampleVO> evoList = new ArrayList<>();
 		ExampleVO evo = new ExampleVO();
 		evo.setId(1);
-		evo.setString("阿里爸爸");
+		evo.setString("alibaba88alibaba88");
 		evoList.add(evo);
 		ExampleVO evo2 = new ExampleVO();
 		evo2.setId(2);
-		evo2.setString("阿里爸爸阿里爸爸");
+		evo2.setString("alibaba88alibaba88alibaba88alibaba88");
 		ExampleVO evo3 = new ExampleVO();
 		evo3.setId(2322);
-		evo3.setString("阿里爸爸阿里爸爸阿里爸爸");
+		evo3.setString("alibaba88alibaba88alibaba88alibaba88alibaba88alibaba88");
 		evo2.setEvo(evo3);
 		evoList.add(evo2);
 		evoList.add(evo3);
@@ -82,13 +82,7 @@ public class ExampleServiceImpl implements ExampleService {
 
 	@Override
 	public int getInt() throws IkasoaTestException, Exception {
-		throw new IkasoaTestException("明天不上班!");
-	}
-
-	@Override
-	public byte[] down() throws FileNotFoundException {
-		return StreamUtil.inputStreamToBytes(
-				new FileInputStream(new File("C:/Documents and Settings/larry/My Documents/My Pictures/fx.jpg")));
+		throw new IkasoaTestException("mtbsb");
 	}
 
 	@Override
@@ -98,7 +92,7 @@ public class ExampleServiceImpl implements ExampleService {
 		System.out.println(evo.getId());
 		return esvo;
 	}
-	
+
 	@Override
 	public List<Map<String, Object>> testtestContainerType() {
 		List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
@@ -107,7 +101,7 @@ public class ExampleServiceImpl implements ExampleService {
 		list.add(map);
 		return list;
 	}
-	
+
 	@Override
 	public List<List<String>> testtestContainerType2() {
 		List<List<String>> list = new ArrayList<List<String>>();
@@ -115,6 +109,12 @@ public class ExampleServiceImpl implements ExampleService {
 		l.add("oooo");
 		list.add(l);
 		return list;
+	}
+
+	@Override
+	public byte[] down() throws FileNotFoundException {
+		return StreamUtil.inputStreamToBytes(
+				new FileInputStream(new File("C:/Documents and Settings/larry/My Documents/My Pictures/fx.jpg")));
 	}
 
 	@Override
