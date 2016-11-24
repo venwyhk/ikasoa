@@ -514,6 +514,10 @@ ThriftClientDemo.java
 
 - 部分单元测试需要启动Socket,执行单元测试时请确保相关端口可用.
 
+## License ##
+
+  *ikasoa is free to use under [MIT license](https://github.com/venwyhk/ikasoa/blob/master/LICENSE).*
+
 ***
 
 *larry7696@gmail.com*
