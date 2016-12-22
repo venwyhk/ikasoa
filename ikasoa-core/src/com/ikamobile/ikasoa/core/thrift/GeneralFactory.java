@@ -169,15 +169,21 @@ public class GeneralFactory implements Factory {
 		}
 	}
 
+	@Override
+	public ThriftClient getThriftClient(List<ServerInfo> serverInfoList, Class<LoadBalance> loadBalanceClass) {
+		return getThriftClient(serverInfoList, loadBalanceClass, null);
+	}
+
 	/**
 	 * 获取带负载均衡的ThriftClient对象
 	 */
 	@Override
 	@SuppressWarnings("rawtypes")
-	public ThriftClient getThriftClient(List<ServerInfo> serverInfoList, Class<LoadBalance> loadBalanceClass) {
+	public ThriftClient getThriftClient(List<ServerInfo> serverInfoList, Class<LoadBalance> loadBalanceClass,
+			String param) {
 		try {
-			Class[] paramTypes = { List.class };
-			Object[] params = { serverInfoList };
+			Class[] paramTypes = { List.class, String.class };
+			Object[] params = { serverInfoList, param };
 			Constructor con = loadBalanceClass.getConstructor(paramTypes);
 			return new LoadBalanceThriftClientImpl((LoadBalance) con.newInstance(params), thriftClientConfiguration);
 		} catch (Exception e) {

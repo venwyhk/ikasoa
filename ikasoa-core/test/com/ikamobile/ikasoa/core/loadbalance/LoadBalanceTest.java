@@ -6,6 +6,7 @@ import java.util.List;
 import org.junit.Test;
 import com.ikamobile.ikasoa.core.STException;
 import com.ikamobile.ikasoa.core.loadbalance.LoadBalance;
+import com.ikamobile.ikasoa.core.loadbalance.impl.ConsistencyHashLoadBalanceImpl;
 import com.ikamobile.ikasoa.core.loadbalance.impl.PollingLoadBalanceImpl;
 import com.ikamobile.ikasoa.core.loadbalance.impl.RandomLoadBalanceImpl;
 
@@ -104,6 +105,35 @@ public class LoadBalanceTest extends TestCase {
 		serverInfo = next(loadBalance);
 		String serverHost2 = serverInfo.getHost();
 		assertEquals(loadBalance.getServerInfo().getHost(), serverHost2);
+	}
+
+	/**
+	 * 一致性Hash负载均衡测试
+	 */
+	@Test
+	public void testConsistencyHashLoadBalanceImpl() {
+		List<ServerInfo> serverInfoList = new ArrayList<>();
+		serverInfoList.add(new ServerInfo("192.168.1.1", 50001));
+		serverInfoList.add(new ServerInfo("192.168.1.2", 50002));
+		serverInfoList.add(new ServerInfo("192.168.1.3", 50003));
+		LoadBalance loadBalance1, loadBalance2;
+		try {
+			loadBalance1 = new ConsistencyHashLoadBalanceImpl(serverInfoList, "abc");
+			ServerInfo serverInfo1 = loadBalance1.getServerInfo();
+			assertNotNull(serverInfo1.getHost());
+			assertEquals(loadBalance1.getServerInfo().getHost(), serverInfo1.getHost());
+			serverInfo1 = next(loadBalance1);
+			assertEquals(loadBalance1.getServerInfo().getHost(), serverInfo1.getHost());
+			loadBalance2 = new ConsistencyHashLoadBalanceImpl(serverInfoList, "123");
+			ServerInfo serverInfo2 = loadBalance2.getServerInfo();
+			assertNotNull(serverInfo2.getHost());
+			assertEquals(loadBalance2.getServerInfo().getHost(), serverInfo2.getHost());
+			serverInfo2 = next(loadBalance2);
+			assertEquals(loadBalance2.getServerInfo().getHost(), serverInfo2.getHost());
+			assertFalse(serverInfo1.getHost().equals(serverInfo2.getHost()));
+		} catch (Exception e) {
+			fail();
+		}
 	}
 
 	private ServerInfo next(LoadBalance loadBalance) {

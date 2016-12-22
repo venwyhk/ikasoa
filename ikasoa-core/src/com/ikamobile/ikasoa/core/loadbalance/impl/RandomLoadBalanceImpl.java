@@ -30,6 +30,14 @@ public class RandomLoadBalanceImpl implements LoadBalance {
 	private ServerInfo serverInfo;
 
 	public RandomLoadBalanceImpl(List<ServerInfo> serverInfoList) {
+		init(serverInfoList);
+	}
+
+	public RandomLoadBalanceImpl(List<ServerInfo> serverInfoList, String context) {
+		init(serverInfoList);
+	}
+
+	private void init(List<ServerInfo> serverInfoList) {
 		if (serverInfoList == null || serverInfoList.size() == 0) {
 			throw new RuntimeException("serverInfoList is null !");
 		}

@@ -186,6 +186,20 @@ public interface Factory {
 	public ThriftClient getThriftClient(List<ServerInfo> serverInfoList, Class<LoadBalance> loadBalanceClass);
 
 	/**
+	 * 获取带负载均衡的ThriftClient对象
+	 * 
+	 * @param serverInfoList
+	 *            服务器信息列表
+	 * @param loadBalanceClass
+	 *            负载均衡实现类
+	 * @param param
+	 *            负载均衡实现参数
+	 * @return ThriftClient Thrift客户端
+	 */
+	public ThriftClient getThriftClient(List<ServerInfo> serverInfoList, Class<LoadBalance> loadBalanceClass,
+			String param);
+
+	/**
 	 * 获取客户端Service对象
 	 * <p>
 	 * 如果需要使用负载均衡,则每次需要调用此方法重新获取服务对象.

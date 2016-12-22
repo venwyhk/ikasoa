@@ -35,6 +35,14 @@ public class PollingLoadBalanceImpl implements LoadBalance {
 	private ServerInfo serverInfo;
 
 	public PollingLoadBalanceImpl(List<ServerInfo> serverInfoList) {
+		init(serverInfoList);
+	}
+
+	public PollingLoadBalanceImpl(List<ServerInfo> serverInfoList, String context) {
+		init(serverInfoList);
+	}
+
+	private void init(List<ServerInfo> serverInfoList) {
 		if (serverInfoList == null || serverInfoList.size() == 0) {
 			throw new RuntimeException("serverInfoList is null !");
 		}
