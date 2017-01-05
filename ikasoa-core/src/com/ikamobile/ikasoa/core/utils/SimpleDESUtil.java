@@ -31,8 +31,8 @@ public class SimpleDESUtil {
 	 * @throws Exception
 	 *             异常
 	 */
-	public final static String decrypt(String data, String key) throws Exception {
-		return new String(decrypt(hex2byte(data.getBytes()), key.getBytes()));
+	public final static String encrypt(String data, String key) throws Exception {
+		return byte2hex(encrypt(data.getBytes(), key.getBytes()));
 	}
 
 	/**
@@ -46,8 +46,8 @@ public class SimpleDESUtil {
 	 * @throws Exception
 	 *             异常
 	 */
-	public final static String encrypt(String data, String key) throws Exception {
-		return byte2hex(encrypt(data.getBytes(), key.getBytes()));
+	public final static String decrypt(String data, String key) throws Exception {
+		return new String(decrypt(hex2byte(data.getBytes()), key.getBytes()));
 	}
 
 	/**
