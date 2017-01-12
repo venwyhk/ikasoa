@@ -4,8 +4,6 @@
 
 &nbsp;[![](https://codeship.com/projects/9cf2f150-1507-0134-ee57-3adebfc67210/status?branch=master)](https://codeship.com/projects/157977)&nbsp;&nbsp;[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.ikasoa/ikasoa-rpc/badge.svg?style=plastic)](https://maven-badges.herokuapp.com/maven-central/com.ikasoa/ikasoa-rpc)&nbsp;&nbsp;
 
-</br>
-
 ## 概述 ##
 
   ikasoa是一套java分布式服务化治理解决方案,基于thrift框架开发.其中ikasoa-rpc是ikasoa的开源RPC框架,客户端可以像调用本地接口那样去调用远程接口.
@@ -31,6 +29,7 @@
   需要修改pom.xml文件,添加ikasoa-rpc的依赖:
     
 pom.xml
+
 ```xml
     ......
     <dependency>
@@ -46,6 +45,7 @@ pom.xml
   如果仅使用thrift兼容方式,则可以只添加ikasoa-core依赖:
 
 pom.xml
+
 ```xml
     ......
     <dependency>
@@ -69,6 +69,7 @@ pom.xml
   新建例子接口(ExampleService.java),对象(ExampleVO.java)和实现 (ExampleServiceImpl.java)类:
 
 ExampleService.java
+
 ```java
     package com.ikamobile.ikasoa.example.rpc;
     public interface ExampleService {
@@ -78,6 +79,7 @@ ExampleService.java
 ```
 
 ExampleServiceImpl.java
+
 ```java
     package com.ikamobile.ikasoa.example.rpc;
     public class ExampleServiceImpl implements ExampleService {
@@ -89,6 +91,7 @@ ExampleServiceImpl.java
 ```
 
 ExampleVO.java
+
 ```java
     package com.ikamobile.ikasoa.example.rpc;
     public class ExampleVO {
@@ -118,6 +121,7 @@ ExampleVO.java
 ##### 服务端 #####
 
 Server.java
+
 ```java
     import com.ikamobile.ikasoa.rpc.DefaultIkasoaFactory;
     import com.ikamobile.ikasoa.rpc.IkasoaException;
@@ -147,6 +151,7 @@ Server.java
 ##### 客户端 #####
 
 Client.java
+
 ```java
     import com.ikamobile.ikasoa.rpc.DefaultIkasoaFactory;
     public class Client {
@@ -162,6 +167,7 @@ Client.java
 ##### 执行类 #####
 
 Main.java
+
 ```java
     public class Main {
         public static void main(String[] args) {
@@ -196,6 +202,7 @@ Main.java
 ##### 服务端例子 #####
 
 bean.xml
+
 ```xml
     <?xml version="1.0" encoding="UTF-8"?>
     <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context" xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.1.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.1.xsd">
@@ -207,12 +214,13 @@ bean.xml
                 <value>9993</value><!-- 设置服务开放端口 -->
             </constructor-arg>
         </bean>
-        <bean id="ikasoaFactory" class="com.ikamobile.ikasoa.core.DefaultIkasoaFactory"/>
+        <bean id="ikasoaFactory" class="com.ikamobile.ikasoa.rpc.DefaultIkasoaFactory"/>
         ......
     </beans>
 ```
 
 RpcServer.java
+
 ```java
     package example.ikasoa;
     import com.ikamobile.ikasoa.rpc.IkasoaException;
@@ -231,7 +239,7 @@ RpcServer.java
             // List<ImplClsCon> sList = new ArrayList<ImplClsCon>();
             // sList.add(new ImplClsCon(ExampleServiceImpl.class));
             // sList.add(new ImplClsCon(Example2ServiceImpl.class));
-            // IkasoaServer ikasoaServer = ikasoaFactory.getIkasoaServer(sList, port);
+            // this.server = ikasoaFactory.getIkasoaServer(sList, serverPort);
             System.out.println("服务端口:" + serverPort);
             for (String key : this.server.getIkasoaServiceKeys()) {
                 System.out.println("加载服务:" + key);
@@ -249,6 +257,7 @@ RpcServer.java
 ##### 客户端例子 #####
 
 RpcClient.java
+
 ```java
     package example.ikasoa;
     import com.ikamobile.ikasoa.rpc.DefaultIkasoaFactory;
@@ -277,6 +286,7 @@ RpcClient.java
 ##### 客户端调用Thrift服务端例子 #####
 
 ThriftClientDemo.java
+
 ```java
     package example.ikasoa;
     import org.apache.thrift.transport.TTransport;
