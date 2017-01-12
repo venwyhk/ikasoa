@@ -207,7 +207,7 @@ bean.xml
                 <value>9993</value><!-- 设置服务开放端口 -->
             </constructor-arg>
         </bean>
-        <bean id="ikasoaFactory" class="com.ikamobile.ikasoa.core.DefaultIkasoaFactory"/>
+        <bean id="ikasoaFactory" class="com.ikamobile.ikasoa.rpc.DefaultIkasoaFactory"/>
         ......
     </beans>
 ```
@@ -231,7 +231,7 @@ RpcServer.java
             // List<ImplClsCon> sList = new ArrayList<ImplClsCon>();
             // sList.add(new ImplClsCon(ExampleServiceImpl.class));
             // sList.add(new ImplClsCon(Example2ServiceImpl.class));
-            // IkasoaServer ikasoaServer = ikasoaFactory.getIkasoaServer(sList, port);
+            // this.server = ikasoaFactory.getIkasoaServer(sList, serverPort);
             System.out.println("服务端口:" + serverPort);
             for (String key : this.server.getIkasoaServiceKeys()) {
                 System.out.println("加载服务:" + key);
