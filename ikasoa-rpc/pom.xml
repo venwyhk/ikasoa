@@ -31,6 +31,11 @@
         <url>http://github.com/venwyhk/ikasoa/tree/master</url>
     </scm>
     
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    </properties>
+    
     <build>
         <sourceDirectory>src</sourceDirectory>
         <testSourceDirectory>test</testSourceDirectory>
@@ -132,7 +137,7 @@
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
-            <version>1.2.24</version>
+            <version>1.2.29</version>
         </dependency>
         <dependency>
             <groupId>com.esotericsoftware</groupId>
