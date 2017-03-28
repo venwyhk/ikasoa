@@ -118,7 +118,10 @@ public class DefaultSocketPoolImpl implements SocketPool {
 			if (!self.socketStatusArray[i]) {
 				ThriftSocket thriftSocket = getThriftSocket(self, i, host, port);
 				if (!thriftSocket.isOpen()) {
+					// 如果socket未连接,则新建一个socket
+					// TODO: 用isOpen方法判断是否保持连接并不准确,所以这里有可能会额外创建一些socket
 					thriftSocket = new ThriftSocket(host, port, time);
+					self.socketPool.put(new Byte(i), thriftSocket);
 				}
 				self.socketStatusArray[i] = true;
 				return thriftSocket;
@@ -185,9 +188,11 @@ public class DefaultSocketPoolImpl implements SocketPool {
 		for (byte i = 0; i < size; i++) {
 			if (self.socketPool.get(new Byte(i)) == thriftSocket) {
 				self.socketStatusArray[i] = false;
-				break;
+				return;
 			}
 		}
+		// 如果socket不在池中,就直接关闭
+		thriftSocket.close();
 	}
 
 	/**
