@@ -3,7 +3,6 @@ package com.ikasoa.core.thrift.service;
 import org.apache.thrift.async.AsyncMethodCallback;
 
 import com.ikasoa.core.STException;
-import com.ikasoa.core.thrift.service.impl.CallBack;
 
 /**
  * 异步服务接口
@@ -25,6 +24,6 @@ public interface AsyncService {
 	 * @exception STException
 	 *                异常
 	 */
-	public void get(String arg, AsyncMethodCallback<CallBack> resultHandler) throws STException;
+	public void get(String arg, AsyncMethodCallback<String> resultHandler) throws STException;
 
 }

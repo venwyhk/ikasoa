@@ -21,11 +21,11 @@ import com.ikasoa.core.thrift.service.base.ArgsThriftBase;
  * @author <a href="mailto:larry7696@gmail.com">Larry</a>
  * @version 0.4.3
  */
-public class CallBack extends TAsyncMethodCall<CallBack> {
+public class CallBack extends TAsyncMethodCall<String> {
 
 	private String arg;
 
-	public CallBack(String arg, AsyncMethodCallback<CallBack> resultHandler, TAsyncClient client,
+	public CallBack(String arg, AsyncMethodCallback<String> resultHandler, TAsyncClient client,
 			TProtocolFactory protocolFactory, TNonblockingTransport transport) throws TException {
 		super(client, protocolFactory, transport, resultHandler, false);
 		this.arg = arg;

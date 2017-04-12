@@ -33,7 +33,7 @@ public class AsyncServiceClientImpl extends TAsyncClient implements AsyncService
 	}
 
 	@Override
-	public void get(String arg, AsyncMethodCallback<CallBack> resultHandler) throws STException {
+	public void get(String arg, AsyncMethodCallback<String> resultHandler) throws STException {
 		checkReady();
 		CallBack methodCall;
 		try {

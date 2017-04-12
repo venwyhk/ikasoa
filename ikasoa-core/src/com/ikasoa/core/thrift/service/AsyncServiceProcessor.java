@@ -17,7 +17,6 @@ import org.slf4j.LoggerFactory;
 import com.ikasoa.core.STException;
 import com.ikasoa.core.thrift.service.base.ArgsThriftBase;
 import com.ikasoa.core.thrift.service.base.ResultThriftBase;
-import com.ikasoa.core.thrift.service.impl.CallBack;
 
 /**
  * 异步服务处理器
@@ -39,7 +38,7 @@ public class AsyncServiceProcessor extends TBaseAsyncProcessor<AsyncService> imp
 		return processMap;
 	}
 
-	public static class GetAsyncProcessFunction extends AsyncProcessFunction<AsyncService, ArgsThriftBase, CallBack> {
+	public static class GetAsyncProcessFunction extends AsyncProcessFunction<AsyncService, ArgsThriftBase, String> {
 
 		private static final Logger LOG = LoggerFactory.getLogger(GetAsyncProcessFunction.class);
 
@@ -52,7 +51,7 @@ public class AsyncServiceProcessor extends TBaseAsyncProcessor<AsyncService> imp
 		}
 
 		public AsyncMethodCallback<String> getResultHandler(final AsyncFrameBuffer fb, final int seqid) {
-			final AsyncProcessFunction<AsyncService, ArgsThriftBase, CallBack> fcall = this;
+			final AsyncProcessFunction<AsyncService, ArgsThriftBase, String> fcall = this;
 			return new AsyncMethodCallback<String>() {
 				public void onComplete(String o) {
 					ResultThriftBase result = new ResultThriftBase();
@@ -89,7 +88,7 @@ public class AsyncServiceProcessor extends TBaseAsyncProcessor<AsyncService> imp
 			return false;
 		}
 
-		public void start(AsyncService service, ArgsThriftBase args, AsyncMethodCallback<CallBack> resultHandler)
+		public void start(AsyncService service, ArgsThriftBase args, AsyncMethodCallback<String> resultHandler)
 				throws TException {
 			LOG.debug("Args is : " + args.getStr());
 			try {

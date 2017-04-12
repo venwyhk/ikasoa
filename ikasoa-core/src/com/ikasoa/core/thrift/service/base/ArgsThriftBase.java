@@ -1,6 +1,5 @@
 package com.ikasoa.core.thrift.service.base;
 
-import org.apache.thrift.TBase;
 import org.apache.thrift.protocol.TStruct;
 
 /**
@@ -28,7 +27,7 @@ public class ArgsThriftBase extends AbstractThriftBase {
 	}
 
 	@Override
-	public TBase<AbstractThriftBase, FieldsEnum> deepCopy() {
+	public ArgsThriftBase deepCopy() {
 		return new ArgsThriftBase(this);
 	}
 
