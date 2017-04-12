@@ -1,4 +1,4 @@
-package com.ikamobile.ikasoa.example.rpc;
+package com.ikasoa.example.rpc;
 
 import com.ikamobile.ikasoa.rpc.DefaultIkasoaFactory;
 import com.ikamobile.ikasoa.rpc.IkasoaException;

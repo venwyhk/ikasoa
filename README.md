@@ -73,7 +73,6 @@ pom.xml
 ExampleService.java
 
 ```java
-    package com.ikamobile.ikasoa.example.rpc;
     public interface ExampleService {
         // 查询对象
         public ExampleVO findVO(int id);
@@ -83,7 +82,6 @@ ExampleService.java
 ExampleServiceImpl.java
 
 ```java
-    package com.ikamobile.ikasoa.example.rpc;
     public class ExampleServiceImpl implements ExampleService {
         @Override
         public ExampleVO findVO(int id) {
@@ -95,7 +93,6 @@ ExampleServiceImpl.java
 ExampleVO.java
 
 ```java
-    package com.ikamobile.ikasoa.example.rpc;
     public class ExampleVO {
         private int id;
         private String string;

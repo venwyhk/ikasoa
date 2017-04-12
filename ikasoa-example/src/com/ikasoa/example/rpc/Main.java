@@ -1,4 +1,4 @@
-package com.ikamobile.ikasoa.example.rpc;
+package com.ikasoa.example.rpc;
 
 /**
  * IKASOA的简单例子执行程序

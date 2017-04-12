@@ -1,4 +1,4 @@
-package com.ikamobile.ikasoa.example.rpc;
+package com.ikasoa.example.rpc;
 
 public class ExampleVO {
 
