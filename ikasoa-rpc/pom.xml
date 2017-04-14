@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.ikasoa</groupId>
     <artifactId>ikasoa-rpc</artifactId>
-    <version>0.3-BETA3</version>
+    <version>0.3.1-ALPHA</version>
     <packaging>jar</packaging>
     <name>Ikasoa RPC</name>
     <description>ikasoa is a java distributed service framework.</description>
@@ -20,8 +20,8 @@
         <developer>
             <name>Larry</name>
             <email>larry7696@gmail.com</email>
-            <organization>ikamobile</organization>
-            <organizationUrl>http://www.ikamobile.com/</organizationUrl>
+            <organization>ikasoa</organization>
+            <organizationUrl>http://ikasoa.com/</organizationUrl>
         </developer>
     </developers>
     
@@ -122,7 +122,7 @@
         <dependency>
             <groupId>com.ikasoa</groupId>
             <artifactId>ikasoa-core</artifactId>
-            <version>0.4.7</version>
+            <version>0.5</version>
         </dependency>
         <dependency>
             <groupId>io.netty</groupId>
@@ -137,7 +137,7 @@
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
-            <version>1.2.29</version>
+            <version>1.2.31</version>
         </dependency>
         <dependency>
             <groupId>com.esotericsoftware</groupId>
@@ -147,12 +147,12 @@
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
-            <version>1.7.22</version>
+            <version>1.7.25</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-nop</artifactId>
-            <version>1.7.22</version>
+            <version>1.7.25</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
