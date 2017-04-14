@@ -16,13 +16,13 @@
 
 ## 目录说明 ##
 
+- example : *示例代码*
+
 - ikasoa-admin : *利用Zookeeper注册和管理服务*
 
 - ikasoa-core : *基础核心包*
 
 - ikasoa-rpc : *实现RPC功能的代码*
-
-- ikasoa-example : *示例代码*
 
 ## 环境搭建 ##
 
