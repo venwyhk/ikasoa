@@ -5,7 +5,7 @@
     <artifactId>example</artifactId>
     <version>0.3</version>
     <packaging>war</packaging>
-    <name>Ikasoa Rpc Example</name>
+    <name>Ikasoa RPC Example</name>
     <description>ikasoa is a java distributed service framework.</description>
     <url>http://ikasoa.com/</url>
     
