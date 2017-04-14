@@ -16,13 +16,13 @@
 
 ## 目录说明 ##
 
+- example : *示例代码*
+
 - ikasoa-admin : *利用Zookeeper注册和管理服务*
 
 - ikasoa-core : *基础核心包*
 
 - ikasoa-rpc : *实现RPC功能的代码*
-
-- ikasoa-example : *示例代码*
 
 ## 环境搭建 ##
 
@@ -37,7 +37,7 @@ pom.xml
     <dependency>
         <groupId>com.ikasoa</groupId>
         <artifactId>ikasoa-rpc</artifactId>
-        <version>0.3-BETA3</version>
+        <version>0.3.1-ALPHA</version>
     </dependency>
     ......
 ```
@@ -53,7 +53,7 @@ pom.xml
     <dependency>
         <groupId>com.ikasoa</groupId>
         <artifactId>ikasoa-core</artifactId>
-        <version>0.4.7</version>
+        <version>0.5</version>
     </dependency>
     ......
 ```
@@ -122,9 +122,9 @@ ExampleVO.java
 Server.java
 
 ```java
-    import com.ikamobile.ikasoa.rpc.DefaultIkasoaFactory;
-    import com.ikamobile.ikasoa.rpc.IkasoaException;
-    import com.ikamobile.ikasoa.rpc.IkasoaServer;
+    import com.ikasoa.rpc.DefaultIkasoaFactory;
+    import com.ikasoa.rpc.IkasoaException;
+    import com.ikasoa.rpc.IkasoaServer;
     public class Server {
         private static IkasoaServer ikasoaServer;
         public static void start() {
@@ -152,7 +152,7 @@ Server.java
 Client.java
 
 ```java
-    import com.ikamobile.ikasoa.rpc.DefaultIkasoaFactory;
+    import com.ikasoa.rpc.DefaultIkasoaFactory;
     public class Client {
         public static void call() {
             // 客户端获取远程接口实现
@@ -213,7 +213,7 @@ bean.xml
                 <value>9993</value><!-- 设置服务开放端口 -->
             </constructor-arg>
         </bean>
-        <bean id="ikasoaFactory" class="com.ikamobile.ikasoa.rpc.DefaultIkasoaFactory"/>
+        <bean id="ikasoaFactory" class="com.ikasoa.rpc.DefaultIkasoaFactory"/>
         ......
     </beans>
 ```
@@ -222,9 +222,9 @@ RpcServer.java
 
 ```java
     package example.ikasoa;
-    import com.ikamobile.ikasoa.rpc.IkasoaException;
-    import com.ikamobile.ikasoa.rpc.IkasoaFactory;
-    import com.ikamobile.ikasoa.rpc.IkasoaServer;
+    import com.ikasoa.rpc.IkasoaException;
+    import com.ikasoa.rpc.IkasoaFactory;
+    import com.ikasoa.rpc.IkasoaServer;
     public class RpcServer {
         private IkasoaServer server;
         public RpcServer(IkasoaFactory ikasoaFactory, int serverPort) throws IkasoaException {
@@ -259,7 +259,7 @@ RpcClient.java
 
 ```java
     package example.ikasoa;
-    import com.ikamobile.ikasoa.rpc.DefaultIkasoaFactory;
+    import com.ikasoa.rpc.DefaultIkasoaFactory;
     public class RpcClient {
         public static void main(String[] args) {
             // 如果接口之间有继承关系,则只需要配置子接口类
@@ -290,15 +290,15 @@ ThriftClientDemo.java
     package example.ikasoa;
     import org.apache.thrift.transport.TTransport;
     import org.apache.thrift.transport.TTransportFactory;
-    import com.ikamobile.ikasoa.core.thrift.client.ThriftClient;
-    import com.ikamobile.ikasoa.core.thrift.client.ThriftClientConfiguration;
-    import com.ikamobile.ikasoa.rpc.DefaultIkasoaFactory;
+    import com.ikasoa.core.thrift.client.ThriftClient;
+    import com.ikasoa.core.thrift.client.ThriftClientConfiguration;
+    import com.ikasoa.rpc.DefaultIkasoaFactory;
     import com.ikamobile.tmcs.controller.thrift.server.acceptor.GeneralThriftAcceptor;
     public class ThriftClientDemo {
         public static void main(String[] args) {
             ThriftClientConfiguration configuration = new ThriftClientConfiguration();
             configuration.setTransportFactory(new TTransportFactory()); // 协议需要与服务端匹配
-            // 如果只依赖ikasoa-core,这里也可以使用com.ikamobile.ikasoa.core.thrift.GeneralFactory来替代DefaultIkasoaFactory
+            // 如果只依赖ikasoa-core,这里也可以使用com.ikasoa.core.thrift.GeneralFactory来替代DefaultIkasoaFactory
             ThriftClient thriftClient = new DefaultIkasoaFactory(configuration).getThriftClient("121.40.119.240", 9201); // 配置Thrift的服务器地址和端口
             TTransport transport = null;
             try {
@@ -325,23 +325,23 @@ ThriftClientDemo.java
     <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context" xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
         ......
         <!-- Thrift服务配置 -->
-        <bean id="thriftServer2" class="com.ikamobile.ikasoa.core.thrift.server.impl.DefaultThriftServerImpl" init-method="run" destroy-method="stop">
+        <bean id="thriftServer2" class="com.ikasoa.core.thrift.server.impl.DefaultThriftServerImpl" init-method="run" destroy-method="stop">
             <property name="serverName" value="xxxServer" /><!-- 服务名称 -->
             <property name="serverPort" value="9899" /><!-- 服务端口 -->
             <property name="thriftServerConfiguration">
-                <bean class="com.ikamobile.ikasoa.core.thrift.server.ThriftServerConfiguration">
+                <bean class="com.ikasoa.core.thrift.server.ThriftServerConfiguration">
                     <property name="transportFactory"><!-- 指定传输协议工厂(可选,默认为TFramedTransport.Factory) -->
                         <bean class="org.apache.thrift.transport.TTransportFactory" />
                     </property>
                 </bean>
             </property>
             <property name="processor">
-                <bean class="com.ikamobile.xxx.service.ThriftService.Processor"><!-- ThriftService为通过idl生成的服务类 -->
+                <bean class="com.xxx.service.ThriftService.Processor"><!-- ThriftService为通过idl生成的服务类 -->
                     <constructor-arg ref="thriftService" />
                 </bean>
             </property>
         </bean>
-        <bean id="thriftService" class="com.ikamobile.xxx.ThriftServiceImpl"/><!-- ThriftService.Iface接口的实现 -->
+        <bean id="thriftService" class="com.xxx.service.impl.ThriftServiceImpl"/><!-- ThriftService.Iface接口的实现 -->
         ......
     </beans>
 ```
@@ -353,27 +353,27 @@ ThriftClientDemo.java
     <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context" xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
         ......
         <!-- Thrift服务配置(嵌套方式) -->
-        <bean id="thriftServer1" class="com.ikamobile.ikasoa.core.thrift.server.impl.DefaultThriftServerImpl" init-method="run" destroy-method="stop">
+        <bean id="thriftServer1" class="com.ikasoa.core.thrift.server.impl.DefaultThriftServerImpl" init-method="run" destroy-method="stop">
             <property name="serverName" value="xxxServer" /><!-- 服务名称 -->
             <property name="serverPort" value="9898" /><!-- 服务端口 -->
             <property name="thriftServerConfiguration">
-                <bean class="com.ikamobile.ikasoa.core.thrift.server.ThriftServerConfiguration">
+                <bean class="com.ikasoa.core.thrift.server.ThriftServerConfiguration">
                     <property name="transportFactory"><!-- 指定传输协议工厂(可选,默认为TFramedTransport.Factory) -->
                         <bean class="org.apache.thrift.transport.TTransportFactory" />
                     </property>
                 </bean>
             </property>
             <property name="processor">
-                <bean class="com.ikamobile.ikasoa.core.thrift.server.MultiplexedProcessor">
+                <bean class="com.ikasoa.core.thrift.server.MultiplexedProcessor">
                     <constructor-arg>
                         <map>
                             <entry key="Service1"><!-- 这里的key可以随便取,保证唯一就行,Client调用的时候需要用 -->
-                                <bean class="com.ikamobile.xxx.service.ThriftService1.Processor"><!-- ThriftService1和ThriftService2为通过idl生成的服务类 -->
+                                <bean class="com.xxx.service.ThriftService1.Processor"><!-- ThriftService1和ThriftService2为通过idl生成的服务类 -->
                                     <constructor-arg ref="thriftService1" />
                                 </bean>
                             </entry>
                             <entry key="Service2">
-                                <bean class="com.ikamobile.xxx.service.ThriftService2.Processor">
+                                <bean class="com.xxx.service.ThriftService2.Processor">
                                     <constructor-arg ref="thriftService2" />
                                 </bean>
                             </entry>
@@ -382,8 +382,8 @@ ThriftClientDemo.java
                 </bean>
             </property>
         </bean>
-        <bean id="thriftService1" class="com.ikamobile.xxx.ThriftService1Impl"/><!-- ThriftService1.Iface接口的实现 -->
-        <bean id="thriftService2" class="com.ikamobile.xxx.ThriftService2Impl"/><!-- ThriftService2.Iface接口的实现 -->
+        <bean id="thriftService1" class="com.xxx.service.impl.ThriftService1Impl"/><!-- ThriftService1.Iface接口的实现 -->
+        <bean id="thriftService2" class="com.xxx.service.impl.ThriftService2Impl"/><!-- ThriftService2.Iface接口的实现 -->
         ......
     </beans>
 ```
@@ -432,18 +432,18 @@ ThriftClientDemo.java
     ......
     XService xs = new DefaultIkasoaFactory().getIkasoaClient(XService.class, serverInfoList);
     // 也可以写为如下方式:
-    // Class loadBalanceClass = Class.forName("com.ikamobile.ikasoa.core.loadbalance.impl.PollingLoadBalanceImpl");
+    // Class loadBalanceClass = Class.forName("com.ikasoa.core.loadbalance.impl.PollingLoadBalanceImpl");
     // XService xs = new DefaultIkasoaFactory().getIkasoaClient(XService.class, serverInfoList, loadBalanceClass);
     ......
 ```
 
-  *serverInfoList中的元素对象`com.ikamobile.ikasoa.core.loadbalance.ServerInfo`定义了单个服务信息,其中`weightNumber`属性为权重值,用于轮循负载均衡.*
+  *serverInfoList中的元素对象`com.ikasoa.core.loadbalance.ServerInfo`定义了单个服务信息,其中`weightNumber`属性为权重值,用于轮循负载均衡.*
 
 ##### 使用随机负载均衡 #####
 
 ```java
     ......
-    Class loadBalanceClass = Class.forName("com.ikamobile.ikasoa.core.loadbalance.impl.RandomLoadBalanceImpl");
+    Class loadBalanceClass = Class.forName("com.ikasoa.core.loadbalance.impl.RandomLoadBalanceImpl");
     XService xs = new DefaultIkasoaFactory().getIkasoaClient(XService.class, serverInfoList, loadBalanceClass);
     ......
 ```
@@ -452,7 +452,7 @@ ThriftClientDemo.java
 
   创建自定义序列化类(例如com.xxx.XLoadBalanceImpl).
 
-  自定义序列化类(com.xxx.XLoadBalanceImpl)需实现接口`com.ikamobile.ikasoa.core.loadbalance.LoadBalance`.
+  自定义序列化类(com.xxx.XLoadBalanceImpl)需实现接口`com.ikasoa.core.loadbalance.LoadBalance`.
 
   通过如下方式获取服务:
 
@@ -473,7 +473,7 @@ ThriftClientDemo.java
     ......
     IkasoaFactory ikasoaFactory = new DefaultIkasoaFactory();
     // 也可以写为如下方式:
-    // Class protocolHandlerClass = Class.forName("com.ikamobile.ikasoa.rpc.handler.impl.JsonProtocolHandlerImpl");
+    // Class protocolHandlerClass = Class.forName("com.ikasoa.rpc.handler.impl.JsonProtocolHandlerImpl");
     // IkasoaFactory ikasoaFactory = new DefaultIkasoaFactory(new Configurator(protocolHandlerClass));
     ......
 ```
@@ -482,7 +482,7 @@ ThriftClientDemo.java
 
 ```java
     ......
-    Class protocolHandlerClass = Class.forName("com.ikamobile.ikasoa.rpc.handler.impl.XmlProtocolHandlerImpl");
+    Class protocolHandlerClass = Class.forName("com.ikasoa.rpc.handler.impl.XmlProtocolHandlerImpl");
     IkasoaFactory ikasoaFactory = new DefaultIkasoaFactory(new Configurator(protocolHandlerClass));
     ......
 ```
@@ -491,7 +491,7 @@ ThriftClientDemo.java
 
 ```java
     ......
-    Class protocolHandlerClass = Class.forName("com.ikamobile.ikasoa.rpc.handler.impl.KryoProtocolHandlerImpl");
+    Class protocolHandlerClass = Class.forName("com.ikasoa.rpc.handler.impl.KryoProtocolHandlerImpl");
     IkasoaFactory ikasoaFactory = new DefaultIkasoaFactory(new Configurator(protocolHandlerClass));
     ......
 ```
@@ -500,7 +500,7 @@ ThriftClientDemo.java
 
   创建自定义序列化类(例如com.xxx.XProtocolHandlerImpl).
 
-  自定义序列化类(com.xxx.XProtocolHandlerImpl)需实现接口`com.ikamobile.ikasoa.rpc.handler.ProtocolHandler`.
+  自定义序列化类(com.xxx.XProtocolHandlerImpl)需实现接口`com.ikasoa.rpc.handler.ProtocolHandler`.
 
   通过如下方式获取IkasoaFactory:
 
