@@ -95,6 +95,18 @@ public class DefaultIkasoaFactory extends GeneralFactory implements IkasoaFactor
 	}
 
 	@Override
+	@SuppressWarnings("unchecked")
+	public <T> T getIkasoaClient(Class<T> iClass, List<ServerInfo> serverInfoList, Class<LoadBalance> loadBalanceClass,
+			String param) {
+		ThriftClient thriftClient = getThriftClient(serverInfoList, loadBalanceClass, param);
+		return (T) Proxy
+				.newProxyInstance(iClass.getClassLoader(), new Class<?>[] { iClass },
+						(proxy, iMethod, args) -> getBaseGetServiceFactory()
+								.getBaseGetService(thriftClient, getSKey(iClass, iMethod), new ReturnData(iMethod))
+								.get(args));
+	}
+
+	@Override
 	public IkasoaServer getIkasoaServer(Class<?> implClass, int serverPort) throws IkasoaException {
 		return getIkasoaServer(serverPort, getServiceMapByImplClass(new ImplClsCon(implClass)));
 	}

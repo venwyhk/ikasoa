@@ -30,6 +30,11 @@
 		<developerConnection>scm:git:ssh://github.com:venwyhk/ikasoa.git</developerConnection>
 		<url>http://github.com/venwyhk/ikasoa/tree/master</url>
 	</scm>
+	
+	<properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    </properties>
 
 	<build>
 		<sourceDirectory>src</sourceDirectory>
@@ -100,6 +105,17 @@
 			</plugin>
 		</plugins>
 	</build>
+	
+	<distributionManagement>
+        <snapshotRepository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+        </snapshotRepository>
+        <repository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        </repository>
+    </distributionManagement>
 
 	<dependencies>
 		<dependency>

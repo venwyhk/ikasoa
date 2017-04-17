@@ -58,6 +58,24 @@ public interface IkasoaFactory extends Factory {
 	 * @return T IKASOA客户端
 	 */
 	public <T> T getIkasoaClient(Class<T> iClass, List<ServerInfo> serverInfoList, Class<LoadBalance> loadBalanceClass);
+	
+	/**
+	 * 获取IKASOA客户端
+	 * 
+	 * @param <T>
+	 *            IKASOA客户端类型
+	 * @param iClass
+	 *            应用接口类
+	 * @param serverInfoList
+	 *            服务信息列表(将会通过默认负载均衡策略进行调用)
+	 * @param loadBalanceClass
+	 *            负载均衡实现类
+	 * @param param
+	 *            自定义参数 (比如负载均衡的hash值等)
+	 * @return T IKASOA客户端
+	 */
+	public <T> T getIkasoaClient(Class<T> iClass, List<ServerInfo> serverInfoList, Class<LoadBalance> loadBalanceClass,
+			String param);
 
 	/**
 	 * 获取IKASOA服务端
