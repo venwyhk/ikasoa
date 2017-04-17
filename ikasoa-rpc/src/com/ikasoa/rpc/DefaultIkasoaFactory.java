@@ -63,30 +63,35 @@ public class DefaultIkasoaFactory extends GeneralFactory implements IkasoaFactor
 	@Override
 	@SuppressWarnings("unchecked")
 	public <T> T getIkasoaClient(Class<T> iClass, String serverHost, int serverPort) {
-		return (T) Proxy.newProxyInstance(iClass.getClassLoader(), new Class<?>[] { iClass },
-				(proxy, iMethod, args) -> getBaseGetServiceFactory()
-						.getBaseGetService(getThriftClient(serverHost, serverPort), getSKey(iClass, iMethod),
-								new ReturnData(iMethod))
-						.get(args));
+		ThriftClient thriftClient = getThriftClient(serverHost, serverPort);
+		return (T) Proxy
+				.newProxyInstance(iClass.getClassLoader(), new Class<?>[] { iClass },
+						(proxy, iMethod, args) -> getBaseGetServiceFactory()
+								.getBaseGetService(thriftClient, getSKey(iClass, iMethod), new ReturnData(iMethod))
+								.get(args));
 	}
 
 	@Override
 	@SuppressWarnings("unchecked")
 	public <T> T getIkasoaClient(Class<T> iClass, List<ServerInfo> serverInfoList) {
-		return (T) Proxy.newProxyInstance(iClass.getClassLoader(), new Class<?>[] { iClass },
-				(proxy, iMethod, args) -> getBaseGetServiceFactory().getBaseGetService(getThriftClient(serverInfoList),
-						getSKey(iClass, iMethod), new ReturnData(iMethod)).get(args));
+		ThriftClient thriftClient = getThriftClient(serverInfoList);
+		return (T) Proxy
+				.newProxyInstance(iClass.getClassLoader(), new Class<?>[] { iClass },
+						(proxy, iMethod, args) -> getBaseGetServiceFactory()
+								.getBaseGetService(thriftClient, getSKey(iClass, iMethod), new ReturnData(iMethod))
+								.get(args));
 	}
 
 	@Override
 	@SuppressWarnings("unchecked")
 	public <T> T getIkasoaClient(Class<T> iClass, List<ServerInfo> serverInfoList,
 			Class<LoadBalance> loadBalanceClass) {
-		return (T) Proxy.newProxyInstance(iClass.getClassLoader(), new Class<?>[] { iClass },
-				(proxy, iMethod, args) -> getBaseGetServiceFactory()
-						.getBaseGetService(getThriftClient(serverInfoList, loadBalanceClass), getSKey(iClass, iMethod),
-								new ReturnData(iMethod))
-						.get(args));
+		ThriftClient thriftClient = getThriftClient(serverInfoList, loadBalanceClass);
+		return (T) Proxy
+				.newProxyInstance(iClass.getClassLoader(), new Class<?>[] { iClass },
+						(proxy, iMethod, args) -> getBaseGetServiceFactory()
+								.getBaseGetService(thriftClient, getSKey(iClass, iMethod), new ReturnData(iMethod))
+								.get(args));
 	}
 
 	@Override
