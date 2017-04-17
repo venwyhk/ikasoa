@@ -18,11 +18,11 @@
 
 - example : *示例代码*
 
-- ikasoa-admin : *利用Zookeeper注册和管理服务*
-
 - ikasoa-core : *基础核心包*
 
 - ikasoa-rpc : *实现RPC功能的代码*
+
+- ikasoa-zk : *利用Zookeeper注册和更新服务*
 
 ## 环境搭建 ##
 
@@ -37,7 +37,7 @@ pom.xml
     <dependency>
         <groupId>com.ikasoa</groupId>
         <artifactId>ikasoa-rpc</artifactId>
-        <version>0.3.1-ALPHA</version>
+        <version>0.3.1-BETA</version>
     </dependency>
     ......
 ```
