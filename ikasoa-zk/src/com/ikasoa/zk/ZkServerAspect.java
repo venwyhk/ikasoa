@@ -1,4 +1,4 @@
-package com.ikamobile.ikasoa.admin.zookeeper;
+package com.ikasoa.zk;
 
 import java.net.InetAddress;
 import java.net.SocketException;
@@ -9,12 +9,12 @@ import org.apache.thrift.TProcessor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.ikamobile.ikasoa.admin.utils.LocalUtil;
-import com.ikamobile.ikasoa.core.thrift.server.ServerAspect;
-import com.ikamobile.ikasoa.core.thrift.server.ThriftServer;
-import com.ikamobile.ikasoa.core.thrift.server.ThriftServerConfiguration;
-import com.ikamobile.ikasoa.core.utils.ServerUtil;
-import com.ikamobile.ikasoa.core.utils.StringUtil;
+import com.ikasoa.zk.utils.LocalUtil;
+import com.ikasoa.core.thrift.server.ServerAspect;
+import com.ikasoa.core.thrift.server.ThriftServer;
+import com.ikasoa.core.thrift.server.ThriftServerConfiguration;
+import com.ikasoa.core.utils.ServerUtil;
+import com.ikasoa.core.utils.StringUtil;
 
 /**
  * 服务注册

@@ -18,7 +18,7 @@
 
 - example : *示例代码*
 
-- ikasoa-admin : *利用Zookeeper注册和管理服务*
+- ikasoa-zk : *利用Zookeeper注册和管理服务*
 
 - ikasoa-core : *基础核心包*
 

@@ -1,4 +1,4 @@
-package com.ikamobile.ikasoa.admin.zookeeper;
+package com.ikasoa.zk;
 
 import java.io.Serializable;
 

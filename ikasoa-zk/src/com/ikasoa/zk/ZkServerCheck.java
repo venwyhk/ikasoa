@@ -1,6 +1,6 @@
-package com.ikamobile.ikasoa.admin.zookeeper;
+package com.ikasoa.zk;
 
-import com.ikamobile.ikasoa.core.ServerCheck;
+import com.ikasoa.core.ServerCheck;
 
 /**
  * 服务可用性验证实现
@@ -13,12 +13,11 @@ public class ZkServerCheck implements ServerCheck {
 	private ZkBase zkBase;
 
 	public ZkServerCheck(String zkServerString, String zkNode) {
-		this.zkBase = new ZkBase(zkServerString, zkNode);
+		zkBase = new ZkBase(zkServerString, zkNode);
 	}
 
 	@Override
 	public boolean check(String serverHost, int serverPort) {
-		// TODO: Larry
 		return zkBase.isExistNode("", serverHost, serverPort);
 	}
 

@@ -2,10 +2,10 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.ikasoa</groupId>
-	<artifactId>ikasoa-admin</artifactId>
-	<version>0.1-SNAPSHOTS</version>
+	<artifactId>ikasoa-zk</artifactId>
+	<version>0.1-ALPHA</version>
 	<packaging>jar</packaging>
-	<name>Ikasoa Admin</name>
+	<name>Ikasoa ZK</name>
 	<description>ikasoa is a java distributed service framework.</description>
 	<url>http://ikasoa.com/</url>
 
@@ -20,8 +20,8 @@
 		<developer>
 			<name>Larry</name>
 			<email>larry7696@gmail.com</email>
-			<organization>ikamobile</organization>
-			<organizationUrl>http://www.ikamobile.com/</organizationUrl>
+			<organization>ikasoa</organization>
+			<organizationUrl>http://ikasoa.com/</organizationUrl>
 		</developer>
 	</developers>
 
@@ -37,11 +37,12 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.5.1</version>
+				<version>3.6.1</version>
 				<configuration>
 					<source>1.8</source>
 					<target>1.8</target>
 					<encoding>UTF-8</encoding>
+					<optimize>true</optimize>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -104,7 +105,7 @@
 		<dependency>
 			<groupId>com.ikasoa</groupId>
 			<artifactId>ikasoa-core</artifactId>
-			<version>0.4.6</version>
+			<version>0.5</version>
 		</dependency>
 		<dependency>
 			<groupId>com.101tec</groupId>
@@ -114,7 +115,7 @@
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
-			<version>1.7.21</version>
+			<version>1.7.25</version>
 		</dependency>
 	</dependencies>
 </project>

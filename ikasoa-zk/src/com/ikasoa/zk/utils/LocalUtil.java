@@ -1,4 +1,4 @@
-package com.ikamobile.ikasoa.admin.utils;
+package com.ikasoa.zk.utils;
 
 import java.net.InetAddress;
 import java.net.NetworkInterface;
@@ -6,6 +6,12 @@ import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.util.Enumeration;
 
+/**
+ * 本地地址工具类
+ * 
+ * @author <a href="mailto:larry7696@gmail.com">Larry</a>
+ * @version 0.1
+ */
 public class LocalUtil {
 
 	public static String getLocalIP() throws UnknownHostException, SocketException {
