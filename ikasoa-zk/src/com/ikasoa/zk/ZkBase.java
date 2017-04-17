@@ -47,12 +47,12 @@ public class ZkBase {
 
 			@Override
 			public void handleDataChange(String nodePath, Object nodeObj) throws Exception {
-				nodeList = getChildren();
+				LOG.debug("handleDataChange (nodePath : " + nodePath + ", nodeObj : " + nodeObj + ")");
 			}
 
 			@Override
 			public void handleDataDeleted(String nodePath) throws Exception {
-				nodeList = getChildren();
+				LOG.warn("handleDataDeleted (nodePath : " + nodePath + ")");
 			}
 
 		});
@@ -61,17 +61,18 @@ public class ZkBase {
 
 			@Override
 			public void handleNewSession() throws Exception {
+				LOG.debug("handleNewSession");
 				nodeList = getChildren();
 			}
 
 			@Override
-			public void handleSessionEstablishmentError(Throwable arg0) throws Exception {
-				nodeList = getChildren();
+			public void handleSessionEstablishmentError(Throwable t) throws Exception {
+				LOG.error(t.getMessage());
 			}
 
 			@Override
-			public void handleStateChanged(KeeperState arg0) throws Exception {
-				nodeList = getChildren();
+			public void handleStateChanged(KeeperState state) throws Exception {
+				LOG.debug("handleStateChanged (state : " + state + ")");
 			}
 
 		});
@@ -80,6 +81,8 @@ public class ZkBase {
 
 			@Override
 			public void handleChildChange(String parentPath, List<String> currentChildList) throws Exception {
+				LOG.debug("handleChildChange (parentPath : " + parentPath + ", currentChildList" + currentChildList
+						+ ")");
 				nodeList = currentChildList;
 			}
 
