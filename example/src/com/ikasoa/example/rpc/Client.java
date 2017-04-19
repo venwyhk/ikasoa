@@ -1,6 +1,6 @@
 package com.ikasoa.example.rpc;
 
-import com.ikamobile.ikasoa.rpc.DefaultIkasoaFactory;
+import com.ikasoa.rpc.DefaultIkasoaFactory;
 
 /**
  * IKASOA服务端例子程序
