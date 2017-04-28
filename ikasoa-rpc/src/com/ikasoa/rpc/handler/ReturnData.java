@@ -26,7 +26,7 @@ public class ReturnData {
 	// 异常类型树组
 	private Class<?>[] excetionClassTypes;
 
-	private boolean isContainerType = false;
+	private boolean isContainerType = Boolean.FALSE;
 
 	public ReturnData(Method method) {
 		className = getClassNameByTypeName(method.getReturnType().getName());
@@ -40,13 +40,13 @@ public class ReturnData {
 				Type type = types[i];
 				if (type.getTypeName().indexOf("java.util.List") == 0) {
 					classTypes[i] = List.class;
-					setContainerType(true);
+					setContainerType(Boolean.TRUE);
 				} else if (type.getTypeName().indexOf("java.util.Set") == 0) {
 					classTypes[i] = Set.class;
-					setContainerType(true);
+					setContainerType(Boolean.TRUE);
 				} else if (type.getTypeName().indexOf("java.util.Map") == 0) {
 					classTypes[i] = Map.class;
-					setContainerType(true);
+					setContainerType(Boolean.TRUE);
 				} else {
 					classTypes[i] = (Class<?>) types[i];
 				}

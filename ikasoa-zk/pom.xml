@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.ikasoa</groupId>
     <artifactId>ikasoa-zk</artifactId>
-    <version>0.1-ALPHA</version>
+    <version>0.1-ALPHA2</version>
     <packaging>jar</packaging>
     <name>Ikasoa ZK</name>
     <description>ikasoa is a java distributed service framework.</description>
@@ -98,11 +98,6 @@
                         </goals>
                     </execution>
                 </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.19.1</version>
             </plugin>
         </plugins>
     </build>

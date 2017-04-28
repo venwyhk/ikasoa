@@ -27,7 +27,7 @@ public class Configurator {
 	private ClientInvocationHandler clientInvocationHandler;
 
 	// 是否使用阻塞式IO
-	private boolean isNonBlockingIO = false;
+	private boolean isNonBlockingIO = Boolean.FALSE;
 
 	public Configurator() {
 	}

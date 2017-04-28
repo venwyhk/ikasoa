@@ -94,7 +94,7 @@ public class DefaultSocketPoolImpl implements SocketPool {
 		try {
 			for (byte i = 0; i < size; i++) {
 				self.socketPool.put(new Byte(i), new ThriftSocket(host, port, time));
-				self.socketStatusArray[i] = false;
+				self.socketStatusArray[i] = Boolean.FALSE;
 			}
 		} catch (Exception e) {
 			throw new RuntimeException(e);
@@ -123,7 +123,7 @@ public class DefaultSocketPoolImpl implements SocketPool {
 					thriftSocket = new ThriftSocket(host, port, time);
 					self.socketPool.put(new Byte(i), thriftSocket);
 				}
-				self.socketStatusArray[i] = true;
+				self.socketStatusArray[i] = Boolean.TRUE;
 				return thriftSocket;
 			}
 		}
@@ -187,7 +187,7 @@ public class DefaultSocketPoolImpl implements SocketPool {
 		}
 		for (byte i = 0; i < size; i++) {
 			if (self.socketPool.get(new Byte(i)) == thriftSocket) {
-				self.socketStatusArray[i] = false;
+				self.socketStatusArray[i] = Boolean.FALSE;
 				return;
 			}
 		}
@@ -212,7 +212,7 @@ public class DefaultSocketPoolImpl implements SocketPool {
 				socket = self.socketPool.get(new Byte(i));
 				try {
 					socket.close();
-					self.socketStatusArray[i] = false;
+					self.socketStatusArray[i] = Boolean.FALSE;
 				} catch (Exception e) {
 					LOG.error(e.getMessage());
 				}

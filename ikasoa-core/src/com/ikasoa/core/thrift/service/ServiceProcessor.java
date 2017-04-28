@@ -46,7 +46,7 @@ public class ServiceProcessor extends TBaseProcessor<Service> implements Process
 		}
 
 		protected boolean isOneway() {
-			return false;
+			return Boolean.FALSE;
 		}
 
 		public ResultThriftBase getResult(Service service, ArgsThriftBase args) throws TException {

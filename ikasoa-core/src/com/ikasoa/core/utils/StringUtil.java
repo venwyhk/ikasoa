@@ -24,14 +24,14 @@ public class StringUtil {
 	public static boolean isBlank(String str) {
 		int strLen;
 		if (str == null || (strLen = str.length()) == 0) {
-			return true;
+			return Boolean.TRUE;
 		}
 		for (int i = 0; i < strLen; i++) {
-			if ((Character.isWhitespace(str.charAt(i)) == false)) {
-				return false;
+			if ((Character.isWhitespace(str.charAt(i)) == Boolean.FALSE)) {
+				return Boolean.FALSE;
 			}
 		}
-		return true;
+		return Boolean.TRUE;
 	}
 
 	public static boolean isNotBlank(String str) {
@@ -40,11 +40,11 @@ public class StringUtil {
 
 	public static boolean equals(String str1, String str2) {
 		if (isEmpty(str1) && isEmpty(str2)) {
-			return true;
+			return Boolean.TRUE;
 		} else if (!isEmpty(str1) && !isEmpty(str2)) {
 			return str1.equals(str2);
 		}
-		return false;
+		return Boolean.FALSE;
 	}
 
 	public static int toInt(String str) {

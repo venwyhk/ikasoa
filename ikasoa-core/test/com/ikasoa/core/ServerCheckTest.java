@@ -78,7 +78,7 @@ public class ServerCheckTest extends TestCase {
 
 		@Override
 		public boolean check(String serverHost, int serverPort) {
-			return "192.168.1.2".equals(serverHost) ? true : false;
+			return "192.168.1.2".equals(serverHost) ? Boolean.TRUE : Boolean.FALSE;
 		}
 
 	}

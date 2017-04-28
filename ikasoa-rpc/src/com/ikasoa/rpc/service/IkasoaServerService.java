@@ -43,7 +43,7 @@ public class IkasoaServerService extends AbstractGetService<Object[], Object> {
 		}
 		LOG.debug("Execute class '" + classObj.getClass().getName() + "' function '" + method.getName()
 				+ "' , parameters is '" + args.toString() + "' .");
-		method.setAccessible(true);
+		method.setAccessible(Boolean.TRUE);
 		try {
 			return method.invoke(classObj, args);
 		} catch (IllegalAccessException e) {

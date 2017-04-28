@@ -85,7 +85,7 @@ public class AsyncServiceProcessor extends TBaseAsyncProcessor<AsyncService> imp
 		}
 
 		protected boolean isOneway() {
-			return false;
+			return Boolean.FALSE;
 		}
 
 		public void start(AsyncService service, ArgsThriftBase args, AsyncMethodCallback<String> resultHandler)

@@ -77,7 +77,7 @@ public abstract class AbstractThriftBase
 		}
 		TField schemeField;
 		iprot.readStructBegin();
-		while (true) {
+		while (Boolean.TRUE) {
 			schemeField = iprot.readFieldBegin();
 			if (schemeField.type == TType.STOP) {
 				break;
