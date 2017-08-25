@@ -11,7 +11,7 @@ import com.ikasoa.core.thrift.server.ThriftServerConfiguration;
 /**
  * Thrift服务器Servlet实现
  * <p>
- * 比较特殊的一种服务器实现,用于http方式来提供Thrift服务.一般用于构造<i>ThriftServlet</i>.
+ * 比较特殊的一种服务器实现,利用http协议来提供Thrift服务.一般用于构造<i>ThriftServlet</i>.
  * <p>
  * 生命周期与WebServer相同,服务端口也与http端口相同,所以<i>ThriftServer</i>的 <code>start()</code>,
  * <code>stop()</code>,<code>isServing()</code>, <code>getServerPort()</code>
