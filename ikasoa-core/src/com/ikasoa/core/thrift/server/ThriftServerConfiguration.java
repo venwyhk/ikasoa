@@ -38,6 +38,10 @@ public class ThriftServerConfiguration extends AbstractThriftConfiguration {
 	public ThriftServerConfiguration() {
 		// Do nothing
 	}
+	
+	public ThriftServerConfiguration(TProcessorFactory processorFactory) {
+		this.processorFactory = processorFactory;
+	}
 
 	public void setProcessorFactory(TProcessorFactory processorFactory) {
 		this.processorFactory = processorFactory;
