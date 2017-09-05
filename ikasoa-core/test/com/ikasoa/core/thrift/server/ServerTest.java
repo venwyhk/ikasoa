@@ -48,7 +48,7 @@ public class ServerTest extends TestCase {
 	public void testDefaultThriftServerImpl() {
 		int serverPort = 39001;
 		ThriftServer defaultThriftServer = factory.getThriftServer(serverName, serverPort,
-				new ThriftSimpleService.Processor<Iface>(new TestThriftServiceImpl()));
+				new ThriftSimpleService.Processor<Iface>(new ThriftSimpleServiceImpl()));
 		assertEquals(defaultThriftServer.getServerName(), serverName);
 		assertEquals(defaultThriftServer.getServerPort(), serverPort);
 		assertEquals(defaultThriftServer.getThriftServerConfiguration(), configuration);
@@ -78,7 +78,7 @@ public class ServerTest extends TestCase {
 	public void testNonblockingThriftServerImpl() {
 		int serverPort = 39002;
 		ThriftServer nioThriftServer = factory.getNonblockingThriftServer(serverName, serverPort,
-				new ThriftSimpleService.Processor<Iface>(new TestThriftServiceImpl()));
+				new ThriftSimpleService.Processor<Iface>(new ThriftSimpleServiceImpl()));
 		assertEquals(nioThriftServer.getServerName(), serverName);
 		assertEquals(nioThriftServer.getServerPort(), serverPort);
 		assertEquals(nioThriftServer.getThriftServerConfiguration(), configuration);
@@ -109,7 +109,7 @@ public class ServerTest extends TestCase {
 	public void testSimpleThriftServerImpl() {
 		int serverPort = 39003;
 		ThriftServer simpleThriftServer = new SimpleThriftServerImpl(serverName, serverPort, configuration,
-				new ThriftSimpleService.Processor<Iface>(new TestThriftServiceImpl()));
+				new ThriftSimpleService.Processor<Iface>(new ThriftSimpleServiceImpl()));
 		assertEquals(simpleThriftServer.getServerName(), serverName);
 		assertEquals(simpleThriftServer.getServerPort(), serverPort);
 		assertEquals(simpleThriftServer.getThriftServerConfiguration(), configuration);
@@ -138,7 +138,7 @@ public class ServerTest extends TestCase {
 	@Test
 	public void testAysncDefaultThriftServerImpl() {
 		int serverPort = 39004;
-		TProcessor p = new ThriftSimpleService.Processor<Iface>(new TestThriftServiceImpl());
+		TProcessor p = new ThriftSimpleService.Processor<Iface>(new ThriftSimpleServiceImpl());
 		ThriftServerConfiguration thriftServerConfiguration = new ThriftServerConfiguration();
 		thriftServerConfiguration.setProtocolFactory(new TCompactProtocol.Factory());
 		thriftServerConfiguration.setProcessorFactory(new TProcessorFactory(p));
@@ -171,7 +171,7 @@ public class ServerTest extends TestCase {
 	public void testMultiplexedThriftServerImpl() {
 		int serverPort = 39101;
 		Map<String, TProcessor> processorMap = new HashMap<>();
-		processorMap.put("testServer", new ThriftSimpleService.Processor<Iface>(new TestThriftServiceImpl()));
+		processorMap.put("testServer", new ThriftSimpleService.Processor<Iface>(new ThriftSimpleServiceImpl()));
 		MultiplexedProcessor processor = new MultiplexedProcessor(processorMap);
 		ThriftServer defaultThriftServer = new DefaultThriftServerImpl(serverName, serverPort, configuration,
 				processor);
@@ -207,7 +207,7 @@ public class ServerTest extends TestCase {
 		Factory factory = new GeneralFactory(new CompactThriftServerConfiguration(),
 				new CompactThriftClientConfiguration());
 		ThriftServer defaultThriftServer = factory.getThriftServer(serverName, serverPort,
-				new ThriftSimpleService.Processor<Iface>(new TestThriftServiceImpl()));
+				new ThriftSimpleService.Processor<Iface>(new ThriftSimpleServiceImpl()));
 		defaultThriftServer.run();
 		ThriftClient thriftClient = factory.getThriftClient(LOCAL_HOST, serverPort);
 		TTransport transport = null;
@@ -236,7 +236,7 @@ public class ServerTest extends TestCase {
 		Factory factory = new GeneralFactory(new TupleThriftServerConfiguration(),
 				new TupleThriftClientConfiguration());
 		ThriftServer defaultThriftServer = factory.getThriftServer(serverName, serverPort,
-				new ThriftSimpleService.Processor<Iface>(new TestThriftServiceImpl()));
+				new ThriftSimpleService.Processor<Iface>(new ThriftSimpleServiceImpl()));
 		defaultThriftServer.run();
 		ThriftClient thriftClient = factory.getThriftClient(LOCAL_HOST, serverPort);
 		TTransport transport = null;
@@ -269,7 +269,7 @@ public class ServerTest extends TestCase {
 		clientConfiguration.setProtocolFactory(new DESCompactProtocol.Factory(key));
 		Factory factory = new GeneralFactory(serverConfiguration, clientConfiguration);
 		ThriftServer defaultThriftServer = factory.getThriftServer(serverName, serverPort,
-				new ThriftSimpleService.Processor<Iface>(new TestThriftServiceImpl()));
+				new ThriftSimpleService.Processor<Iface>(new ThriftSimpleServiceImpl()));
 		defaultThriftServer.run();
 		ThriftClient thriftClient = factory.getThriftClient(LOCAL_HOST, serverPort);
 		TTransport transport = null;
@@ -307,16 +307,9 @@ public class ServerTest extends TestCase {
 		configuration.setServerAspect(new TestServerAspectImpl());
 		Factory factory = new GeneralFactory(configuration);
 		ThriftServer defaultThriftServer = factory.getThriftServer(serverName, serverPort,
-				new ThriftSimpleService.Processor<Iface>(new TestThriftServiceImpl()));
+				new ThriftSimpleService.Processor<Iface>(new ThriftSimpleServiceImpl()));
 		defaultThriftServer.run();
 		defaultThriftServer.stop();
-	}
-
-	private class TestThriftServiceImpl implements ThriftSimpleService.Iface {
-		@Override
-		public String get(String arg) throws TException {
-			return arg;
-		}
 	}
 
 	private class TestCallback implements AsyncMethodCallback<String> {
