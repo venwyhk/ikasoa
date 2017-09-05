@@ -388,6 +388,64 @@ ThriftClientDemo.java
     </beans>
 ```
 
+##### ThriftServlet服务端例子 #####
+
+  需新增Servlet类.
+
+TestThriftServlet.java
+
+```java
+    package example.ikasoa.servlet;
+    import com.ikasoa.core.thrift.server.CompactThriftServerConfiguration;
+    import com.ikasoa.core.thrift.server.ThriftServlet;
+    import com.ikasoa.core.thrift.server.impl.ServletThriftServerImpl;
+    public class TestThriftServlet extends ThriftServlet {
+        private static final long serialVersionUID = 1L;
+        private static ThriftServer server = new ServletThriftServerImpl("TestThriftServlet", new CompactThriftServerConfiguration(), new com.xxx.service.ThriftService.Processor<com.xxx.service.ThriftService.Iface>(new com.xxx.service.impl.ThriftServiceImpl()));
+        public TestThriftServlet() {
+            super(server);
+        }
+    }
+```
+
+web.xml
+
+```xml
+    <?xml version="1.0" encoding="UTF-8"?>
+    <web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd" version="3.1" metadata-complete="true">
+        ......
+        <servlet>
+            <servlet-name>TestServiceServlet</servlet-name>
+            <servlet-class>example.ikasoa.servlet.TestServiceServlet</servlet-class>
+            <load-on-startup>1</load-on-startup>
+        </servlet>
+        <servlet-mapping>
+            <servlet-name>TestServiceServlet</servlet-name>
+            <url-pattern>/TestService</url-pattern>
+        </servlet-mapping>
+        ......
+    </web-app>
+```
+
+  修改完毕后需要启动Servlet容器.
+
+##### 客户端调用ThriftServlet例子 #####
+
+```java
+    ......
+    // Servlet访问地址根据容器的配置而定,协议类型需于服务端一致(例如服务端使用CompactThriftServerConfiguration,客户端则必须使用CompactThriftClientConfiguration).
+    ThriftClient thriftClient = new HttpThriftClientImpl("http://localhost:8080/TestService", new CompactThriftClientConfiguration());
+    TTransport transport = null;
+    transport = thriftClient.getTransport();
+    transport.open();
+    // 这里的client对象就是ThriftService的实例,获取后可以直接操作.
+    com.xxx.service.ThriftService.Client client = new com.xxx.service.ThriftService.Client(thriftClient.getProtocol(transport));
+    ......
+    transport.close();
+    ......
+```
+
+
 ## 服务实现类型 ##
 
   *ikasoa默认使用Thrift作为服务类型的实现,但也提供了Netty以供选择.*
