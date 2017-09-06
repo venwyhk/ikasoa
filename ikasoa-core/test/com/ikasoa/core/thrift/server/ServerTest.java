@@ -3,7 +3,6 @@ package com.ikasoa.core.thrift.server;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.thrift.TException;
 import org.apache.thrift.TProcessor;
 import org.apache.thrift.TProcessorFactory;
 import org.apache.thrift.async.AsyncMethodCallback;
