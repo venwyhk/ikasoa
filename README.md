@@ -435,8 +435,7 @@ web.xml
     ......
     // Servlet访问地址根据容器的配置而定,协议类型需于服务端一致(例如服务端使用CompactThriftServerConfiguration,客户端则必须使用CompactThriftClientConfiguration).
     ThriftClient thriftClient = new HttpThriftClientImpl("http://localhost:8080/TestService", new CompactThriftClientConfiguration());
-    TTransport transport = null;
-    transport = thriftClient.getTransport();
+    TTransport transport = thriftClient.getTransport();
     transport.open();
     // 这里的client对象就是ThriftService的实例,获取后可以直接操作.
     com.xxx.service.ThriftService.Client client = new com.xxx.service.ThriftService.Client(thriftClient.getProtocol(transport));
@@ -482,7 +481,9 @@ web.xml
 
 ## 负载均衡 ##
 
-  *ikasoa提供了2种负载均衡,分别为轮循(含权重)和随机,默认使用轮循.*
+  *ikasoa提供了3种负载均衡方式,分别为轮循(含权重),随机和一致性hash.*
+
+  *ikasoa-rpc支持其中2种,分别为轮循和随机,默认使用轮循.*
 
 ##### 使用轮循负载均衡(默认) #####
 
