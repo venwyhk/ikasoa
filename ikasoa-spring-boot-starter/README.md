@@ -34,12 +34,38 @@ pom.xml
 
 ## application.properties设置说明 ##
 
-属性|描述|默认值|备注
--|-|-|-|-
-spring.ikasoa.server.host|服务地址|localhost|
-spring.ikasoa.server.port|服务端口|9999|
-spring.ikasoa.server.service.implClasses|服务实现类地址|无|服务端设置时必填,多个实现类以","分隔.
-spring.ikasoa.configuratorClass|设置类地址|com.ikasoa.rpc.Configurator|可继承Configurator实现高级设置
+<table>
+  <tr>
+    <td><b>属性</b></td>
+    <td><b>描述</b></td>
+    <td><b>默认值</b></td>
+    <td><b>备注</b></td>
+  </tr>
+  <tr>
+    <td>spring.ikasoa.server.host</td>
+    <td>服务地址</td>
+    <td>localhost</td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>spring.ikasoa.server.port</td>
+    <td>服务端口</td>
+    <td>9999</td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>spring.ikasoa.server.service.implClasses</td>
+    <td>服务实现类地址</td>
+    <td>(无)</td>
+    <td>服务端设置时必填,多个实现类以","分隔.</td>
+  </tr>
+  <tr>
+    <td>spring.ikasoa.configuratorClass</td>
+    <td>服务配置类地址</td>
+    <td>com.ikasoa.rpc.Configurator</td>
+    <td>可继承Configurator实现高级设置.</td>
+  </tr>
+</table>
 
 ## 使用示例 ##
 
