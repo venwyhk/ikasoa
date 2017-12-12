@@ -59,18 +59,19 @@ ServerStartupRunner.java
 
 ```java
     import org.springframework.stereotype.Component;
+    import com.ikasoa.rpc.IkasoaException;
     import com.ikasoa.springboot.IkasoaServerRunner;
 
     @Component
     public class ServerStartupRunner extends IkasoaServerRunner {
 
         @Override
-        protected void complete(String... args) throws Exception {
+        protected void complete(String... args) throws IkasoaException {
             // 服务启动成功后执行
         }
 
         @Override
-        protected void fail(String... args) throws Exception {
+        protected void fail(String... args) throws IkasoaException {
             // 服务启动失败后执行
         }
 
