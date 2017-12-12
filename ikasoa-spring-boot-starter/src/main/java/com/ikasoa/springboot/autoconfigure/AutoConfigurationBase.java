@@ -19,16 +19,16 @@ public class AutoConfigurationBase {
 
 	private static final Logger LOG = LoggerFactory.getLogger(AutoConfigurationBase.class);
 
-	@Value("${spring.ikasoa.server.host:localhost}")
+	@Value("${ikasoa.server.host:localhost}")
 	protected String host;
 
-	@Value("${spring.ikasoa.server.port:9999}")
+	@Value("${ikasoa.server.port:9999}")
 	protected String port;
 
-	@Value("${spring.ikasoa.server.service.implClasses}")
+	@Value("${ikasoa.server.service.implClasses}")
 	protected String serviceImplClasses;
 
-	@Value("${spring.ikasoa.configuratorClass:com.ikasoa.rpc.Configurator}")
+	@Value("${ikasoa.configuratorClass:com.ikasoa.rpc.Configurator}")
 	protected String configuratorClass;
 
 	protected Configurator getConfigurator() {

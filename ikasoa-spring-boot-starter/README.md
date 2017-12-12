@@ -44,25 +44,25 @@ pom.xml
     <td>备注</td>
   </tr>
   <tr>
-    <td>spring.ikasoa.server.host</td>
+    <td>ikasoa.server.host</td>
     <td>服务地址</td>
     <td>localhost</td>
     <td></td>
   </tr>
   <tr>
-    <td>spring.ikasoa.server.port</td>
+    <td>ikasoa.server.port</td>
     <td>服务端口</td>
     <td>9999</td>
     <td></td>
   </tr>
   <tr>
-    <td>spring.ikasoa.server.service.implClasses</td>
+    <td>ikasoa.server.service.implClasses</td>
     <td>服务实现类地址</td>
     <td>(无)</td>
     <td>服务端设置时必填,多个实现类以","分隔.</td>
   </tr>
   <tr>
-    <td>spring.ikasoa.configuratorClass</td>
+    <td>ikasoa.configuratorClass</td>
     <td>服务配置类地址</td>
     <td>com.ikasoa.rpc.Configurator</td>
     <td>可继承Configurator实现高级设置.</td>
@@ -77,11 +77,11 @@ application.properties
 
 ```
     ......
-    spring.ikasoa.server.service.implClasses=com.ikasoa.example.rpc.ExampleServiceImpl
+    ikasoa.server.service.implClasses=com.ikasoa.example.rpc.ExampleServiceImpl
     ......
 ```
 
-  服务端必须在application.properties中设置spring.ikasoa.server.service.implClasses属性,该属性为允许远程调用的接口实现类,如有多个实现类以","分隔.
+  服务端必须在application.properties中设置ikasoa.server.service.implClasses属性,该属性为允许远程调用的接口实现类,如有多个实现类以","分隔.
 
 ServerStartupRunner.java
 
@@ -124,7 +124,7 @@ ServerStartupRunner.java
     ......
 ```
 
-  如果调用远程服务,至少需在application.properties设置spring.ikasoa.server.host和spring.ikasoa.server.port属性,与服务端匹配.
+  如果调用远程服务,至少需在application.properties设置ikasoa.server.host和ikasoa.server.port属性,与服务端匹配.
 
 ## License ##
 
