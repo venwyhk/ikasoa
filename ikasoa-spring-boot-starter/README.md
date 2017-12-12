@@ -18,6 +18,8 @@
 
 ##### Maven配置 #####
 
+需要修改pom.xml文件,添加ikasoa-spring-boot-starter的依赖:
+
 pom.xml
 
 ```xml
