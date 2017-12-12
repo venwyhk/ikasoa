@@ -60,9 +60,8 @@ public abstract class AbstractThriftServerImpl implements ThriftServer {
 	 */
 	@Override
 	public TServerTransport getTransport() throws TTransportException {
-		if (serverSocket == null) {
+		if (serverSocket == null)
 			serverSocket = new TServerSocket(getServerPort());
-		}
 		return serverSocket;
 	}
 
@@ -71,9 +70,8 @@ public abstract class AbstractThriftServerImpl implements ThriftServer {
 	 */
 	@Override
 	public void run() {
-		if (executorService == null) {
+		if (executorService == null)
 			executorService = Executors.newSingleThreadExecutor();
-		}
 		if (!isServing()) {
 			beforeStart(getThriftServerConfiguration().getServerAspect());
 			executorService.execute(() -> {
@@ -101,29 +99,27 @@ public abstract class AbstractThriftServerImpl implements ThriftServer {
 	 */
 	public void start() throws STException {
 		if (server == null) {
-			LOG.debug("Thrift server configuration : " + configuration);
+			LOG.debug("Server configuration : " + configuration);
 			// 不允许使用1024以内的端口.
-			if (!ServerUtil.isSocketPort(serverPort)) {
-				throw new STException(
-						"Thrift server initialize failed ! Port range must is 1025 ~ 65535 . Your port is : "
-								+ serverPort + " .");
-			}
+			if (!ServerUtil.isSocketPort(serverPort))
+				throw new STException("Server initialize failed ! Port range must is 1025 ~ 65535 . Your port is : "
+						+ serverPort + " .");
 			try {
 				initServer(getTransport());
 			} catch (TTransportException e) {
-				throw new STException("Thrift server initialize failed !", e);
+				throw new STException("Server initialize failed !", e);
 			}
 		}
 		// 如果服务没有启动,则自动启动服务.
 		if (server != null) {
 			if (server.isServing()) {
-				LOG.info("Thrift server already run .");
+				LOG.info("Server already run .");
 				return;
 			}
 			server.serve();
-			LOG.info("Starting thrift server ...... (name : " + serverName + " , port : " + serverPort + ")");
+			LOG.info("Startup server ...... (name : " + serverName + " , port : " + serverPort + ")");
 		} else {
-			LOG.warn("Starting thrift server failed !");
+			LOG.warn("Startup server failed !");
 		}
 	}
 
@@ -138,11 +134,11 @@ public abstract class AbstractThriftServerImpl implements ThriftServer {
 			if (executorService != null && !executorService.isShutdown()) {
 				executorService.shutdown();
 				try {
-					while (!executorService.isTerminated()) {
+					while (executorService != null && !executorService.isTerminated()) {
 						executorService.awaitTermination(10, TimeUnit.SECONDS);
 					}
 				} catch (InterruptedException e) {
-					LOG.debug("Thrift server thread shutdown exception !", e);
+					LOG.debug("Server thread shutdown exception !", e);
 					executorService.shutdownNow();
 					Thread.currentThread().interrupt();
 				}
@@ -150,35 +146,31 @@ public abstract class AbstractThriftServerImpl implements ThriftServer {
 			server = null;
 			serverSocket = null;
 			executorService = null;
-			LOG.info("Stop thrift server ...... (name: " + serverName + ")");
+			LOG.info("Stop server ...... (name: " + serverName + ")");
 			afterStop(getThriftServerConfiguration().getServerAspect());
 		} else {
-			LOG.info("Thrift server not run. (name: " + serverName + ")");
+			LOG.info("Server not run. (name: " + serverName + ")");
 		}
 	}
 
 	private void beforeStart(ServerAspect serverAspect) {
-		if (serverAspect != null) {
+		if (serverAspect != null)
 			serverAspect.beforeStart(serverName, serverPort, configuration, processor, this);
-		}
 	}
 
 	private void afterStart(ServerAspect serverAspect) {
-		if (serverAspect != null) {
+		if (serverAspect != null)
 			serverAspect.afterStart(serverName, serverPort, configuration, processor, this);
-		}
 	}
 
 	private void beforeStop(ServerAspect serverAspect) {
-		if (serverAspect != null) {
+		if (serverAspect != null)
 			serverAspect.beforeStop(serverName, serverPort, configuration, processor, this);
-		}
 	}
 
 	private void afterStop(ServerAspect serverAspect) {
-		if (serverAspect != null) {
+		if (serverAspect != null)
 			serverAspect.afterStop(serverName, serverPort, configuration, processor, this);
-		}
 	}
 
 	@Override
@@ -201,17 +193,15 @@ public abstract class AbstractThriftServerImpl implements ThriftServer {
 
 	@Override
 	public boolean isServing() {
-		if (server == null) {
+		if (server == null)
 			return Boolean.FALSE;
-		}
 		return server.isServing();
 	}
 
 	@Override
 	public ThriftServerConfiguration getThriftServerConfiguration() {
-		if (configuration == null) {
-			throw new RuntimeException("Thrift server initialize failed ! Configuration is null !");
-		}
+		if (configuration == null)
+			throw new RuntimeException("Server initialize failed ! Configuration is null !");
 		return configuration;
 	}
 

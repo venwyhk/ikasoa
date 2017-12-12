@@ -33,9 +33,8 @@ public class ServiceClientImpl extends TServiceClient implements Service {
 	public String get(String arg) throws STException {
 		TTransport transport = oprot_.getTransport();
 		try {
-			if (!transport.isOpen()) {
+			if (!transport.isOpen())
 				transport.open();
-			}
 			sendGet(arg);
 			return recvGet();
 		} catch (TException e) {
@@ -52,11 +51,10 @@ public class ServiceClientImpl extends TServiceClient implements Service {
 	String recvGet() throws TException {
 		ResultThriftBase result = new ResultThriftBase();
 		receiveBase(result, Processor.FUNCTION_NAME);
-		if (result.isSet(null)) {
+		if (result.isSet(null))
 			return result.getStr();
-		} else {
+		else
 			throw new TApplicationException(TApplicationException.MISSING_RESULT, "get failed: unknown result");
-		}
 	}
 
 }

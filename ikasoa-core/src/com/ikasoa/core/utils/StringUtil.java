@@ -23,13 +23,11 @@ public class StringUtil {
 
 	public static boolean isBlank(String str) {
 		int strLen;
-		if (str == null || (strLen = str.length()) == 0) {
+		if (str == null || (strLen = str.length()) == 0)
 			return Boolean.TRUE;
-		}
 		for (int i = 0; i < strLen; i++) {
-			if ((Character.isWhitespace(str.charAt(i)) == Boolean.FALSE)) {
+			if ((Character.isWhitespace(str.charAt(i)) == Boolean.FALSE))
 				return Boolean.FALSE;
-			}
 		}
 		return Boolean.TRUE;
 	}
@@ -39,11 +37,10 @@ public class StringUtil {
 	}
 
 	public static boolean equals(String str1, String str2) {
-		if (isEmpty(str1) && isEmpty(str2)) {
+		if (isEmpty(str1) && isEmpty(str2))
 			return Boolean.TRUE;
-		} else if (!isEmpty(str1) && !isEmpty(str2)) {
+		else if (!isEmpty(str1) && !isEmpty(str2))
 			return str1.equals(str2);
-		}
 		return Boolean.FALSE;
 	}
 

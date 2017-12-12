@@ -35,9 +35,8 @@ public abstract class AbstractThriftBase
 	}
 
 	public AbstractThriftBase(AbstractThriftBase other) {
-		if (other.isSet(null)) {
+		if (other.isSet(null))
 			str = other.str;
-		}
 	}
 
 	protected abstract TStruct getTStruct();
@@ -72,21 +71,18 @@ public abstract class AbstractThriftBase
 	 */
 	@Override
 	public void read(TProtocol iprot) throws TException {
-		if (!"org.apache.thrift.scheme.StandardScheme".equals(iprot.getScheme().getName())) {
+		if (!"org.apache.thrift.scheme.StandardScheme".equals(iprot.getScheme().getName()))
 			throw new TApplicationException("Service scheme must be 'org.apache.thrift.scheme.StandardScheme' !");
-		}
 		TField schemeField;
 		iprot.readStructBegin();
 		while (Boolean.TRUE) {
 			schemeField = iprot.readFieldBegin();
-			if (schemeField.type == TType.STOP) {
+			if (schemeField.type == TType.STOP)
 				break;
-			}
-			if (schemeField.type == TType.STRING) {
+			if (schemeField.type == TType.STRING)
 				str = iprot.readString();
-			} else {
+			else
 				throw new TApplicationException("field type must be 'String' !");
-			}
 			iprot.readFieldEnd();
 		}
 		iprot.readStructEnd();
@@ -97,9 +93,8 @@ public abstract class AbstractThriftBase
 	 */
 	@Override
 	public void write(TProtocol oprot) throws TException {
-		if (!"org.apache.thrift.scheme.StandardScheme".equals(oprot.getScheme().getName())) {
+		if (!"org.apache.thrift.scheme.StandardScheme".equals(oprot.getScheme().getName()))
 			throw new TApplicationException("Service scheme must be 'org.apache.thrift.scheme.StandardScheme' !");
-		}
 		oprot.writeStructBegin(getTStruct());
 		if (str != null) {
 			oprot.writeFieldBegin(new TField("value", TType.STRING, (short) 0));
@@ -112,19 +107,16 @@ public abstract class AbstractThriftBase
 
 	@Override
 	public int compareTo(AbstractThriftBase other) {
-		if (!getClass().equals(other.getClass())) {
+		if (!getClass().equals(other.getClass()))
 			return getClass().getName().compareTo(other.getClass().getName());
-		}
 		int lastComparison = 0;
 		lastComparison = Boolean.valueOf(isSet(null)).compareTo(isSet(null));
-		if (lastComparison != 0) {
+		if (lastComparison != 0)
 			return lastComparison;
-		}
 		if (isSet(null)) {
 			lastComparison = TBaseHelper.compareTo(str, other.getStr());
-			if (lastComparison != 0) {
+			if (lastComparison != 0)
 				return lastComparison;
-			}
 		}
 		return 0;
 	}

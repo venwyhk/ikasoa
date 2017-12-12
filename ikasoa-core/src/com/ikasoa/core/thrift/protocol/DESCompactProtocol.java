@@ -28,11 +28,10 @@ public class DESCompactProtocol extends TCompactProtocol {
 		private final String key_;
 
 		public Factory(String key) {
-			if (StringUtil.isNotEmpty(key)) {
+			if (StringUtil.isNotEmpty(key))
 				this.key_ = key;
-			} else {
+			else
 				throw new RuntimeException("Key is null !");
-			}
 		}
 
 		public TProtocol getProtocol(TTransport trans) {
@@ -42,21 +41,18 @@ public class DESCompactProtocol extends TCompactProtocol {
 
 	public DESCompactProtocol(TTransport transport, String key) {
 		super(transport);
-		if (StringUtil.isEmpty(key)) {
+		if (StringUtil.isEmpty(key))
 			throw new RuntimeException("Key is null !");
-		}
-		if (key.length() < 8) {
+		if (key.length() < 8)
 			this.key = formatStr(key, 8);
-		} else {
+		else
 			this.key = key;
-		}
 	}
 
 	@Override
 	public void writeString(String str) throws TException {
-		if (StringUtil.isEmpty(str)) {
+		if (StringUtil.isEmpty(str))
 			super.writeString(str);
-		}
 		try {
 			super.writeString(SimpleDESUtil.encrypt(str, getKey()));
 		} catch (Exception e) {
@@ -67,9 +63,8 @@ public class DESCompactProtocol extends TCompactProtocol {
 	@Override
 	public String readString() throws TException {
 		String str = super.readString();
-		if (StringUtil.isEmpty(str)) {
+		if (StringUtil.isEmpty(str))
 			return str;
-		}
 		try {
 			return new String(SimpleDESUtil.decrypt(str, getKey()));
 		} catch (Exception e) {
@@ -78,11 +73,10 @@ public class DESCompactProtocol extends TCompactProtocol {
 	}
 
 	private String getKey() {
-		if (key.length() < 8) {
+		if (key.length() < 8)
 			return formatStr(key, 8);
-		} else {
+		else
 			return key;
-		}
 	}
 
 	private static String formatStr(String str, int length) {
@@ -92,9 +86,8 @@ public class DESCompactProtocol extends TCompactProtocol {
 		} else if (strLen < length) {
 			int temp = length - strLen;
 			String tem = "";
-			for (int i = 0; i < temp; i++) {
+			for (int i = 0; i < temp; i++)
 				tem = tem + " ";
-			}
 			return str + tem;
 		} else {
 			return str.substring(0, length);

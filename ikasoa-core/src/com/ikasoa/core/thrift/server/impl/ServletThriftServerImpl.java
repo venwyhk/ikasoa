@@ -80,9 +80,8 @@ public class ServletThriftServerImpl implements ThriftServer {
 
 	@Override
 	public ThriftServerConfiguration getThriftServerConfiguration() {
-		if (configuration == null) {
-			throw new RuntimeException("Thrift server initialize failed ! Configuration is null !");
-		}
+		if (configuration == null)
+			throw new RuntimeException("Server initialize failed ! Configuration is null !");
 		return configuration;
 	}
 

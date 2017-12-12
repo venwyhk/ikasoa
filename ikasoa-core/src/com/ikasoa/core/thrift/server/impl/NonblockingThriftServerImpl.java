@@ -33,9 +33,8 @@ public class NonblockingThriftServerImpl extends AbstractThriftServerImpl {
 
 	@Override
 	public TServerTransport getTransport() throws TTransportException {
-		if (serverSocket == null) {
+		if (serverSocket == null)
 			serverSocket = new TNonblockingServerSocket(getServerPort());
-		}
 		return serverSocket;
 	}
 
@@ -53,14 +52,12 @@ public class NonblockingThriftServerImpl extends AbstractThriftServerImpl {
 				(TNonblockingServerSocket) serverTransport);
 		args.transportFactory(configuration.getTransportFactory());
 		args.protocolFactory(configuration.getProtocolFactory());
-		if (configuration.getExecutorService() != null) {
+		if (configuration.getExecutorService() != null)
 			args.executorService(configuration.getExecutorService());
-		}
 		server = new TThreadedSelectorServer(
 				configuration.getServerArgsAspect().TThreadedSelectorServerArgsAspect(args).processor(getProcessor()));
-		if (configuration.getServerEventHandler() != null) {
+		if (configuration.getServerEventHandler() != null)
 			server.setServerEventHandler(configuration.getServerEventHandler());
-		}
 	}
 
 }

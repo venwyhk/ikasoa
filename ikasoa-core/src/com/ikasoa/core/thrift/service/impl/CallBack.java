@@ -40,9 +40,8 @@ public class CallBack extends TAsyncMethodCall<String> {
 	}
 
 	public String getResult() throws TException {
-		if (getState() != TAsyncMethodCall.State.RESPONSE_READ) {
+		if (getState() != TAsyncMethodCall.State.RESPONSE_READ)
 			throw new IllegalStateException("Method call not finished!");
-		}
 		TMemoryInputTransport memoryTransport = new TMemoryInputTransport(getFrameBuffer().array());
 		TProtocol prot = client.getProtocolFactory().getProtocol(memoryTransport);
 		return (new ServiceClientImpl(prot)).recvGet();

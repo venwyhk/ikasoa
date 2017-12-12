@@ -104,15 +104,15 @@ public class SimpleDESUtil {
 	}
 
 	private static String byte2hex(byte[] b) {
-		String hs = "";
+		StringBuffer hs = new StringBuffer();
 		String stmp = "";
 		for (int n = 0; n < b.length; n++) {
 			stmp = (java.lang.Integer.toHexString(b[n] & 0XFF));
 			if (stmp.length() == 1)
-				hs = hs + "0" + stmp;
+				hs.append("0").append(stmp);
 			else
-				hs = hs + stmp;
+				hs.append(stmp);
 		}
-		return hs.toUpperCase();
+		return hs.toString().toUpperCase();
 	}
 }

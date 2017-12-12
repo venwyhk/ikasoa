@@ -94,12 +94,10 @@ public class ServerTest extends TestCase {
 			e.printStackTrace();
 			fail();
 		} finally {
-			if (thriftClient != null) {
+			if (thriftClient != null)
 				thriftClient.close();
-			}
-			if (transport != null) {
+			if (transport != null)
 				transport.close();
-			}
 			nioThriftServer.stop();
 		}
 	}
@@ -124,12 +122,10 @@ public class ServerTest extends TestCase {
 		} catch (Exception e) {
 			fail();
 		} finally {
-			if (thriftClient != null) {
+			if (thriftClient != null)
 				thriftClient.close();
-			}
-			if (transport != null) {
+			if (transport != null)
 				transport.close();
-			}
 			simpleThriftServer.stop();
 		}
 	}
@@ -190,12 +186,10 @@ public class ServerTest extends TestCase {
 		} catch (Exception e) {
 			fail();
 		} finally {
-			if (thriftClient != null) {
+			if (thriftClient != null)
 				thriftClient.close();
-			}
-			if (transport != null) {
+			if (transport != null)
 				transport.close();
-			}
 			defaultThriftServer.stop();
 		}
 	}
@@ -219,12 +213,10 @@ public class ServerTest extends TestCase {
 		} catch (Exception e) {
 			fail();
 		} finally {
-			if (thriftClient != null) {
+			if (thriftClient != null)
 				thriftClient.close();
-			}
-			if (transport != null) {
+			if (transport != null)
 				transport.close();
-			}
 			defaultThriftServer.stop();
 		}
 	}
@@ -248,12 +240,10 @@ public class ServerTest extends TestCase {
 		} catch (Exception e) {
 			fail();
 		} finally {
-			if (thriftClient != null) {
+			if (thriftClient != null)
 				thriftClient.close();
-			}
-			if (transport != null) {
+			if (transport != null)
 				transport.close();
-			}
 			defaultThriftServer.stop();
 		}
 	}
@@ -282,12 +272,10 @@ public class ServerTest extends TestCase {
 			e.printStackTrace();
 			fail();
 		} finally {
-			if (thriftClient != null) {
+			if (thriftClient != null)
 				thriftClient.close();
-			}
-			if (transport != null) {
+			if (transport != null)
 				transport.close();
-			}
 			defaultThriftServer.stop();
 		}
 	}

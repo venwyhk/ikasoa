@@ -26,9 +26,8 @@ public class LoadBalanceTest extends TestCase {
 	public void testPollingLoadBalanceImpl() {
 		int testSize = 10;
 		List<ServerInfo> serverInfoList = new ArrayList<>();
-		for (int i = 1; i <= testSize; i++) {
+		for (int i = 1; i <= testSize; i++)
 			serverInfoList.add(new ServerInfo(new StringBuilder("192.168.1.").append(i).toString(), 20000 + i));
-		}
 		LoadBalance loadBalance = new PollingLoadBalanceImpl(serverInfoList);
 		for (int j = 1; j <= testSize; j++) {
 			ServerInfo serverInfo = loadBalance.getServerInfo();
@@ -42,9 +41,8 @@ public class LoadBalanceTest extends TestCase {
 		}
 		// 测试新增服务器地址
 		serverInfoList.add(new ServerInfo(LOCAL_IP, 33333));
-		for (int k = 1; k <= testSize; k++) {
+		for (int k = 1; k <= testSize; k++)
 			next(loadBalance);
-		}
 		ServerInfo serverInfo = loadBalance.getServerInfo();
 		assertEquals(serverInfo.getHost(), LOCAL_IP);
 		assertEquals(serverInfo.getPort(), 33333);
@@ -81,9 +79,8 @@ public class LoadBalanceTest extends TestCase {
 		assertEquals(serverInfo.getPort(), 30003);
 		// 测试新增服务器地址
 		serverInfoList.add(new ServerInfo(LOCAL_IP, 30004, 0));
-		for (int i = 1; i <= 6; i++) {
+		for (int i = 1; i <= 6; i++)
 			serverInfo = next(loadBalance);
-		}
 		assertEquals(serverInfo.getHost(), LOCAL_IP);
 		assertEquals(serverInfo.getPort(), 30004);
 	}
@@ -126,7 +123,7 @@ public class LoadBalanceTest extends TestCase {
 			ServerInfo serverInfo1 = testSimpleConsistencyHashLoadBalanceImpl(serverInfoList, "abcdef");
 			ServerInfo serverInfo2 = testSimpleConsistencyHashLoadBalanceImpl(serverInfoList, "123456");
 			// 这里有一定机率是相同的.如果凑巧hash到同一地址,就换个hash再试一次.
-			if(serverInfo1.getHost().equals(serverInfo2.getHost())) {
+			if (serverInfo1.getHost().equals(serverInfo2.getHost())) {
 				ServerInfo serverInfo3 = testSimpleConsistencyHashLoadBalanceImpl(serverInfoList, "987654321");
 				assertFalse(serverInfo1.getHost().equals(serverInfo3.getHost()));
 			}
@@ -134,7 +131,7 @@ public class LoadBalanceTest extends TestCase {
 			fail();
 		}
 	}
-	
+
 	private ServerInfo testSimpleConsistencyHashLoadBalanceImpl(List<ServerInfo> serverInfoList, String hash) {
 		LoadBalance loadBalance;
 		loadBalance = new ConsistencyHashLoadBalanceImpl(serverInfoList, hash);

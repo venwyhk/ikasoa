@@ -36,9 +36,8 @@ public class BeanUtil {
 		Class sourceClz = source.getClass();
 		Class targetClz = target.getClass();
 		Field[] fields = sourceClz.getDeclaredFields();
-		if (fields.length == 0) {
+		if (fields.length == 0)
 			fields = sourceClz.getSuperclass().getDeclaredFields();
-		}
 		for (int i = 0; i < fields.length; i++) {
 			String fieldName = fields[i].getName();
 			Field targetField = null;

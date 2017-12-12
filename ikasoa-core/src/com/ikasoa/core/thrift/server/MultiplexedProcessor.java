@@ -24,13 +24,11 @@ public class MultiplexedProcessor extends TMultiplexedProcessor {
 	private static final Logger LOG = LoggerFactory.getLogger(MultiplexedProcessor.class);
 
 	public MultiplexedProcessor(Map<String, TProcessor> processorMap) {
-		if (processorMap != null) {
-			for (Entry<String, TProcessor> e : processorMap.entrySet()) {
+		if (processorMap != null)
+			for (Entry<String, TProcessor> e : processorMap.entrySet())
 				registerProcessor(e.getKey(), e.getValue());
-			}
-		} else {
+		else
 			LOG.warn("processorMap is null !");
-		}
 	}
 
 }

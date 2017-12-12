@@ -26,11 +26,10 @@ public class AsyncMultiplexedProtocolFactory extends TCompactProtocol.Factory im
 
 	@Override
 	public TProtocol getProtocol(TTransport trans) {
-		if (StringUtil.isNotEmpty(serviceName)) {
+		if (StringUtil.isNotEmpty(serviceName))
 			return new TMultiplexedProtocol(super.getProtocol(trans), serviceName);
-		} else {
+		else
 			return super.getProtocol(trans);
-		}
 	}
 
 }

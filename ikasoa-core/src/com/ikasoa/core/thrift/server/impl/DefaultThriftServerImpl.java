@@ -21,9 +21,8 @@ public class DefaultThriftServerImpl extends AbstractThriftServerImpl {
 			TProcessor processor) {
 		setServerName(serverName);
 		setServerPort(serverPort);
-		if (configuration == null) {
+		if (configuration == null)
 			configuration = new ThriftServerConfiguration();
-		}
 		setThriftServerConfiguration(configuration);
 		setProcessor(processor);
 	}
@@ -43,14 +42,12 @@ public class DefaultThriftServerImpl extends AbstractThriftServerImpl {
 		args.transportFactory(configuration.getTransportFactory());
 		args.protocolFactory(configuration.getProtocolFactory());
 		// 如果不设置ExecutorService,则默认使用ThreadPoolExecutor实现.
-		if (configuration.getExecutorService() != null) {
+		if (configuration.getExecutorService() != null)
 			args.executorService(configuration.getExecutorService());
-		}
 		server = new TThreadPoolServer(
 				configuration.getServerArgsAspect().TThreadPoolServerArgsAspect(args).processor(getProcessor()));
-		if (configuration.getServerEventHandler() != null) {
+		if (configuration.getServerEventHandler() != null)
 			server.setServerEventHandler(configuration.getServerEventHandler());
-		}
 	}
 
 }

@@ -54,10 +54,9 @@ public abstract class AbstractThriftClientImpl implements ThriftClient {
 
 	@Override
 	public TTransport getTransport() throws STException {
-		if (getServerCheck() != null && !getServerCheck().check(getServerHost(), getServerPort())) {
+		if (getServerCheck() != null && !getServerCheck().check(getServerHost(), getServerPort()))
 			// 如果服务器检测不可用,需要做相应的处理.默认为抛异常.
 			getServerCheckFailProcessor().process(this);
-		}
 		return getTransport(getServerHost(), getServerPort());
 	}
 
@@ -69,26 +68,23 @@ public abstract class AbstractThriftClientImpl implements ThriftClient {
 
 	@Override
 	public TProtocol getProtocol(TTransport transport) {
-		if (transport == null) {
+		if (transport == null)
 			throw new RuntimeException("transport is null !");
-		}
 		return getThriftClientConfiguration().getProtocolFactory().getProtocol(transport);
 	}
 
 	@Override
 	public TProtocol getProtocol(TTransport transport, String serviceName) {
-		if (serviceName != null) {
+		if (serviceName != null)
 			return new TMultiplexedProtocol(getProtocol(transport), serviceName);
-		} else {
+		else
 			return getProtocol(transport);
-		}
 	}
 
 	@Override
 	public String getServerHost() {
-		if (StringUtil.isEmpty(serverHost)) {
+		if (StringUtil.isEmpty(serverHost))
 			throw new RuntimeException("serverHost is null !");
-		}
 		return serverHost;
 	}
 
@@ -98,9 +94,8 @@ public abstract class AbstractThriftClientImpl implements ThriftClient {
 
 	@Override
 	public int getServerPort() {
-		if (!ServerUtil.isSocketPort(serverPort)) {
+		if (!ServerUtil.isSocketPort(serverPort))
 			throw new RuntimeException("serverPort range must is 1025 ~ 65535 . Your port is : " + serverPort + " .");
-		}
 		return serverPort;
 	}
 
@@ -110,9 +105,8 @@ public abstract class AbstractThriftClientImpl implements ThriftClient {
 
 	@Override
 	public ThriftClientConfiguration getThriftClientConfiguration() {
-		if (configuration == null) {
+		if (configuration == null)
 			throw new RuntimeException("Get thrift protocol failed ! Configuration is null !");
-		}
 		return configuration;
 	}
 
@@ -126,11 +120,10 @@ public abstract class AbstractThriftClientImpl implements ThriftClient {
 
 	protected ServerCheck getServerCheck(ServerCheck defaultServerCheck) {
 		if (serverCheck == null) {
-			if (getThriftClientConfiguration().getServerCheck() == null) {
+			if (getThriftClientConfiguration().getServerCheck() == null)
 				serverCheck = defaultServerCheck;
-			} else {
+			else
 				serverCheck = getThriftClientConfiguration().getServerCheck();
-			}
 		}
 		return serverCheck;
 	}
@@ -142,9 +135,8 @@ public abstract class AbstractThriftClientImpl implements ThriftClient {
 	protected ServerCheckFailProcessor getServerCheckFailProcessor(ServerCheckFailProcessor defaultProcessor) {
 		if (serverCheckFailProcessor == null) {
 			if (getThriftClientConfiguration().getServerCheckFailProcessor() == null) {
-				if (defaultProcessor == null) {
+				if (defaultProcessor == null)
 					LOG.warn("defaultProcessor is null !");
-				}
 				serverCheckFailProcessor = defaultProcessor;
 			} else {
 				serverCheckFailProcessor = getThriftClientConfiguration().getServerCheckFailProcessor();

@@ -74,9 +74,8 @@ public class LoadBalanceThriftClientImpl extends AbstractThriftClientImpl {
 	 */
 	private void updateServerInfo() {
 		ServerInfo serverInfo = loadBalance.getServerInfo();
-		if (serverInfo == null) {
+		if (serverInfo == null)
 			throw new RuntimeException("serverInfo is null !");
-		}
 		setServerHost(serverInfo.getHost());
 		setServerPort(serverInfo.getPort());
 		LOG.debug("Update server info . (" + serverInfo.toString() + ")");

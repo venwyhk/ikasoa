@@ -31,16 +31,14 @@ public class SimpleSocketPoolImpl implements SocketPool {
 
 	@Override
 	public void releaseThriftSocket(ThriftSocket thriftSocket) {
-		if (thriftSocket != null) {
+		if (thriftSocket != null)
 			thriftSocket.close();
-		}
 	}
 
 	@Override
 	public void releaseThriftSocket(ThriftSocket thriftSocket, String host, int port) {
-		if (thriftSocket != null) {
+		if (thriftSocket != null)
 			thriftSocket.close();
-		}
 	}
 
 	@Override

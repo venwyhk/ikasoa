@@ -30,17 +30,15 @@ public class ConsistencyHashLoadBalanceImpl implements LoadBalance {
 	private SoftReference<String> hashReference;
 
 	public ConsistencyHashLoadBalanceImpl(List<ServerInfo> serverInfoList, String hash) {
-		if (StringUtil.isEmpty(hash)) {
+		if (StringUtil.isEmpty(hash))
 			throw new RuntimeException("Constructor must exist hash parameter !");
-		}
 		try {
 			this.hashReference = new SoftReference<String>(InetAddress.getLocalHost().getHostAddress() + hash);
 			this.nodes = new TreeMap<Long, ServerInfo>();
 			for (int i = 0; i < serverInfoList.size(); i++) {
 				ServerInfo serverInfo = serverInfoList.get(i);
-				for (int j = 0; j < VIRTUAL_NUM; j++) {
+				for (int j = 0; j < VIRTUAL_NUM; j++)
 					nodes.put(hash(computeMd5("SHARD-" + i + "-NODE-" + j), j), serverInfo);
-				}
 			}
 		} catch (UnknownHostException e) {
 			throw new RuntimeException(e);
@@ -51,11 +49,10 @@ public class ConsistencyHashLoadBalanceImpl implements LoadBalance {
 	public ServerInfo getServerInfo() {
 		Long key = hash(computeMd5(hashReference.get()), 0);
 		SortedMap<Long, ServerInfo> tailMap = nodes.tailMap(key);
-		if (tailMap.isEmpty()) {
+		if (tailMap.isEmpty())
 			key = nodes.firstKey();
-		} else {
+		else
 			key = tailMap.firstKey();
-		}
 		return nodes.get(key);
 	}
 
