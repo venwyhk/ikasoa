@@ -1,0 +1,3 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+com.ikasoa.springboot.autoconfigure.ServerAutoConfiguration,\
+com.ikasoa.springboot.autoconfigure.ClientAutoConfiguration
