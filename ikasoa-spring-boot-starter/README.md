@@ -36,10 +36,10 @@ pom.xml
 
 <table>
   <tr>
-    <td><b>属性</b></td>
-    <td><b>描述</b></td>
-    <td><b>默认值</b></td>
-    <td><b>备注</b></td>
+    <td>属性</td>
+    <td>描述</td>
+    <td>默认值</td>
+    <td>备注</td>
   </tr>
   <tr>
     <td>spring.ikasoa.server.host</td>
