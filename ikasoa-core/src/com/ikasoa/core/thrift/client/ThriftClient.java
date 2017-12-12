@@ -29,7 +29,6 @@ public interface ThriftClient {
 	 * @param transport
 	 *            传输类型
 	 * @return TProtocol 传输协议
-	 * @version 0.2
 	 */
 	public TProtocol getProtocol(TTransport transport);
 
@@ -46,7 +45,6 @@ public interface ThriftClient {
 	 * @param serviceName
 	 *            服务名
 	 * @return TProtocol 传输协议
-	 * @version 0.2
 	 */
 	public TProtocol getProtocol(TTransport transport, String serviceName);
 

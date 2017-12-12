@@ -34,11 +34,6 @@ public class ThriftServlet extends TServlet {
 		this.serverName = server.getServerName();
 	}
 
-	/**
-	 * 
-	 * @author <a href="mailto:larry7696@gmail.com">Larry</a>
-	 * @version 0.5.1
-	 */
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {

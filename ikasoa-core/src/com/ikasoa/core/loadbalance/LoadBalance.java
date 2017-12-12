@@ -29,7 +29,6 @@ public interface LoadBalance {
 	 * 
 	 * @return ServerInfo
 	 * @exception STException 异常
-	 * @version 0.2
 	 */
 	public ServerInfo next() throws STException;
 

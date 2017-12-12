@@ -50,7 +50,6 @@ public class LoadBalanceThriftClientImpl extends AbstractThriftClientImpl {
 	 * 这里重写了<code>getTransport()</code>方法,在每次获取服务传输协议后,切换服务器地址.
 	 * 
 	 * @return TTransport 服务传输协议
-	 * @version 0.2
 	 */
 	@Override
 	public TTransport getTransport() throws STException {
