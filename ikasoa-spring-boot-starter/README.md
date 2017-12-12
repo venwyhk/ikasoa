@@ -1,6 +1,6 @@
 [![](https://raw.githubusercontent.com/venwyhk/ikasoa/master/ikasoalogo_small.png)](https://ikasoa.com)<br />
 
-&nbsp;[![](https://img.shields.io/badge/license-MIT-097ABA.svg?style=plastic)](https://opensource.org/licenses/mit-license.php)&nbsp;&nbsp;
+&nbsp;[![](https://codeship.com/projects/9cf2f150-1507-0134-ee57-3adebfc67210/status?branch=master)](https://codeship.com/projects/157977)&nbsp;&nbsp;[![](https://img.shields.io/badge/license-MIT-097ABA.svg?style=plastic)](https://opensource.org/licenses/mit-license.php)&nbsp;&nbsp;
 
 ***
 
@@ -104,15 +104,15 @@ ServerStartupRunner.java
     }
 ```
 
-  设置ServerStartupRunner类后,ikasoa服务将会随spring-boot一起自动启动.
+  创建ServerStartupRunner类,ikasoa服务将会随spring-boot一起自动启动.
 
 ##### 客户端 #####
 
 ```java
     ......
     import org.springframework.beans.factory.annotation.Autowired;
-    import com.ikasoa.example.rpc.ExampleService;
     import com.ikasoa.springboot.IkasoaServiceFactory;
+    import com.ikasoa.example.rpc.ExampleService;
     ......
     @Autowired
     IkasoaServiceFactory factory;
