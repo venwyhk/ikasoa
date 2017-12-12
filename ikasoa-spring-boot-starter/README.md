@@ -110,12 +110,14 @@ ServerStartupRunner.java
 
 ```java
     ......
-    import javax.annotation.Resource;
+    import org.springframework.beans.factory.annotation.Autowired;
     import com.ikasoa.example.rpc.ExampleService;
+    import com.ikasoa.springboot.IkasoaServiceFactory;
     ......
-    @Resource
-    ExampleService es;
+    @Autowired
+    IkasoaServiceFactory factory;
     ......
+    ExampleService es = factory.getDefaultService(ExampleService.class);
     System.out.println(es.findVO(1).getString());
     ......
 ```
