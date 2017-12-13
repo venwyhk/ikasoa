@@ -8,7 +8,7 @@
 
 ## 概述 ##
 
-  ikasoa的spring-boot启动器(starter),用于在spring-boot环境中使用ikasoa相关功能.
+  ikasoa的spring-boot启动器(starter),用于在spring-boot项目中使用ikasoa相关功能.
 
 ## 开发运行环境要求 ##
 
