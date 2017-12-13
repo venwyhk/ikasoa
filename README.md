@@ -22,6 +22,8 @@
 
 - ikasoa-rpc : *实现RPC功能的代码*
 
+- [ikasoa-spring-boot-starter](https://github.com/venwyhk/ikasoa/blob/master/ikasoa-spring-boot-starter/README.md) : *ikasoa的spring-boot启动器(starter),用于在spring-boot环境中使用ikasoa相关功能.*
+
 - ikasoa-zk : *利用Zookeeper注册和更新服务*
 
 ## 环境搭建 ##
@@ -135,7 +137,6 @@ Server.java
                 // 启动服务
                 ikasoaServer.run();
             } catch (IkasoaException e) {
-                e.printStackTrace();
             }
         }
         public static void stop() {
@@ -177,7 +178,6 @@ Main.java
                 // 客户端调用
                 Client.call();
             } catch (Exception e) {
-                e.printStackTrace();
             } finally {
                 // 停止服务
                 Server.stop();
@@ -240,9 +240,8 @@ RpcServer.java
             // sList.add(new ImplClsCon(Example2ServiceImpl.class));
             // this.server = ikasoaFactory.getIkasoaServer(sList, serverPort);
             System.out.println("服务端口:" + serverPort);
-            for (String key : this.server.getIkasoaServiceKeys()) {
+            for (String key : this.server.getIkasoaServiceKeys())
                 System.out.println("加载服务:" + key);
-            }
         }
         public void run() {
             server.run();
