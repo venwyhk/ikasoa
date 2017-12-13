@@ -41,34 +41,29 @@ public class XmlProtocolHandlerImpl<T1, T2> implements ProtocolHandler<T1, T2> {
 
 	@Override
 	public String resultToStr(T2 result) {
-		if (result instanceof Throwable) {
+		if (result instanceof Throwable)
 			return new StringBuilder(E).append(formatXML(result)).toString();
-		} else {
-			if (result != null) {
-				return formatXML(result);
-			} else {
-				return VOID;
-			}
-		}
+		else if (result != null)
+			return formatXML(result);
+		else
+			return VOID;
 	}
 
 	@Override
 	@SuppressWarnings("unchecked")
 	public T2 strToResult(String str) {
-		if (VOID.equals(str)) {
+		if (VOID.equals(str))
 			return null;
-		}
 		return (T2) parserXML(str);
 	}
 
 	@Override
 	public Throwable strToThrowable(String str) {
 		String[] strs = str.split(E);
-		if (strs.length == 2 && "".equals(strs[0])) {
+		if (strs.length == 2 && strs[0].length() == 0)
 			return parserXML(strs[1]);
-		} else {
+		else
 			return null;
-		}
 	}
 
 	@SuppressWarnings("unchecked")

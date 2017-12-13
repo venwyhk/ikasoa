@@ -21,12 +21,10 @@ public abstract class AbstractGetService<T1, T2> implements Service, BaseGetServ
 
 	@Override
 	public String get(String argStr) throws STException {
-		if (protocolHandler == null) {
+		if (protocolHandler == null)
 			throw new STException("'protocolHandler' is null !");
-		}
-		if (StringUtil.isEmpty(argStr)) {
+		if (StringUtil.isEmpty(argStr))
 			throw new STException("'argStr' is null !");
-		}
 		try {
 			return protocolHandler.resultToStr(get(protocolHandler.strToArg(argStr)));
 		} catch (Throwable t) {

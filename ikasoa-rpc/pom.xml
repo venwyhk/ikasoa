@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.ikasoa</groupId>
     <artifactId>ikasoa-rpc</artifactId>
-    <version>0.3.1-BETA2</version>
+    <version>0.3.1</version>
     <packaging>jar</packaging>
     <name>Ikasoa RPC</name>
     <description>ikasoa is a java distributed service framework.</description>
@@ -71,7 +71,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
-                <version>2.10.4</version>
+                <version>3.0.0</version>
                 <configuration>
                     <aggregate>true</aggregate>
                     <charset>UTF-8</charset>
@@ -138,7 +138,7 @@
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
-            <version>1.2.39</version>
+            <version>1.2.42</version>
         </dependency>
         <dependency>
             <groupId>com.esotericsoftware</groupId>

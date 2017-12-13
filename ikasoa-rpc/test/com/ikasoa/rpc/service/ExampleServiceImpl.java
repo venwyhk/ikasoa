@@ -87,9 +87,6 @@ public class ExampleServiceImpl implements ExampleService {
 
 	@Override
 	public ExampleSuperVO getExampleSuperVO(ExampleSuperVO esvo) {
-		System.out.println(esvo instanceof ExampleVO);
-		ExampleVO evo = (ExampleVO) esvo;
-		System.out.println(evo.getId());
 		return esvo;
 	}
 

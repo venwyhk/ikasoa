@@ -55,16 +55,15 @@ public class IkasoaClientService<T1, T2> implements BaseGetService<T1, T2> {
 			context = invocationHandler.before(context);
 		}
 		// 参数转换
-		if (protocolHandler == null) {
+		if (protocolHandler == null)
 			throw new IkasoaException("'protocolHandler' is null !");
-		}
 		String argStr = null;
 		try {
 			argStr = protocolHandler.argToStr(arg);
 		} catch (Throwable t) {
 			throw new IkasoaException("Execute 'argToStr' function exception !", t);
 		}
-		if (invocationHandler != null) {
+		if (context != null && invocationHandler != null) {
 			context.setArgStr(argStr);
 			argStr = invocationHandler.invoke(context).getArgStr();
 		}
@@ -77,9 +76,8 @@ public class IkasoaClientService<T1, T2> implements BaseGetService<T1, T2> {
 		} finally {
 			thriftClient.close();
 		}
-		if (invocationHandler != null) {
+		if (context != null && invocationHandler != null)
 			context.setResultStr(resultStr);
-		}
 		// 返回值转换
 		Throwable throwable = null;
 		try {
@@ -98,7 +96,7 @@ public class IkasoaClientService<T1, T2> implements BaseGetService<T1, T2> {
 		// 不是异常返回就返回正常值
 		try {
 			T2 result = protocolHandler.strToResult(resultStr);
-			if (invocationHandler != null) {
+			if (context != null && invocationHandler != null) {
 				context.setResultObject(result);
 				invocationHandler.after(context);
 				context = null;

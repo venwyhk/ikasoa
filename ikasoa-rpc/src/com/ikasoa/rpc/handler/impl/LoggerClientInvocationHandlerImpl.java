@@ -22,9 +22,8 @@ public class LoggerClientInvocationHandlerImpl implements ClientInvocationHandle
 	public ClientInvocationContext before(ClientInvocationContext context) {
 		time = System.currentTimeMillis();
 		StringBuilder sb = new StringBuilder("开始调用远程接口. ");
-		if (StringUtil.isNotEmpty(context.getServiceKey())) {
+		if (StringUtil.isNotEmpty(context.getServiceKey()))
 			sb.append("接口名: " + context.getServiceKey());
-		}
 		sb.append(".");
 		LOG.info(sb.toString());
 		return context;
@@ -38,9 +37,8 @@ public class LoggerClientInvocationHandlerImpl implements ClientInvocationHandle
 	@Override
 	public void after(ClientInvocationContext context) {
 		StringBuilder sb = new StringBuilder("远程接口调用完成. ");
-		if (StringUtil.isNotEmpty(context.getServiceKey())) {
+		if (StringUtil.isNotEmpty(context.getServiceKey()))
 			sb.append("接口名: ").append(context.getServiceKey()).append(", ");
-		}
 		sb.append("耗时: ").append(System.currentTimeMillis() - time).append("毫秒 .");
 		LOG.info(sb.toString());
 	}
@@ -48,9 +46,8 @@ public class LoggerClientInvocationHandlerImpl implements ClientInvocationHandle
 	@Override
 	public void exception(ClientInvocationContext context, Throwable throwable) {
 		StringBuilder sb = new StringBuilder("远程接口调用异常. ");
-		if (StringUtil.isNotEmpty(context.getServiceKey())) {
+		if (StringUtil.isNotEmpty(context.getServiceKey()))
 			sb.append("接口名: ").append(context.getServiceKey()).append(", ");
-		}
 		sb.append("异常信息: ").append(throwable.getMessage());
 		LOG.info(sb.toString());
 	}

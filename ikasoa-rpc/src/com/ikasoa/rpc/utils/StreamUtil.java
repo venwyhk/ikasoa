@@ -16,10 +16,9 @@ public class StreamUtil {
 	public static byte[] inputStreamToBytes(InputStream is) {
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		try {
-			int i = -1;
-			while ((i = is.read()) != -1) {
+			int i;
+			while ((i = is.read()) != -1)
 				baos.write(i);
-			}
 			return baos.toByteArray();
 		} catch (IOException e) {
 			throw new RuntimeException(e);

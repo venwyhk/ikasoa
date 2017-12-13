@@ -37,23 +37,19 @@ public class JsonProtocolHandlerImpl<T1, T2> implements ProtocolHandler<T1, T2> 
 	@Override
 	@SuppressWarnings("unchecked")
 	public T1 strToArg(String str) {
-		if (StringUtil.isEmpty(str)) {
+		if (StringUtil.isEmpty(str))
 			throw new RuntimeException("parameters string can't null !");
-		}
-		if ("[]".equals(str)) {
+		if ("[]".equals(str))
 			return null;
-		}
 		String[] strs = str.split(CT);
-		if (strs.length != 2) {
+		if (strs.length != 2)
 			throw new RuntimeException("arg json string error : " + str);
-		}
 		String argClassStr = strs[0];
 		Class<?>[] argClasses = JSON.parseObject(argClassStr, Class[].class);
 		String argStr = strs[1];
 		String[] argStrs = JSON.parseObject(argStr, String[].class);
-		if (argStrs.length != argClasses.length) {
+		if (argStrs.length != argClasses.length)
 			throw new RuntimeException("parameters length is error !");
-		}
 		Object[] objs = new Object[argClasses.length];
 		for (int i = 0; i < argClasses.length; i++) {
 			String s = argStrs[i];
@@ -62,72 +58,60 @@ public class JsonProtocolHandlerImpl<T1, T2> implements ProtocolHandler<T1, T2> 
 				objs[i] = null;
 				continue;
 			}
-			if (isAppendQuotes(s)) {
+			if (isAppendQuotes(s))
 				objs[i] = JSON.parseObject(new StringBuilder("\"").append(s).append("\"").toString(), c);
-			} else {
+			else
 				objs[i] = JSON.parseObject(s, c);
-			}
 		}
 		return (T1) objs;
 	}
 
 	@Override
 	public String argToStr(T1 arg) {
-		if (arg == null) {
+		if (arg == null)
 			return "[]";
-		}
 		Object[] args = (Object[]) arg;
 		Class<?>[] argClasses = new Class<?>[args.length];
-		for (int i = 0; i < args.length; i++) {
-			if (args[i] != null) {
+		for (int i = 0; i < args.length; i++)
+			if (args[i] != null)
 				argClasses[i] = args[i].getClass();
-			} else {
+			else
 				continue;
-			}
-		}
 		return new StringBuilder(JSON.toJSONString(argClasses)).append(CT).append(JSON.toJSONString(arg)).toString();
 	}
 
 	@Override
 	public String resultToStr(T2 result) {
-		if (result instanceof Throwable) {
+		if (result instanceof Throwable)
 			return new StringBuilder(E).append(JSON.toJSONString(result)).toString();
-		} else {
-			if (result != null) {
-				return new StringBuilder(result.getClass().getName()).append(CT).append(JSON.toJSONString(result))
-						.toString();
-			} else {
-				return VOID;
-			}
-		}
+		else if (result != null)
+			return new StringBuilder(result.getClass().getName()).append(CT).append(JSON.toJSONString(result))
+					.toString();
+		else
+			return VOID;
 	}
 
 	@Override
 	@SuppressWarnings("unchecked")
 	public T2 strToResult(String str) {
-		if (str == null) {
+		if (str == null)
 			throw new RuntimeException("result string is null !");
-		}
-		if (VOID.equals(str)) {
+		if (VOID.equals(str))
 			return null;
-		}
 		String[] strs = str.split(CT);
-		if (strs.length != 2) {
+		if (strs.length != 2)
 			throw new RuntimeException("result json string error : " + str);
-		}
 		String resultStr = strs[1];
 		T2 result = null;
 		if (resultData.isArray()) {
 			if (!resultData.isContainerType() && (List.class.getName().equals(resultData.getClassType().getName())
-					|| Set.class.getName().equals(resultData.getClassType().getName()))) {
+					|| Set.class.getName().equals(resultData.getClassType().getName())))
 				throw new RuntimeException("'List' or 'Set' must appoint type ! eg : 'List<String>' .");
-			}
 			result = (T2) JSON.parseArray(resultStr, resultData.getClassType());
 		} else if (resultData.isMap()) {
 			if (!resultData.isContainerType() && (Map.class.getName().equals(resultData.getClassType().getName())
-					&& resultData.getClassTypes().length != 2)) {
+					&& resultData.getClassTypes().length != 2))
 				throw new RuntimeException("'Map' must appoint type ! eg : 'Map<String, String>' .");
-			}
 			JSONObject jsonMap = JSON.parseObject(resultStr);
 			Map<Object, Object> map = new HashMap<>(jsonMap.size());
 			for (String key : jsonMap.keySet()) {
@@ -149,11 +133,10 @@ public class JsonProtocolHandlerImpl<T1, T2> implements ProtocolHandler<T1, T2> 
 	@Override
 	public Throwable strToThrowable(String str) {
 		String[] strs = str.split(E);
-		if (strs.length == 2 && "".equals(strs[0])) {
+		if (strs.length == 2 && "".equals(strs[0]))
 			return JSON.parseObject(strs[1], Throwable.class);
-		} else {
+		else
 			return null;
-		}
 	}
 
 	@Override

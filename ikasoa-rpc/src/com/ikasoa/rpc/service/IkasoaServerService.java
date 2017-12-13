@@ -31,12 +31,10 @@ public class IkasoaServerService extends AbstractGetService<Object[], Object> {
 
 	@Override
 	public Object get(Object[] args) throws IkasoaException {
-		if (method == null) {
+		if (method == null)
 			throw new IkasoaException("'method' is null !");
-		}
-		if (classObj == null) {
+		if (classObj == null)
 			throw new IkasoaException("'classObj' is null !");
-		}
 		if (args == null) {
 			LOG.debug("'args' is null , Will create default args object .");
 			args = new Object[] {};

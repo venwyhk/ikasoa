@@ -44,11 +44,10 @@ public class NettyIkasoaFactory extends DefaultIkasoaFactory {
 
 	public NettyIkasoaFactory(NettyServerConfig nettyServerConfig, ChannelGroup channelGroup) {
 		this.nettyServerConfig = nettyServerConfig;
-		if (channelGroup == null) {
+		if (channelGroup == null)
 			this.channelGroup = new DefaultChannelGroup();
-		} else {
+		else
 			this.channelGroup = channelGroup;
-		}
 	}
 
 	@Override
@@ -92,11 +91,10 @@ public class NettyIkasoaFactory extends DefaultIkasoaFactory {
 			if (server == null) {
 				ThriftServerDef thriftServerDef = new ThriftServerDefBuilder().listen(getServerPort())
 						.withProcessor(getProcessor()).build();
-				if (nettyServerConfig == null) {
+				if (nettyServerConfig == null)
 					server = new NettyServerTransport(thriftServerDef);
-				} else {
+				else
 					server = new NettyServerTransport(thriftServerDef, nettyServerConfig, channelGroup);
-				}
 			}
 			server.start();
 			LOG.debug("Server start .");
@@ -104,15 +102,14 @@ public class NettyIkasoaFactory extends DefaultIkasoaFactory {
 
 		@Override
 		public void stop() {
-			if (server != null) {
+			if (server != null)
 				try {
 					server.stop();
 				} catch (InterruptedException e) {
 					throw new RuntimeException("Server stop exception !", e);
 				}
-			} else {
+			else
 				LOG.warn("Server is not start , Can't to execute stop !");
-			}
 		}
 	}
 }

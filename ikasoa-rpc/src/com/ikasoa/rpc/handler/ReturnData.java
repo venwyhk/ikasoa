@@ -30,9 +30,8 @@ public class ReturnData {
 
 	public ReturnData(Method method) {
 		className = getClassNameByTypeName(method.getReturnType().getName());
-		if (StringUtil.isEmpty(className)) {
+		if (StringUtil.isEmpty(className))
 			return;
-		}
 		try {
 			Type[] types = ((ParameterizedType) method.getGenericReturnType()).getActualTypeArguments();
 			classTypes = new Class<?>[types.length];
