@@ -24,19 +24,17 @@ public class IkasoaFactoryFactory {
 	}
 
 	public IkasoaFactory getIkasoaDefaultFactory() {
-		if (configurator != null) {
+		if (configurator != null)
 			return new DefaultIkasoaFactory(configurator);
-		} else {
+		else
 			return new DefaultIkasoaFactory();
-		}
 	}
 
 	public IkasoaFactory getIkasoaNettyFactory() {
-		if (configurator != null) {
+		if (configurator != null)
 			return new NettyIkasoaFactory(configurator);
-		} else {
+		else
 			return new NettyIkasoaFactory();
-		}
 	}
 
 }

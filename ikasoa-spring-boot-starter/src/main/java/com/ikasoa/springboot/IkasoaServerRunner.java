@@ -31,9 +31,8 @@ public abstract class IkasoaServerRunner implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws IkasoaException, InterruptedException {
-		if (server == null) {
+		if (server == null)
 			throw new IkasoaException("Ikasoa server initialize failed !");
-		}
 		server.run();
 		Thread.sleep(WAIT_TIME);
 		if (server.isServing()) {
@@ -47,9 +46,8 @@ public abstract class IkasoaServerRunner implements CommandLineRunner {
 
 	@PreDestroy
 	public void destory() {
-		if (server != null) {
+		if (server != null)
 			server.stop();
-		}
 	}
 
 }

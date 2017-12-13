@@ -18,12 +18,10 @@ public class ClientAutoConfiguration extends AutoConfigurationBase {
 
 	@Bean
 	public IkasoaServiceFactory getServiceFactory() throws IkasoaException {
-		if (StringUtil.isEmpty(host)) {
+		if (StringUtil.isEmpty(host))
 			throw new IkasoaException("Server host (${spring.ikasoa.server.host}) is null !");
-		}
-		if (StringUtil.isEmpty(port)) {
+		if (StringUtil.isEmpty(port))
 			throw new IkasoaException("Server port (${spring.ikasoa.server.port}) is null !");
-		}
 		return new IkasoaServiceFactory(host, Integer.parseInt(port.trim()), super.getIkasoaFactoryFactory());
 	}
 }

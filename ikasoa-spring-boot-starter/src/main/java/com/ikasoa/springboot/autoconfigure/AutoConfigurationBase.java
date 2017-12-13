@@ -46,11 +46,10 @@ public class AutoConfigurationBase {
 
 	protected IkasoaFactoryFactory getIkasoaFactoryFactory() {
 		Configurator configurator = getConfigurator();
-		if (configurator != null) {
+		if (configurator != null)
 			return new IkasoaFactoryFactory(configurator);
-		} else {
+		else
 			return new IkasoaFactoryFactory();
-		}
 	}
 
 }

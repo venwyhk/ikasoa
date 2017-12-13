@@ -31,13 +31,11 @@ public class ServerAutoConfiguration extends AutoConfigurationBase {
 	}
 
 	private IkasoaServer getServer(IkasoaFactory factory) throws IkasoaException {
-		if (StringUtil.isEmpty(port)) {
+		if (StringUtil.isEmpty(port))
 			throw new IkasoaException("Server port (${spring.ikasoa.server.port}) is null !");
-		}
-		if (StringUtil.isEmpty(serviceImplClasses)) {
+		if (StringUtil.isEmpty(serviceImplClasses))
 			throw new IkasoaException(
 					"Server service impl classes (${spring.ikasoa.server.service.implClasses}) is null !");
-		}
 		String[] serviceImplStrs = serviceImplClasses.split(",");
 		List<ImplClsCon> implClsConList = new ArrayList<ImplClsCon>();
 		try {
