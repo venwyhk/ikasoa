@@ -70,48 +70,38 @@ public class ZkServerAspect implements ServerAspect {
 			TProcessor processor, ThriftServer server) {
 		ZkClient zkClient = zkBase.getZkClient();
 		String zkNode = zkBase.getZkNode();
-		if (!zkClient.exists(zkNode)) {
+		if (!zkClient.exists(zkNode))
 			zkClient.createPersistent(zkNode,
 					new StringBuilder(zkBase.ZK_ROOT_NODE).append(DEFAULT_NODE_NAME).toString());
-		}
 		try {
 			String serverHost;
-			if (isLocalIp) {
+			if (isLocalIp)
 				serverHost = LocalUtil.getLocalIP();
-			} else {
+			else
 				serverHost = InetAddress.getLocalHost().getHostAddress();
-			}
-			if (StringUtil.isNotEmpty(host)) {
+			if (StringUtil.isNotEmpty(host))
 				serverHost = host;
-			}
-			if (ServerUtil.isPort(port)) {
+			if (ServerUtil.isPort(port))
 				serverPort = port;
-			}
 			StringBuilder sNodeSB = new StringBuilder(zkNode);
-			if (!zkBase.ZK_ROOT_NODE.equals(zkNode)) {
+			if (!zkBase.ZK_ROOT_NODE.equals(zkNode))
 				sNodeSB.append(zkBase.ZK_ROOT_NODE);
-			}
 			sNodeStr = sNodeSB.append(serverName).append("-").append(serverHost).append("-").append(serverPort)
 					.append(" ").toString();
-			if (zkBase.isExistNode(serverName, serverHost, serverPort)) {
+			if (zkBase.isExistNode(serverName, serverHost, serverPort))
 				throw new RuntimeException("Thrift server already register ! (name: " + serverName + " , host : "
 						+ serverHost + " , port : " + serverPort + ")");
-			}
 			ZkServerNode zkSNObj = new ZkServerNode(serverName, serverHost, serverPort);
 			if (configuration != null) {
-				if (configuration.getTransportFactory() != null) {
+				if (configuration.getTransportFactory() != null)
 					zkSNObj.setTransportFactoryClassName(configuration.getTransportFactory().getClass().getName());
-				}
-				if (configuration.getProtocolFactory() != null) {
+				if (configuration.getProtocolFactory() != null)
 					zkSNObj.setTransportFactoryClassName(configuration.getProtocolFactory().getClass().getName());
-				}
-				if (configuration.getProcessorFactory() != null) {
+				if (configuration.getProcessorFactory() != null)
 					zkSNObj.setTransportFactoryClassName(configuration.getProcessorFactory().getClass().getName());
-				}
 			}
-			if (processor != null) {
+			if (processor != null)
 				zkSNObj.setProcessorClassName(processor.getClass().getName());
-			}
 			LOG.debug("Create server node : " + sNodeStr);
 			zkClient.createEphemeralSequential(sNodeStr, zkSNObj);
 		} catch (UnknownHostException e) {

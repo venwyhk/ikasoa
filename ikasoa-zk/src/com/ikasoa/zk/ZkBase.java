@@ -33,16 +33,15 @@ public class ZkBase {
 	public final String ZK_ROOT_NODE = "/";
 
 	public ZkBase(String zkServerString, String zkNode) {
-		if (StringUtil.isEmpty(zkServerString)) {
+		if (StringUtil.isEmpty(zkServerString))
 			throw new RuntimeException("zkServerString is null !");
-		} else {
+		else
 			zkClient = new ZkClient(zkServerString);
-		}
-		if (StringUtil.isEmpty(zkNode)) {
+		if (StringUtil.isEmpty(zkNode))
 			this.zkNode = ZK_ROOT_NODE;
-		} else {
+		else
 			this.zkNode = zkNode;
-		}
+
 		zkClient.subscribeDataChanges(zkNode, new IZkDataListener() {
 
 			@Override
@@ -103,15 +102,12 @@ public class ZkBase {
 	}
 
 	public boolean isExistNode(String serverName, String serverHost, int serverPort) {
-		if (nodeList == null || nodeList.isEmpty()) {
+		if (nodeList == null || nodeList.isEmpty())
 			nodeList = getChildren();
-		}
-		for (String n : nodeList) {
+		for (String n : nodeList)
 			if (n.contains(new StringBuilder(serverName).append("-").append(serverHost).append("-").append(serverPort)
-					.toString())) {
+					.toString()))
 				return Boolean.TRUE;
-			}
-		}
 		return Boolean.FALSE;
 	}
 

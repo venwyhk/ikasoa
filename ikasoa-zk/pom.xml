@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.ikasoa</groupId>
     <artifactId>ikasoa-zk</artifactId>
-    <version>0.1-ALPHA2</version>
+    <version>0.1-BETA</version>
     <packaging>jar</packaging>
     <name>Ikasoa ZK</name>
     <description>ikasoa is a java distributed service framework.</description>
@@ -70,7 +70,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
-                <version>2.10.4</version>
+                <version>3.0.0</version>
                 <configuration>
                     <aggregate>true</aggregate>
                     <charset>UTF-8</charset>
