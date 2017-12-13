@@ -16,7 +16,6 @@ public class Main {
 			// 客户端调用
 			Client.call();
 		} catch (Exception e) {
-			e.printStackTrace();
 		} finally {
 			// 停止服务
 			Server.stop();

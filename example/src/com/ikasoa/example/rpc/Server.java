@@ -14,9 +14,9 @@ public class Server {
 
 	private static IkasoaServer ikasoaServer;
 
-	public static void main(String[] args) {
-		start();
-	}
+//	public static void main(String[] args) {
+//		start();
+//	}
 
 	// 启动服务
 	public static void start() {
@@ -26,7 +26,6 @@ public class Server {
 			}
 			ikasoaServer.run();
 		} catch (IkasoaException e) {
-			e.printStackTrace();
 		}
 	}
 

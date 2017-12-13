@@ -10,9 +10,9 @@ import com.ikasoa.rpc.DefaultIkasoaFactory;
  */
 public class Client {
 
-	public static void main(String[] args) {
-		call();
-	}
+//	public static void main(String[] args) {
+//		call();
+//	}
 
 	public static void call() {
 		// 客户端获取远程接口实现
