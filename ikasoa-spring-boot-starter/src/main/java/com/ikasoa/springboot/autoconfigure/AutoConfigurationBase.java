@@ -28,7 +28,7 @@ public class AutoConfigurationBase {
 	@Value("${ikasoa.server.service.implClasses}")
 	protected String serviceImplClasses;
 
-	@Value("${ikasoa.configuratorClass:com.ikasoa.rpc.Configurator}")
+	@Value("${ikasoa.configClass:com.ikasoa.rpc.Configurator}")
 	protected String configuratorClass;
 
 	protected Configurator getConfigurator() {

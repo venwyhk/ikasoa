@@ -62,7 +62,7 @@ pom.xml
     <td>服务端设置时必填,多个实现类以","分隔.</td>
   </tr>
   <tr>
-    <td>ikasoa.configuratorClass</td>
+    <td>ikasoa.configClass</td>
     <td>服务配置类地址</td>
     <td>com.ikasoa.rpc.Configurator</td>
     <td>可继承Configurator实现高级设置.</td>
