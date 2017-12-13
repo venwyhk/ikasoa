@@ -25,10 +25,9 @@ public class StringUtil {
 		int strLen;
 		if (str == null || (strLen = str.length()) == 0)
 			return Boolean.TRUE;
-		for (int i = 0; i < strLen; i++) {
+		for (int i = 0; i < strLen; i++)
 			if ((Character.isWhitespace(str.charAt(i)) == Boolean.FALSE))
 				return Boolean.FALSE;
-		}
 		return Boolean.TRUE;
 	}
 
@@ -45,14 +44,13 @@ public class StringUtil {
 	}
 
 	public static int toInt(String str) {
-		if (str != null && !"".equals(str.trim())) {
+		if (str != null && !"".equals(str.trim()))
 			try {
 				return Integer.parseInt(str);
 			} catch (Exception e) {
 				LOG.warn(e.getMessage());
 				return 0;
 			}
-		}
 		return 0;
 	}
 

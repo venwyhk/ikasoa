@@ -26,11 +26,9 @@ public enum ErrorCodeEnum {
 	}
 
 	public static ErrorCodeEnum fromCode(int code) {
-		for (ErrorCodeEnum c : ErrorCodeEnum.values()) {
-			if (c.code == code) {
+		for (ErrorCodeEnum c : ErrorCodeEnum.values())
+			if (c.code == code)
 				return c;
-			}
-		}
 		throw new IllegalArgumentException("Error Code : " + code + " isn't valid !");
 	}
 }

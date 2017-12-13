@@ -109,7 +109,7 @@ public class DefaultSocketPoolImpl implements SocketPool {
 		if (self == null || self.socketStatusArray == null)
 			self = init(host, port);
 		byte i = 0;
-		for (; i < size; i++) {
+		for (; i < size; i++)
 			if (!self.socketStatusArray[i]) {
 				ThriftSocket thriftSocket = getThriftSocket(self, i, host, port);
 				if (!thriftSocket.isOpen()) {
@@ -121,7 +121,6 @@ public class DefaultSocketPoolImpl implements SocketPool {
 				self.socketStatusArray[i] = Boolean.TRUE;
 				return thriftSocket;
 			}
-		}
 		// 如果连接不够用,就初始化连接池.
 		try {
 			for (i = 0; i < size; i++) {
@@ -179,12 +178,11 @@ public class DefaultSocketPoolImpl implements SocketPool {
 		DefaultSocketPoolImpl self = selfMap.get(ServerUtil.getKey(host, port));
 		if (self == null)
 			self = init(host, port);
-		for (byte i = 0; i < size; i++) {
+		for (byte i = 0; i < size; i++)
 			if (self.socketPool.get(new Byte(i)) == thriftSocket) {
 				self.socketStatusArray[i] = Boolean.FALSE;
 				return;
 			}
-		}
 		// 如果socket不在池中,就直接关闭
 		thriftSocket.close();
 	}
