@@ -4,7 +4,7 @@
 
 ***
 
-# ikasoa project #
+# ikasoa rpc #
 
 ## 概述 ##
 
