@@ -4,7 +4,7 @@
 
 ***
 
-# ikasoa-spring-boot-starter #
+# ikasoa spring-boot-starter #
 
 ## 概述 ##
 
