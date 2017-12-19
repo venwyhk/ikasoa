@@ -89,8 +89,8 @@ public class ZkServerAspect implements ServerAspect {
 			sNodeStr = sNodeSB.append(serverName).append("-").append(serverHost).append("-").append(serverPort)
 					.append(" ").toString();
 			if (zkBase.isExistNode(serverName, serverHost, serverPort))
-				throw new RuntimeException("Thrift server already register ! (name: " + serverName + " , host : "
-						+ serverHost + " , port : " + serverPort + ")");
+				throw new RuntimeException("Server already register ! (name: " + serverName + " , host : " + serverHost
+						+ " , port : " + serverPort + ")");
 			ZkServerNode zkSNObj = new ZkServerNode(serverName, serverHost, serverPort);
 			if (configuration != null) {
 				if (configuration.getTransportFactory() != null)
