@@ -8,7 +8,7 @@ public class TestStreamUtil extends TestCase {
 
 	@Test
 	public void testStreamChangeUtil() {
-		String str = "测试字符串";
+		String str = "测试字符串string";
 		assertEquals(str, new String(StreamUtil.inputStreamToBytes(StreamUtil.bytesToInputStream(str.getBytes()))));
 	}
 

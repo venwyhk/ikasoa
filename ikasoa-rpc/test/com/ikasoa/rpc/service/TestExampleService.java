@@ -161,7 +161,6 @@ public class TestExampleService extends TestCase {
 			ikasoaServer.stop();
 
 		} catch (Exception e) {
-			e.printStackTrace();
 			fail();
 		}
 	}
