@@ -41,16 +41,13 @@ public class SocketPoolTest extends TestCase {
 		configuration.setSocketPool(new TestSocketPoolImpl());
 		Factory factory = new GeneralFactory(configuration);
 		ThriftClient thriftClient = factory.getThriftClient(LOCAL_HOST, serverPort);
-		TTransport transport = null;
-		try {
-			transport = thriftClient.getTransport();
+		try (TTransport transport = thriftClient.getTransport()) {
 			assertNull(transport);
 		} catch (Exception e) {
 			fail();
 		} finally {
-			if (thriftClient != null) {
+			if (thriftClient != null)
 				thriftClient.close();
-			}
 		}
 	}
 

@@ -141,21 +141,17 @@ public class TestExampleService extends TestCase {
 
 			// 测试文件下载
 			// long startTime = System.currentTimeMillis();
-			// InputStream is = StreamUtil.bytesToInputStream(es.down());
 			// long endTime = System.currentTimeMillis();
-			// FileOutputStream fos = new FileOutputStream("C:/2.jpg");
 			// int ch = 0;
-			// try {
+			// try (InputStream is = StreamUtil.bytesToInputStream(es.down());
+			// FileOutputStream fos = new FileOutputStream("C:/2.jpg")) {
 			// while ((ch = is.read()) != -1) {
 			// fos.write(ch);
 			// }
 			// } catch (IOException e1) {
 			// e1.printStackTrace();
-			// } finally {
-			// fos.close();
-			// is.close();
 			// }
-			// System.out.println("下载耗时：" + (endTime - startTime) + "ms");
+//			 System.out.println("下载耗时：" + (endTime - startTime) + "ms");
 
 			// 停止服务
 			ikasoaServer.stop();
