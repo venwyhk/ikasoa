@@ -10,7 +10,7 @@ import com.ikasoa.core.STException;
  * @author <a href="mailto:larry7696@gmail.com">Larry</a>
  * @version 0.1
  */
-public interface ThriftClient {
+public interface ThriftClient extends AutoCloseable {
 
 	/**
 	 * 获取Thrift传输类型
@@ -68,10 +68,5 @@ public interface ThriftClient {
 	 * @return ThriftClientConfiguration 服务配置
 	 */
 	public ThriftClientConfiguration getThriftClientConfiguration();
-
-	/**
-	 * 关闭客户端
-	 */
-	public void close();
 
 }

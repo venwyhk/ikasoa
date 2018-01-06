@@ -52,8 +52,8 @@ public class ServerTest extends TestCase {
 		assertEquals(defaultThriftServer.getServerPort(), serverPort);
 		assertEquals(defaultThriftServer.getThriftServerConfiguration(), configuration);
 		defaultThriftServer.run();
-		ThriftClient thriftClient = factory.getThriftClient(LOCAL_HOST, serverPort);
-		try (TTransport transport = thriftClient.getTransport()) {
+		try (ThriftClient thriftClient = factory.getThriftClient(LOCAL_HOST, serverPort);
+				TTransport transport = thriftClient.getTransport()) {
 			Thread.sleep(500);
 			transport.open();
 			ThriftSimpleService.Client client = new ThriftSimpleService.Client(thriftClient.getProtocol(transport));
@@ -61,8 +61,6 @@ public class ServerTest extends TestCase {
 		} catch (Exception e) {
 			fail();
 		} finally {
-			if (thriftClient != null)
-				thriftClient.close();
 			defaultThriftServer.stop();
 		}
 	}
@@ -76,8 +74,8 @@ public class ServerTest extends TestCase {
 		assertEquals(nioThriftServer.getServerPort(), serverPort);
 		assertEquals(nioThriftServer.getThriftServerConfiguration(), configuration);
 		nioThriftServer.run();
-		ThriftClient thriftClient = factory.getThriftClient(LOCAL_HOST, serverPort);
-		try (TTransport transport = thriftClient.getTransport()) {
+		try (ThriftClient thriftClient = factory.getThriftClient(LOCAL_HOST, serverPort);
+				TTransport transport = thriftClient.getTransport()) {
 			Thread.sleep(500);
 			transport.open();
 			ThriftSimpleService.Client client = new ThriftSimpleService.Client(thriftClient.getProtocol(transport));
@@ -86,8 +84,6 @@ public class ServerTest extends TestCase {
 			e.printStackTrace();
 			fail();
 		} finally {
-			if (thriftClient != null)
-				thriftClient.close();
 			nioThriftServer.stop();
 		}
 	}
@@ -101,8 +97,8 @@ public class ServerTest extends TestCase {
 		assertEquals(simpleThriftServer.getServerPort(), serverPort);
 		assertEquals(simpleThriftServer.getThriftServerConfiguration(), configuration);
 		simpleThriftServer.run();
-		ThriftClient thriftClient = factory.getThriftClient(LOCAL_HOST, serverPort);
-		try (TTransport transport = thriftClient.getTransport()) {
+		try (ThriftClient thriftClient = factory.getThriftClient(LOCAL_HOST, serverPort);
+				TTransport transport = thriftClient.getTransport()) {
 			Thread.sleep(500);
 			transport.open();
 			ThriftSimpleService.Client client = new ThriftSimpleService.Client(thriftClient.getProtocol(transport));
@@ -110,8 +106,6 @@ public class ServerTest extends TestCase {
 		} catch (Exception e) {
 			fail();
 		} finally {
-			if (thriftClient != null)
-				thriftClient.close();
 			simpleThriftServer.stop();
 		}
 	}
@@ -160,8 +154,8 @@ public class ServerTest extends TestCase {
 		assertEquals(defaultThriftServer.getServerPort(), serverPort);
 		assertEquals(defaultThriftServer.getThriftServerConfiguration(), configuration);
 		defaultThriftServer.run();
-		ThriftClient thriftClient = factory.getThriftClient(LOCAL_HOST, serverPort);
-		try (TTransport transport = thriftClient.getTransport()) {
+		try (ThriftClient thriftClient = factory.getThriftClient(LOCAL_HOST, serverPort);
+				TTransport transport = thriftClient.getTransport()) {
 			Thread.sleep(500);
 			transport.open();
 			ThriftSimpleService.Client client = new ThriftSimpleService.Client(
@@ -170,8 +164,6 @@ public class ServerTest extends TestCase {
 		} catch (Exception e) {
 			fail();
 		} finally {
-			if (thriftClient != null)
-				thriftClient.close();
 			defaultThriftServer.stop();
 		}
 	}
@@ -184,8 +176,8 @@ public class ServerTest extends TestCase {
 		ThriftServer defaultThriftServer = factory.getThriftServer(serverName, serverPort,
 				new ThriftSimpleService.Processor<Iface>(new ThriftSimpleServiceImpl()));
 		defaultThriftServer.run();
-		ThriftClient thriftClient = factory.getThriftClient(LOCAL_HOST, serverPort);
-		try (TTransport transport = thriftClient.getTransport()) {
+		try (ThriftClient thriftClient = factory.getThriftClient(LOCAL_HOST, serverPort);
+				TTransport transport = thriftClient.getTransport()) {
 			Thread.sleep(500);
 			transport.open();
 			ThriftSimpleService.Client client = new ThriftSimpleService.Client(thriftClient.getProtocol(transport));
@@ -193,8 +185,6 @@ public class ServerTest extends TestCase {
 		} catch (Exception e) {
 			fail();
 		} finally {
-			if (thriftClient != null)
-				thriftClient.close();
 			defaultThriftServer.stop();
 		}
 	}
@@ -207,8 +197,8 @@ public class ServerTest extends TestCase {
 		ThriftServer defaultThriftServer = factory.getThriftServer(serverName, serverPort,
 				new ThriftSimpleService.Processor<Iface>(new ThriftSimpleServiceImpl()));
 		defaultThriftServer.run();
-		ThriftClient thriftClient = factory.getThriftClient(LOCAL_HOST, serverPort);
-		try (TTransport transport = thriftClient.getTransport()) {
+		try (ThriftClient thriftClient = factory.getThriftClient(LOCAL_HOST, serverPort);
+				TTransport transport = thriftClient.getTransport()) {
 			Thread.sleep(500);
 			transport.open();
 			ThriftSimpleService.Client client = new ThriftSimpleService.Client(thriftClient.getProtocol(transport));
@@ -216,8 +206,6 @@ public class ServerTest extends TestCase {
 		} catch (Exception e) {
 			fail();
 		} finally {
-			if (thriftClient != null)
-				thriftClient.close();
 			defaultThriftServer.stop();
 		}
 	}
@@ -234,18 +222,15 @@ public class ServerTest extends TestCase {
 		ThriftServer defaultThriftServer = factory.getThriftServer(serverName, serverPort,
 				new ThriftSimpleService.Processor<Iface>(new ThriftSimpleServiceImpl()));
 		defaultThriftServer.run();
-		ThriftClient thriftClient = factory.getThriftClient(LOCAL_HOST, serverPort);
-		try (TTransport transport = thriftClient.getTransport()) {
+		try (ThriftClient thriftClient = factory.getThriftClient(LOCAL_HOST, serverPort);
+				TTransport transport = thriftClient.getTransport()) {
 			Thread.sleep(500);
 			transport.open();
 			ThriftSimpleService.Client client = new ThriftSimpleService.Client(thriftClient.getProtocol(transport));
 			assertEquals(testString, client.get(testString));
 		} catch (Exception e) {
-			e.printStackTrace();
 			fail();
 		} finally {
-			if (thriftClient != null)
-				thriftClient.close();
 			defaultThriftServer.stop();
 		}
 	}

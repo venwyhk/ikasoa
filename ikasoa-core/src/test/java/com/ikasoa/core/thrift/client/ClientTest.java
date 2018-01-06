@@ -31,10 +31,13 @@ public class ClientTest extends TestCase {
 	@Test
 	public void testDefaultThriftClientImpl() {
 		int serverPort = 29000;
-		ThriftClient defaultThriftClient = new DefaultThriftClientImpl(LOCAL_HOST, serverPort, configuration);
-		assertEquals(defaultThriftClient.getServerHost(), LOCAL_HOST);
-		assertEquals(defaultThriftClient.getServerPort(), serverPort);
-		assertEquals(defaultThriftClient.getThriftClientConfiguration(), configuration);
+		try (ThriftClient defaultThriftClient = new DefaultThriftClientImpl(LOCAL_HOST, serverPort, configuration)) {
+			assertEquals(defaultThriftClient.getServerHost(), LOCAL_HOST);
+			assertEquals(defaultThriftClient.getServerPort(), serverPort);
+			assertEquals(defaultThriftClient.getThriftClientConfiguration(), configuration);
+		} catch (Exception e) {
+			fail();
+		}
 	}
 
 	/**
@@ -46,13 +49,12 @@ public class ClientTest extends TestCase {
 		int serverPort1 = 29001;
 		List<ServerInfo> serverInfoList = new ArrayList<>();
 		serverInfoList.add(new ServerInfo(serverHost1, serverPort1));
-		ThriftClient loadBalanceThriftClient1 = new LoadBalanceThriftClientImpl(
-				new PollingLoadBalanceImpl(serverInfoList), configuration);
-		assertEquals(loadBalanceThriftClient1.getServerHost(), serverHost1);
-		assertEquals(loadBalanceThriftClient1.getServerPort(), serverPort1);
-		assertEquals(loadBalanceThriftClient1.getThriftClientConfiguration(), configuration);
 		// 以下测试利用自定义负载均衡类型通过GeneralFactory获取Client对象
-		try {
+		try (ThriftClient loadBalanceThriftClient1 = new LoadBalanceThriftClientImpl(
+				new PollingLoadBalanceImpl(serverInfoList), configuration)) {
+			assertEquals(loadBalanceThriftClient1.getServerHost(), serverHost1);
+			assertEquals(loadBalanceThriftClient1.getServerPort(), serverPort1);
+			assertEquals(loadBalanceThriftClient1.getThriftClientConfiguration(), configuration);
 			String serverHost2 = "127.0.0.1";
 			int serverPort2 = 29002;
 			serverInfoList.add(new ServerInfo(serverHost2, serverPort2));
@@ -68,9 +70,7 @@ public class ClientTest extends TestCase {
 			assertEquals(loadBalanceThriftClient2.getServerHost(), serverHost2);
 			assertEquals(loadBalanceThriftClient2.getServerPort(), serverPort2);
 			assertEquals(loadBalanceThriftClient2.getThriftClientConfiguration(), configuration);
-		} catch (ClassNotFoundException e) {
-			fail();
-		} catch (STException e) {
+		} catch (Exception e) {
 			fail();
 		}
 	}
