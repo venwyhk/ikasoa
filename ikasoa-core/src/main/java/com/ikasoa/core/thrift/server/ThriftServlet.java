@@ -3,7 +3,6 @@ package com.ikasoa.core.thrift.server;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -35,9 +34,7 @@ public class ThriftServlet extends TServlet {
 	}
 
 	@Override
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		// super.doPost(request, response);
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		PrintWriter w = response.getWriter();
 		w.write("This is a ikasoa server! (" + this.serverName + ")");
 		w.close();

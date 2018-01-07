@@ -71,19 +71,17 @@ public class PollingLoadBalanceImpl implements LoadBalance {
 		this.serverInfo = serverInfo;
 		int weightNumber = serverInfo.getWeightNumber();
 		LOG.debug("serverHost : " + serverInfo.getHost() + ", weightNumber : " + weightNumber);
-		if (size > i + 1) {
-			if (weightNumber > j) {
+		if (size > i + 1)
+			if (weightNumber > j)
 				j++;
-			} else {
+			else {
 				i++;
 				j = 0;
 			}
-		} else {
-			if (weightNumber > j)
-				j++;
-			else
-				i = j = 0;
-		}
+		else if (weightNumber > j)
+			j++;
+		else
+			i = j = 0;
 		return getServerInfo();
 	}
 

@@ -13,7 +13,9 @@ import com.ikasoa.core.thrift.client.socket.ThriftSocket;
  */
 public class SimpleSocketPoolImpl implements SocketPool {
 
-	// 连接超时时间
+	/**
+	 * 连接超时时间
+	 */
 	private int time = 0;
 
 	public SimpleSocketPoolImpl() {

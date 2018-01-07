@@ -22,15 +22,21 @@ public class DefaultSocketPoolImpl implements SocketPool {
 
 	private static final Logger LOG = LoggerFactory.getLogger(DefaultSocketPoolImpl.class);
 
-	// 单个池容量
+	/**
+	 * 单个池容量
+	 */
 	private byte size = 0x10;
 
-	// 连接超时时间
+	/**
+	 * 连接超时时间
+	 */
 	private int time = 0;
 
 	private static Map<String, DefaultSocketPoolImpl> selfMap = new HashMap<>();
 
-	// 是否空闲 (true: 不空闲, false: 空闲)
+	/**
+	 * 是否空闲 (true: 不空闲, false: 空闲)
+	 */
 	private boolean[] socketStatusArray = null;
 
 	private Hashtable<Byte, ThriftSocket> socketPool;

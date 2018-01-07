@@ -24,7 +24,10 @@ import com.ikasoa.core.utils.StringUtil;
 public class ConsistencyHashLoadBalanceImpl implements LoadBalance {
 
 	private TreeMap<Long, ServerInfo> nodes = null;
-	// 设置虚拟节点数目
+
+	/**
+	 * 设置虚拟节点数目
+	 */
 	private int VIRTUAL_NUM = 4;
 
 	private SoftReference<String> hashReference;
@@ -49,10 +52,7 @@ public class ConsistencyHashLoadBalanceImpl implements LoadBalance {
 	public ServerInfo getServerInfo() {
 		Long key = hash(computeMd5(hashReference.get()), 0);
 		SortedMap<Long, ServerInfo> tailMap = nodes.tailMap(key);
-		if (tailMap.isEmpty())
-			key = nodes.firstKey();
-		else
-			key = tailMap.firstKey();
+		key = tailMap.isEmpty() ? nodes.firstKey() : tailMap.firstKey();
 		return nodes.get(key);
 	}
 

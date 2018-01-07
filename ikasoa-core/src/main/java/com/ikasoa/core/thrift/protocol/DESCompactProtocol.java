@@ -73,10 +73,7 @@ public class DESCompactProtocol extends TCompactProtocol {
 	}
 
 	private String getKey() {
-		if (key.length() < 8)
-			return formatStr(key, 8);
-		else
-			return key;
+		return key.length() < 8 ? formatStr(key, 8) : key;
 	}
 
 	private static String formatStr(String str, int length) {

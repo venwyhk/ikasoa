@@ -8,6 +8,7 @@ package com.ikasoa.core;
  * @author <a href="mailto:larry7696@gmail.com">Larry</a>
  * @version 0.2
  */
+@FunctionalInterface
 public interface ServerCheck {
 
 	/**

@@ -54,7 +54,7 @@ public class ServiceClientImpl extends TServiceClient implements Service {
 		if (result.isSet(null))
 			return result.getStr();
 		else
-			throw new TApplicationException(TApplicationException.MISSING_RESULT, "get failed: unknown result");
+			throw new TApplicationException(TApplicationException.MISSING_RESULT, "Get failed: unknown result");
 	}
 
 }
