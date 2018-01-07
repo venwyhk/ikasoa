@@ -30,17 +30,24 @@ public class ZkServerAspect implements ServerAspect {
 
 	private ZkBase zkBase;
 
-	// 自定义注册到Zookeeper的服务地址
+	/**
+	 * 自定义注册到Zookeeper的服务地址
+	 */
 	private String host;
 
-	// 自定义注册到Zookeeper的端口
+	/**
+	 * 自定义注册到Zookeeper的端口
+	 */
 	private int port;
 
-	// 是否使用本地IP地址
-	// 如果服务部署在docker容器中,将此参数设置为true可获取宿主机IP.
+	/**
+	 * 是否使用本地IP地址.如果服务部署在docker容器中,将此参数设置为true可获取宿主机IP.
+	 */
 	private boolean isLocalIp = Boolean.FALSE;
 
-	// 默认节点名称
+	/**
+	 * 默认节点名称
+	 */
 	private static String DEFAULT_NODE_NAME = "ikasoa_node";
 
 	private String sNodeStr;
