@@ -21,13 +21,19 @@ public class JsonProtocolHandlerImpl<T1, T2> implements ProtocolHandler<T1, T2> 
 
 	private ReturnData resultData;
 
-	// 类型分隔符
+	/**
+	 * 类型分隔符
+	 */
 	private final static String CT = "&&&";
 
-	// 异常标识符
+	/**
+	 * 异常标识符
+	 */
 	private final static String E = "E__";
 
-	// 空标识符
+	/**
+	 * 空标识符
+	 */
 	private final static String VOID = "_VOID_";
 
 	public JsonProtocolHandlerImpl(ReturnData resultData) {

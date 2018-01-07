@@ -18,6 +18,9 @@ import com.ikasoa.rpc.utils.Base64Util;
  */
 public class KryoProtocolHandlerImpl<T1, T2> implements ProtocolHandler<T1, T2> {
 
+	/**
+	 * 空标识符
+	 */
 	private final static String VOID = "_VOID_";
 
 	private ReturnData resultData;

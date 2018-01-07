@@ -18,19 +18,29 @@ public class ServiceKey {
 
 	private static final Logger LOG = LoggerFactory.getLogger(ServiceKey.class);
 
-	// 接口类类型
+	/**
+	 * 接口类类型
+	 */
 	private Class<?> iClass;
 
-	// 方法名称
+	/**
+	 * 方法名称
+	 */
 	private String methodName;
 
-	// 返回值类型
+	/**
+	 * 返回值类型
+	 */
 	private Class<?> returnType;
 
-	// 参数类型集合
+	/**
+	 * 参数类型集合
+	 */
 	private Class<?>[] parameterTypes;
 
-	// 异常类型集合
+	/**
+	 * 异常类型集合
+	 */
 	@JSONField(serialize = false)
 	private Class<?>[] exceptionTypes;
 

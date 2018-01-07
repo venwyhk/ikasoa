@@ -8,25 +8,39 @@ package com.ikasoa.rpc.handler;
  */
 public class ClientInvocationContext {
 
-	// 服务器地址
+	/**
+	 * 服务器地址
+	 */
 	private String serverHost;
 
-	// 服务器端口
+	/**
+	 * 服务器端口
+	 */
 	private int serverPort;
 
-	// 服务标识
+	/**
+	 * 服务标识
+	 */
 	private String serviceKey;
 
-	// 参数对象
+	/**
+	 * 参数对象
+	 */
 	private Object argObject;
 
-	// 参数序列化后的字符串
+	/**
+	 * 参数序列化后的字符串
+	 */
 	private String argStr;
 
-	// 返回值对象
+	/**
+	 * 返回值对象
+	 */
 	private Object resultObject;
 
-	// 返回值列化后前的字符串
+	/**
+	 * 返回值列化后前的字符串
+	 */
 	private String resultStr;
 
 	public ClientInvocationContext() {

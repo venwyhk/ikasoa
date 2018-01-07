@@ -17,13 +17,19 @@ import com.ikasoa.core.utils.StringUtil;
  */
 public class ReturnData {
 
-	// 返回类型名称
+	/**
+	 * 返回类型名称
+	 */
 	private String className;
 
-	// 返回类型中的Type对象树组
+	/**
+	 * 返回类型中的Type对象树组
+	 */
 	private Class<?>[] classTypes;
 
-	// 异常类型树组
+	/**
+	 * 异常类型树组
+	 */
 	private Class<?>[] excetionClassTypes;
 
 	private boolean isContainerType = Boolean.FALSE;

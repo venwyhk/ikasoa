@@ -8,10 +8,14 @@ package com.ikasoa.rpc;
  */
 public class ImplClsCon {
 
-	// 接口实现类类型
+	/**
+	 * 接口实现类类型
+	 */
 	private Class<?> implClass;
 
-	// 接口实现类
+	/**
+	 * 接口实现类
+	 */
 	private Object implObject;
 
 	public ImplClsCon() {

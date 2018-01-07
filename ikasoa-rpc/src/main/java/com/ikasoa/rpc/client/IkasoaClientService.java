@@ -25,7 +25,7 @@ public class IkasoaClientService<T1, T2> implements BaseGetService<T1, T2> {
 
 	protected ProtocolHandler<T1, T2> protocolHandler;
 
-	// TODO:sulei
+	// TODO:larry
 	protected ClientInvocationHandler invocationHandler;
 
 	public IkasoaClientService(Factory factory, ThriftClient thriftClient, ProtocolHandler<T1, T2> protocolHandler) {

@@ -20,8 +20,14 @@ public class XmlProtocolHandlerImpl<T1, T2> implements ProtocolHandler<T1, T2> {
 
 	private ReturnData resultData;
 
+	/**
+	 * 异常标识符
+	 */
 	private final static String E = "<!--E-->";
 
+	/**
+	 * 空标识符
+	 */
 	private final static String VOID = "_VOID_";
 
 	public XmlProtocolHandlerImpl(ReturnData resultData) {

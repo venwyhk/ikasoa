@@ -13,20 +13,30 @@ import com.ikasoa.rpc.handler.ProtocolHandler;
  */
 public class Configurator {
 
-	// 服务器配置信息
+	/**
+	 * 服务器配置信息
+	 */
 	private ThriftServerConfiguration thriftServerConfiguration;
 
-	// 客户端配置信息
+	/**
+	 * 客户端配置信息
+	 */
 	private ThriftClientConfiguration thriftClientConfiguration;
 
-	// 转换协议实现类
+	/**
+	 * 转换协议实现类
+	 */
 	@SuppressWarnings("rawtypes")
 	private Class<ProtocolHandler> protocolHandlerClass;
 
-	// 客户端调用拦截器
+	/**
+	 * 客户端调用拦截器
+	 */
 	private ClientInvocationHandler clientInvocationHandler;
 
-	// 是否使用阻塞式IO
+	/**
+	 * 是否使用阻塞式IO
+	 */
 	private boolean isNonBlockingIO = Boolean.FALSE;
 
 	public Configurator() {
