@@ -8,6 +8,7 @@ import com.ikasoa.core.STException;
  * @author <a href="mailto:larry7696@gmail.com">Larry</a>
  * @version 0.2
  */
+@FunctionalInterface
 public interface Service {
 
 	/**
