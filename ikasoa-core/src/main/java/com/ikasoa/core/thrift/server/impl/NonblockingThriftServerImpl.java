@@ -48,10 +48,9 @@ public class NonblockingThriftServerImpl extends AbstractThriftServerImpl {
 	protected void initServer(TServerTransport serverTransport) {
 		ThriftServerConfiguration configuration = getThriftServerConfiguration();
 		// 使用多线程半同步半异步方式
-		TThreadedSelectorServer.Args args = new TThreadedSelectorServer.Args(
-				(TNonblockingServerSocket) serverTransport);
-		args.transportFactory(configuration.getTransportFactory());
-		args.protocolFactory(configuration.getProtocolFactory());
+		TThreadedSelectorServer.Args args = new TThreadedSelectorServer.Args((TNonblockingServerSocket) serverTransport)
+				.transportFactory(configuration.getTransportFactory())
+				.protocolFactory(configuration.getProtocolFactory());
 		if (configuration.getExecutorService() != null)
 			args.executorService(configuration.getExecutorService());
 		server = new TThreadedSelectorServer(

@@ -29,12 +29,10 @@ public class SimpleThriftServerImpl extends AbstractThriftServerImpl {
 	}
 
 	protected void initServer(TServerTransport serverTransport) {
-		TServer.Args args = new TServer.Args(serverTransport);
 		ThriftServerConfiguration configuration = getThriftServerConfiguration();
-		args.transportFactory(configuration.getTransportFactory());
-		args.protocolFactory(configuration.getProtocolFactory());
-		args.processor(getProcessor());
-		server = new TSimpleServer(configuration.getServerArgsAspect().TServerArgsAspect(args));
+		server = new TSimpleServer(configuration.getServerArgsAspect().TServerArgsAspect(
+				new TServer.Args(serverTransport).transportFactory(configuration.getTransportFactory())
+						.protocolFactory(configuration.getProtocolFactory()).processor(getProcessor())));
 		if (configuration.getServerEventHandler() != null)
 			server.setServerEventHandler(configuration.getServerEventHandler());
 	}
