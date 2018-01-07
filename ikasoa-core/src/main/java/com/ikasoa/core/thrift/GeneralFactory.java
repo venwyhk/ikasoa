@@ -214,10 +214,9 @@ public class GeneralFactory implements Factory {
 	public Service getService(ThriftClient thriftClient, String serviceName) throws STException {
 		if (thriftClient == null)
 			throw new STException("thriftClient is null !");
-		if (StringUtil.isEmpty(serviceName))
-			return new ServiceClientImpl(thriftClient.getProtocol(thriftClient.getTransport()));
-		else
-			return new ServiceClientImpl(thriftClient.getProtocol(thriftClient.getTransport(), serviceName));
+		return StringUtil.isEmpty(serviceName)
+				? new ServiceClientImpl(thriftClient.getProtocol(thriftClient.getTransport()))
+				: new ServiceClientImpl(thriftClient.getProtocol(thriftClient.getTransport(), serviceName));
 	}
 
 	/**
@@ -228,10 +227,9 @@ public class GeneralFactory implements Factory {
 		if (transport == null)
 			throw new STException("transport is null !");
 		try {
-			if (StringUtil.isEmpty(serviceName))
-				return new AsyncServiceClientImpl((TProtocolFactory) new TCompactProtocol.Factory(), transport);
-			else
-				return new AsyncServiceClientImpl(new AsyncMultiplexedProtocolFactory(serviceName), transport);
+			return StringUtil.isEmpty(serviceName)
+					? new AsyncServiceClientImpl((TProtocolFactory) new TCompactProtocol.Factory(), transport)
+					: new AsyncServiceClientImpl(new AsyncMultiplexedProtocolFactory(serviceName), transport);
 		} catch (IOException e) {
 			throw new STException(e);
 		}

@@ -60,7 +60,7 @@ public class AsyncServiceProcessor extends TBaseAsyncProcessor<AsyncService> imp
 						fcall.sendResponse(fb, result, TMessageType.REPLY, seqid);
 						return;
 					} catch (Exception e) {
-						LOG.error("Exception writing to internal frame buffer", e);
+						LOG.error("Exception writing to internal frame buffer .", e);
 					}
 					fb.close();
 				}
@@ -77,7 +77,7 @@ public class AsyncServiceProcessor extends TBaseAsyncProcessor<AsyncService> imp
 						fcall.sendResponse(fb, msg, msgType, seqid);
 						return;
 					} catch (Exception ex) {
-						LOG.error("Exception writing to internal frame buffer", ex);
+						LOG.error("Exception writing to internal frame buffer .", ex);
 					}
 					fb.close();
 				}

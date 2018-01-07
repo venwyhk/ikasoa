@@ -28,7 +28,7 @@ public class ServerUtil {
 		return StringUtil.isNotEmpty(serverHost) && isPort(serverPort);
 	}
 
-	public static String getKey(String serverHost, int serverPort) {
+	public static String buildCacheKey(String serverHost, int serverPort) {
 		return new StringBuilder(serverHost).append(":").append(serverPort).toString();
 	}
 

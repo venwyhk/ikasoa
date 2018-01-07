@@ -26,20 +26,20 @@ public class ServerCheckTest extends TestCase {
 	@Test
 	public void testCheck() {
 		configuration.setServerCheck(new ServerCheckTestImpl());
-		ThriftClient defaultThriftClient1 = new DefaultThriftClientImpl("192.168.1.1", serverPort, configuration);
-		try {
+		try (ThriftClient defaultThriftClient1 = new DefaultThriftClientImpl("192.168.1.1", serverPort,
+				configuration)) {
 			assertNull(defaultThriftClient1.getTransport());
 		} catch (Exception e) {
 			assertTrue(!StringUtil.equals("", e.getMessage()));
 		}
-		ThriftClient defaultThriftClient2 = new DefaultThriftClientImpl("192.168.1.2", serverPort, configuration);
-		try {
+		try (ThriftClient defaultThriftClient2 = new DefaultThriftClientImpl("192.168.1.2", serverPort,
+				configuration)) {
 			assertNotNull(defaultThriftClient2.getTransport());
 		} catch (Exception e) {
 			fail();
 		}
-		ThriftClient defaultThriftClient3 = new DefaultThriftClientImpl("192.168.1.3", serverPort, configuration);
-		try {
+		try (ThriftClient defaultThriftClient3 = new DefaultThriftClientImpl("192.168.1.3", serverPort,
+				configuration)) {
 			assertNull(defaultThriftClient3.getTransport());
 		} catch (Exception e) {
 			assertTrue(!StringUtil.equals("", e.getMessage()));
@@ -53,22 +53,21 @@ public class ServerCheckTest extends TestCase {
 		serverInfoList.add(new ServerInfo("192.168.1.1", serverPort));
 		serverInfoList.add(new ServerInfo("192.168.1.2", serverPort));
 		serverInfoList.add(new ServerInfo("192.168.1.3", serverPort));
-		ThriftClient loadBalanceThriftClient = new LoadBalanceThriftClientImpl(
-				new PollingLoadBalanceImpl(serverInfoList), configuration);
-		try {
+		try (ThriftClient loadBalanceThriftClient = new LoadBalanceThriftClientImpl(
+				new PollingLoadBalanceImpl(serverInfoList), configuration)) {
 			loadBalanceThriftClient.getTransport();
-		} catch (STException e) {
+			assertEquals(loadBalanceThriftClient.getServerHost(), "192.168.1.2");
+		} catch (Exception e) {
 			fail();
 		}
-		assertEquals(loadBalanceThriftClient.getServerHost(), "192.168.1.2");
 	}
 
 	@Test
 	public void testCheckFailProcess() {
 		configuration.setServerCheck(new ServerCheckTestImpl());
 		configuration.setServerCheckFailProcessor(new ServerCheckFailProcessTestImpl());
-		try {
-			new DefaultThriftClientImpl("192.168.1.1", serverPort, configuration).getTransport();
+		try (ThriftClient defaultThriftClient = new DefaultThriftClientImpl("192.168.1.1", serverPort, configuration)) {
+			defaultThriftClient.getTransport();
 		} catch (Exception e) {
 			assertTrue(StringUtil.equals("exce", e.getMessage()));
 		}

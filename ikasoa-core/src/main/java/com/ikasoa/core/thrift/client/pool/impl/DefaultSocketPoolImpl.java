@@ -65,7 +65,7 @@ public class DefaultSocketPoolImpl implements SocketPool {
 		if (!ServerUtil.checkHostAndPort(host, port))
 			throw new RuntimeException("Server host or port is null !");
 		DefaultSocketPoolImpl self = new DefaultSocketPoolImpl();
-		selfMap.put(ServerUtil.getKey(host, port), self);
+		selfMap.put(ServerUtil.buildCacheKey(host, port), self);
 		self.socketPool = new Hashtable<>(size);
 		self.socketStatusArray = new boolean[size];
 		// 初始化连接池
@@ -85,7 +85,7 @@ public class DefaultSocketPoolImpl implements SocketPool {
 	public synchronized void buildThriftSocketPool(String host, int port) {
 		if (!ServerUtil.checkHostAndPort(host, port))
 			throw new RuntimeException("Server host or port is null !");
-		DefaultSocketPoolImpl self = selfMap.get(ServerUtil.getKey(host, port));
+		DefaultSocketPoolImpl self = selfMap.get(ServerUtil.buildCacheKey(host, port));
 		if (self == null)
 			self = init(host, port);
 		try {
@@ -105,7 +105,7 @@ public class DefaultSocketPoolImpl implements SocketPool {
 	public synchronized ThriftSocket buildThriftSocket(String host, int port) {
 		if (!ServerUtil.checkHostAndPort(host, port))
 			throw new RuntimeException("Server host or port is null !");
-		DefaultSocketPoolImpl self = selfMap.get(ServerUtil.getKey(host, port));
+		DefaultSocketPoolImpl self = selfMap.get(ServerUtil.buildCacheKey(host, port));
 		if (self == null || self.socketStatusArray == null)
 			self = init(host, port);
 		byte i = 0;
@@ -175,7 +175,7 @@ public class DefaultSocketPoolImpl implements SocketPool {
 			return;
 		}
 		LOG.debug("Release socket , host is " + host + " and port is " + port + " .");
-		DefaultSocketPoolImpl self = selfMap.get(ServerUtil.getKey(host, port));
+		DefaultSocketPoolImpl self = selfMap.get(ServerUtil.buildCacheKey(host, port));
 		if (self == null)
 			self = init(host, port);
 		for (byte i = 0; i < size; i++)

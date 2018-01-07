@@ -43,7 +43,6 @@ public class AsyncServiceClientImpl extends TAsyncClient implements AsyncService
 		} catch (TException e) {
 			throw new STException(e);
 		}
-
 	}
 
 }

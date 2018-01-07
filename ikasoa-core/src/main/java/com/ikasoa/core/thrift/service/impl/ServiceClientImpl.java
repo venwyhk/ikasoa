@@ -40,7 +40,7 @@ public class ServiceClientImpl extends TServiceClient implements Service {
 		} catch (TException e) {
 			transport.close();
 			LOG.error(e.getMessage());
-			throw new STException("Execute 'get' function failed !", e);
+			throw new STException("Execute failed !", e);
 		}
 	}
 

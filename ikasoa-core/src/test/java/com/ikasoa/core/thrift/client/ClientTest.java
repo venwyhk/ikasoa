@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.junit.Test;
 
-import com.ikasoa.core.STException;
 import com.ikasoa.core.loadbalance.ServerInfo;
 import com.ikasoa.core.loadbalance.impl.PollingLoadBalanceImpl;
 import com.ikasoa.core.thrift.GeneralFactory;

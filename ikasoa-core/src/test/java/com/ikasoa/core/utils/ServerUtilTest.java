@@ -42,8 +42,8 @@ public class ServerUtilTest extends TestCase {
 	}
 
 	@Test
-	public void testGetKey() {
-		assertEquals(ServerUtil.getKey("localhost", 8080), "localhost:8080");
+	public void testBuildCacheKey() {
+		assertEquals(ServerUtil.buildCacheKey("localhost", 8080), "localhost:8080");
 	}
 
 }
