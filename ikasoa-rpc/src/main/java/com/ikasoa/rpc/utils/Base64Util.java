@@ -1,9 +1,6 @@
 package com.ikasoa.rpc.utils;
 
-import java.io.IOException;
-
-import sun.misc.BASE64Decoder;
-import sun.misc.BASE64Encoder;
+import java.util.Base64;
 
 /**
  * 编码工具
@@ -21,7 +18,7 @@ public class Base64Util {
 	 * @return String 编码后数据
 	 */
 	public static String encode(byte[] bstr) {
-		return new BASE64Encoder().encode(bstr);
+		return Base64.getEncoder().encodeToString(bstr);
 	}
 
 	/**
@@ -32,12 +29,6 @@ public class Base64Util {
 	 * @return byte[] 解码后数据
 	 */
 	public static byte[] decode(String str) {
-		byte[] bt = null;
-		try {
-			bt = new BASE64Decoder().decodeBuffer(str);
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
-		return bt;
+		return Base64.getDecoder().decode(str);
 	}
 }
