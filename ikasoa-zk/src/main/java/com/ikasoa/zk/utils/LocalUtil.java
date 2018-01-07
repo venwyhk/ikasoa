@@ -24,10 +24,10 @@ public class LocalUtil {
 	}
 
 	private static boolean isWindowsOS() {
-		boolean isWindowsOS = false;
+		boolean isWindowsOS = Boolean.FALSE;
 		String osName = System.getProperty("os.name");
 		if (StringUtil.isNotEmpty(osName) && osName.toLowerCase().indexOf("windows") > -1)
-			isWindowsOS = true;
+			isWindowsOS = Boolean.TRUE;
 		return isWindowsOS;
 	}
 
@@ -39,8 +39,10 @@ public class LocalUtil {
 		String ip = "";
 		for (Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces(); en.hasMoreElements();) {
 			NetworkInterface intf = en.nextElement();
+			if (intf == null)
+				continue;
 			String name = intf.getName();
-			if (!name.contains("docker") && !name.contains("lo"))
+			if (StringUtil.isNotEmpty(name) && !name.contains("docker") && !name.contains("lo"))
 				for (Enumeration<InetAddress> enumIpAddr = intf.getInetAddresses(); enumIpAddr.hasMoreElements();) {
 					InetAddress inetAddress = enumIpAddr.nextElement();
 					if (!inetAddress.isLoopbackAddress()) {

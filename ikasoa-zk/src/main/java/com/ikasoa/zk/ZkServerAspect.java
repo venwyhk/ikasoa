@@ -75,12 +75,14 @@ public class ZkServerAspect implements ServerAspect {
 					new StringBuilder(zkBase.ZK_ROOT_NODE).append(DEFAULT_NODE_NAME).toString());
 		try {
 			String serverHost;
-			if (isLocalIp)
-				serverHost = LocalUtil.getLocalIP();
-			else
-				serverHost = InetAddress.getLocalHost().getHostAddress();
 			if (StringUtil.isNotEmpty(host))
 				serverHost = host;
+			else {
+				if (isLocalIp)
+					serverHost = LocalUtil.getLocalIP();
+				else
+					serverHost = InetAddress.getLocalHost().getHostAddress();
+			}
 			if (ServerUtil.isPort(port))
 				serverPort = port;
 			StringBuilder sNodeSB = new StringBuilder(zkNode);
