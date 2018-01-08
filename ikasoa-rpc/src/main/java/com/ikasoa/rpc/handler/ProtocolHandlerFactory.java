@@ -20,13 +20,10 @@ public class ProtocolHandlerFactory<T1, T2> {
 		try {
 			Class[] paramTypes = { ReturnData.class };
 			Object[] params = { resultData };
-			if (protocolHandlerClass == null) {
-				Class defaultProtocolHandlerClass = Class.forName(DEFAULT_PROTOCOL_HANDLER_CLASS_STRING);
-				return (ProtocolHandler<T1, T2>) defaultProtocolHandlerClass.getConstructor(paramTypes)
-						.newInstance(params);
-			} else {
-				return (ProtocolHandler<T1, T2>) protocolHandlerClass.getConstructor(paramTypes).newInstance(params);
-			}
+			return protocolHandlerClass == null
+					? (ProtocolHandler<T1, T2>) Class.forName(DEFAULT_PROTOCOL_HANDLER_CLASS_STRING)
+							.getConstructor(paramTypes).newInstance(params)
+					: (ProtocolHandler<T1, T2>) protocolHandlerClass.getConstructor(paramTypes).newInstance(params);
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}

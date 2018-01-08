@@ -65,15 +65,14 @@ public class KryoProtocolHandlerImpl<T1, T2> implements ProtocolHandler<T1, T2> 
 	public T2 strToResult(String str) {
 		if (VOID.equals(str))
 			return null;
-		if (resultData.isArray())
-			return (T2) kryo.readObject(new Input(Base64Util.decode(str)),
-					kryo.register((new ArrayList<>()).getClass()).getType());
-		else if (resultData.isMap())
-			return (T2) kryo.readObject(new Input(Base64Util.decode(str)),
-					kryo.register((new HashMap<>()).getClass()).getType());
-		else
-			return (T2) kryo.readObject(new Input(Base64Util.decode(str)),
-					kryo.register(resultData.getClassType()).getType());
+		return resultData.isArray()
+				? (T2) kryo.readObject(new Input(Base64Util.decode(str)),
+						kryo.register((new ArrayList<>()).getClass()).getType())
+				: resultData.isMap()
+						? (T2) kryo.readObject(new Input(Base64Util.decode(str)),
+								kryo.register((new HashMap<>()).getClass()).getType())
+						: (T2) kryo.readObject(new Input(Base64Util.decode(str)),
+								kryo.register(resultData.getClassType()).getType());
 	}
 
 	@Override

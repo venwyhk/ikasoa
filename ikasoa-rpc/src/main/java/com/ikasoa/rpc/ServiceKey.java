@@ -51,9 +51,8 @@ public class ServiceKey {
 			this.returnType = method.getReturnType();
 			this.parameterTypes = method.getParameterTypes();
 			this.exceptionTypes = method.getExceptionTypes();
-		} else {
+		} else
 			LOG.warn("Method object is null !");
-		}
 	}
 
 	public Class<?> getIClass() {

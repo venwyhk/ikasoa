@@ -64,10 +64,8 @@ public class JsonProtocolHandlerImpl<T1, T2> implements ProtocolHandler<T1, T2> 
 				objs[i] = null;
 				continue;
 			}
-			if (isAppendQuotes(s))
-				objs[i] = JSON.parseObject(new StringBuilder("\"").append(s).append("\"").toString(), c);
-			else
-				objs[i] = JSON.parseObject(s, c);
+			objs[i] = isAppendQuotes(s) ? JSON.parseObject(new StringBuilder("\"").append(s).append("\"").toString(), c)
+					: JSON.parseObject(s, c);
 		}
 		return (T1) objs;
 	}
@@ -88,13 +86,9 @@ public class JsonProtocolHandlerImpl<T1, T2> implements ProtocolHandler<T1, T2> 
 
 	@Override
 	public String resultToStr(T2 result) {
-		if (result instanceof Throwable)
-			return new StringBuilder(E).append(JSON.toJSONString(result)).toString();
-		else if (result != null)
-			return new StringBuilder(result.getClass().getName()).append(CT).append(JSON.toJSONString(result))
-					.toString();
-		else
-			return VOID;
+		return result instanceof Throwable ? new StringBuilder(E).append(JSON.toJSONString(result)).toString()
+				: result != null ? new StringBuilder(result.getClass().getName()).append(CT)
+						.append(JSON.toJSONString(result)).toString() : VOID;
 	}
 
 	@Override
@@ -139,10 +133,7 @@ public class JsonProtocolHandlerImpl<T1, T2> implements ProtocolHandler<T1, T2> 
 	@Override
 	public Throwable strToThrowable(String str) {
 		String[] strs = str.split(E);
-		if (strs.length == 2 && "".equals(strs[0]))
-			return JSON.parseObject(strs[1], Throwable.class);
-		else
-			return null;
+		return strs.length == 2 && "".equals(strs[0]) ? JSON.parseObject(strs[1], Throwable.class) : null;
 	}
 
 	@Override

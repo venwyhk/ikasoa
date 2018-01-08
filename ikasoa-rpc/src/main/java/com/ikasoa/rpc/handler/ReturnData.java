@@ -110,11 +110,7 @@ public class ReturnData {
 	}
 
 	public Class<?> getClassTypes(int k) {
-		if (classTypes != null && classTypes.length > k) {
-			return classTypes[k];
-		} else {
-			return Object.class;
-		}
+		return classTypes != null && classTypes.length > k ? classTypes[k] : Object.class;
 	}
 
 	public void setClassTypes(Class<?>[] classTypes) {

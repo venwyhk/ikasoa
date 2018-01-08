@@ -91,10 +91,8 @@ public class NettyIkasoaFactory extends DefaultIkasoaFactory {
 			if (server == null) {
 				ThriftServerDef thriftServerDef = new ThriftServerDefBuilder().listen(getServerPort())
 						.withProcessor(getProcessor()).build();
-				if (nettyServerConfig == null)
-					server = new NettyServerTransport(thriftServerDef);
-				else
-					server = new NettyServerTransport(thriftServerDef, nettyServerConfig, channelGroup);
+				server = nettyServerConfig == null ? new NettyServerTransport(thriftServerDef)
+						: new NettyServerTransport(thriftServerDef, nettyServerConfig, channelGroup);
 			}
 			server.start();
 			LOG.debug("Server start .");

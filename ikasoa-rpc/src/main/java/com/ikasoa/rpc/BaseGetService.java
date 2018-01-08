@@ -6,6 +6,7 @@ package com.ikasoa.rpc;
  * @author <a href="mailto:larry7696@gmail.com">Larry</a>
  * @version 0.1
  */
+@FunctionalInterface
 public interface BaseGetService<T1, T2> {
 
 	/**
