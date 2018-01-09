@@ -8,7 +8,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import com.ikasoa.core.utils.ServerUtil;
 import com.ikasoa.core.utils.StringUtil;
 import com.ikasoa.rpc.IkasoaException;
 import com.ikasoa.rpc.IkasoaFactory;
@@ -28,15 +27,12 @@ public class ServerAutoConfiguration extends AutoConfigurationBase {
 
 	@Bean
 	public IkasoaServer getServer() throws IkasoaException {
-		return getServer(super.getIkasoaFactoryFactory().getIkasoaDefaultFactory());
+		return getServer(getIkasoaFactoryFactory().getIkasoaDefaultFactory());
 	}
 
 	private IkasoaServer getServer(IkasoaFactory factory) throws IkasoaException {
-		if (StringUtil.isEmpty(port))
-			throw new IkasoaException("Server port (${spring.ikasoa.server.port}) is null !");
 		if (StringUtil.isEmpty(serviceImplClasses))
-			throw new IkasoaException(
-					"Server service impl classes (${spring.ikasoa.server.service.implClasses}) is null !");
+			throw new IkasoaException("Server service impl classes (${ikasoa.server.service.implClasses}) is null !");
 		String[] serviceImplStrs = serviceImplClasses.split(",");
 		List<ImplClsCon> implClsConList = new ArrayList<ImplClsCon>();
 		try {
@@ -45,10 +41,7 @@ public class ServerAutoConfiguration extends AutoConfigurationBase {
 				Class<?> serviceImplCls = Class.forName(serviceImplStr);
 				implClsConList.add(new ImplClsCon(serviceImplCls));
 			}
-			int iPort = StringUtil.toInt(port.trim());
-			if (!ServerUtil.isPort(iPort))
-				throw new IkasoaException("Server configuration (${spring.ikasoa.server.port}) is error !");
-			return factory.getIkasoaServer(implClsConList, iPort);
+			return factory.getIkasoaServer(implClsConList, getPort());
 		} catch (ClassNotFoundException e) {
 			throw new RuntimeException(e);
 		}
