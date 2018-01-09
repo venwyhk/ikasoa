@@ -1,75 +1,82 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
-    <groupId>com.ikasoa</groupId>
-    <artifactId>ikasoa-spring-boot-starter</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
-    <packaging>jar</packaging>
-    <name>Ikasoa Spring-boot Starter</name>
-    <description>ikasoa is a java distributed service framework.</description>
-    <url>http://ikasoa.com/</url>
-    
-    <licenses>
-        <license>
-            <name>The MIT License</name>
-            <url>http://www.opensource.org/licenses/mit-license.php</url>
-        </license>
-    </licenses>
-    
-    <developers>
-        <developer>
-            <name>Larry</name>
-            <email>larry7696@gmail.com</email>
-            <organization>ikasoa</organization>
-            <organizationUrl>http://ikasoa.com/</organizationUrl>
-        </developer>
-    </developers>
-    
-    <scm>
-        <connection>scm:git:git://github.com/venwyhk/ikasoa.git</connection>
-        <developerConnection>scm:git:ssh://github.com:venwyhk/ikasoa.git</developerConnection>
-        <url>http://github.com/venwyhk/ikasoa/tree/master</url>
-    </scm>
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.ikasoa</groupId>
+	<artifactId>ikasoa-spring-boot-starter</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>jar</packaging>
+	<name>Ikasoa Spring-boot Starter</name>
+	<description>ikasoa is a java distributed service framework.</description>
+	<url>http://ikasoa.com/</url>
 
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <java.version>1.8</java.version>
-    </properties>
-    
-    <build>
-        <sourceDirectory>src/main/java</sourceDirectory>
-        <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
-        </plugins>
-    </build>
-    
-    <distributionManagement>
-        <snapshotRepository>
-            <id>ossrh</id>
-            <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
-        </snapshotRepository>
-        <repository>
-            <id>ossrh</id>
-            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-        </repository>
-    </distributionManagement>
+	<licenses>
+		<license>
+			<name>The MIT License</name>
+			<url>http://www.opensource.org/licenses/mit-license.php</url>
+		</license>
+	</licenses>
 
-    <dependencies>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot</artifactId>
-            <version>1.5.9.RELEASE</version>
-        </dependency>
-        <dependency>
-            <groupId>com.ikasoa</groupId>
-            <artifactId>ikasoa-rpc</artifactId>
-            <version>0.3.1-BETA</version>
-        </dependency>
-    </dependencies>
+	<developers>
+		<developer>
+			<name>Larry</name>
+			<email>larry7696@gmail.com</email>
+			<organization>ikasoa</organization>
+			<organizationUrl>http://ikasoa.com/</organizationUrl>
+		</developer>
+	</developers>
+
+	<scm>
+		<connection>scm:git:git://github.com/venwyhk/ikasoa.git</connection>
+		<developerConnection>scm:git:ssh://github.com:venwyhk/ikasoa.git</developerConnection>
+		<url>http://github.com/venwyhk/ikasoa/tree/master</url>
+	</scm>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<java.version>1.8</java.version>
+	</properties>
+
+	<build>
+		<sourceDirectory>src/main/java</sourceDirectory>
+		<testSourceDirectory>src/test/java</testSourceDirectory>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</build>
+
+	<distributionManagement>
+		<snapshotRepository>
+			<id>ossrh</id>
+			<url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+		</snapshotRepository>
+		<repository>
+			<id>ossrh</id>
+			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+		</repository>
+	</distributionManagement>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot</artifactId>
+			<version>1.5.9.RELEASE</version>
+		</dependency>
+		<dependency>
+			<groupId>com.ikasoa</groupId>
+			<artifactId>ikasoa-rpc</artifactId>
+			<version>0.3.1-BETA</version>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.12</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
 
 </project>

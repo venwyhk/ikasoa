@@ -26,6 +26,6 @@ public class ClientAutoConfiguration extends AutoConfigurationBase {
 		int iPort = StringUtil.toInt(port.trim());
 		if (!ServerUtil.isPort(iPort))
 			throw new IkasoaException("Configuration 'port' is error !");
-		return new IkasoaServiceFactory(host, iPort, super.getIkasoaFactoryFactory());
+		return new IkasoaServiceFactory(host, iPort, getIkasoaFactoryFactory());
 	}
 }

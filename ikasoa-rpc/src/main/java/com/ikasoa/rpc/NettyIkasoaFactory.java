@@ -31,6 +31,7 @@ public class NettyIkasoaFactory extends DefaultIkasoaFactory {
 	private ChannelGroup channelGroup;
 
 	public NettyIkasoaFactory() {
+		// Do nothing
 	}
 
 	public NettyIkasoaFactory(Configurator configurator) {

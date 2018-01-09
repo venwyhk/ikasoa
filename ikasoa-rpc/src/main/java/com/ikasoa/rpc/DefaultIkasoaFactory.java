@@ -36,6 +36,7 @@ public class DefaultIkasoaFactory extends GeneralFactory implements IkasoaFactor
 	private Configurator configurator = new Configurator();
 
 	public DefaultIkasoaFactory() {
+		// Do nothing
 	}
 
 	public DefaultIkasoaFactory(ThriftServerConfiguration thriftServerConfiguration) {
