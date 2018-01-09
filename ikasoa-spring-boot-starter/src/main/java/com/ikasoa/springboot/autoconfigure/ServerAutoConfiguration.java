@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import com.ikasoa.core.utils.ServerUtil;
 import com.ikasoa.core.utils.StringUtil;
 import com.ikasoa.rpc.IkasoaException;
 import com.ikasoa.rpc.IkasoaFactory;
@@ -44,12 +45,11 @@ public class ServerAutoConfiguration extends AutoConfigurationBase {
 				Class<?> serviceImplCls = Class.forName(serviceImplStr);
 				implClsConList.add(new ImplClsCon(serviceImplCls));
 			}
-			return factory.getIkasoaServer(implClsConList, Integer.parseInt(port.trim()));
-		} catch (IkasoaException e) {
-			throw new IkasoaException(e);
+			int iPort = StringUtil.toInt(port.trim());
+			if (!ServerUtil.isPort(iPort))
+				throw new IkasoaException("Configuration 'port' is error !");
+			return factory.getIkasoaServer(implClsConList, iPort);
 		} catch (ClassNotFoundException e) {
-			throw new RuntimeException(e);
-		} catch (NumberFormatException e) {
 			throw new RuntimeException(e);
 		}
 	}
