@@ -47,7 +47,7 @@ public class ServerAutoConfiguration extends AutoConfigurationBase {
 			}
 			int iPort = StringUtil.toInt(port.trim());
 			if (!ServerUtil.isPort(iPort))
-				throw new IkasoaException("Configuration (${spring.ikasoa.server.port}) is error !");
+				throw new IkasoaException("Server configuration (${spring.ikasoa.server.port}) is error !");
 			return factory.getIkasoaServer(implClsConList, iPort);
 		} catch (ClassNotFoundException e) {
 			throw new RuntimeException(e);
