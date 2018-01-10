@@ -53,7 +53,7 @@ pom.xml
     <td>ikasoa.server.port</td>
     <td>服务端口</td>
     <td>9999</td>
-    <td></td>
+    <td>必须为1024到65535之间的数值.</td>
   </tr>
   <tr>
     <td>ikasoa.server.service.implClasses</td>
