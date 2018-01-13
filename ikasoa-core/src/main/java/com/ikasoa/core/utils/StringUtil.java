@@ -26,7 +26,7 @@ public class StringUtil {
 		if (str == null || (strLen = str.length()) == 0)
 			return Boolean.TRUE;
 		for (int i = 0; i < strLen; i++)
-			if ((Character.isWhitespace(str.charAt(i)) == Boolean.FALSE))
+			if (!Character.isWhitespace(str.charAt(i)))
 				return Boolean.FALSE;
 		return Boolean.TRUE;
 	}
