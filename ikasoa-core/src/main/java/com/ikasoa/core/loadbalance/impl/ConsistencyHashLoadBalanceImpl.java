@@ -28,7 +28,7 @@ public class ConsistencyHashLoadBalanceImpl implements LoadBalance {
 	/**
 	 * 设置虚拟节点数目
 	 */
-	private int VIRTUAL_NUM = 4;
+	private byte VIRTUAL_NUM = 4;
 
 	private SoftReference<String> hashReference;
 
@@ -40,7 +40,7 @@ public class ConsistencyHashLoadBalanceImpl implements LoadBalance {
 			this.nodes = new TreeMap<Long, ServerInfo>();
 			for (int i = 0; i < serverInfoList.size(); i++) {
 				ServerInfo serverInfo = serverInfoList.get(i);
-				for (int j = 0; j < VIRTUAL_NUM; j++)
+				for (byte j = 0; j < VIRTUAL_NUM; j++)
 					nodes.put(hash(computeMd5("SHARD-" + i + "-NODE-" + j), j), serverInfo);
 			}
 		} catch (UnknownHostException e) {

@@ -37,10 +37,8 @@ public class ZkBase {
 			throw new RuntimeException("zkServerString is null !");
 		else
 			zkClient = new ZkClient(zkServerString);
-		if (StringUtil.isEmpty(zkNode))
-			this.zkNode = ZK_ROOT_NODE;
-		else
-			this.zkNode = zkNode;
+
+		this.zkNode = StringUtil.isEmpty(zkNode) ? ZK_ROOT_NODE : zkNode;
 
 		zkClient.subscribeDataChanges(zkNode, new IZkDataListener() {
 

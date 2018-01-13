@@ -43,10 +43,7 @@ public class DESCompactProtocol extends TCompactProtocol {
 		super(transport);
 		if (StringUtil.isEmpty(key))
 			throw new RuntimeException("Key is null !");
-		if (key.length() < 8)
-			this.key = formatStr(key, 8);
-		else
-			this.key = key;
+		this.key = key.length() < 8 ? formatStr(key, 8) : key;
 	}
 
 	@Override
