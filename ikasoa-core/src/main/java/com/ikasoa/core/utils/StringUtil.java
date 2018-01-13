@@ -36,21 +36,19 @@ public class StringUtil {
 	}
 
 	public static boolean equals(String str1, String str2) {
-		if (isEmpty(str1) && isEmpty(str2))
-			return Boolean.TRUE;
-		else if (!isEmpty(str1) && !isEmpty(str2))
-			return str1.equals(str2);
-		return Boolean.FALSE;
+		return isEmpty(str1) && isEmpty(str2) ? Boolean.TRUE
+				: isNotEmpty(str1) && isNotEmpty(str2) ? str1.equals(str2) : Boolean.FALSE;
 	}
 
 	public static int toInt(String str) {
-		if (str != null && !"".equals(str.trim()))
+		if (isNotEmpty(str))
 			try {
 				return Integer.parseInt(str);
 			} catch (Exception e) {
 				LOG.warn(e.getMessage());
 				return 0;
 			}
+		LOG.debug("'str' is null !");
 		return 0;
 	}
 
