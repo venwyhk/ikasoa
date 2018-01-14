@@ -10,10 +10,6 @@
 
   ikasoa是一套基于apache thrift框架的java分布式服务化治理解决方案.
 
-## 开发运行环境要求 ##
-
-- 要求java运行环境为java8
-
 ## 目录说明 ##
 
 - example : *示例代码*
