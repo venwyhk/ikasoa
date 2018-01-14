@@ -26,7 +26,7 @@ public class HttpThriftClientImpl extends AbstractThriftClientImpl {
 	public HttpThriftClientImpl(String serverHost, ThriftClientConfiguration configuration) {
 		setServerHost(serverHost);
 		if (configuration == null) {
-			LOG.debug("ThriftClientConfiguration is null .");
+			LOG.debug("Thrift client configuration is null .");
 			configuration = new ThriftClientConfiguration();
 		}
 		setThriftClientConfiguration(configuration);

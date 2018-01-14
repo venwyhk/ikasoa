@@ -39,7 +39,7 @@ public class RandomLoadBalanceImpl implements LoadBalance {
 
 	private void init(List<ServerInfo> serverInfoList) {
 		if (serverInfoList == null || serverInfoList.size() == 0)
-			throw new RuntimeException("serverInfoList is null !");
+			throw new RuntimeException("'serverInfoList' is null !");
 		this.serverInfoList = serverInfoList;
 		try {
 			next();
@@ -51,7 +51,7 @@ public class RandomLoadBalanceImpl implements LoadBalance {
 	@Override
 	public ServerInfo getServerInfo() {
 		if (serverInfo == null)
-			LOG.error("serverInfo is null !");
+			LOG.error("'serverInfo' is null !");
 		return serverInfo;
 	}
 
@@ -61,7 +61,7 @@ public class RandomLoadBalanceImpl implements LoadBalance {
 		if (size == 0)
 			throw new STException("Get server info failed !");
 		serverInfo = serverInfoList.get(new Random().nextInt(size) % (size + 1));
-		LOG.debug("serverInfo : " + serverInfo);
+		LOG.debug("ServerInfo is : " + serverInfo);
 		return getServerInfo();
 	}
 

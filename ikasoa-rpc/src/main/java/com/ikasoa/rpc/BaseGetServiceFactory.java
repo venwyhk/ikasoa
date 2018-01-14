@@ -55,7 +55,7 @@ public class BaseGetServiceFactory<T1, T2> extends GeneralFactory {
 	public BaseGetService<T1, T2> getBaseGetService(ThriftClient thriftClient, String serviceKey,
 			ProtocolHandler<T1, T2> protocolHandler) {
 		if (thriftClient == null) {
-			LOG.error("thriftClient is null !");
+			LOG.error("'thriftClient' is null !");
 			return null;
 		}
 		LOG.debug("Create new instance 'IkasoaClientService' . (serverHost : " + thriftClient.getServerHost()

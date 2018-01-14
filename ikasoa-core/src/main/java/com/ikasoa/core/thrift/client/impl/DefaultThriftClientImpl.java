@@ -23,7 +23,7 @@ public class DefaultThriftClientImpl extends AbstractThriftClientImpl {
 		setServerHost(serverHost);
 		setServerPort(serverPort);
 		if (configuration == null) {
-			LOG.debug("ThriftClientConfiguration is null .");
+			LOG.debug("Thrift client configuration is null .");
 			configuration = new ThriftClientConfiguration();
 		}
 		setThriftClientConfiguration(configuration);

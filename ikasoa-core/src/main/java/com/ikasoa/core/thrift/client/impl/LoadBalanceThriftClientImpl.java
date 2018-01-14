@@ -33,12 +33,12 @@ public class LoadBalanceThriftClientImpl extends AbstractThriftClientImpl {
 
 	public LoadBalanceThriftClientImpl(LoadBalance loadBalance, ThriftClientConfiguration configuration) {
 		if (loadBalance == null) {
-			throw new RuntimeException("loadBalance is null !");
+			throw new RuntimeException("'loadBalance' is null !");
 		}
 		this.loadBalance = loadBalance;
 		updateServerInfo();
 		if (configuration == null) {
-			LOG.debug("ThriftClientConfiguration is null .");
+			LOG.debug("Thrift client configuration is null .");
 			configuration = new ThriftClientConfiguration();
 		}
 		setThriftClientConfiguration(configuration);
@@ -74,7 +74,7 @@ public class LoadBalanceThriftClientImpl extends AbstractThriftClientImpl {
 	private void updateServerInfo() {
 		ServerInfo serverInfo = loadBalance.getServerInfo();
 		if (serverInfo == null)
-			throw new RuntimeException("serverInfo is null !");
+			throw new RuntimeException("'serverInfo' is null !");
 		setServerHost(serverInfo.getHost());
 		setServerPort(serverInfo.getPort());
 		LOG.debug("Update server info . (" + serverInfo.toString() + ")");

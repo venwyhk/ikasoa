@@ -221,7 +221,7 @@ public class GeneralFactory implements Factory {
 	@Override
 	public Service getService(ThriftClient thriftClient, String serviceName) throws STException {
 		if (thriftClient == null)
-			throw new STException("thriftClient is null !");
+			throw new STException("'thriftClient' is null !");
 		return StringUtil.isEmpty(serviceName)
 				? new ServiceClientImpl(thriftClient.getProtocol(thriftClient.getTransport()))
 				: new ServiceClientImpl(thriftClient.getProtocol(thriftClient.getTransport(), serviceName));
@@ -233,7 +233,7 @@ public class GeneralFactory implements Factory {
 	@Override
 	public AsyncService getAsyncService(TNonblockingTransport transport, String serviceName) throws STException {
 		if (transport == null)
-			throw new STException("transport is null !");
+			throw new STException("'transport' is null !");
 		try {
 			return StringUtil.isEmpty(serviceName)
 					? new AsyncServiceClientImpl((TProtocolFactory) new TCompactProtocol.Factory(), transport)
@@ -245,7 +245,7 @@ public class GeneralFactory implements Factory {
 
 	private MultiplexedProcessor buildMultiplexedProcessor(Map<String, Service> serviceMap) throws STException {
 		if (serviceMap == null)
-			throw new STException("serviceMap is null !");
+			throw new STException("'serviceMap' is null !");
 		Map<String, TProcessor> processorMap = new HashMap<>();
 		for (Entry<String, Service> e : serviceMap.entrySet())
 			processorMap.put(e.getKey(), new ServiceProcessor(serviceMap.get(e.getKey())));

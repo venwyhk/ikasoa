@@ -34,7 +34,7 @@ public class ZkBase {
 
 	public ZkBase(String zkServerString, String zkNode) {
 		if (StringUtil.isEmpty(zkServerString))
-			throw new RuntimeException("zkServerString is null !");
+			throw new RuntimeException("'zkServerString' is null !");
 		else
 			zkClient = new ZkClient(zkServerString);
 
@@ -95,7 +95,7 @@ public class ZkBase {
 					.readData(new StringBuilder(zkNode).append("/").append(n).toString());
 			serverInfoList.add(new ServerInfo(zksn.getServerHost(), zksn.getServerPort()));
 		}
-		LOG.debug("serverInfoList is : " + serverInfoList);
+		LOG.debug("ServerInfoList is : " + serverInfoList);
 		return serverInfoList;
 	}
 

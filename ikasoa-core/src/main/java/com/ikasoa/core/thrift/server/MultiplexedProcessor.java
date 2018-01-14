@@ -28,7 +28,7 @@ public class MultiplexedProcessor extends TMultiplexedProcessor {
 			for (Entry<String, TProcessor> e : processorMap.entrySet())
 				registerProcessor(e.getKey(), e.getValue());
 		else
-			LOG.warn("processorMap is null !");
+			LOG.warn("'processorMap' is null !");
 	}
 
 }

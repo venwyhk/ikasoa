@@ -44,7 +44,7 @@ public class PollingLoadBalanceImpl implements LoadBalance {
 
 	private void init(List<ServerInfo> serverInfoList) {
 		if (serverInfoList == null || serverInfoList.size() == 0)
-			throw new RuntimeException("serverInfoList is null !");
+			throw new RuntimeException("'serverInfoList' is null !");
 		this.serverInfoList = serverInfoList;
 		try {
 			next();
@@ -56,7 +56,7 @@ public class PollingLoadBalanceImpl implements LoadBalance {
 	@Override
 	public ServerInfo getServerInfo() {
 		if (serverInfo == null)
-			LOG.error("serverInfo is null !");
+			LOG.error("'serverInfo' is null !");
 		return serverInfo;
 	}
 
@@ -70,7 +70,7 @@ public class PollingLoadBalanceImpl implements LoadBalance {
 			throw new STException("serverInfo error !");
 		this.serverInfo = serverInfo;
 		int weightNumber = serverInfo.getWeightNumber();
-		LOG.debug("serverHost : " + serverInfo.getHost() + ", weightNumber : " + weightNumber);
+		LOG.debug("ServerHost is : " + serverInfo.getHost() + ", WeightNumber is : " + weightNumber);
 		if (size > i + 1)
 			if (weightNumber > j)
 				j++;

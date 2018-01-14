@@ -69,7 +69,7 @@ public abstract class AbstractThriftClientImpl implements ThriftClient {
 	@Override
 	public TProtocol getProtocol(TTransport transport) {
 		if (transport == null)
-			throw new RuntimeException("transport is null !");
+			throw new RuntimeException("'transport' is null !");
 		return getThriftClientConfiguration().getProtocolFactory().getProtocol(transport);
 	}
 
@@ -84,7 +84,7 @@ public abstract class AbstractThriftClientImpl implements ThriftClient {
 	@Override
 	public String getServerHost() {
 		if (StringUtil.isEmpty(serverHost))
-			throw new RuntimeException("serverHost is null !");
+			throw new RuntimeException("'serverHost' is null !");
 		return serverHost;
 	}
 
@@ -95,7 +95,7 @@ public abstract class AbstractThriftClientImpl implements ThriftClient {
 	@Override
 	public int getServerPort() {
 		if (!ServerUtil.isSocketPort(serverPort))
-			throw new RuntimeException("serverPort range must is 1025 ~ 65535 . Your port is : " + serverPort + " .");
+			throw new RuntimeException("'serverPort' range must is 1025 ~ 65535 . Your port is : " + serverPort + " .");
 		return serverPort;
 	}
 
@@ -136,7 +136,7 @@ public abstract class AbstractThriftClientImpl implements ThriftClient {
 		if (serverCheckFailProcessor == null) {
 			if (getThriftClientConfiguration().getServerCheckFailProcessor() == null) {
 				if (defaultProcessor == null)
-					LOG.warn("defaultProcessor is null !");
+					LOG.warn("'defaultProcessor' is null !");
 				serverCheckFailProcessor = defaultProcessor;
 			} else {
 				serverCheckFailProcessor = getThriftClientConfiguration().getServerCheckFailProcessor();
@@ -161,7 +161,7 @@ public abstract class AbstractThriftClientImpl implements ThriftClient {
 
 		@Override
 		public void process(ThriftClient client) throws STException {
-			throw new STException("server is not available (serverHost : " + client.getServerHost() + ", serverPort : "
+			throw new STException("Server is not available (serverHost : " + client.getServerHost() + ", serverPort : "
 					+ client.getServerPort() + ") !");
 		}
 
