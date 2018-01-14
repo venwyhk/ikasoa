@@ -1,4 +1,4 @@
-[![](https://raw.githubusercontent.com/venwyhk/ikasoa/master/ikasoalogo_small.png)](https://ikasoa.com)<br />
+[![](https://raw.githubusercontent.com/venwyhk/ikasoa/master/ikasoalogo_small.png)](http://ikasoa.com)<br />
 
 &nbsp;[![](https://codeship.com/projects/9cf2f150-1507-0134-ee57-3adebfc67210/status?branch=master)](https://codeship.com/projects/157977)&nbsp;&nbsp;[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.ikasoa/ikasoa-core/badge.svg?style=plastic)](https://maven-badges.herokuapp.com/maven-central/com.ikasoa/ikasoa-core)&nbsp;&nbsp;[![](https://img.shields.io/badge/license-MIT-097ABA.svg?style=plastic)](https://opensource.org/licenses/mit-license.php)&nbsp;&nbsp;
 
