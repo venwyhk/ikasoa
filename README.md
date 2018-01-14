@@ -22,9 +22,9 @@
 
 - ikasoa-rpc : *实现RPC功能的代码*
 
-- [ikasoa-spring-boot-starter](https://github.com/venwyhk/ikasoa/blob/master/ikasoa-spring-boot-starter/README.md) : *spring-boot启动器(starter),用于在spring-boot项目中使用ikasoa相关功能.*
+- [ikasoa-spring-boot-starter](https://github.com/venwyhk/ikasoa/blob/master/ikasoa-spring-boot-starter/README.md) : *spring-boot启动器(starter),用于在spring-boot项目中使用ikasoa相关功能*
 
-- ikasoa-zk : *利用Zookeeper注册和更新服务*
+- [ikasoa-zk](https://github.com/venwyhk/ikasoa/tree/master/ikasoa-zk/README.md) : *利用zookeeper注册和更新服务*
 
 ## 环境搭建 ##
 
