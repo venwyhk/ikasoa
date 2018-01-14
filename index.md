@@ -1,16 +1,12 @@
-[![](https://raw.githubusercontent.com/venwyhk/ikasoa/master/ikasoalogo_small.png)](https://ikasoa.com)<br />
+[![](https://raw.githubusercontent.com/venwyhk/ikasoa/master/ikasoalogo.png)](https://ikasoa.com)<br />
 
 &nbsp;[![](https://codeship.com/projects/9cf2f150-1507-0134-ee57-3adebfc67210/status?branch=master)](https://codeship.com/projects/157977)&nbsp;&nbsp;[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.ikasoa/ikasoa-core/badge.svg?style=plastic)](https://maven-badges.herokuapp.com/maven-central/com.ikasoa/ikasoa-core)&nbsp;&nbsp;[![](https://img.shields.io/badge/license-MIT-097ABA.svg?style=plastic)](https://opensource.org/licenses/mit-license.php)&nbsp;&nbsp;
 
 ***
 
-# ikasoa #
-
-## 概述 ##
-
   ikasoa是一套基于apache thrift框架的java分布式服务化治理解决方案.
 
-## 目录说明 ##
+***
 
 - example : *示例代码*
 
@@ -21,10 +17,6 @@
 - [ikasoa-spring-boot-starter](https://github.com/venwyhk/ikasoa/blob/master/ikasoa-spring-boot-starter/README.md) : *spring-boot启动器(starter),用于在spring-boot项目中使用ikasoa相关功能*
 
 - [ikasoa-zk](https://github.com/venwyhk/ikasoa/tree/master/ikasoa-zk/README.md) : *利用zookeeper注册和更新服务*
-
-## License ##
-
-*ikasoa is free to use under [MIT license](https://github.com/venwyhk/ikasoa/blob/master/LICENSE).*
 
 ***
 
