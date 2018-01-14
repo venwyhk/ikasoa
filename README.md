@@ -4,7 +4,7 @@
 
 ***
 
-# ikasoa rpc #
+# ikasoa #
 
 ## 概述 ##
 
