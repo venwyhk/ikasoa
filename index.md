@@ -4,7 +4,7 @@
 
 ***
 
-  **ikasoa是基于apache-thrift框架的java服务化治理解决方案.**
+  **基于apache-thrift框架的java服务化治理解决方案.**
 
 - example : *示例代码*
 
