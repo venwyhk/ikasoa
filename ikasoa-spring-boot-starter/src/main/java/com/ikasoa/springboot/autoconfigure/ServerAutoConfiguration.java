@@ -34,7 +34,7 @@ public class ServerAutoConfiguration extends AutoConfigurationBase {
 		if (StringUtil.isEmpty(serviceImplClasses))
 			throw new IkasoaException("Server service impl classes (${ikasoa.server.service.implClasses}) is null !");
 		String[] serviceImplStrs = serviceImplClasses.split(",");
-		List<ImplClsCon> implClsConList = new ArrayList<ImplClsCon>();
+		List<ImplClsCon> implClsConList = new ArrayList<>();
 		try {
 			for (String serviceImplStr : serviceImplStrs) {
 				LOG.debug("Add ikasoa service : " + serviceImplStr);

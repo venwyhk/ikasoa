@@ -91,8 +91,8 @@ public class ExampleServiceImpl implements ExampleService {
 	}
 
 	@Override
-	public List<Map<String, Object>> testtestContainerType() {
-		List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
+	public List<Map<String, Object>> testContainerType() {
+		List<Map<String, Object>> list = new ArrayList<>();
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("key", "value");
 		list.add(map);
@@ -100,9 +100,9 @@ public class ExampleServiceImpl implements ExampleService {
 	}
 
 	@Override
-	public List<List<String>> testtestContainerType2() {
-		List<List<String>> list = new ArrayList<List<String>>();
-		List<String> l = new ArrayList<String>();
+	public List<List<String>> testContainerType2() {
+		List<List<String>> list = new ArrayList<>();
+		List<String> l = new ArrayList<>();
 		l.add("oooo");
 		list.add(l);
 		return list;

@@ -45,9 +45,9 @@ public interface ExampleService {
 
 	public ExampleSuperVO getExampleSuperVO(ExampleSuperVO esvo);
 
-	public List<Map<String, Object>> testtestContainerType();
+	public List<Map<String, Object>> testContainerType();
 
-	public List<List<String>> testtestContainerType2();
+	public List<List<String>> testContainerType2();
 
 	// 下载文件
 	public byte[] down() throws FileNotFoundException;
