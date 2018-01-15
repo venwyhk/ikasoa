@@ -30,7 +30,7 @@ public class ZkBase {
 
 	private List<String> nodeList;
 
-	public final String ZK_ROOT_NODE = "/";
+	public final static String ZK_ROOT_NODE = "/";
 
 	public ZkBase(String zkServerString, String zkNode) {
 		if (StringUtil.isEmpty(zkServerString))

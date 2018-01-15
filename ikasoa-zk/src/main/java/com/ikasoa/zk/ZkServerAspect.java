@@ -45,12 +45,12 @@ public class ZkServerAspect implements ServerAspect {
 	 */
 	private boolean isLocalIp = Boolean.FALSE;
 
+	private String sNodeStr;
+
 	/**
 	 * 默认节点名称
 	 */
-	private static String DEFAULT_NODE_NAME = "ikasoa_node";
-
-	private String sNodeStr;
+	private static final String DEFAULT_NODE_NAME = "ikasoa_node";
 
 	public ZkServerAspect(String zkServerString, String zkNode) {
 		this.zkBase = new ZkBase(zkServerString, zkNode);
@@ -79,15 +79,15 @@ public class ZkServerAspect implements ServerAspect {
 		String zkNode = zkBase.getZkNode();
 		if (!zkClient.exists(zkNode))
 			zkClient.createPersistent(zkNode,
-					new StringBuilder(zkBase.ZK_ROOT_NODE).append(DEFAULT_NODE_NAME).toString());
+					new StringBuilder(ZkBase.ZK_ROOT_NODE).append(DEFAULT_NODE_NAME).toString());
 		try {
 			String serverHost = StringUtil.isNotEmpty(host) ? host
 					: isLocalIp ? LocalUtil.getLocalIP() : InetAddress.getLocalHost().getHostAddress();
 			if (ServerUtil.isPort(port))
 				serverPort = port;
 			StringBuilder sNodeSB = new StringBuilder(zkNode);
-			if (!zkBase.ZK_ROOT_NODE.equals(zkNode))
-				sNodeSB.append(zkBase.ZK_ROOT_NODE);
+			if (!ZkBase.ZK_ROOT_NODE.equals(zkNode))
+				sNodeSB.append(ZkBase.ZK_ROOT_NODE);
 			sNodeStr = sNodeSB.append(serverName).append("-").append(serverHost).append("-").append(serverPort)
 					.append(" ").toString();
 			if (zkBase.isExistNode(serverName, serverHost, serverPort))
@@ -116,6 +116,7 @@ public class ZkServerAspect implements ServerAspect {
 	@Override
 	public void beforeStop(String serverName, int serverPort, ThriftServerConfiguration configuration,
 			TProcessor processor, ThriftServer server) {
+		// Do nothing
 	}
 
 	@Override
