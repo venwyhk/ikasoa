@@ -30,13 +30,13 @@ public class ThriftServlet extends TServlet {
 	 */
 	public ThriftServlet(ThriftServer server) {
 		super(server.getProcessor(), server.getThriftServerConfiguration().getProtocolFactory());
-		this.serverName = server.getServerName();
+		serverName = server.getServerName();
 	}
 
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		PrintWriter w = response.getWriter();
-		w.write("This is a ikasoa server! (" + this.serverName + ")");
+		w.write("This is a ikasoa server! (" + serverName + ")");
 		w.close();
 	}
 

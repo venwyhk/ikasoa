@@ -1,6 +1,7 @@
 package com.ikasoa.core.utils;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import org.slf4j.Logger;
@@ -31,10 +32,9 @@ public class BeanUtil {
 	 * @exception STException
 	 *                异常
 	 */
-	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public static void copyProperties(Object target, Object source) throws STException {
-		Class sourceClz = source.getClass();
-		Class targetClz = target.getClass();
+		Class<?> sourceClz = source.getClass();
+		Class<?> targetClz = target.getClass();
 		Field[] fields = sourceClz.getDeclaredFields();
 		if (fields.length == 0)
 			fields = sourceClz.getSuperclass().getDeclaredFields();
@@ -46,10 +46,8 @@ public class BeanUtil {
 			} catch (NoSuchFieldException e) {
 				try {
 					targetField = targetClz.getSuperclass().getDeclaredField(fieldName);
-				} catch (NoSuchFieldException e1) {
+				} catch (NoSuchFieldException | SecurityException e1) {
 					throw new STException(e1);
-				} catch (SecurityException e2) {
-					throw new STException(e2);
 				}
 			}
 			if (fields[i].getType() == targetField.getType()) {
@@ -63,15 +61,24 @@ public class BeanUtil {
 					try {
 						getMethod = sourceClz.getDeclaredMethod(getMethodName, new Class[] {});
 					} catch (NoSuchMethodException e) {
-						getMethod = sourceClz.getSuperclass().getDeclaredMethod(getMethodName, new Class[] {});
+						try {
+							getMethod = sourceClz.getSuperclass().getDeclaredMethod(getMethodName, new Class[] {});
+						} catch (NoSuchMethodException e1) {
+							throw new STException(e1);
+						}
 					}
 					try {
 						setMethod = targetClz.getDeclaredMethod(setMethodName, fields[i].getType());
 					} catch (NoSuchMethodException e) {
-						setMethod = targetClz.getSuperclass().getDeclaredMethod(setMethodName, fields[i].getType());
+						try {
+							setMethod = targetClz.getSuperclass().getDeclaredMethod(setMethodName, fields[i].getType());
+						} catch (NoSuchMethodException e1) {
+							throw new STException(e1);
+						}
 					}
-					Object result = getMethod.invoke(source, new Object[] {});
-					setMethod.invoke(target, result);
+					setMethod.invoke(target, getMethod.invoke(source, new Object[] {}));
+				} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+					throw new STException(e);
 				} catch (Exception e) {
 					LOG.warn("Object copy failed !", e);
 				}

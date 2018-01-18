@@ -29,7 +29,7 @@ public class DESCompactProtocol extends TCompactProtocol {
 
 		public Factory(String key) {
 			if (StringUtil.isNotEmpty(key))
-				this.key_ = key;
+				key_ = key;
 			else
 				throw new RuntimeException("'key' is null !");
 		}

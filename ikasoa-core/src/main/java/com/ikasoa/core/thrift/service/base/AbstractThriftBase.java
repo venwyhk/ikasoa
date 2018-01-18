@@ -109,8 +109,7 @@ public abstract class AbstractThriftBase
 	public int compareTo(AbstractThriftBase other) {
 		if (!getClass().equals(other.getClass()))
 			return getClass().getName().compareTo(other.getClass().getName());
-		int lastComparison = 0;
-		lastComparison = Boolean.valueOf(isSet(null)).compareTo(isSet(null));
+		int lastComparison = Boolean.valueOf(isSet(null)).compareTo(isSet(null));
 		if (lastComparison != 0)
 			return lastComparison;
 		if (isSet(null)) {

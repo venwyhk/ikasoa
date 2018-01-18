@@ -96,10 +96,8 @@ public class SimpleDESUtil {
 		if ((b.length % 2) != 0)
 			throw new IllegalArgumentException("Data length is not even number !");
 		byte[] b2 = new byte[b.length / 2];
-		for (int n = 0; n < b.length; n += 2) {
-			String item = new String(b, n, 2);
-			b2[n / 2] = (byte) Integer.parseInt(item, 16);
-		}
+		for (int n = 0; n < b.length; n += 2)
+			b2[n / 2] = (byte) Integer.parseInt(new String(b, n, 2), 16);
 		return b2;
 	}
 

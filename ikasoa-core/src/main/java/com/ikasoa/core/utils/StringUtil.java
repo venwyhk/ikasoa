@@ -48,7 +48,6 @@ public class StringUtil {
 				LOG.warn(e.getMessage());
 				return 0;
 			}
-		LOG.debug("'str' is null !");
 		return 0;
 	}
 

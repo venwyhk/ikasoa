@@ -48,7 +48,7 @@ public class ThriftServerConfiguration extends AbstractThriftConfiguration {
 	}
 
 	public TProcessorFactory getProcessorFactory() {
-		return this.processorFactory;
+		return processorFactory;
 	}
 
 	public ServerAspect getServerAspect() {

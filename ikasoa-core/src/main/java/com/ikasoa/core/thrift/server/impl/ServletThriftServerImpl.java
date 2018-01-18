@@ -74,14 +74,14 @@ public class ServletThriftServerImpl implements ThriftServer {
 
 	@Override
 	public int getServerPort() {
-		LOG.warn("This function not run .");
+		LOG.debug("This function not run .");
 		return 0;
 	}
 
 	@Override
 	public ThriftServerConfiguration getThriftServerConfiguration() {
 		if (configuration == null)
-			throw new RuntimeException("Server initialize failed ! Configuration is null !");
+			throw new RuntimeException("'configuration' is null !");
 		return configuration;
 	}
 

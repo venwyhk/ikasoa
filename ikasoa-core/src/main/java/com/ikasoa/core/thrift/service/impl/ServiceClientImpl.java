@@ -35,11 +35,12 @@ public class ServiceClientImpl extends TServiceClient implements Service {
 		try {
 			if (!transport.isOpen())
 				transport.open();
+			LOG.debug("Transport is open .");
 			sendGet(arg);
 			return recvGet();
 		} catch (TException e) {
 			transport.close();
-			LOG.error(e.getMessage());
+			LOG.debug("Transport is close .");
 			throw new STException("Execute failed !", e);
 		}
 	}

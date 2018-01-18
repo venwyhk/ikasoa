@@ -81,12 +81,9 @@ public abstract class AbstractThriftServerImpl implements ThriftServer {
 					throw new RuntimeException(e);
 				}
 			});
-			Runtime.getRuntime().addShutdownHook(new Thread() {
-				@Override
-				public void run() {
-					AbstractThriftServerImpl.this.stop();
-				}
-			});
+			Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+				stop();
+			}));
 			afterStart(getThriftServerConfiguration().getServerAspect());
 		}
 	}
@@ -199,7 +196,7 @@ public abstract class AbstractThriftServerImpl implements ThriftServer {
 	@Override
 	public ThriftServerConfiguration getThriftServerConfiguration() {
 		if (configuration == null)
-			throw new RuntimeException("Server initialize failed ! Configuration is null !");
+			throw new RuntimeException("'configuration' is null !");
 		return configuration;
 	}
 
