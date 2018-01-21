@@ -77,7 +77,7 @@ public class LoadBalanceThriftClientImpl extends AbstractThriftClientImpl {
 			throw new RuntimeException("'serverInfo' is null !");
 		setServerHost(serverInfo.getHost());
 		setServerPort(serverInfo.getPort());
-		LOG.debug("Update server info . (" + serverInfo.toString() + ")");
+		LOG.debug("Update server info . ({})", serverInfo.toString());
 	}
 
 	/**
@@ -89,8 +89,8 @@ public class LoadBalanceThriftClientImpl extends AbstractThriftClientImpl {
 
 		@Override
 		public void process(ThriftClient client) throws STException {
-			LOG.warn("Server is not available (serverHost : " + client.getServerHost() + ", serverPort : "
-					+ client.getServerPort() + ") , try next server .");
+			LOG.warn("Server is not available (serverHost : {}, serverPort : {}) , try next server .",
+					client.getServerHost(), client.getServerPort());
 			loadBalance.next();
 		}
 

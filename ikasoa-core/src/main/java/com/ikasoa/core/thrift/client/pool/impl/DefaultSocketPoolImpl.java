@@ -146,7 +146,7 @@ public class DefaultSocketPoolImpl implements SocketPool {
 	}
 
 	private ThriftSocket getThriftSocket(DefaultSocketPoolImpl self, byte i, String host, int port) {
-		LOG.debug("Get socket number is " + i + " .");
+		LOG.debug("Get socket number is {} .", i);
 		ThriftSocket thriftSocket = self.socketPool.get(new Byte(i));
 		if (thriftSocket == null || thriftSocket.getSocket() == null) {
 			LOG.warn("Socket is null ! Again retry initiation pool .");
@@ -180,7 +180,7 @@ public class DefaultSocketPoolImpl implements SocketPool {
 			LOG.error("Server host or port is null ! Release unsuccessful .");
 			return;
 		}
-		LOG.debug("Release socket , host is " + host + " and port is " + port + " .");
+		LOG.debug("Release socket , host is {} and port is {} .", host, port);
 		DefaultSocketPoolImpl self = selfMap.get(ServerUtil.buildCacheKey(host, port));
 		if (self == null)
 			self = init(host, port);

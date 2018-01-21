@@ -104,7 +104,7 @@ public class ZkServerAspect implements ServerAspect {
 			}
 			if (processor != null)
 				zkSNObj.setProcessorClassName(processor.getClass().getName());
-			LOG.debug("Create server node : " + sNodeStr);
+			LOG.debug("Create server node : {}", sNodeStr);
 			zkClient.createEphemeralSequential(sNodeStr, zkSNObj);
 		} catch (UnknownHostException e) {
 			throw new RuntimeException(e);
@@ -123,7 +123,7 @@ public class ZkServerAspect implements ServerAspect {
 	public void afterStop(String serverName, int serverPort, ThriftServerConfiguration configuration,
 			TProcessor processor, ThriftServer server) {
 		if (StringUtil.isNotEmpty(sNodeStr)) {
-			LOG.debug("Delete server node : " + sNodeStr);
+			LOG.debug("Delete server node : {}", sNodeStr);
 			zkBase.getZkClient().delete(sNodeStr);
 		}
 	}

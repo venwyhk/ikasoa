@@ -96,7 +96,7 @@ public abstract class AbstractThriftServerImpl implements ThriftServer {
 	 */
 	public void start() throws STException {
 		if (server == null) {
-			LOG.debug("Server configuration : " + configuration);
+			LOG.debug("Server configuration : {}", configuration);
 			// 不允许使用1024以内的端口.
 			if (!ServerUtil.isSocketPort(serverPort))
 				throw new STException("Server initialize failed ! Port range must is 1025 ~ 65535 . Your port is : "
@@ -114,7 +114,7 @@ public abstract class AbstractThriftServerImpl implements ThriftServer {
 				return;
 			}
 			server.serve();
-			LOG.info("Starting server ...... (name : " + serverName + " , port : " + serverPort + ")");
+			LOG.info("Starting server ...... (name : {} , port : {})", serverName, serverPort);
 		} else {
 			LOG.warn("Startup server failed !");
 		}
@@ -135,7 +135,7 @@ public abstract class AbstractThriftServerImpl implements ThriftServer {
 						executorService.awaitTermination(10, TimeUnit.SECONDS);
 					}
 				} catch (InterruptedException e) {
-					LOG.debug("Server thread shutdown exception !", e);
+					LOG.debug("Server thread shutdown exception !");
 					executorService.shutdownNow();
 					Thread.currentThread().interrupt();
 				}
@@ -143,10 +143,10 @@ public abstract class AbstractThriftServerImpl implements ThriftServer {
 			server = null;
 			serverSocket = null;
 			executorService = null;
-			LOG.info("Stoping server ...... (name: " + serverName + ")");
+			LOG.info("Stoping server ...... (name: {})", serverName);
 			afterStop(getThriftServerConfiguration().getServerAspect());
 		} else {
-			LOG.info("Server not run. (name: " + serverName + ")");
+			LOG.info("Server not run. (name: {})", serverName);
 		}
 	}
 

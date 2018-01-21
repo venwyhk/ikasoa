@@ -60,7 +60,7 @@ public class AsyncServiceProcessor extends TBaseAsyncProcessor<AsyncService> imp
 						fcall.sendResponse(fb, result, TMessageType.REPLY, seqid);
 						return;
 					} catch (Exception e) {
-						LOG.error("Exception writing to internal frame buffer .", e);
+						LOG.error("Exception writing to internal frame buffer : {}", e.getMessage());
 					}
 					fb.close();
 				}
@@ -77,7 +77,7 @@ public class AsyncServiceProcessor extends TBaseAsyncProcessor<AsyncService> imp
 						fcall.sendResponse(fb, msg, msgType, seqid);
 						return;
 					} catch (Exception ex) {
-						LOG.error("Exception writing to internal frame buffer .", ex);
+						LOG.error("Exception writing to internal frame buffer : {}", ex.getMessage());
 					}
 					fb.close();
 				}
@@ -90,7 +90,7 @@ public class AsyncServiceProcessor extends TBaseAsyncProcessor<AsyncService> imp
 
 		public void start(AsyncService service, ArgsThriftBase args, AsyncMethodCallback<String> resultHandler)
 				throws TException {
-			LOG.debug("Args is : " + args.getStr());
+			LOG.debug("Args is : {}", args.getStr());
 			try {
 				service.get((String) args.getStr(), resultHandler);
 			} catch (STException e) {

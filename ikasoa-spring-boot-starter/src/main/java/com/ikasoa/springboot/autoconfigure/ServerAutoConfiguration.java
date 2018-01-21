@@ -37,7 +37,7 @@ public class ServerAutoConfiguration extends AutoConfigurationBase {
 		List<ImplClsCon> implClsConList = new ArrayList<>();
 		try {
 			for (String serviceImplStr : serviceImplStrs) {
-				LOG.debug("Add ikasoa service : " + serviceImplStr);
+				LOG.debug("Add ikasoa service : {}", serviceImplStr);
 				Class<?> serviceImplCls = Class.forName(serviceImplStr);
 				implClsConList.add(new ImplClsCon(serviceImplCls));
 			}

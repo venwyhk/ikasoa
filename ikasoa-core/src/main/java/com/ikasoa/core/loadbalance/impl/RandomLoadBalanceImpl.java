@@ -61,7 +61,7 @@ public class RandomLoadBalanceImpl implements LoadBalance {
 		if (size == 0)
 			throw new STException("Get server info failed !");
 		serverInfo = serverInfoList.get(new Random().nextInt(size) % (size + 1));
-		LOG.debug("ServerInfo is : " + serverInfo);
+		LOG.debug("ServerInfo is : {}", serverInfo);
 		return getServerInfo();
 	}
 

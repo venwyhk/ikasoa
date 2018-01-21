@@ -182,7 +182,7 @@ public class DefaultIkasoaFactory extends GeneralFactory implements IkasoaFactor
 		if (implClass == null)
 			throw new IkasoaException("Implement class is not null !");
 		if (implClass.getInterfaces().length == 0)
-			LOG.warn("Class (" + implClass.getName() + ") is not this interface implement class , Will ignore .");
+			LOG.warn("Class ({}) is not this interface implement class , Will ignore .", implClass.getName());
 		for (Class<?> iClass : superClass.getInterfaces())
 			buildService(serviceMap, iClass, implClass, implObject);
 		if (superClass.getSuperclass() != null && !Object.class.equals(superClass.getSuperclass()))
@@ -214,7 +214,7 @@ public class DefaultIkasoaFactory extends GeneralFactory implements IkasoaFactor
 				Service iss = (Service) IkasoaServerService.class.getDeclaredConstructors()[0].newInstance(implObject,
 						implMethod,
 						protocolHandlerFactory.getProtocolHandler(null, configurator.getProtocolHandlerClass()));
-				LOG.debug("Builder Ikasoa service : " + sKey);
+				LOG.debug("Builder Ikasoa service : {}", sKey);
 				serviceMap.put(sKey, iss);
 			}
 		} catch (Exception e) {

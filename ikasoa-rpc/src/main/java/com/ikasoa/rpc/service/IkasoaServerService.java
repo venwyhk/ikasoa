@@ -39,8 +39,8 @@ public class IkasoaServerService extends AbstractGetService<Object[], Object> {
 			LOG.debug("'args' is null , Will create default args object .");
 			args = new Object[] {};
 		}
-		LOG.debug("Execute class '" + classObj.getClass().getName() + "' function '" + method.getName()
-				+ "' , parameters is '" + args.toString() + "' .");
+		LOG.debug("Execute class '{}' function '{}' , parameters is '{}' .", classObj.getClass().getName(),
+				method.getName(), args.toString());
 		method.setAccessible(Boolean.TRUE);
 		try {
 			return method.invoke(classObj, args);

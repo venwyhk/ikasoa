@@ -39,10 +39,10 @@ public abstract class IkasoaServerRunner implements CommandLineRunner {
 		server.run();
 		Thread.sleep(WAIT_TIME);
 		if (server.isServing()) {
-			LOG.info("Ikasoa server startup success . (" + server.getServerName() + ")");
+			LOG.info("Ikasoa server startup success . ({})", server.getServerName());
 			complete(args);
 		} else {
-			LOG.warn("Ikasoa server startup failed ! (" + server.getServerName() + ")");
+			LOG.warn("Ikasoa server startup failed ! ({})", server.getServerName());
 			fail(args);
 		}
 	}

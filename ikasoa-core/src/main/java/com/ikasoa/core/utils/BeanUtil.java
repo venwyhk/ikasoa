@@ -80,7 +80,7 @@ public class BeanUtil {
 				} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
 					throw new STException(e);
 				} catch (Exception e) {
-					LOG.warn("Object copy failed !", e);
+					LOG.warn("Object copy failed : {}", e.getMessage());
 				}
 			} else {
 				throw new STException("Object copy failed ! Attribute type error !");

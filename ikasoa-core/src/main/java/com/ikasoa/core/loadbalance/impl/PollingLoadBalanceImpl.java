@@ -70,7 +70,7 @@ public class PollingLoadBalanceImpl implements LoadBalance {
 			throw new STException("serverInfo error !");
 		this.serverInfo = serverInfo;
 		int weightNumber = serverInfo.getWeightNumber();
-		LOG.debug("ServerHost is : " + serverInfo.getHost() + ", WeightNumber is : " + weightNumber);
+		LOG.debug("ServerHost is : {}, WeightNumber is : {}", serverInfo.getHost(), weightNumber);
 		if (size > i + 1)
 			if (weightNumber > j)
 				j++;

@@ -44,12 +44,12 @@ public class ZkBase {
 
 			@Override
 			public void handleDataChange(String nodePath, Object nodeObj) throws Exception {
-				LOG.debug("handleDataChange (nodePath : " + nodePath + ", nodeObj : " + nodeObj + ")");
+				LOG.debug("handleDataChange (nodePath : {}, nodeObj : {})", nodePath, nodeObj);
 			}
 
 			@Override
 			public void handleDataDeleted(String nodePath) throws Exception {
-				LOG.warn("handleDataDeleted (nodePath : " + nodePath + ")");
+				LOG.warn("handleDataDeleted (nodePath : {})", nodePath);
 			}
 
 		});
@@ -69,7 +69,7 @@ public class ZkBase {
 
 			@Override
 			public void handleStateChanged(KeeperState state) throws Exception {
-				LOG.debug("handleStateChanged (state : " + state + ")");
+				LOG.debug("handleStateChanged (state : {})", state);
 			}
 
 		});
@@ -78,8 +78,7 @@ public class ZkBase {
 
 			@Override
 			public void handleChildChange(String parentPath, List<String> currentChildList) throws Exception {
-				LOG.debug("handleChildChange (parentPath : " + parentPath + ", currentChildList" + currentChildList
-						+ ")");
+				LOG.debug("handleChildChange (parentPath : {}, currentChildList : {})", parentPath, currentChildList);
 				nodeList = currentChildList;
 			}
 
@@ -95,7 +94,7 @@ public class ZkBase {
 					.readData(new StringBuilder(zkNode).append("/").append(n).toString());
 			serverInfoList.add(new ServerInfo(zksn.getServerHost(), zksn.getServerPort()));
 		}
-		LOG.debug("ServerInfoList is : " + serverInfoList);
+		LOG.debug("ServerInfoList is : {}", serverInfoList);
 		return serverInfoList;
 	}
 

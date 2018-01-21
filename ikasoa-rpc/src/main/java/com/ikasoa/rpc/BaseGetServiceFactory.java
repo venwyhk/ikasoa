@@ -58,8 +58,8 @@ public class BaseGetServiceFactory<T1, T2> extends GeneralFactory {
 			LOG.error("'thriftClient' is null !");
 			return null;
 		}
-		LOG.debug("Create new instance 'IkasoaClientService' . (serverHost : " + thriftClient.getServerHost()
-				+ ", serverPort : " + thriftClient.getServerPort() + ", serviceKey : " + serviceKey + ")");
+		LOG.debug("Create new instance 'IkasoaClientService' . (serverHost : {}, serverPort : {}, serviceKey : {})",
+				thriftClient.getServerHost(), thriftClient.getServerPort(), serviceKey);
 		return new IkasoaClientService<T1, T2>(this, thriftClient, serviceKey, protocolHandler,
 				clientInvocationHandler);
 	}

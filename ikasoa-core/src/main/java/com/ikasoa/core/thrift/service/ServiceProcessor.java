@@ -50,7 +50,7 @@ public class ServiceProcessor extends TBaseProcessor<Service> implements Process
 		}
 
 		public ResultThriftBase getResult(Service service, ArgsThriftBase args) throws TException {
-			LOG.debug("Args is : " + args.getStr());
+			LOG.debug("Args is : {}", args.getStr());
 			try {
 				// 在这里执行服务端实现类的'get'方法
 				return new ResultThriftBase(service.get(args.getStr()));
