@@ -14,6 +14,24 @@
 
 - 要求java运行环境为java8
 
+## 环境搭建 ##
+
+##### Maven配置 #####
+
+需要修改pom.xml文件,添加依赖:
+
+pom.xml
+
+```xml
+    ......
+    <dependency>
+        <groupId>com.ikasoa</groupId>
+        <artifactId>ikasoa-zk</artifactId>
+        <version>0.1-ALPHA</version>
+    </dependency>
+    ......
+```
+
 ## License ##
 
 *ikasoa is free to use under [MIT license](https://github.com/venwyhk/ikasoa/blob/master/LICENSE).*
