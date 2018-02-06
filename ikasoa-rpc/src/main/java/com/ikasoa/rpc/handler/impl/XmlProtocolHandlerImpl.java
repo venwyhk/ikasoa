@@ -6,7 +6,9 @@ import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 
+import com.esotericsoftware.minlog.Log;
 import com.ikasoa.rpc.handler.ProtocolHandler;
 import com.ikasoa.rpc.handler.ReturnData;
 
@@ -67,8 +69,7 @@ public class XmlProtocolHandlerImpl<T1, T2> implements ProtocolHandler<T1, T2> {
 
 	@SuppressWarnings("unchecked")
 	private <T> T parserXML(String xml) {
-		ByteArrayInputStream in = new ByteArrayInputStream(xml.getBytes());
-		XMLDecoder decoder = new XMLDecoder(new BufferedInputStream(in));
+		XMLDecoder decoder = new XMLDecoder(new BufferedInputStream(new ByteArrayInputStream(xml.getBytes())));
 		decoder.close();
 		return (T) decoder.readObject();
 	}
@@ -79,11 +80,16 @@ public class XmlProtocolHandlerImpl<T1, T2> implements ProtocolHandler<T1, T2> {
 	}
 
 	private <T> String formatXML(T entity) {
-		ByteArrayOutputStream out = new ByteArrayOutputStream();
-		XMLEncoder encoder = new XMLEncoder(new BufferedOutputStream(out));
-		encoder.writeObject(entity);
-		encoder.close();
-		return out.toString();
+		try (ByteArrayOutputStream baos = new ByteArrayOutputStream();
+				BufferedOutputStream bos = new BufferedOutputStream(baos)) {
+			XMLEncoder encoder = new XMLEncoder(bos);
+			encoder.writeObject(entity);
+			encoder.close();
+			return baos.toString();
+		} catch (IOException e) {
+			Log.error(e.getMessage());
+			return VOID;
+		}
 	}
 
 }

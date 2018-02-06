@@ -14,8 +14,7 @@ import java.io.InputStream;
 public class StreamUtil {
 
 	public static byte[] inputStreamToBytes(InputStream is) {
-		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		try {
+		try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
 			int i;
 			while ((i = is.read()) != -1)
 				baos.write(i);

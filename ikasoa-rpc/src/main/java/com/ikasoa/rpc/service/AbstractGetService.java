@@ -17,6 +17,7 @@ public abstract class AbstractGetService<T1, T2> implements Service, BaseGetServ
 	protected ProtocolHandler<T1, T2> protocolHandler;
 
 	public AbstractGetService() {
+		// Do nothing
 	}
 
 	@Override

@@ -82,15 +82,15 @@ public class ReturnData {
 	}
 
 	public boolean isArray() {
-		return List.class.getName().equals(className) || Set.class.getName().equals(className);
+		return List.class.getName().equals(getClassName()) || Set.class.getName().equals(getClassName());
 	}
 
 	public boolean isMap() {
-		return Map.class.getName().equals(className);
+		return Map.class.getName().equals(getClassName());
 	}
 
 	public boolean hasExcetion() {
-		return getExcetionClassTypes().length > 0;
+		return getExcetionClassTypes() != null && getExcetionClassTypes().length > 0;
 	}
 
 	public String getClassName() {
@@ -110,7 +110,7 @@ public class ReturnData {
 	}
 
 	public Class<?> getClassTypes(int k) {
-		return classTypes != null && classTypes.length > k ? classTypes[k] : Object.class;
+		return getClassTypes() != null && getClassTypes().length > k ? getClassTypes()[k] : Object.class;
 	}
 
 	public void setClassTypes(Class<?>[] classTypes) {
