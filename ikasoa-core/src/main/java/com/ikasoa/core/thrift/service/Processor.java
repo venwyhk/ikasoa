@@ -10,6 +10,6 @@ import org.apache.thrift.TProcessor;
  */
 public interface Processor extends TProcessor {
 
-	static final String FUNCTION_NAME = "get";
+	String FUNCTION_NAME = "get";
 
 }
