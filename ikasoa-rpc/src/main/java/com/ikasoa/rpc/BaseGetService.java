@@ -18,6 +18,6 @@ public interface BaseGetService<T1, T2> {
 	 * @exception Throwable
 	 *                抛出
 	 */
-	public T2 get(T1 arg) throws Throwable;
+	T2 get(T1 arg) throws Throwable;
 
 }

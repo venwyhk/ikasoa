@@ -25,6 +25,6 @@ public interface AsyncService {
 	 * @exception STException
 	 *                异常
 	 */
-	public void get(String arg, AsyncMethodCallback<String> resultHandler) throws STException;
+	void get(String arg, AsyncMethodCallback<String> resultHandler) throws STException;
 
 }

@@ -19,7 +19,7 @@ public interface SocketPool {
 	 *            服务器端口
 	 * @return ThriftSocket ThriftSocket连接对象
 	 */
-	public ThriftSocket buildThriftSocket(String host, int port);
+	ThriftSocket buildThriftSocket(String host, int port);
 
 	/**
 	 * 回收ThriftSocket连接
@@ -29,7 +29,7 @@ public interface SocketPool {
 	 * @param thriftSocket
 	 *            待回收的ThriftSocket连接对象
 	 */
-	public void releaseThriftSocket(ThriftSocket thriftSocket);
+	void releaseThriftSocket(ThriftSocket thriftSocket);
 
 	/**
 	 * 回收ThriftSocket连接
@@ -41,11 +41,11 @@ public interface SocketPool {
 	 * @param port
 	 *            服务器端口
 	 */
-	public void releaseThriftSocket(ThriftSocket thriftSocket, String host, int port);
+	void releaseThriftSocket(ThriftSocket thriftSocket, String host, int port);
 
 	/**
 	 * 回收所有ThriftSocket连接
 	 */
-	public void releaseAllThriftSocket();
+	void releaseAllThriftSocket();
 
 }

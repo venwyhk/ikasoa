@@ -19,7 +19,7 @@ public interface IkasoaServer extends ThriftServer {
 	 * 
 	 * @return Map 通用服务集合
 	 */
-	public Map<String, Service> getIkasoaServiceMap();
+	Map<String, Service> getIkasoaServiceMap();
 
 	/**
 	 * 获取通用服务
@@ -28,13 +28,13 @@ public interface IkasoaServer extends ThriftServer {
 	 *            服务标识
 	 * @return Map 通用服务集合
 	 */
-	public Service getIkasoaService(String serviceKey);
+	Service getIkasoaService(String serviceKey);
 
 	/**
 	 * 获取所有服务标识
 	 * 
 	 * @return Set 服务标识集合
 	 */
-	public Set<String> getIkasoaServiceKeys();
+	Set<String> getIkasoaServiceKeys();
 
 }

@@ -19,7 +19,7 @@ public interface LoadBalance {
 	 * 
 	 * @return ServerInfo 服务器信息
 	 */
-	public ServerInfo getServerInfo();
+	ServerInfo getServerInfo();
 
 	/**
 	 * 切换服务器信息
@@ -28,8 +28,9 @@ public interface LoadBalance {
 	 * 方法获取的服务器信息为切换过后的信息,可能会与之前的不同.
 	 * 
 	 * @return ServerInfo
-	 * @exception STException 异常
+	 * @exception STException
+	 *                异常
 	 */
-	public ServerInfo next() throws STException;
+	ServerInfo next() throws STException;
 
 }

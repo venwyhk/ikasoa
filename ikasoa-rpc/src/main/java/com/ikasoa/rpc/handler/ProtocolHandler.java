@@ -15,7 +15,7 @@ public interface ProtocolHandler<T1, T2> {
 	 *            参数字符串
 	 * @return T1 参数对象
 	 */
-	public T1 strToArg(String str);
+	T1 strToArg(String str);
 
 	/**
 	 * 参数对象转为字符串
@@ -24,7 +24,7 @@ public interface ProtocolHandler<T1, T2> {
 	 *            参数对象
 	 * @return String
 	 */
-	public String argToStr(T1 arg);
+	String argToStr(T1 arg);
 
 	/**
 	 * 返回值对象转为字符串
@@ -33,7 +33,7 @@ public interface ProtocolHandler<T1, T2> {
 	 *            返回值对象
 	 * @return String
 	 */
-	public String resultToStr(T2 result);
+	String resultToStr(T2 result);
 
 	/**
 	 * 字符串转为返回值对象
@@ -42,7 +42,7 @@ public interface ProtocolHandler<T1, T2> {
 	 *            返回值字符串
 	 * @return T2 返回值对象
 	 */
-	public T2 strToResult(String str);
+	T2 strToResult(String str);
 
 	/**
 	 * 字符串转为异常对象(如果没有异常,则返回null)
@@ -51,13 +51,13 @@ public interface ProtocolHandler<T1, T2> {
 	 *            返回值字符串
 	 * @return Throwable 异常对象
 	 */
-	public Throwable strToThrowable(String str);
+	Throwable strToThrowable(String str);
 
 	/**
 	 * 获取返回数据对象
 	 * 
 	 * @return ReturnData 返回数据对象
 	 */
-	public ReturnData getReturnData();
+	ReturnData getReturnData();
 
 }

@@ -21,7 +21,7 @@ public interface ThriftClient extends AutoCloseable {
 	 * @exception STException
 	 *                异常
 	 */
-	public TTransport getTransport() throws STException;
+	TTransport getTransport() throws STException;
 
 	/**
 	 * 获取Thrift传输协议
@@ -30,7 +30,7 @@ public interface ThriftClient extends AutoCloseable {
 	 *            传输类型
 	 * @return TProtocol 传输协议
 	 */
-	public TProtocol getProtocol(TTransport transport);
+	TProtocol getProtocol(TTransport transport);
 
 	/**
 	 * 获取Thrift传输协议
@@ -46,27 +46,27 @@ public interface ThriftClient extends AutoCloseable {
 	 *            服务名
 	 * @return TProtocol 传输协议
 	 */
-	public TProtocol getProtocol(TTransport transport, String serviceName);
+	TProtocol getProtocol(TTransport transport, String serviceName);
 
 	/**
 	 * 获取Thrift服务器地址
 	 * 
 	 * @return String 服务器地址
 	 */
-	public String getServerHost();
+	String getServerHost();
 
 	/**
 	 * 获取Thrift服务器端口
 	 * 
 	 * @return int 服务器端口
 	 */
-	public int getServerPort();
+	int getServerPort();
 
 	/**
 	 * 获取Thrift服务配置
 	 * 
 	 * @return ThriftClientConfiguration 服务配置
 	 */
-	public ThriftClientConfiguration getThriftClientConfiguration();
+	ThriftClientConfiguration getThriftClientConfiguration();
 
 }

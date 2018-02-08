@@ -18,8 +18,9 @@ public interface ServerCheckFailProcessor {
 	 * 
 	 * @param client
 	 *            客户端对象
-	 * @exception STException 异常
+	 * @exception STException
+	 *                异常
 	 */
-	public void process(ThriftClient client) throws STException;
+	void process(ThriftClient client) throws STException;
 
 }

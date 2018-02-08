@@ -15,7 +15,7 @@ public interface ClientInvocationHandler {
 	 *            上下文
 	 * @return ClientInvocationContext
 	 */
-	public ClientInvocationContext before(ClientInvocationContext context);
+	ClientInvocationContext before(ClientInvocationContext context);
 
 	/**
 	 * 执行前
@@ -24,7 +24,7 @@ public interface ClientInvocationHandler {
 	 *            上下文
 	 * @return ClientInvocationContext
 	 */
-	public ClientInvocationContext invoke(ClientInvocationContext context);
+	ClientInvocationContext invoke(ClientInvocationContext context);
 
 	/**
 	 * 正常结束
@@ -32,7 +32,7 @@ public interface ClientInvocationHandler {
 	 * @param context
 	 *            上下文
 	 */
-	public void after(ClientInvocationContext context);
+	void after(ClientInvocationContext context);
 
 	/**
 	 * 异常结束
@@ -42,6 +42,6 @@ public interface ClientInvocationHandler {
 	 * @param throwable
 	 *            异常对象
 	 */
-	public void exception(ClientInvocationContext context, Throwable throwable);
+	void exception(ClientInvocationContext context, Throwable throwable);
 
 }

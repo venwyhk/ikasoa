@@ -23,6 +23,6 @@ public interface Service {
 	 * @exception STException
 	 *                异常
 	 */
-	public String get(String arg) throws STException;
+	String get(String arg) throws STException;
 
 }
