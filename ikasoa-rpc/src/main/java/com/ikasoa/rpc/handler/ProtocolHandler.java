@@ -6,16 +6,16 @@ package com.ikasoa.rpc.handler;
  * @author <a href="mailto:larry7696@gmail.com">Larry</a>
  * @version 0.1
  */
-public interface ProtocolHandler<T1, T2> {
+public interface ProtocolHandler<T, R> {
 
 	/**
 	 * 字符串转为参数对象
 	 * 
 	 * @param str
 	 *            参数字符串
-	 * @return T1 参数对象
+	 * @return T 参数对象
 	 */
-	T1 strToArg(String str);
+	T strToArg(String str);
 
 	/**
 	 * 参数对象转为字符串
@@ -24,7 +24,7 @@ public interface ProtocolHandler<T1, T2> {
 	 *            参数对象
 	 * @return String
 	 */
-	String argToStr(T1 arg);
+	String argToStr(T arg);
 
 	/**
 	 * 返回值对象转为字符串
@@ -33,16 +33,16 @@ public interface ProtocolHandler<T1, T2> {
 	 *            返回值对象
 	 * @return String
 	 */
-	String resultToStr(T2 result);
+	String resultToStr(R result);
 
 	/**
 	 * 字符串转为返回值对象
 	 * 
 	 * @param str
 	 *            返回值字符串
-	 * @return T2 返回值对象
+	 * @return R 返回值对象
 	 */
-	T2 strToResult(String str);
+	R strToResult(String str);
 
 	/**
 	 * 字符串转为异常对象(如果没有异常,则返回null)

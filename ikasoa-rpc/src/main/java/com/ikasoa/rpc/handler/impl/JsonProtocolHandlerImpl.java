@@ -17,7 +17,7 @@ import com.ikasoa.rpc.handler.ReturnData;
  * @author <a href="mailto:larry7696@gmail.com">Larry</a>
  * @version 0.1
  */
-public class JsonProtocolHandlerImpl<T1, T2> implements ProtocolHandler<T1, T2> {
+public class JsonProtocolHandlerImpl<T, R> implements ProtocolHandler<T, R> {
 
 	private ReturnData resultData;
 
@@ -42,7 +42,7 @@ public class JsonProtocolHandlerImpl<T1, T2> implements ProtocolHandler<T1, T2> 
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public T1 strToArg(String str) {
+	public T strToArg(String str) {
 		if (StringUtil.isEmpty(str))
 			throw new RuntimeException("parameters string can't null !");
 		if ("[]".equals(str))
@@ -67,11 +67,11 @@ public class JsonProtocolHandlerImpl<T1, T2> implements ProtocolHandler<T1, T2> 
 			objs[i] = isAppendQuotes(s) ? JSON.parseObject(new StringBuilder("\"").append(s).append("\"").toString(), c)
 					: JSON.parseObject(s, c);
 		}
-		return (T1) objs;
+		return (T) objs;
 	}
 
 	@Override
-	public String argToStr(T1 arg) {
+	public String argToStr(T arg) {
 		if (arg == null)
 			return "[]";
 		Object[] args = (Object[]) arg;
@@ -85,7 +85,7 @@ public class JsonProtocolHandlerImpl<T1, T2> implements ProtocolHandler<T1, T2> 
 	}
 
 	@Override
-	public String resultToStr(T2 result) {
+	public String resultToStr(R result) {
 		return result instanceof Throwable ? new StringBuilder(E).append(JSON.toJSONString(result)).toString()
 				: result != null ? new StringBuilder(result.getClass().getName()).append(CT)
 						.append(JSON.toJSONString(result)).toString() : VOID;
@@ -93,7 +93,7 @@ public class JsonProtocolHandlerImpl<T1, T2> implements ProtocolHandler<T1, T2> 
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public T2 strToResult(String str) {
+	public R strToResult(String str) {
 		if (str == null)
 			throw new RuntimeException("result string is null !");
 		if (VOID.equals(str))
@@ -102,12 +102,12 @@ public class JsonProtocolHandlerImpl<T1, T2> implements ProtocolHandler<T1, T2> 
 		if (strs.length != 2)
 			throw new RuntimeException("result json string error : " + str);
 		String resultStr = strs[1];
-		T2 result = null;
+		R result = null;
 		if (resultData.isArray()) {
 			if (!resultData.isContainerType() && (List.class.getName().equals(resultData.getClassType().getName())
 					|| Set.class.getName().equals(resultData.getClassType().getName())))
 				throw new RuntimeException("'List' or 'Set' must appoint type ! eg : 'List<String>' .");
-			result = (T2) JSON.parseArray(resultStr, resultData.getClassType());
+			result = (R) JSON.parseArray(resultStr, resultData.getClassType());
 		} else if (resultData.isMap()) {
 			if (!resultData.isContainerType() && (Map.class.getName().equals(resultData.getClassType().getName())
 					&& resultData.getClassTypes().length != 2))
@@ -116,13 +116,13 @@ public class JsonProtocolHandlerImpl<T1, T2> implements ProtocolHandler<T1, T2> 
 			Map<Object, Object> map = new HashMap<>(jsonMap.size());
 			for (String key : jsonMap.keySet())
 				map.put(key, JSON.parseObject(jsonMap.get(key).toString(), resultData.getClassTypes(1)));
-			result = (T2) map;
+			result = (R) map;
 		} else {
 			try {
 				// TODO: 暂时只有非集合类型才能识别真实数据类型
-				result = (T2) JSON.parseObject(resultStr, Class.forName(strs[0]));
+				result = (R) JSON.parseObject(resultStr, Class.forName(strs[0]));
 			} catch (Exception e) {
-				result = (T2) JSON.parseObject("{}", resultData.getClassType());
+				result = (R) JSON.parseObject("{}", resultData.getClassType());
 			}
 		}
 		return result;

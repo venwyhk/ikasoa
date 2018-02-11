@@ -195,7 +195,7 @@ public class DefaultIkasoaFactory extends GeneralFactory implements IkasoaFactor
 		try {
 			if (implObject == null)
 				implObject = implClass.newInstance();
-			ProtocolHandlerFactory<Object[], Object> protocolHandlerFactory = new ProtocolHandlerFactory<Object[], Object>();
+			ProtocolHandlerFactory<Object[], Object> protocolHandlerFactory = new ProtocolHandlerFactory<>();
 			for (Method implMethod : implClass.getMethods()) {
 				boolean isValidMethod = Boolean.FALSE;
 				// 对hashCode和toString两个方法做特殊处理
@@ -223,8 +223,8 @@ public class DefaultIkasoaFactory extends GeneralFactory implements IkasoaFactor
 	}
 
 	private <T> BaseGetServiceFactory<Object[], T> getBaseGetServiceFactory() {
-		BaseGetServiceFactory<Object[], T> bgsFactory = new BaseGetServiceFactory<Object[], T>(
-				super.thriftServerConfiguration, super.thriftClientConfiguration);
+		BaseGetServiceFactory<Object[], T> bgsFactory = new BaseGetServiceFactory<>(super.thriftServerConfiguration,
+				super.thriftClientConfiguration);
 		bgsFactory.setProtocolHandlerClass(configurator.getProtocolHandlerClass());
 		bgsFactory.setClientInvocationHandler(configurator.getClientInvocationHandler());
 		return bgsFactory;

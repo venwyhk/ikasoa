@@ -16,7 +16,7 @@ import com.ikasoa.rpc.utils.Base64Util;
  * @author <a href="mailto:larry7696@gmail.com">Larry</a>
  * @version 0.1
  */
-public class KryoProtocolHandlerImpl<T1, T2> implements ProtocolHandler<T1, T2> {
+public class KryoProtocolHandlerImpl<T, R> implements ProtocolHandler<T, R> {
 
 	/**
 	 * 空标识符
@@ -33,15 +33,15 @@ public class KryoProtocolHandlerImpl<T1, T2> implements ProtocolHandler<T1, T2> 
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public T1 strToArg(String str) {
-		return (T1) kryo.readObject(new Input(Base64Util.decode(str)), kryo.register(Object[].class).getType());
+	public T strToArg(String str) {
+		return (T) kryo.readObject(new Input(Base64Util.decode(str)), kryo.register(Object[].class).getType());
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public String argToStr(T1 arg) {
+	public String argToStr(T arg) {
 		if (arg == null)
-			arg = (T1) new Object[0];
+			arg = (T) new Object[0];
 		Output output = new Output(1, 4096);
 		kryo.writeObject(output, arg);
 		byte[] bb = output.toBytes();
@@ -50,7 +50,7 @@ public class KryoProtocolHandlerImpl<T1, T2> implements ProtocolHandler<T1, T2> 
 	}
 
 	@Override
-	public String resultToStr(T2 result) {
+	public String resultToStr(R result) {
 		if (result == null)
 			return VOID;
 		Output output = new Output(1, 4096);
@@ -62,16 +62,16 @@ public class KryoProtocolHandlerImpl<T1, T2> implements ProtocolHandler<T1, T2> 
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public T2 strToResult(String str) {
+	public R strToResult(String str) {
 		if (VOID.equals(str))
 			return null;
 		return resultData.isArray()
-				? (T2) kryo.readObject(new Input(Base64Util.decode(str)),
+				? (R) kryo.readObject(new Input(Base64Util.decode(str)),
 						kryo.register((new ArrayList<>()).getClass()).getType())
 				: resultData.isMap()
-						? (T2) kryo.readObject(new Input(Base64Util.decode(str)),
+						? (R) kryo.readObject(new Input(Base64Util.decode(str)),
 								kryo.register((new HashMap<>()).getClass()).getType())
-						: (T2) kryo.readObject(new Input(Base64Util.decode(str)),
+						: (R) kryo.readObject(new Input(Base64Util.decode(str)),
 								kryo.register(resultData.getClassType()).getType());
 	}
 

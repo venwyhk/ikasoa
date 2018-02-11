@@ -19,14 +19,14 @@ import com.ikasoa.rpc.handler.ReturnData;
  * @author <a href="mailto:larry7696@gmail.com">Larry</a>
  * @version 0.1
  */
-public class BaseGetServiceFactory<T1, T2> extends GeneralFactory {
+public class BaseGetServiceFactory<T, R> extends GeneralFactory {
 
 	private static final Logger LOG = LoggerFactory.getLogger(BaseGetServiceFactory.class);
 
 	@SuppressWarnings("rawtypes")
 	private Class<ProtocolHandler> protocolHandlerClass;
 
-	private ProtocolHandlerFactory<T1, T2> protocolHandlerFactory = new ProtocolHandlerFactory<T1, T2>();
+	private ProtocolHandlerFactory<T, R> protocolHandlerFactory = new ProtocolHandlerFactory<>();
 
 	private ClientInvocationHandler clientInvocationHandler;
 
@@ -46,22 +46,20 @@ public class BaseGetServiceFactory<T1, T2> extends GeneralFactory {
 		super(thriftServerConfiguration, thriftClientConfiguration);
 	}
 
-	public BaseGetService<T1, T2> getBaseGetService(ThriftClient thriftClient, String serviceKey,
-			ReturnData resultData) {
+	public BaseGetService<T, R> getBaseGetService(ThriftClient thriftClient, String serviceKey, ReturnData resultData) {
 		return getBaseGetService(thriftClient, serviceKey,
 				protocolHandlerFactory.getProtocolHandler(resultData, getProtocolHandlerClass()));
 	}
 
-	public BaseGetService<T1, T2> getBaseGetService(ThriftClient thriftClient, String serviceKey,
-			ProtocolHandler<T1, T2> protocolHandler) {
+	public BaseGetService<T, R> getBaseGetService(ThriftClient thriftClient, String serviceKey,
+			ProtocolHandler<T, R> protocolHandler) {
 		if (thriftClient == null) {
 			LOG.error("'thriftClient' is null !");
 			return null;
 		}
 		LOG.debug("Create new instance 'IkasoaClientService' . (serverHost : {}, serverPort : {}, serviceKey : {})",
 				thriftClient.getServerHost(), thriftClient.getServerPort(), serviceKey);
-		return new IkasoaClientService<T1, T2>(this, thriftClient, serviceKey, protocolHandler,
-				clientInvocationHandler);
+		return new IkasoaClientService<T, R>(this, thriftClient, serviceKey, protocolHandler, clientInvocationHandler);
 	}
 
 	@SuppressWarnings("rawtypes")

@@ -7,17 +7,17 @@ package com.ikasoa.rpc;
  * @version 0.1
  */
 @FunctionalInterface
-public interface BaseGetService<T1, T2> {
+public interface BaseGetService<T, R> {
 
 	/**
-	 * 获取默认的ThriftServer对象
+	 * 获取默认的服务对象
 	 * 
 	 * @param arg
 	 *            参数对象
-	 * @return T2 返回对象
+	 * @return R 返回对象
 	 * @exception Throwable
 	 *                抛出
 	 */
-	T2 get(T1 arg) throws Throwable;
+	R get(T arg) throws Throwable;
 
 }

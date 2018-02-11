@@ -15,7 +15,7 @@ public class TestProtocolHandler extends TestCase {
 	@Test
 	public void testJsonProtocolHandlerImpl() {
 
-		ProtocolHandlerFactory<Object[], ExampleVO> chf = new ProtocolHandlerFactory<Object[], ExampleVO>();
+		ProtocolHandlerFactory<Object[], ExampleVO> chf = new ProtocolHandlerFactory<>();
 		ReturnData rd = new ReturnData(ExampleVO.class);
 		ProtocolHandler<Object[], ExampleVO> ch = chf.getProtocolHandler(rd);
 
@@ -37,7 +37,7 @@ public class TestProtocolHandler extends TestCase {
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void testXmlProtocolHandlerImpl() throws ClassNotFoundException {
 
-		ProtocolHandlerFactory<Object[], ExampleVO> chf = new ProtocolHandlerFactory<Object[], ExampleVO>();
+		ProtocolHandlerFactory<Object[], ExampleVO> chf = new ProtocolHandlerFactory<>();
 		ReturnData rd = new ReturnData(ExampleVO.class);
 		Class protocolHandlerClass = Class.forName("com.ikasoa.rpc.handler.impl.XmlProtocolHandlerImpl");
 		ProtocolHandler<Object[], ExampleVO> ch = chf.getProtocolHandler(rd, protocolHandlerClass);
@@ -60,7 +60,7 @@ public class TestProtocolHandler extends TestCase {
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void testKryoProtocolHandlerImpl() throws ClassNotFoundException {
 
-		ProtocolHandlerFactory<Object[], ExampleVO> chf = new ProtocolHandlerFactory<Object[], ExampleVO>();
+		ProtocolHandlerFactory<Object[], ExampleVO> chf = new ProtocolHandlerFactory<>();
 		ReturnData rd = new ReturnData(ExampleVO.class);
 		Class protocolHandlerClass = Class.forName("com.ikasoa.rpc.handler.impl.KryoProtocolHandlerImpl");
 		ProtocolHandler<Object[], ExampleVO> ch = chf.getProtocolHandler(rd, protocolHandlerClass);

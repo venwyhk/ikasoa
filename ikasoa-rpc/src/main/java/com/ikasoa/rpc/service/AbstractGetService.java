@@ -12,9 +12,9 @@ import com.ikasoa.rpc.BaseGetService;
  * @author <a href="mailto:larry7696@gmail.com">Larry</a>
  * @version 0.1
  */
-public abstract class AbstractGetService<T1, T2> implements Service, BaseGetService<T1, T2> {
+public abstract class AbstractGetService<T, R> implements Service, BaseGetService<T, R> {
 
-	protected ProtocolHandler<T1, T2> protocolHandler;
+	protected ProtocolHandler<T, R> protocolHandler;
 
 	public AbstractGetService() {
 		// Do nothing

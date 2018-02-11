@@ -15,7 +15,7 @@ import com.ikasoa.rpc.handler.ProtocolHandler;
  * @author <a href="mailto:larry7696@gmail.com">Larry</a>
  * @version 0.1
  */
-public class IkasoaClientService<T1, T2> implements BaseGetService<T1, T2> {
+public class IkasoaClientService<T, R> implements BaseGetService<T, R> {
 
 	private Factory factory;
 
@@ -23,19 +23,19 @@ public class IkasoaClientService<T1, T2> implements BaseGetService<T1, T2> {
 
 	protected String serviceKey = null;
 
-	protected ProtocolHandler<T1, T2> protocolHandler;
+	protected ProtocolHandler<T, R> protocolHandler;
 
-	// TODO:larry
+	// TODO: Larry
 	protected ClientInvocationHandler invocationHandler;
 
-	public IkasoaClientService(Factory factory, ThriftClient thriftClient, ProtocolHandler<T1, T2> protocolHandler) {
+	public IkasoaClientService(Factory factory, ThriftClient thriftClient, ProtocolHandler<T, R> protocolHandler) {
 		this.factory = factory;
 		this.thriftClient = thriftClient;
 		this.protocolHandler = protocolHandler;
 	}
 
 	public IkasoaClientService(Factory factory, ThriftClient thriftClient, String serviceKey,
-			ProtocolHandler<T1, T2> protocolHandler, ClientInvocationHandler invocationHandler) {
+			ProtocolHandler<T, R> protocolHandler, ClientInvocationHandler invocationHandler) {
 		this.factory = factory;
 		this.thriftClient = thriftClient;
 		this.serviceKey = serviceKey;
@@ -44,7 +44,7 @@ public class IkasoaClientService<T1, T2> implements BaseGetService<T1, T2> {
 	}
 
 	@Override
-	public T2 get(T1 arg) throws Throwable {
+	public R get(T arg) throws Throwable {
 		ClientInvocationContext context = null;
 		if (invocationHandler != null) {
 			context = new ClientInvocationContext();
@@ -95,7 +95,7 @@ public class IkasoaClientService<T1, T2> implements BaseGetService<T1, T2> {
 		}
 		// 不是异常返回就返回正常值
 		try {
-			T2 result = protocolHandler.strToResult(resultStr);
+			R result = protocolHandler.strToResult(resultStr);
 			if (context != null && invocationHandler != null) {
 				context.setResultObject(result);
 				invocationHandler.after(context);

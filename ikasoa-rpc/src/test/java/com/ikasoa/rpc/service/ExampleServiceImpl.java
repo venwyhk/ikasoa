@@ -93,7 +93,7 @@ public class ExampleServiceImpl implements ExampleService {
 	@Override
 	public List<Map<String, Object>> testContainerType() {
 		List<Map<String, Object>> list = new ArrayList<>();
-		Map<String, Object> map = new HashMap<String, Object>();
+		Map<String, Object> map = new HashMap<>();
 		map.put("key", "value");
 		list.add(map);
 		return list;
