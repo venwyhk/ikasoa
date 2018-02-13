@@ -2,6 +2,7 @@ package com.ikasoa.rpc.handler.impl;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Optional;
 
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.io.Input;
@@ -40,8 +41,7 @@ public class KryoProtocolHandlerImpl<T, R> implements ProtocolHandler<T, R> {
 	@SuppressWarnings("unchecked")
 	@Override
 	public String argToStr(T arg) {
-		if (arg == null)
-			arg = (T) new Object[0];
+		arg = Optional.ofNullable(arg).orElse((T) new Object[0]);
 		Output output = new Output(1, 4096);
 		kryo.writeObject(output, arg);
 		byte[] bb = output.toBytes();

@@ -7,6 +7,7 @@ import java.io.BufferedOutputStream;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.Optional;
 
 import com.esotericsoftware.minlog.Log;
 import com.ikasoa.rpc.handler.ProtocolHandler;
@@ -50,7 +51,7 @@ public class XmlProtocolHandlerImpl<T, R> implements ProtocolHandler<T, R> {
 	@Override
 	public String resultToStr(R result) {
 		return result instanceof Throwable ? new StringBuilder(E).append(formatXML(result)).toString()
-				: result != null ? formatXML(result) : VOID;
+				: Optional.ofNullable(result).map(r -> formatXML(r)).orElse(VOID);
 	}
 
 	@Override

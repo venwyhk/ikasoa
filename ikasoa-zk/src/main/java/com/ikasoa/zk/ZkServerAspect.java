@@ -3,6 +3,7 @@ package com.ikasoa.zk;
 import java.net.InetAddress;
 import java.net.SocketException;
 import java.net.UnknownHostException;
+import java.util.Optional;
 
 import org.I0Itec.zkclient.ZkClient;
 import org.apache.thrift.TProcessor;
@@ -102,8 +103,7 @@ public class ZkServerAspect implements ServerAspect {
 				if (configuration.getProcessorFactory() != null)
 					zkSNObj.setTransportFactoryClassName(configuration.getProcessorFactory().getClass().getName());
 			}
-			if (processor != null)
-				zkSNObj.setProcessorClassName(processor.getClass().getName());
+			Optional.ofNullable(processor).ifPresent(p -> zkSNObj.setProcessorClassName(p.getClass().getName()));
 			LOG.debug("Create server node : {}", sNodeStr);
 			zkClient.createEphemeralSequential(sNodeStr, zkSNObj);
 		} catch (UnknownHostException e) {

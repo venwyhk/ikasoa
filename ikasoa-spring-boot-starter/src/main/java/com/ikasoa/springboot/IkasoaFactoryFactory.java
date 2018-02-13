@@ -1,5 +1,7 @@
 package com.ikasoa.springboot;
 
+import java.util.Optional;
+
 import com.ikasoa.rpc.Configurator;
 import com.ikasoa.rpc.DefaultIkasoaFactory;
 import com.ikasoa.rpc.IkasoaFactory;
@@ -24,11 +26,12 @@ public class IkasoaFactoryFactory {
 	}
 
 	public IkasoaFactory getIkasoaDefaultFactory() {
-		return configurator != null ? new DefaultIkasoaFactory(configurator) : new DefaultIkasoaFactory();
+		return Optional.ofNullable(configurator).map(c -> new DefaultIkasoaFactory(c))
+				.orElse(new DefaultIkasoaFactory());
 	}
 
 	public IkasoaFactory getIkasoaNettyFactory() {
-		return configurator != null ? new NettyIkasoaFactory(configurator) : new NettyIkasoaFactory();
+		return Optional.ofNullable(configurator).map(c -> new NettyIkasoaFactory(c)).orElse(new NettyIkasoaFactory());
 	}
 
 }

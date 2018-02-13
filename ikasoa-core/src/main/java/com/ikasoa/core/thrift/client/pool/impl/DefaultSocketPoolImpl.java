@@ -152,9 +152,8 @@ public class DefaultSocketPoolImpl implements SocketPool {
 			LOG.warn("Socket is null ! Again retry initiation pool .");
 			init(host, port);
 			return buildThriftSocket(host, port);
-		} else {
+		} else
 			return thriftSocket;
-		}
 	}
 
 	/**

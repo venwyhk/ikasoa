@@ -1,5 +1,7 @@
 package com.ikasoa.core.thrift.client.impl;
 
+import java.util.Optional;
+
 import org.apache.thrift.protocol.TMultiplexedProtocol;
 import org.apache.thrift.protocol.TProtocol;
 import org.apache.thrift.transport.TTransport;
@@ -75,10 +77,9 @@ public abstract class AbstractThriftClientImpl implements ThriftClient {
 
 	@Override
 	public TProtocol getProtocol(TTransport transport, String serviceName) {
-		if (serviceName != null)
-			return new TMultiplexedProtocol(getProtocol(transport), serviceName);
-		else
-			return getProtocol(transport);
+		return Optional.ofNullable(serviceName)
+				.map(sName -> (TProtocol) new TMultiplexedProtocol(getProtocol(transport), sName))
+				.orElseGet(() -> getProtocol(transport));
 	}
 
 	@Override
@@ -119,12 +120,11 @@ public abstract class AbstractThriftClientImpl implements ThriftClient {
 	}
 
 	protected ServerCheck getServerCheck(ServerCheck defaultServerCheck) {
-		if (serverCheck == null) {
+		if (serverCheck == null)
 			if (getThriftClientConfiguration().getServerCheck() == null)
 				serverCheck = defaultServerCheck;
 			else
 				serverCheck = getThriftClientConfiguration().getServerCheck();
-		}
 		return serverCheck;
 	}
 
@@ -133,15 +133,13 @@ public abstract class AbstractThriftClientImpl implements ThriftClient {
 	}
 
 	protected ServerCheckFailProcessor getServerCheckFailProcessor(ServerCheckFailProcessor defaultProcessor) {
-		if (serverCheckFailProcessor == null) {
+		if (serverCheckFailProcessor == null)
 			if (getThriftClientConfiguration().getServerCheckFailProcessor() == null) {
 				if (defaultProcessor == null)
 					LOG.warn("'defaultProcessor' is null !");
 				serverCheckFailProcessor = defaultProcessor;
-			} else {
+			} else
 				serverCheckFailProcessor = getThriftClientConfiguration().getServerCheckFailProcessor();
-			}
-		}
 		return serverCheckFailProcessor;
 	}
 

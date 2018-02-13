@@ -3,6 +3,7 @@ package com.ikasoa.rpc.handler.impl;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
 import com.alibaba.fastjson.JSON;
@@ -87,8 +88,8 @@ public class JsonProtocolHandlerImpl<T, R> implements ProtocolHandler<T, R> {
 	@Override
 	public String resultToStr(R result) {
 		return result instanceof Throwable ? new StringBuilder(E).append(JSON.toJSONString(result)).toString()
-				: result != null ? new StringBuilder(result.getClass().getName()).append(CT)
-						.append(JSON.toJSONString(result)).toString() : VOID;
+				: Optional.ofNullable(result).map(r -> new StringBuilder(r.getClass().getName()).append(CT)
+						.append(JSON.toJSONString(r)).toString()).orElse(VOID);
 	}
 
 	@Override

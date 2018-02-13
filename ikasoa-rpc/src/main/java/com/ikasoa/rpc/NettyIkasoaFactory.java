@@ -45,10 +45,7 @@ public class NettyIkasoaFactory extends DefaultIkasoaFactory {
 
 	public NettyIkasoaFactory(NettyServerConfig nettyServerConfig, ChannelGroup channelGroup) {
 		this.nettyServerConfig = nettyServerConfig;
-		if (channelGroup == null)
-			this.channelGroup = new DefaultChannelGroup();
-		else
-			this.channelGroup = channelGroup;
+		this.channelGroup = channelGroup == null ? new DefaultChannelGroup() : channelGroup;
 	}
 
 	@Override

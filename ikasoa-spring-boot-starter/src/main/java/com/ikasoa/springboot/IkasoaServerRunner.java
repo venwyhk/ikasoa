@@ -1,5 +1,7 @@
 package com.ikasoa.springboot;
 
+import java.util.Optional;
+
 import javax.annotation.PreDestroy;
 
 import org.slf4j.Logger;
@@ -49,8 +51,7 @@ public abstract class IkasoaServerRunner implements CommandLineRunner {
 
 	@PreDestroy
 	public void destory() {
-		if (server != null)
-			server.stop();
+		Optional.ofNullable(server).ifPresent(s -> s.stop());
 	}
 
 }

@@ -1,5 +1,6 @@
 package com.ikasoa.core.thrift.server.impl;
 
+import java.util.Optional;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -115,9 +116,8 @@ public abstract class AbstractThriftServerImpl implements ThriftServer {
 			}
 			server.serve();
 			LOG.info("Starting server ...... (name : {} , port : {})", serverName, serverPort);
-		} else {
+		} else
 			LOG.warn("Startup server failed !");
-		}
 	}
 
 	/**
@@ -145,29 +145,28 @@ public abstract class AbstractThriftServerImpl implements ThriftServer {
 			executorService = null;
 			LOG.info("Stoping server ...... (name: {})", serverName);
 			afterStop(getThriftServerConfiguration().getServerAspect());
-		} else {
+		} else
 			LOG.info("Server not run. (name: {})", serverName);
-		}
 	}
 
 	private void beforeStart(ServerAspect serverAspect) {
-		if (serverAspect != null)
-			serverAspect.beforeStart(serverName, serverPort, configuration, processor, this);
+		Optional.ofNullable(serverAspect)
+				.ifPresent(sAspect -> sAspect.beforeStart(serverName, serverPort, configuration, processor, this));
 	}
 
 	private void afterStart(ServerAspect serverAspect) {
-		if (serverAspect != null)
-			serverAspect.afterStart(serverName, serverPort, configuration, processor, this);
+		Optional.ofNullable(serverAspect)
+				.ifPresent(sAspect -> sAspect.afterStart(serverName, serverPort, configuration, processor, this));
 	}
 
 	private void beforeStop(ServerAspect serverAspect) {
-		if (serverAspect != null)
-			serverAspect.beforeStop(serverName, serverPort, configuration, processor, this);
+		Optional.ofNullable(serverAspect)
+				.ifPresent(sAspect -> sAspect.beforeStop(serverName, serverPort, configuration, processor, this));
 	}
 
 	private void afterStop(ServerAspect serverAspect) {
-		if (serverAspect != null)
-			serverAspect.afterStop(serverName, serverPort, configuration, processor, this);
+		Optional.ofNullable(serverAspect)
+				.ifPresent(sAspect -> sAspect.afterStop(serverName, serverPort, configuration, processor, this));
 	}
 
 	@Override
