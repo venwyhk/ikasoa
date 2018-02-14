@@ -25,7 +25,7 @@ public abstract class IkasoaServerRunner implements CommandLineRunner {
 	/**
 	 * 启动服务等待时间(毫秒)
 	 */
-	private final static int WAIT_TIME = 500;
+	private final static int WAIT_TIME = 1000;
 
 	@Autowired
 	protected IkasoaServer server;
