@@ -43,7 +43,7 @@ pom.xml
     <dependency>
         <groupId>com.ikasoa</groupId>
         <artifactId>ikasoa-core</artifactId>
-        <version>0.5.1</version>
+        <version>0.5.2</version>
     </dependency>
     ......
 ```
