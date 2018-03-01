@@ -17,10 +17,7 @@ import com.ikasoa.core.utils.StringUtil;
 public class LocalUtil {
 
 	public static String getLocalIP() throws UnknownHostException, SocketException {
-		if (isWindowsOS())
-			return InetAddress.getLocalHost().getHostAddress();
-		else
-			return getLinuxLocalIp();
+		return isWindowsOS() ? InetAddress.getLocalHost().getHostAddress() : getLinuxLocalIp();
 	}
 
 	private static boolean isWindowsOS() {
