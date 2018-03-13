@@ -27,12 +27,10 @@ pom.xml
     <dependency>
         <groupId>com.ikasoa</groupId>
         <artifactId>ikasoa-spring-boot-starter</artifactId>
-        <version>0.0.1-SNAPSHOT</version>
+        <version>0.0.1-ALPHA</version>
     </dependency>
     ......
 ```
-
-  *需先下载源码并执行命令`mvn install`安装到本地maven库.*
 
 ## application.properties设置说明 ##
 
