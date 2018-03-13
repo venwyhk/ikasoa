@@ -1,7 +1,7 @@
 title: ikasoa
 description: ikasoa是基于apache-thrift框架的java服务化治理解决方案.其中ikasoa-rpc是ikasoa的开源RPC框架,客户端可以像调用本地接口那样去调用远程接口.
 google_analytics: 
-show_downloads: true
+show_downloads: false
 theme: jekyll-theme-dinky
 
 gems:
