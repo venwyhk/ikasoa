@@ -1,0 +1,19 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.ikasoa</groupId>
+    <artifactId>ikasoa</artifactId>
+    <version>18.0316</version>
+    <packaging>pom</packaging>
+    <name>Ikasoa</name>
+    <description>ikasoa is a java distributed service framework.</description>
+    <url>http://ikasoa.com/</url>
+    
+    <modules>
+        <module>ikasoa-core</module>
+        <module>ikasoa-rpc</module>
+        <module>ikasoa-zk</module>
+        <module>ikasoa-spring-boot-starter</module>
+    </modules>
+    
+</project>
