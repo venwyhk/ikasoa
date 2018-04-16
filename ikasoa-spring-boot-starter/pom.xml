@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.ikasoa</groupId>
     <artifactId>ikasoa-spring-boot-starter</artifactId>
-    <version>0.0.1-ALPHA</version>
+    <version>0.1-ALPHA</version>
     <packaging>jar</packaging>
     <name>Ikasoa Spring-boot Starter</name>
     <description>ikasoa is a java distributed service framework.</description>

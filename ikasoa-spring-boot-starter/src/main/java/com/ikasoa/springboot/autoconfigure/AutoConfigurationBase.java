@@ -1,5 +1,7 @@
 package com.ikasoa.springboot.autoconfigure;
 
+import java.util.Optional;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -8,6 +10,7 @@ import org.springframework.context.annotation.Configuration;
 import com.ikasoa.core.utils.ServerUtil;
 import com.ikasoa.core.utils.StringUtil;
 import com.ikasoa.rpc.Configurator;
+import com.ikasoa.rpc.DefaultIkasoaFactory;
 import com.ikasoa.rpc.IkasoaException;
 import com.ikasoa.springboot.IkasoaFactoryFactory;
 
@@ -48,8 +51,7 @@ public class AutoConfigurationBase {
 	}
 
 	protected IkasoaFactoryFactory getIkasoaFactoryFactory() {
-		Configurator configurator = getConfigurator();
-		return configurator != null ? new IkasoaFactoryFactory(configurator) : new IkasoaFactoryFactory();
+		return new IkasoaFactoryFactory(getConfigurator());
 	}
 
 	protected String getHost() throws IkasoaException {
