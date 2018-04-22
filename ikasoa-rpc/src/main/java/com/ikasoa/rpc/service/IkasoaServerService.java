@@ -9,6 +9,9 @@ import org.slf4j.LoggerFactory;
 import com.ikasoa.rpc.IkasoaException;
 import com.ikasoa.rpc.handler.ProtocolHandler;
 
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  * IKASOA服务端服务实现
  * 
@@ -19,8 +22,12 @@ public class IkasoaServerService extends AbstractGetService<Object[], Object> {
 
 	private static final Logger LOG = LoggerFactory.getLogger(IkasoaServerService.class);
 
+	@Getter
+	@Setter
 	private Object classObj;
 
+	@Getter
+	@Setter
 	private Method method;
 
 	public IkasoaServerService(Object classObj, Method method, ProtocolHandler<Object[], Object> protocolHandler) {
@@ -52,22 +59,6 @@ public class IkasoaServerService extends AbstractGetService<Object[], Object> {
 			LOG.debug(e.getTargetException().toString());
 			return e.getTargetException();
 		}
-	}
-
-	public Object getClassObj() {
-		return classObj;
-	}
-
-	public void setClassObj(Object classObj) {
-		this.classObj = classObj;
-	}
-
-	public Method getMethod() {
-		return method;
-	}
-
-	public void setMethod(Method method) {
-		this.method = method;
 	}
 
 }

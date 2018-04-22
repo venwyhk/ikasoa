@@ -13,6 +13,10 @@ import com.ikasoa.rpc.handler.ClientInvocationHandler;
 import com.ikasoa.rpc.handler.ProtocolHandler;
 import com.ikasoa.rpc.handler.ReturnData;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 /**
  * 基础服务工厂
  * 
@@ -23,15 +27,16 @@ public class BaseGetServiceFactory<T, R> extends GeneralFactory {
 
 	private static final Logger LOG = LoggerFactory.getLogger(BaseGetServiceFactory.class);
 
+	private ProtocolHandlerFactory<T, R> protocolHandlerFactory = new ProtocolHandlerFactory<>();
+
+	@Getter
+	@Setter
 	@SuppressWarnings("rawtypes")
 	private Class<ProtocolHandler> protocolHandlerClass;
 
-	private ProtocolHandlerFactory<T, R> protocolHandlerFactory = new ProtocolHandlerFactory<>();
-
+	@Getter
+	@Setter
 	private ClientInvocationHandler clientInvocationHandler;
-
-	public BaseGetServiceFactory() {
-	}
 
 	public BaseGetServiceFactory(ThriftServerConfiguration thriftServerConfiguration) {
 		super(thriftServerConfiguration);
@@ -60,24 +65,6 @@ public class BaseGetServiceFactory<T, R> extends GeneralFactory {
 		LOG.debug("Create new instance 'IkasoaClientService' . (serverHost : {}, serverPort : {}, serviceKey : {})",
 				thriftClient.getServerHost(), thriftClient.getServerPort(), serviceKey);
 		return new IkasoaClientService<T, R>(this, thriftClient, serviceKey, protocolHandler, clientInvocationHandler);
-	}
-
-	@SuppressWarnings("rawtypes")
-	public Class<ProtocolHandler> getProtocolHandlerClass() {
-		return protocolHandlerClass;
-	}
-
-	@SuppressWarnings("rawtypes")
-	public void setProtocolHandlerClass(Class<ProtocolHandler> protocolHandlerClass) {
-		this.protocolHandlerClass = protocolHandlerClass;
-	}
-
-	public ClientInvocationHandler getClientInvocationHandler() {
-		return clientInvocationHandler;
-	}
-
-	public void setClientInvocationHandler(ClientInvocationHandler clientInvocationHandler) {
-		this.clientInvocationHandler = clientInvocationHandler;
 	}
 
 }

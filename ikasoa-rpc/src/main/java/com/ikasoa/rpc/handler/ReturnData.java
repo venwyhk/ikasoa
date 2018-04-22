@@ -9,12 +9,15 @@ import java.util.Set;
 
 import com.ikasoa.core.utils.StringUtil;
 
+import lombok.Data;
+
 /**
  * 返回数据对象
  * 
  * @author <a href="mailto:larry7696@gmail.com">Larry</a>
  * @version 0.1
  */
+@Data
 public class ReturnData {
 
 	/**
@@ -93,44 +96,12 @@ public class ReturnData {
 		return getExcetionClassTypes() != null && getExcetionClassTypes().length > 0;
 	}
 
-	public String getClassName() {
-		return className;
-	}
-
-	public void setClassName(String className) {
-		this.className = className;
-	}
-
-	public Class<?>[] getClassTypes() {
-		return classTypes;
-	}
-
 	public Class<?> getClassType() {
 		return getClassTypes(0);
 	}
 
 	public Class<?> getClassTypes(int k) {
 		return getClassTypes() != null && getClassTypes().length > k ? getClassTypes()[k] : Object.class;
-	}
-
-	public void setClassTypes(Class<?>[] classTypes) {
-		this.classTypes = classTypes;
-	}
-
-	public Class<?>[] getExcetionClassTypes() {
-		return excetionClassTypes;
-	}
-
-	public void setExcetionClassTypes(Class<?>[] excetionClassTypes) {
-		this.excetionClassTypes = excetionClassTypes;
-	}
-
-	public boolean isContainerType() {
-		return isContainerType;
-	}
-
-	public void setContainerType(boolean isContainerType) {
-		this.isContainerType = isContainerType;
 	}
 
 	private String getClassNameByTypeName(String ClassTypeName) {

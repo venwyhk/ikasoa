@@ -1,11 +1,14 @@
 package com.ikasoa.rpc.handler;
 
+import lombok.Data;
+
 /**
  * 客户端拦截器上下文对象
  * 
  * @author <a href="mailto:larry7696@gmail.com">Larry</a>
  * @version 0.1
  */
+@Data
 public class ClientInvocationContext {
 
 	/**
@@ -42,64 +45,5 @@ public class ClientInvocationContext {
 	 * 返回值列化后前的字符串
 	 */
 	private String resultStr;
-
-	public ClientInvocationContext() {
-	}
-
-	public String getServerHost() {
-		return serverHost;
-	}
-
-	public void setServerHost(String serverHost) {
-		this.serverHost = serverHost;
-	}
-
-	public int getServerPort() {
-		return serverPort;
-	}
-
-	public void setServerPort(int serverPort) {
-		this.serverPort = serverPort;
-	}
-
-	public String getServiceKey() {
-		return serviceKey;
-	}
-
-	public void setServiceKey(String serviceKey) {
-		this.serviceKey = serviceKey;
-	}
-
-	public Object getArgObject() {
-		return argObject;
-	}
-
-	public void setArgObject(Object argObject) {
-		this.argObject = argObject;
-	}
-
-	public String getArgStr() {
-		return argStr;
-	}
-
-	public void setArgStr(String argStr) {
-		this.argStr = argStr;
-	}
-
-	public Object getResultObject() {
-		return resultObject;
-	}
-
-	public void setResultObject(Object resultObject) {
-		this.resultObject = resultObject;
-	}
-
-	public String getResultStr() {
-		return resultStr;
-	}
-
-	public void setResultStr(String resultStr) {
-		this.resultStr = resultStr;
-	}
 
 }

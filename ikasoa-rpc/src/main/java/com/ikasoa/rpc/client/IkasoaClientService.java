@@ -9,6 +9,9 @@ import com.ikasoa.rpc.handler.ClientInvocationContext;
 import com.ikasoa.rpc.handler.ClientInvocationHandler;
 import com.ikasoa.rpc.handler.ProtocolHandler;
 
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  * 客户端服务
  * 
@@ -19,6 +22,8 @@ public class IkasoaClientService<T, R> implements BaseGetService<T, R> {
 
 	private Factory factory;
 
+	@Getter
+	@Setter
 	private ThriftClient thriftClient;
 
 	protected String serviceKey = null;
@@ -105,14 +110,6 @@ public class IkasoaClientService<T, R> implements BaseGetService<T, R> {
 		} catch (Throwable t) {
 			throw new IkasoaException("Execute 'strToResult' function exception !", t);
 		}
-	}
-
-	public ThriftClient getThriftClient() {
-		return thriftClient;
-	}
-
-	public void setThriftClient(ThriftClient thriftClient) {
-		this.thriftClient = thriftClient;
 	}
 
 }

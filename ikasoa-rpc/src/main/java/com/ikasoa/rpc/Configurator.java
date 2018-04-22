@@ -5,12 +5,17 @@ import com.ikasoa.core.thrift.server.ThriftServerConfiguration;
 import com.ikasoa.rpc.handler.ClientInvocationHandler;
 import com.ikasoa.rpc.handler.ProtocolHandler;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 /**
  * 配置信息
  * 
  * @author <a href="mailto:larry7696@gmail.com">Larry</a>
  * @version 0.1
  */
+@Data
+@NoArgsConstructor
 public class Configurator {
 
 	/**
@@ -39,54 +44,9 @@ public class Configurator {
 	 */
 	private boolean isNonBlockingIO = Boolean.FALSE;
 
-	public Configurator() {
-	}
-
 	@SuppressWarnings("rawtypes")
 	public Configurator(Class<ProtocolHandler> protocolHandlerClass) {
 		this.protocolHandlerClass = protocolHandlerClass;
-	}
-
-	public ThriftServerConfiguration getThriftServerConfiguration() {
-		return thriftServerConfiguration;
-	}
-
-	public void setThriftServerConfiguration(ThriftServerConfiguration thriftServerConfiguration) {
-		this.thriftServerConfiguration = thriftServerConfiguration;
-	}
-
-	public ThriftClientConfiguration getThriftClientConfiguration() {
-		return thriftClientConfiguration;
-	}
-
-	public void setThriftClientConfiguration(ThriftClientConfiguration thriftClientConfiguration) {
-		this.thriftClientConfiguration = thriftClientConfiguration;
-	}
-
-	@SuppressWarnings("rawtypes")
-	public Class<ProtocolHandler> getProtocolHandlerClass() {
-		return protocolHandlerClass;
-	}
-
-	@SuppressWarnings("rawtypes")
-	public void setProtocolHandlerClass(Class<ProtocolHandler> protocolHandlerClass) {
-		this.protocolHandlerClass = protocolHandlerClass;
-	}
-
-	public ClientInvocationHandler getClientInvocationHandler() {
-		return clientInvocationHandler;
-	}
-
-	public void setClientInvocationHandler(ClientInvocationHandler clientInvocationHandler) {
-		this.clientInvocationHandler = clientInvocationHandler;
-	}
-
-	public boolean isNonBlockingIO() {
-		return isNonBlockingIO;
-	}
-
-	public void setNonBlockingIO(boolean isNonBlockingIO) {
-		this.isNonBlockingIO = isNonBlockingIO;
 	}
 
 }

@@ -5,6 +5,7 @@ import java.lang.reflect.Proxy;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.apache.thrift.TProcessor;
 import org.slf4j.Logger;
@@ -18,10 +19,13 @@ import com.ikasoa.core.thrift.client.ThriftClientConfiguration;
 import com.ikasoa.core.thrift.server.ThriftServer;
 import com.ikasoa.core.thrift.server.ThriftServerConfiguration;
 import com.ikasoa.core.thrift.service.Service;
+import com.ikasoa.rpc.annotation.IkasoaService;
 import com.ikasoa.rpc.handler.ProtocolHandlerFactory;
 import com.ikasoa.rpc.handler.ReturnData;
 import com.ikasoa.rpc.service.IkasoaServerService;
 import com.ikasoa.rpc.service.impl.IkasoaServerImpl;
+
+import lombok.NoArgsConstructor;
 
 /**
  * 默认IKASOA服务工厂
@@ -29,15 +33,12 @@ import com.ikasoa.rpc.service.impl.IkasoaServerImpl;
  * @author <a href="mailto:larry7696@gmail.com">Larry</a>
  * @version 0.1
  */
+@NoArgsConstructor
 public class DefaultIkasoaFactory extends GeneralFactory implements IkasoaFactory {
 
 	private static final Logger LOG = LoggerFactory.getLogger(DefaultIkasoaFactory.class);
 
 	private Configurator configurator = new Configurator();
-
-	public DefaultIkasoaFactory() {
-		// Do nothing
-	}
 
 	public DefaultIkasoaFactory(ThriftServerConfiguration thriftServerConfiguration) {
 		super.thriftServerConfiguration = thriftServerConfiguration;
@@ -239,13 +240,14 @@ public class DefaultIkasoaFactory extends GeneralFactory implements IkasoaFactor
 				if (!m1.getParameterTypes()[i].getName().equals(m2.getParameterTypes()[i].getName()))
 					return Boolean.FALSE;
 			return Boolean.TRUE;
-		} else {
+		} else
 			return Boolean.FALSE;
-		}
 	}
 
 	private String getSKey(Class<?> iClass, Method method) {
-		return new ServiceKey(iClass, method).toString();
+		return Optional.ofNullable(iClass.getAnnotation(IkasoaService.class))
+				.map(is -> new ServiceKey(is.name(), method).toString())
+				.orElse(new ServiceKey(iClass, method).toString());
 	}
 
 }

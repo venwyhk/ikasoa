@@ -18,13 +18,13 @@ import com.ikasoa.rpc.utils.Base64Util;
  * @version 0.1
  */
 public class KryoProtocolHandlerImpl<T, R> implements ProtocolHandler<T, R> {
+	
+	private ReturnData resultData;
 
 	/**
 	 * 空标识符
 	 */
 	private final static String VOID = "_VOID_";
-
-	private ReturnData resultData;
 
 	private Kryo kryo = new Kryo();
 

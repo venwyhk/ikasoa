@@ -16,10 +16,6 @@ public abstract class AbstractGetService<T, R> implements Service, BaseGetServic
 
 	protected ProtocolHandler<T, R> protocolHandler;
 
-	public AbstractGetService() {
-		// Do nothing
-	}
-
 	@Override
 	public String get(String argStr) throws STException {
 		if (protocolHandler == null)
