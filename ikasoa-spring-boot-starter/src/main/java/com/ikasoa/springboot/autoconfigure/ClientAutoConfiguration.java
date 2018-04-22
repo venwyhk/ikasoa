@@ -19,4 +19,5 @@ public class ClientAutoConfiguration extends AutoConfigurationBase {
 	public IkasoaServiceFactory getServiceFactory() throws IkasoaException {
 		return new IkasoaServiceFactory(getHost(), getPort(), getIkasoaFactoryFactory());
 	}
+	
 }

@@ -1,10 +1,15 @@
 package com.ikasoa.springboot.autoconfigure;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeansException;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -21,9 +26,11 @@ import com.ikasoa.rpc.ImplClsCon;
  * @version 0.1
  */
 @Configuration
-public class ServerAutoConfiguration extends AutoConfigurationBase {
+public class ServerAutoConfiguration extends AutoConfigurationBase implements ApplicationContextAware {
 
 	private static final Logger LOG = LoggerFactory.getLogger(ServerAutoConfiguration.class);
+
+	private ApplicationContext applicationContext;
 
 	@Bean
 	public IkasoaServer getServer() throws IkasoaException {
@@ -31,18 +38,22 @@ public class ServerAutoConfiguration extends AutoConfigurationBase {
 	}
 
 	private IkasoaServer getServer(IkasoaFactory factory) throws IkasoaException {
-		if (StringUtil.isEmpty(serviceImplClasses))
-			throw new IkasoaException("Server service impl classes (${ikasoa.server.service.implClasses}) is null !");
-		String[] serviceImplStrs = serviceImplClasses.split(",");
+		if (StringUtil.isEmpty(names))
+			throw new IkasoaException("Server service names (${ikasoa.server.service.names}) is null !");
+		String[] nameStrs = names.split(",");
 		List<ImplClsCon> implClsConList = new ArrayList<>();
-		try {
-			for (String serviceImplStr : serviceImplStrs) {
-				LOG.debug("Add ikasoa service : {}", serviceImplStr);
-				implClsConList.add(new ImplClsCon(Class.forName(serviceImplStr)));
-			}
-			return factory.getIkasoaServer(implClsConList, getPort());
-		} catch (ClassNotFoundException e) {
-			throw new RuntimeException(e);
+		for (String name : nameStrs) {
+			LOG.debug("Add ikasoa service : {}", name);
+			ImplClsCon icc = applicationContext != null && applicationContext.getBean(name) != null
+					? new ImplClsCon(applicationContext.getBean(name).getClass()) : null;
+			Optional.ofNullable(icc).map(i -> implClsConList.add(i)).orElseThrow(IkasoaException::new);
 		}
+		return factory.getIkasoaServer(implClsConList, getPort());
 	}
+
+	@Override
+	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+		this.applicationContext = applicationContext;
+	}
+
 }

@@ -1,7 +1,5 @@
 package com.ikasoa.springboot.autoconfigure;
 
-import java.util.Optional;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -10,7 +8,6 @@ import org.springframework.context.annotation.Configuration;
 import com.ikasoa.core.utils.ServerUtil;
 import com.ikasoa.core.utils.StringUtil;
 import com.ikasoa.rpc.Configurator;
-import com.ikasoa.rpc.DefaultIkasoaFactory;
 import com.ikasoa.rpc.IkasoaException;
 import com.ikasoa.springboot.IkasoaFactoryFactory;
 
@@ -31,15 +28,15 @@ public class AutoConfigurationBase {
 	@Value("${ikasoa.server.port:9999}")
 	protected String port;
 
-	@Value("${ikasoa.server.service.implClasses}")
-	protected String serviceImplClasses;
+	@Value("${ikasoa.server.names}")
+	protected String names;
 
-	@Value("${ikasoa.configClass:com.ikasoa.rpc.Configurator}")
-	protected String configuratorClass;
+	@Value("${ikasoa.configurator:com.ikasoa.rpc.Configurator}")
+	protected String configurator;
 
 	protected Configurator getConfigurator() {
 		try {
-			return (Configurator) Class.forName(configuratorClass).newInstance();
+			return (Configurator) Class.forName(configurator).newInstance();
 		} catch (ClassNotFoundException e) {
 			LOG.warn(e.getMessage());
 		} catch (InstantiationException e) {

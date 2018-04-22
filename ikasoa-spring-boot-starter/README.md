@@ -27,7 +27,7 @@ pom.xml
     <dependency>
         <groupId>com.ikasoa</groupId>
         <artifactId>ikasoa-spring-boot-starter</artifactId>
-        <version>0.0.1-ALPHA</version>
+        <version>0.1-ALPHA</version>
     </dependency>
     ......
 ```
@@ -54,13 +54,13 @@ pom.xml
     <td>必须为1024到65535之间的数值.</td>
   </tr>
   <tr>
-    <td>ikasoa.server.service.implClasses</td>
-    <td>服务实现类地址</td>
+    <td>ikasoa.server.names</td>
+    <td>服务名称</td>
     <td>(无)</td>
-    <td>服务端设置时必填,多个实现类以","分隔.</td>
+    <td>服务端设置时必填,可由@Service注解定义,多个服务名称以","分隔.</td>
   </tr>
   <tr>
-    <td>ikasoa.configClass</td>
+    <td>ikasoa.configurator</td>
     <td>服务配置类地址</td>
     <td>com.ikasoa.rpc.Configurator</td>
     <td>可继承Configurator实现高级设置.</td>
@@ -75,11 +75,11 @@ application.properties
 
 ```
     ......
-    ikasoa.server.service.implClasses=com.ikasoa.example.rpc.ExampleServiceImpl
+    ikasoa.server.names=exampleService
     ......
 ```
 
-  服务端必须在application.properties中设置ikasoa.server.service.implClasses属性,该属性为允许远程调用的接口实现类,如有多个实现类以","分隔.
+  服务端必须在application.properties中设置ikasoa.server.names属性,该属性为允许远程调用的接口实现类名称(对应注解:@Service("exampleService")).如有多个实现类以","分隔.
 
 ServerStartupRunner.java
 
