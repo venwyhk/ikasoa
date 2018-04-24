@@ -119,7 +119,7 @@ ServerStartupRunner.java
     ......
 ```
 
-  如果调用远程服务,至少需在application.properties设置ikasoa.server.host和ikasoa.server.port属性,与服务端匹配.
+  如果调用远程服务,需在application.properties设置ikasoa.server.host和ikasoa.server.port属性,并与服务端匹配.
 
 ## License ##
 
