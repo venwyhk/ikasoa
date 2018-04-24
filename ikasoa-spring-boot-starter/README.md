@@ -87,6 +87,7 @@ application.properties
 ```
 
   服务端须在application.properties中设置ikasoa.server.names(或ikasoa.server.classes)属性,该属性为允许远程调用的接口实现类名称(或类路径).如有多个可以","分隔.
+  
   其中类名对应注解:@Service("exampleService")中定义的名称.
 
 ServerStartupRunner.java
