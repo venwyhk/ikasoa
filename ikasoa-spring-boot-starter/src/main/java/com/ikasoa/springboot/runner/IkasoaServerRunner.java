@@ -13,7 +13,7 @@ import com.ikasoa.rpc.IkasoaException;
 import com.ikasoa.rpc.IkasoaServer;
 
 /**
- * IKASOA服务Runner类
+ * IKASOA服务器Runner类
  * 
  * @author <a href="mailto:larry7696@gmail.com">Larry</a>
  * @version 0.1
@@ -22,13 +22,12 @@ public abstract class IkasoaServerRunner implements CommandLineRunner {
 
 	private static final Logger LOG = LoggerFactory.getLogger(IkasoaServerRunner.class);
 
-	/**
-	 * 启动服务等待时间(毫秒)
-	 */
-	private final static int WAIT_TIME = 1000;
-
 	@Autowired
 	protected IkasoaServer server;
+
+	protected long getRunWaitTime() throws IkasoaException {
+		return 1000L;
+	};
 
 	protected void complete(String... args) throws IkasoaException {
 	};
@@ -41,7 +40,7 @@ public abstract class IkasoaServerRunner implements CommandLineRunner {
 		if (server == null)
 			throw new IkasoaException("Ikasoa server initialize failed !");
 		server.run();
-		Thread.sleep(WAIT_TIME);
+		Thread.sleep(getRunWaitTime());
 		if (server.isServing()) {
 			LOG.info("Ikasoa server startup success . ({})", server.getServerName());
 			complete(args);
