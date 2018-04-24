@@ -30,9 +30,11 @@ public abstract class IkasoaServerRunner implements CommandLineRunner {
 	@Autowired
 	protected IkasoaServer server;
 
-	protected abstract void complete(String... args) throws IkasoaException;
+	protected void complete(String... args) throws IkasoaException {
+	};
 
-	protected abstract void fail(String... args) throws IkasoaException;
+	protected void fail(String... args) throws IkasoaException {
+	};
 
 	@Override
 	public void run(String... args) throws IkasoaException, InterruptedException {

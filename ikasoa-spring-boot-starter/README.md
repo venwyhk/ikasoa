@@ -85,22 +85,10 @@ ServerStartupRunner.java
 
 ```java
     import org.springframework.stereotype.Component;
-    import com.ikasoa.rpc.IkasoaException;
     import com.ikasoa.springboot.IkasoaServerRunner;
 
     @Component
     public class ServerStartupRunner extends IkasoaServerRunner {
-
-        @Override
-        protected void complete(String... args) throws IkasoaException {
-            // 服务启动成功后执行
-        }
-
-        @Override
-        protected void fail(String... args) throws IkasoaException {
-            // 服务启动失败后执行
-        }
-
     }
 ```
 
@@ -111,13 +99,13 @@ ServerStartupRunner.java
 ```java
     ......
     import org.springframework.beans.factory.annotation.Autowired;
-    import com.ikasoa.springboot.IkasoaServiceFactory;
+    import com.ikasoa.springboot.IkasoaServiceProxy;
     import com.ikasoa.example.rpc.ExampleService;
     ......
     @Autowired
-    IkasoaServiceFactory factory;
+    IkasoaServiceProxy proxy;
     ......
-    ExampleService es = factory.getDefaultService(ExampleService.class);
+    ExampleService es = proxy.getDefaultService(ExampleService.class);
     System.out.println(es.findVO(1).getString());
     ......
 ```

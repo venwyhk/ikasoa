@@ -1,7 +1,6 @@
 package com.ikasoa.springboot.autoconfigure;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,7 +25,7 @@ import com.ikasoa.rpc.ImplClsCon;
  * @version 0.1
  */
 @Configuration
-public class ServerAutoConfiguration extends AutoConfigurationBase implements ApplicationContextAware {
+public class ServerAutoConfiguration extends AbstractAutoConfiguration implements ApplicationContextAware {
 
 	private static final Logger LOG = LoggerFactory.getLogger(ServerAutoConfiguration.class);
 
@@ -44,9 +43,13 @@ public class ServerAutoConfiguration extends AutoConfigurationBase implements Ap
 		List<ImplClsCon> implClsConList = new ArrayList<>();
 		for (String name : nameStrs) {
 			LOG.debug("Add ikasoa service : {}", name);
-			ImplClsCon icc = applicationContext != null && applicationContext.getBean(name) != null
-					? new ImplClsCon(applicationContext.getBean(name).getClass()) : null;
-			Optional.ofNullable(icc).map(i -> implClsConList.add(i)).orElseThrow(IkasoaException::new);
+			try {
+				ImplClsCon icc = applicationContext != null && applicationContext.getBean(name) != null
+						? new ImplClsCon(applicationContext.getBean(name).getClass()) : null;
+				Optional.ofNullable(icc).map(i -> implClsConList.add(i)).orElseThrow(IkasoaException::new);
+			} catch (Exception e) {
+				LOG.debug(e.getMessage());
+			}
 		}
 		return factory.getIkasoaServer(implClsConList, getPort());
 	}

@@ -32,7 +32,7 @@ public class TestAutoConfigurationBase extends TestCase {
 		}
 	}
 
-	class TestAutoConfiguration extends AutoConfigurationBase {
+	class TestAutoConfiguration extends AbstractAutoConfiguration {
 
 		TestAutoConfiguration() {
 			super.host = TEST_HOST;

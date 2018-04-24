@@ -18,9 +18,9 @@ import com.ikasoa.springboot.IkasoaFactoryFactory;
  * @version 0.1
  */
 @Configuration
-public class AutoConfigurationBase {
+public abstract class AbstractAutoConfiguration {
 
-	private static final Logger LOG = LoggerFactory.getLogger(AutoConfigurationBase.class);
+	private static final Logger LOG = LoggerFactory.getLogger(AbstractAutoConfiguration.class);
 
 	@Value("${ikasoa.server.host:localhost}")
 	protected String host;
