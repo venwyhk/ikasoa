@@ -85,7 +85,7 @@ ServerStartupRunner.java
 
 ```java
     import org.springframework.stereotype.Component;
-    import com.ikasoa.springboot.IkasoaServerRunner;
+    import com.ikasoa.springboot.runner.IkasoaServerRunner;
 
     @Component
     public class ServerStartupRunner extends IkasoaServerRunner {
