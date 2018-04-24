@@ -37,15 +37,25 @@ public class ServerAutoConfiguration extends AbstractAutoConfiguration implement
 	}
 
 	private IkasoaServer getServer(IkasoaFactory factory) throws IkasoaException {
-		if (StringUtil.isEmpty(names))
-			throw new IkasoaException("Server service names (${ikasoa.server.service.names}) is null !");
-		String[] nameStrs = names.split(",");
+		if (StringUtil.isEmpty(names) && StringUtil.isEmpty(classes))
+			LOG.warn("Server configuration (${ikasoa.server.names} or ${ikasoa.server.classes}) is null !");
 		List<ImplClsCon> implClsConList = new ArrayList<>();
+		String[] nameStrs = names.split(",");
 		for (String name : nameStrs) {
 			LOG.debug("Add ikasoa service : {}", name);
 			try {
 				ImplClsCon icc = applicationContext != null && applicationContext.getBean(name) != null
 						? new ImplClsCon(applicationContext.getBean(name).getClass()) : null;
+				Optional.ofNullable(icc).map(i -> implClsConList.add(i)).orElseThrow(IkasoaException::new);
+			} catch (Exception e) {
+				LOG.debug(e.getMessage());
+			}
+		}
+		String[] classStrs = classes.split(",");
+		for (String classStr : classStrs) {
+			LOG.debug("Add ikasoa service : {}", classStr);
+			try {
+				ImplClsCon icc = StringUtil.isNotEmpty(classStr) ? new ImplClsCon(Class.forName(classStr)) : null;
 				Optional.ofNullable(icc).map(i -> implClsConList.add(i)).orElseThrow(IkasoaException::new);
 			} catch (Exception e) {
 				LOG.debug(e.getMessage());

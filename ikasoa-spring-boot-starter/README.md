@@ -57,7 +57,13 @@ pom.xml
     <td>ikasoa.server.names</td>
     <td>服务名称</td>
     <td>(无)</td>
-    <td>服务端设置时必填,可由@Service注解定义,多个服务名称以","分隔.</td>
+    <td>服务端设置时与'ikasoa.server.classes'必填其中一项,可由@Service注解定义,多项可以","分隔.</td>
+  </tr>
+  <tr>
+    <td>ikasoa.server.classes</td>
+    <td>服务实现类名</td>
+    <td>(无)</td>
+    <td>服务端设置时与'ikasoa.server.names'必填其中一项,设置服务接口实现类的完整类路径,多项可以","分隔.</td>
   </tr>
   <tr>
     <td>ikasoa.configurator</td>
@@ -76,10 +82,12 @@ application.properties
 ```
     ......
     ikasoa.server.names=exampleService
+    #ikasoa.server.classes=com.ikasoa.example.rpc.ExampleServiceImpl
     ......
 ```
 
-  服务端必须在application.properties中设置ikasoa.server.names属性,该属性为允许远程调用的接口实现类名称(对应注解:@Service("exampleService")).如有多个实现类以","分隔.
+  服务端须在application.properties中设置ikasoa.server.names(或ikasoa.server.classes)属性,该属性为允许远程调用的接口实现类名称(或类路径).如有多个可以","分隔.
+  其中类名对应注解:@Service("exampleService")中定义的名称.
 
 ServerStartupRunner.java
 

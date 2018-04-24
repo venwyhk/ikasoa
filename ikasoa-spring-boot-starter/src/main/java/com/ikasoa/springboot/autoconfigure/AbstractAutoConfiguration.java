@@ -28,8 +28,11 @@ public abstract class AbstractAutoConfiguration {
 	@Value("${ikasoa.server.port:9999}")
 	protected String port;
 
-	@Value("${ikasoa.server.names}")
+	@Value("${ikasoa.server.names:}")
 	protected String names;
+	
+	@Value("${ikasoa.server.classes:}")
+	protected String classes;
 
 	@Value("${ikasoa.configurator:com.ikasoa.rpc.Configurator}")
 	protected String configurator;
