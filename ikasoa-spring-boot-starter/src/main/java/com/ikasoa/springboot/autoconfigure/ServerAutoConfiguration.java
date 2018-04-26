@@ -6,7 +6,6 @@ import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Bean;
@@ -17,6 +16,8 @@ import com.ikasoa.rpc.IkasoaException;
 import com.ikasoa.rpc.IkasoaFactory;
 import com.ikasoa.rpc.IkasoaServer;
 import com.ikasoa.rpc.ImplClsCon;
+
+import lombok.Setter;
 
 /**
  * IKASOA服务端自动配置
@@ -29,6 +30,7 @@ public class ServerAutoConfiguration extends AbstractAutoConfiguration implement
 
 	private static final Logger LOG = LoggerFactory.getLogger(ServerAutoConfiguration.class);
 
+	@Setter
 	private ApplicationContext applicationContext;
 
 	@Bean
@@ -62,11 +64,6 @@ public class ServerAutoConfiguration extends AbstractAutoConfiguration implement
 			}
 		}
 		return factory.getIkasoaServer(implClsConList, getPort());
-	}
-
-	@Override
-	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-		this.applicationContext = applicationContext;
 	}
 
 }

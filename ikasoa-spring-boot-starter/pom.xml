@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.ikasoa</groupId>
     <artifactId>ikasoa-spring-boot-starter</artifactId>
-    <version>0.1-ALPHA</version>
+    <version>0.1-BETA</version>
     <packaging>jar</packaging>
     <name>Ikasoa Spring-boot Starter</name>
     <description>ikasoa is a java distributed service framework.</description>
@@ -130,6 +130,12 @@
             <groupId>com.ikasoa</groupId>
             <artifactId>ikasoa-rpc</artifactId>
             <version>0.3.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.16.20</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>junit</groupId>

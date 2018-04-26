@@ -1,5 +1,7 @@
 package com.ikasoa.springboot;
 
+import com.ikasoa.rpc.IkasoaFactory;
+
 /**
  * 获取IKASOA服务代理
  * 
@@ -14,6 +16,10 @@ public class IkasoaServiceProxy {
 
 	private IkasoaFactoryFactory ikasoaFactoryFactory;
 
+	private IkasoaFactory defaultFactory;
+
+	private IkasoaFactory nettyFactory;
+
 	public IkasoaServiceProxy(String host, int port, IkasoaFactoryFactory ikasoaFactoryFactory) {
 		this.host = host;
 		this.port = port;
@@ -21,11 +27,15 @@ public class IkasoaServiceProxy {
 	}
 
 	public <T> T getDefaultService(Class<T> iClass) {
-		return ikasoaFactoryFactory.getIkasoaDefaultFactory().getIkasoaClient(iClass, host, port);
+		if (defaultFactory == null)
+			defaultFactory = ikasoaFactoryFactory.getIkasoaDefaultFactory();
+		return defaultFactory.getIkasoaClient(iClass, host, port);
 	}
 
 	public <T> T getNettyService(Class<T> iClass) {
-		return ikasoaFactoryFactory.getIkasoaNettyFactory().getIkasoaClient(iClass, host, port);
+		if (nettyFactory == null)
+			defaultFactory = ikasoaFactoryFactory.getIkasoaNettyFactory();
+		return nettyFactory.getIkasoaClient(iClass, host, port);
 	}
 
 }
