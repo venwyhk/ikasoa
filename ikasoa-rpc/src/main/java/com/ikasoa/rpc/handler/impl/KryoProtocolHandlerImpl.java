@@ -18,13 +18,8 @@ import com.ikasoa.rpc.utils.Base64Util;
  * @version 0.1
  */
 public class KryoProtocolHandlerImpl<T, R> implements ProtocolHandler<T, R> {
-	
-	private ReturnData resultData;
 
-	/**
-	 * 空标识符
-	 */
-	private final static String VOID = "_VOID_";
+	private ReturnData resultData;
 
 	private Kryo kryo = new Kryo();
 
@@ -52,7 +47,7 @@ public class KryoProtocolHandlerImpl<T, R> implements ProtocolHandler<T, R> {
 	@Override
 	public String resultToStr(R result) {
 		if (result == null)
-			return VOID;
+			return String.valueOf(ProtocolHandler.V);
 		Output output = new Output(1, 4096);
 		kryo.writeObject(output, result);
 		byte[] bb = output.toBytes();
@@ -63,7 +58,7 @@ public class KryoProtocolHandlerImpl<T, R> implements ProtocolHandler<T, R> {
 	@SuppressWarnings("unchecked")
 	@Override
 	public R strToResult(String str) {
-		if (VOID.equals(str))
+		if (String.valueOf(ProtocolHandler.V).equals(str))
 			return null;
 		return resultData.isArray()
 				? (R) kryo.readObject(new Input(Base64Util.decode(str)),

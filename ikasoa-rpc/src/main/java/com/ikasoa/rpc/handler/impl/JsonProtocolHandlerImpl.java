@@ -22,21 +22,6 @@ public class JsonProtocolHandlerImpl<T, R> implements ProtocolHandler<T, R> {
 
 	private ReturnData resultData;
 
-	/**
-	 * 类型分隔符
-	 */
-	private final static String CT = "&&&";
-
-	/**
-	 * 异常标识符
-	 */
-	private final static String E = "E__";
-
-	/**
-	 * 空标识符
-	 */
-	private final static String VOID = "_VOID_";
-
 	public JsonProtocolHandlerImpl(ReturnData resultData) {
 		this.resultData = resultData;
 	}
@@ -48,7 +33,7 @@ public class JsonProtocolHandlerImpl<T, R> implements ProtocolHandler<T, R> {
 			throw new RuntimeException("parameters string can't null !");
 		if ("[]".equals(str))
 			return null;
-		String[] strs = str.split(CT);
+		String[] strs = str.split(String.valueOf(ProtocolHandler.CT));
 		if (strs.length != 2)
 			throw new RuntimeException("arg json string error : " + str);
 		String argClassStr = strs[0];
@@ -88,8 +73,10 @@ public class JsonProtocolHandlerImpl<T, R> implements ProtocolHandler<T, R> {
 	@Override
 	public String resultToStr(R result) {
 		return result instanceof Throwable ? new StringBuilder(E).append(JSON.toJSONString(result)).toString()
-				: Optional.ofNullable(result).map(r -> new StringBuilder(r.getClass().getName()).append(CT)
-						.append(JSON.toJSONString(r)).toString()).orElse(VOID);
+				: Optional
+						.ofNullable(result).map(r -> new StringBuilder(r.getClass().getName())
+								.append(String.valueOf(ProtocolHandler.CT)).append(JSON.toJSONString(r)).toString())
+						.orElse(String.valueOf(ProtocolHandler.V));
 	}
 
 	@Override
@@ -97,9 +84,9 @@ public class JsonProtocolHandlerImpl<T, R> implements ProtocolHandler<T, R> {
 	public R strToResult(String str) {
 		if (str == null)
 			throw new RuntimeException("result string is null !");
-		if (VOID.equals(str))
+		if (String.valueOf(ProtocolHandler.V).equals(str))
 			return null;
-		String[] strs = str.split(CT);
+		String[] strs = str.split(String.valueOf(ProtocolHandler.CT));
 		if (strs.length != 2)
 			throw new RuntimeException("result json string error : " + str);
 		String resultStr = strs[1];
@@ -131,7 +118,7 @@ public class JsonProtocolHandlerImpl<T, R> implements ProtocolHandler<T, R> {
 
 	@Override
 	public Throwable strToThrowable(String str) {
-		String[] strs = str.split(E);
+		String[] strs = str.split(String.valueOf(ProtocolHandler.E));
 		return strs.length == 2 && "".equals(strs[0]) ? JSON.parseObject(strs[1], Throwable.class) : null;
 	}
 

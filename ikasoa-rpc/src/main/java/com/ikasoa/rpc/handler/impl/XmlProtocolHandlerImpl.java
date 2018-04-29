@@ -23,16 +23,6 @@ public class XmlProtocolHandlerImpl<T, R> implements ProtocolHandler<T, R> {
 
 	private ReturnData resultData;
 
-	/**
-	 * 异常标识符
-	 */
-	private final static String E = "<!--E-->";
-
-	/**
-	 * 空标识符
-	 */
-	private final static String VOID = "_VOID_";
-
 	public XmlProtocolHandlerImpl(ReturnData resultData) {
 		this.resultData = resultData;
 	}
@@ -50,19 +40,20 @@ public class XmlProtocolHandlerImpl<T, R> implements ProtocolHandler<T, R> {
 
 	@Override
 	public String resultToStr(R result) {
-		return result instanceof Throwable ? new StringBuilder(E).append(formatXML(result)).toString()
-				: Optional.ofNullable(result).map(r -> formatXML(r)).orElse(VOID);
+		return result instanceof Throwable
+				? new StringBuilder(String.valueOf(ProtocolHandler.E)).append(formatXML(result)).toString()
+				: Optional.ofNullable(result).map(r -> formatXML(r)).orElse(String.valueOf(ProtocolHandler.V));
 	}
 
 	@Override
 	@SuppressWarnings("unchecked")
 	public R strToResult(String str) {
-		return VOID.equals(str) ? null : (R) parserXML(str);
+		return String.valueOf(ProtocolHandler.V).equals(str) ? null : (R) parserXML(str);
 	}
 
 	@Override
 	public Throwable strToThrowable(String str) {
-		String[] strs = str.split(E);
+		String[] strs = str.split(String.valueOf(ProtocolHandler.E));
 		return strs.length == 2 && strs[0].length() == 0 ? parserXML(strs[1]) : null;
 	}
 
@@ -87,7 +78,7 @@ public class XmlProtocolHandlerImpl<T, R> implements ProtocolHandler<T, R> {
 			return baos.toString();
 		} catch (IOException e) {
 			Log.error(e.getMessage());
-			return VOID;
+			return String.valueOf(ProtocolHandler.V);
 		}
 	}
 
