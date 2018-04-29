@@ -78,18 +78,20 @@ public class DefaultIkasoaFactory extends GeneralFactory implements IkasoaFactor
 		if (siw == null || !siw.isNotNull())
 			throw new IllegalArgumentException("'serverInfoWrapper' is exist !");
 		return (T) Proxy
-				.newProxyInstance(iClass.getClassLoader(), new Class<?>[] { iClass },
+				.newProxyInstance(iClass.getClassLoader(),
+						new Class<?>[] {
+								iClass },
 						(proxy, iMethod,
-								args) -> getBaseGetServiceFactory().getBaseGetService(
-										siw.isCluster()
-												? siw.isCluster()
+								args) -> getBaseGetServiceFactory()
+										.getBaseGetService(
+												siw.isCluster()
 														? siw.getLoadBalanceClass() == null
 																? getThriftClient(siw.getServerInfoList())
 																: getThriftClient(siw.getServerInfoList(),
 																		siw.getLoadBalanceClass(), siw.getParam())
-														: getThriftClient(siw.getHost(), siw.getPort())
-												: getThriftClient(siw.getHost(), siw.getPort()),
-										getSKey(iClass, iMethod, true), new ReturnData(iMethod)).get(args));
+														: getThriftClient(siw.getHost(), siw.getPort()),
+												getSKey(iClass, iMethod, true), new ReturnData(iMethod))
+										.get(args));
 	}
 
 	@Override
