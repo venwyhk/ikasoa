@@ -113,7 +113,7 @@ Server.java
 
 ```java
     import com.ikasoa.rpc.DefaultIkasoaFactory;
-    import com.ikasoa.rpc.IkasoaException;
+    import com.ikasoa.rpc.RpcException;
     import com.ikasoa.rpc.IkasoaServer;
     public class Server {
         private static IkasoaServer ikasoaServer;
@@ -124,7 +124,7 @@ Server.java
                 }
                 // 启动服务
                 ikasoaServer.run();
-            } catch (IkasoaException e) {
+            } catch (RpcException e) {
             }
         }
         public static void stop() {
@@ -210,12 +210,12 @@ RpcServer.java
 
 ```java
     package example.ikasoa;
-    import com.ikasoa.rpc.IkasoaException;
+    import com.ikasoa.rpc.RpcException;
     import com.ikasoa.rpc.IkasoaFactory;
     import com.ikasoa.rpc.IkasoaServer;
     public class RpcServer {
         private IkasoaServer server;
-        public RpcServer(IkasoaFactory ikasoaFactory, int serverPort) throws IkasoaException {
+        public RpcServer(IkasoaFactory ikasoaFactory, int serverPort) throws RpcException {
             // 实现类不能是抽象类
             this.server = ikasoaFactory.getIkasoaServer(ExampleServiceImpl.class, serverPort);
             // 如果已有实例化后的对象(例如通过Spring注入的对象),则可以通过ImplWrapper类进行封装,ikasoa-rpc将会直接引用该类的实例,而不会重新实例化.
