@@ -218,14 +218,14 @@ RpcServer.java
         public RpcServer(IkasoaFactory ikasoaFactory, int serverPort) throws IkasoaException {
             // 实现类不能是抽象类
             this.server = ikasoaFactory.getIkasoaServer(ExampleServiceImpl.class, serverPort);
-            // 如果已有实例化后的对象(例如通过Spring注入的对象),则可以通过ImplClsCon类进行封装,ikasoa-rpc将会直接引用该类的实例,而不会重新实例化.
+            // 如果已有实例化后的对象(例如通过Spring注入的对象),则可以通过ImplWrapper类进行封装,ikasoa-rpc将会直接引用该类的实例,而不会重新实例化.
             // 例子如下:
-            // this.server = ikasoaFactory.getIkasoaServer(new ImplClsCon(ExampleServiceImpl.class, exampleServiceImpl), serverPort);
+            // this.server = ikasoaFactory.getIkasoaServer(new ImplWrapper(ExampleServiceImpl.class, exampleServiceImpl), serverPort);
             // 如有多个接口实现,可以传入List.
             // 例子如下:
-            // List<ImplClsCon> sList = new ArrayList<>();
-            // sList.add(new ImplClsCon(ExampleServiceImpl.class));
-            // sList.add(new ImplClsCon(Example2ServiceImpl.class));
+            // List<ImplWrapper> sList = new ArrayList<>();
+            // sList.add(new ImplWrapper(ExampleServiceImpl.class));
+            // sList.add(new ImplWrapper(Example2ServiceImpl.class));
             // this.server = ikasoaFactory.getIkasoaServer(sList, serverPort);
             System.out.println("服务端口:" + serverPort);
             for (String key : this.server.getIkasoaServiceKeys())

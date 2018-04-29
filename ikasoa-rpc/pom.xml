@@ -123,7 +123,7 @@
         <dependency>
             <groupId>com.ikasoa</groupId>
             <artifactId>ikasoa-core</artifactId>
-            <version>0.5.2</version>
+            <version>0.5.3-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>io.netty</groupId>

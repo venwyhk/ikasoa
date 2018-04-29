@@ -85,36 +85,36 @@ public interface IkasoaFactory extends Factory {
 	 * @param serverPort
 	 *            服务端口
 	 * @return IkasoaServer IKASOA服务端
-	 * @exception IkasoaException
+	 * @exception RpcException
 	 *                异常
 	 */
-	IkasoaServer getIkasoaServer(Class<?> implClass, int serverPort) throws IkasoaException;
+	IkasoaServer getIkasoaServer(Class<?> implClass, int serverPort) throws RpcException;
 
 	/**
 	 * 获取IKASOA服务端
 	 * 
-	 * @param implClsCon
-	 *            应用接口实现集合对象
+	 * @param implWrapper
+	 *            接口实现对象包装器
 	 * @param serverPort
 	 *            服务端口
 	 * @return IkasoaServer IKASOA服务端
-	 * @exception IkasoaException
+	 * @exception RpcException
 	 *                异常
 	 */
-	IkasoaServer getIkasoaServer(ImplClsCon implClsCon, int serverPort) throws IkasoaException;
+	IkasoaServer getIkasoaServer(ImplWrapper implWrapper, int serverPort) throws RpcException;
 
 	/**
 	 * 获取IKASOA服务端
 	 * 
-	 * @param ImplClsConList
-	 *            应用接口实现集合列表
+	 * @param implWrapperList
+	 *            接口实现对象包装器
 	 * @param serverPort
 	 *            服务端口
 	 * @return IkasoaServer IKASOA服务端
-	 * @exception IkasoaException
+	 * @exception RpcException
 	 *                异常
 	 */
-	IkasoaServer getIkasoaServer(List<ImplClsCon> ImplClsConList, int serverPort) throws IkasoaException;
+	IkasoaServer getIkasoaServer(List<ImplWrapper> implWrapperList, int serverPort) throws RpcException;
 
 	/**
 	 * 获取IKASOA服务端
@@ -124,9 +124,9 @@ public interface IkasoaFactory extends Factory {
 	 * @param serviceMap
 	 *            服务Map
 	 * @return IkasoaServer IKASOA服务端
-	 * @exception IkasoaException
+	 * @exception RpcException
 	 *                异常
 	 */
-	IkasoaServer getIkasoaServer(int serverPort, Map<String, Service> serviceMap) throws IkasoaException;
+	IkasoaServer getIkasoaServer(int serverPort, Map<String, Service> serviceMap) throws RpcException;
 
 }

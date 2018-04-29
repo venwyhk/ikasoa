@@ -2,7 +2,7 @@ package com.ikasoa.core.thrift.client;
 
 import org.apache.thrift.protocol.TProtocol;
 import org.apache.thrift.transport.TTransport;
-import com.ikasoa.core.STException;
+import com.ikasoa.core.IkasoaException;
 
 /**
  * Thrift客户端接口
@@ -18,10 +18,10 @@ public interface ThriftClient extends AutoCloseable {
 	 * 需要与服务端相匹配.
 	 * 
 	 * @return TTransport 传输类型
-	 * @exception STException
+	 * @exception IkasoaException
 	 *                异常
 	 */
-	TTransport getTransport() throws STException;
+	TTransport getTransport() throws IkasoaException;
 
 	/**
 	 * 获取Thrift传输协议

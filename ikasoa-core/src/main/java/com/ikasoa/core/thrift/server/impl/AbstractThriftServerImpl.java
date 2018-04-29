@@ -12,7 +12,7 @@ import org.apache.thrift.transport.TServerTransport;
 import org.apache.thrift.transport.TTransportException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import com.ikasoa.core.STException;
+import com.ikasoa.core.IkasoaException;
 import com.ikasoa.core.thrift.server.ServerAspect;
 import com.ikasoa.core.thrift.server.ThriftServer;
 import com.ikasoa.core.thrift.server.ThriftServerConfiguration;
@@ -78,7 +78,7 @@ public abstract class AbstractThriftServerImpl implements ThriftServer {
 			executorService.execute(() -> {
 				try {
 					start();
-				} catch (STException e) {
+				} catch (IkasoaException e) {
 					throw new RuntimeException(e);
 				}
 			});
@@ -92,20 +92,20 @@ public abstract class AbstractThriftServerImpl implements ThriftServer {
 	/**
 	 * 启动Thrift服务
 	 * 
-	 * @exception STException
+	 * @exception IkasoaException
 	 *                异常
 	 */
-	public void start() throws STException {
+	public void start() throws IkasoaException {
 		if (server == null) {
 			LOG.debug("Server configuration : {}", configuration);
 			// 不允许使用1024以内的端口.
 			if (!ServerUtil.isSocketPort(serverPort))
-				throw new STException("Server initialize failed ! Port range must is 1025 ~ 65535 . Your port is : "
+				throw new IkasoaException("Server initialize failed ! Port range must is 1025 ~ 65535 . Your port is : "
 						+ serverPort + " .");
 			try {
 				initServer(getTransport());
 			} catch (TTransportException e) {
-				throw new STException("Server initialize failed !", e);
+				throw new IkasoaException("Server initialize failed !", e);
 			}
 		}
 		// 如果服务没有启动,则自动启动服务.

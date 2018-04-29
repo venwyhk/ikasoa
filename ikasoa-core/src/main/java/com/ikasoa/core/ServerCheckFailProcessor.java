@@ -18,9 +18,9 @@ public interface ServerCheckFailProcessor {
 	 * 
 	 * @param client
 	 *            客户端对象
-	 * @exception STException
+	 * @exception IkasoaException
 	 *                异常
 	 */
-	void process(ThriftClient client) throws STException;
+	void process(ThriftClient client) throws IkasoaException;
 
 }

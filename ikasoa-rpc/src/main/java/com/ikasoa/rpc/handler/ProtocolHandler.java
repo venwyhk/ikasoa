@@ -11,17 +11,17 @@ public interface ProtocolHandler<T, R> {
 	/**
 	 * 类型分隔符
 	 */
-	char CT = (char) 150;
+	char CT = (char) 0x96;
 
 	/**
 	 * 异常标识符
 	 */
-	char E = (char) 151;
+	char E = (char) 0x97;
 
 	/**
 	 * 空标识符
 	 */
-	char V = (char) 152;
+	char V = (char) 0x98;
 
 	/**
 	 * 字符串转为参数对象

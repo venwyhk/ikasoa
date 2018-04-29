@@ -13,7 +13,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.ikasoa.core.STException;
+import com.ikasoa.core.IkasoaException;
 import com.ikasoa.core.thrift.Factory;
 import com.ikasoa.core.thrift.GeneralFactory;
 import com.ikasoa.core.thrift.server.MultiplexedProcessor;
@@ -107,7 +107,7 @@ public class AysncServiceTest extends TestCase {
 	private class TestThriftServiceImpl1 implements Service {
 
 		@Override
-		public String get(String arg) throws STException {
+		public String get(String arg) throws IkasoaException {
 			return arg;
 		}
 
@@ -116,7 +116,7 @@ public class AysncServiceTest extends TestCase {
 	private class TestThriftServiceImpl2 implements Service {
 
 		@Override
-		public String get(String arg) throws STException {
+		public String get(String arg) throws IkasoaException {
 			return testString1 + arg;
 		}
 

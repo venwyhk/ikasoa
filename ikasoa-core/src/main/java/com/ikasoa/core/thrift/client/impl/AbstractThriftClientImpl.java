@@ -7,7 +7,7 @@ import org.apache.thrift.protocol.TProtocol;
 import org.apache.thrift.transport.TTransport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import com.ikasoa.core.STException;
+import com.ikasoa.core.IkasoaException;
 import com.ikasoa.core.ServerCheck;
 import com.ikasoa.core.ServerCheckFailProcessor;
 import com.ikasoa.core.thrift.client.ThriftClient;
@@ -55,14 +55,14 @@ public abstract class AbstractThriftClientImpl implements ThriftClient {
 	private ServerCheckFailProcessor serverCheckFailProcessor;
 
 	@Override
-	public TTransport getTransport() throws STException {
+	public TTransport getTransport() throws IkasoaException {
 		if (getServerCheck() != null && !getServerCheck().check(getServerHost(), getServerPort()))
 			// 如果服务器检测不可用,需要做相应的处理.默认为抛异常.
 			getServerCheckFailProcessor().process(this);
 		return getTransport(getServerHost(), getServerPort());
 	}
 
-	protected TTransport getTransport(String serverHost, int serverPort) throws STException {
+	protected TTransport getTransport(String serverHost, int serverPort) throws IkasoaException {
 		SocketPool pool = getThriftClientConfiguration().getSocketPool();
 		socketThread.set(pool.buildThriftSocket(serverHost, serverPort));
 		return getThriftClientConfiguration().getTransportFactory().getTransport(socketThread.get());
@@ -158,8 +158,8 @@ public abstract class AbstractThriftClientImpl implements ThriftClient {
 	protected class ExceProcessImpl implements ServerCheckFailProcessor {
 
 		@Override
-		public void process(ThriftClient client) throws STException {
-			throw new STException("Server is not available (serverHost : " + client.getServerHost() + ", serverPort : "
+		public void process(ThriftClient client) throws IkasoaException {
+			throw new IkasoaException("Server is not available (serverHost : " + client.getServerHost() + ", serverPort : "
 					+ client.getServerPort() + ") !");
 		}
 

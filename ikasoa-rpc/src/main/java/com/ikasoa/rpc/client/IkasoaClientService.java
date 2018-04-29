@@ -1,10 +1,9 @@
 package com.ikasoa.rpc.client;
 
-import com.ikasoa.core.STException;
 import com.ikasoa.core.thrift.Factory;
 import com.ikasoa.core.thrift.client.ThriftClient;
 import com.ikasoa.rpc.BaseGetService;
-import com.ikasoa.rpc.IkasoaException;
+import com.ikasoa.rpc.RpcException;
 import com.ikasoa.rpc.handler.ClientInvocationContext;
 import com.ikasoa.rpc.handler.ClientInvocationHandler;
 import com.ikasoa.rpc.handler.ProtocolHandler;
@@ -61,12 +60,12 @@ public class IkasoaClientService<T, R> implements BaseGetService<T, R> {
 		}
 		// 参数转换
 		if (protocolHandler == null)
-			throw new IkasoaException("'protocolHandler' is null !");
+			throw new RpcException("'protocolHandler' is null !");
 		String argStr = null;
 		try {
 			argStr = protocolHandler.argToStr(arg);
-		} catch (Throwable t) {
-			throw new IkasoaException("Execute 'argToStr' function exception !", t);
+		} catch (Exception e) {
+			throw new RpcException("Execute 'argToStr' function exception !", e);
 		}
 		if (context != null && invocationHandler != null) {
 			context.setArgStr(argStr);
@@ -76,8 +75,8 @@ public class IkasoaClientService<T, R> implements BaseGetService<T, R> {
 		String resultStr = "";
 		try {
 			resultStr = factory.getService(thriftClient, serviceKey).get(argStr);
-		} catch (STException e) {
-			throw new IkasoaException("Thrift get exception !", e);
+		} catch (Exception e) {
+			throw new RpcException("Thrift get exception !", e);
 		} finally {
 			thriftClient.close();
 		}
@@ -87,8 +86,8 @@ public class IkasoaClientService<T, R> implements BaseGetService<T, R> {
 		Throwable throwable = null;
 		try {
 			throwable = protocolHandler.strToThrowable(resultStr);
-		} catch (Throwable t) {
-			throw new IkasoaException("Execute 'strToThrowable' function exception !", t);
+		} catch (Exception e) {
+			throw new RpcException("Execute 'strToThrowable' function exception !", e);
 		}
 		// 判断是否为异常返回,如果是就抛出异常
 		if (throwable != null) {
@@ -107,8 +106,8 @@ public class IkasoaClientService<T, R> implements BaseGetService<T, R> {
 				context = null;
 			}
 			return result;
-		} catch (Throwable t) {
-			throw new IkasoaException("Execute 'strToResult' function exception !", t);
+		} catch (Exception e) {
+			throw new RpcException("Execute 'strToResult' function exception !", e);
 		}
 	}
 

@@ -14,7 +14,7 @@ import org.apache.thrift.server.AbstractNonblockingServer.AsyncFrameBuffer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.ikasoa.core.STException;
+import com.ikasoa.core.IkasoaException;
 import com.ikasoa.core.thrift.service.base.ArgsThriftBase;
 import com.ikasoa.core.thrift.service.base.ResultThriftBase;
 
@@ -93,7 +93,7 @@ public class AsyncServiceProcessor extends TBaseAsyncProcessor<AsyncService> imp
 			LOG.debug("Args is : {}", args.getStr());
 			try {
 				service.get((String) args.getStr(), resultHandler);
-			} catch (STException e) {
+			} catch (IkasoaException e) {
 				throw new TException(e);
 			}
 		}

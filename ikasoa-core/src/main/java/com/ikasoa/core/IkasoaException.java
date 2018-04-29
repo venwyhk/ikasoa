@@ -1,10 +1,10 @@
-package com.ikasoa.rpc;
+package com.ikasoa.core;
 
 /**
- * IKASOA通用异常类
+ * 通用异常类
  * 
  * @author <a href="mailto:larry7696@gmail.com">Larry</a>
- * @version 0.1
+ * @version 0.2
  */
 public class IkasoaException extends Exception {
 

@@ -1,7 +1,6 @@
 package com.ikasoa.core.thrift;
 
 import java.io.IOException;
-import java.lang.reflect.Constructor;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,7 +11,7 @@ import org.apache.thrift.protocol.TCompactProtocol;
 import org.apache.thrift.protocol.TProtocolFactory;
 import org.apache.thrift.transport.TNonblockingTransport;
 
-import com.ikasoa.core.STException;
+import com.ikasoa.core.IkasoaException;
 import com.ikasoa.core.loadbalance.LoadBalance;
 import com.ikasoa.core.loadbalance.ServerInfo;
 import com.ikasoa.core.thrift.client.AsyncMultiplexedProtocolFactory;
@@ -53,7 +52,7 @@ public class GeneralFactory implements Factory {
 	/**
 	 * 默认负载均衡实现
 	 */
-	private static final String DEFAULT_LOAD_BALANCE_CLASS_STRING = "com.ikasoa.core.loadbalance.impl.PollingLoadBalanceImpl";
+	private static final String DEFAULT_LOAD_BALANCE_CLASS_NAME = "com.ikasoa.core.loadbalance.impl.PollingLoadBalanceImpl";
 
 	public GeneralFactory() {
 		// Do nothing
@@ -125,7 +124,7 @@ public class GeneralFactory implements Factory {
 	 * 获取默认的ThriftServer对象
 	 */
 	@Override
-	public ThriftServer getThriftServer(int serverPort, Map<String, Service> serviceMap) throws STException {
+	public ThriftServer getThriftServer(int serverPort, Map<String, Service> serviceMap) throws IkasoaException {
 		return getThriftServer("DefaultServer-" + serverPort, serverPort, serviceMap);
 	}
 
@@ -133,7 +132,8 @@ public class GeneralFactory implements Factory {
 	 * 获取NIO的ThriftServer对象
 	 */
 	@Override
-	public ThriftServer getNonblockingThriftServer(int serverPort, Map<String, Service> serviceMap) throws STException {
+	public ThriftServer getNonblockingThriftServer(int serverPort, Map<String, Service> serviceMap)
+			throws IkasoaException {
 		return getNonblockingThriftServer("DefaultNonblockingServer-" + serverPort, serverPort, serviceMap);
 	}
 
@@ -142,7 +142,7 @@ public class GeneralFactory implements Factory {
 	 */
 	@Override
 	public ThriftServer getThriftServer(String serverName, int serverPort, Map<String, Service> serviceMap)
-			throws STException {
+			throws IkasoaException {
 		return getThriftServer(serverName, serverPort, buildMultiplexedProcessor(serviceMap));
 	}
 
@@ -151,7 +151,7 @@ public class GeneralFactory implements Factory {
 	 */
 	@Override
 	public ThriftServer getNonblockingThriftServer(String serverName, int serverPort, Map<String, Service> serviceMap)
-			throws STException {
+			throws IkasoaException {
 		return getNonblockingThriftServer(serverName, serverPort, buildMultiplexedProcessor(serviceMap));
 	}
 
@@ -170,7 +170,7 @@ public class GeneralFactory implements Factory {
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public ThriftClient getThriftClient(List<ServerInfo> serverInfoList) {
 		try {
-			Class cls = Class.forName(DEFAULT_LOAD_BALANCE_CLASS_STRING);
+			Class cls = Class.forName(DEFAULT_LOAD_BALANCE_CLASS_NAME);
 			return getThriftClient(serverInfoList, cls);
 		} catch (ClassNotFoundException e) {
 			throw new RuntimeException(e);
@@ -192,8 +192,9 @@ public class GeneralFactory implements Factory {
 		try {
 			Class[] paramTypes = { List.class, String.class };
 			Object[] params = { serverInfoList, param };
-			Constructor con = loadBalanceClass.getConstructor(paramTypes);
-			return new LoadBalanceThriftClientImpl((LoadBalance) con.newInstance(params), thriftClientConfiguration);
+			return new LoadBalanceThriftClientImpl(
+					(LoadBalance) loadBalanceClass.getConstructor(paramTypes).newInstance(params),
+					thriftClientConfiguration);
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
@@ -203,7 +204,7 @@ public class GeneralFactory implements Factory {
 	 * 获取客户端Service对象
 	 */
 	@Override
-	public Service getService(ThriftClient thriftClient) throws STException {
+	public Service getService(ThriftClient thriftClient) throws IkasoaException {
 		return getService(thriftClient, null);
 	}
 
@@ -211,7 +212,7 @@ public class GeneralFactory implements Factory {
 	 * 获取客户端AsyncService对象
 	 */
 	@Override
-	public AsyncService getAsyncService(TNonblockingTransport transport) throws STException {
+	public AsyncService getAsyncService(TNonblockingTransport transport) throws IkasoaException {
 		return getAsyncService(transport, null);
 	}
 
@@ -219,9 +220,9 @@ public class GeneralFactory implements Factory {
 	 * 获取客户端Service对象
 	 */
 	@Override
-	public Service getService(ThriftClient thriftClient, String serviceName) throws STException {
+	public Service getService(ThriftClient thriftClient, String serviceName) throws IkasoaException {
 		if (thriftClient == null)
-			throw new STException("'thriftClient' is null !");
+			throw new IkasoaException("'thriftClient' is null !");
 		return StringUtil.isEmpty(serviceName)
 				? new ServiceClientImpl(thriftClient.getProtocol(thriftClient.getTransport()))
 				: new ServiceClientImpl(thriftClient.getProtocol(thriftClient.getTransport(), serviceName));
@@ -231,22 +232,22 @@ public class GeneralFactory implements Factory {
 	 * 获取客户端AsyncService对象
 	 */
 	@Override
-	public AsyncService getAsyncService(TNonblockingTransport transport, String serviceName) throws STException {
+	public AsyncService getAsyncService(TNonblockingTransport transport, String serviceName) throws IkasoaException {
 		if (transport == null)
-			throw new STException("'transport' is null !");
+			throw new IkasoaException("'transport' is null !");
 		try {
 			return StringUtil.isEmpty(serviceName)
 					? new AsyncServiceClientImpl((TProtocolFactory) new TCompactProtocol.Factory(), transport)
 					: new AsyncServiceClientImpl(new AsyncMultiplexedProtocolFactory(serviceName), transport);
 		} catch (IOException e) {
-			throw new STException(e);
+			throw new IkasoaException(e);
 		}
 	}
 
-	private MultiplexedProcessor buildMultiplexedProcessor(Map<String, Service> serviceMap) throws STException {
+	private MultiplexedProcessor buildMultiplexedProcessor(Map<String, Service> serviceMap) throws IkasoaException {
 		if (serviceMap == null)
-			throw new STException("'serviceMap' is null !");
-		Map<String, TProcessor> processorMap = new HashMap<>();
+			throw new IkasoaException("'serviceMap' is null !");
+		Map<String, TProcessor> processorMap = new HashMap<>(serviceMap.size());
 		for (Entry<String, Service> e : serviceMap.entrySet())
 			processorMap.put(e.getKey(), new ServiceProcessor(serviceMap.get(e.getKey())));
 		return new MultiplexedProcessor(processorMap);

@@ -7,7 +7,7 @@ import org.apache.thrift.protocol.TProtocol;
 import org.apache.thrift.transport.TTransport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import com.ikasoa.core.STException;
+import com.ikasoa.core.IkasoaException;
 import com.ikasoa.core.thrift.service.Processor;
 import com.ikasoa.core.thrift.service.Service;
 import com.ikasoa.core.thrift.service.base.ArgsThriftBase;
@@ -30,7 +30,7 @@ public class ServiceClientImpl extends TServiceClient implements Service {
 	}
 
 	@Override
-	public String get(String arg) throws STException {
+	public String get(String arg) throws IkasoaException {
 		TTransport transport = oprot_.getTransport();
 		try {
 			if (!transport.isOpen())
@@ -41,7 +41,7 @@ public class ServiceClientImpl extends TServiceClient implements Service {
 		} catch (TException e) {
 			transport.close();
 			LOG.debug("Transport is close .");
-			throw new STException("Execute failed !", e);
+			throw new IkasoaException("Execute failed !", e);
 		}
 	}
 

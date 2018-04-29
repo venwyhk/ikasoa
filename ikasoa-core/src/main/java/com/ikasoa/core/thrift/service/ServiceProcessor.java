@@ -9,7 +9,7 @@ import org.apache.thrift.TBaseProcessor;
 import org.apache.thrift.TException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import com.ikasoa.core.STException;
+import com.ikasoa.core.IkasoaException;
 import com.ikasoa.core.thrift.service.base.ArgsThriftBase;
 import com.ikasoa.core.thrift.service.base.ResultThriftBase;
 
@@ -54,7 +54,7 @@ public class ServiceProcessor extends TBaseProcessor<Service> implements Process
 			try {
 				// 在这里执行服务端实现类的'get'方法
 				return new ResultThriftBase(service.get(args.getStr()));
-			} catch (STException e) {
+			} catch (IkasoaException e) {
 				throw new TException(e);
 			}
 		}

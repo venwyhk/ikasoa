@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Test;
-import com.ikasoa.core.STException;
+import com.ikasoa.core.IkasoaException;
 import com.ikasoa.core.loadbalance.LoadBalance;
 import com.ikasoa.core.loadbalance.impl.ConsistencyHashLoadBalanceImpl;
 import com.ikasoa.core.loadbalance.impl.PollingLoadBalanceImpl;
@@ -147,7 +147,7 @@ public class LoadBalanceTest extends TestCase {
 		ServerInfo serverInfo = null;
 		try {
 			serverInfo = loadBalance.next();
-		} catch (STException e) {
+		} catch (IkasoaException e) {
 			fail();
 		}
 		assertNotNull(serverInfo);

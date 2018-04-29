@@ -10,7 +10,8 @@ import java.util.Optional;
 import org.apache.thrift.TProcessor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import com.ikasoa.core.STException;
+
+import com.ikasoa.core.IkasoaException;
 import com.ikasoa.core.loadbalance.LoadBalance;
 import com.ikasoa.core.loadbalance.ServerInfo;
 import com.ikasoa.core.thrift.GeneralFactory;
@@ -20,6 +21,7 @@ import com.ikasoa.core.thrift.server.ThriftServer;
 import com.ikasoa.core.thrift.server.ThriftServerConfiguration;
 import com.ikasoa.core.thrift.service.Service;
 import com.ikasoa.rpc.annotation.IkasoaService;
+import com.ikasoa.rpc.annotation.Invalid;
 import com.ikasoa.rpc.handler.ProtocolHandlerFactory;
 import com.ikasoa.rpc.handler.ReturnData;
 import com.ikasoa.rpc.service.IkasoaServerService;
@@ -66,7 +68,8 @@ public class DefaultIkasoaFactory extends GeneralFactory implements IkasoaFactor
 		ThriftClient thriftClient = getThriftClient(serverHost, serverPort);
 		return (T) Proxy.newProxyInstance(iClass.getClassLoader(), new Class<?>[] { iClass },
 				(proxy, iMethod, args) -> getBaseGetServiceFactory()
-						.getBaseGetService(thriftClient, getSKey(iClass, iMethod), new ReturnData(iMethod)).get(args));
+						.getBaseGetService(thriftClient, getSKey(iClass, iMethod, true), new ReturnData(iMethod))
+						.get(args));
 	}
 
 	@Override
@@ -75,7 +78,8 @@ public class DefaultIkasoaFactory extends GeneralFactory implements IkasoaFactor
 		ThriftClient thriftClient = getThriftClient(serverInfoList);
 		return (T) Proxy.newProxyInstance(iClass.getClassLoader(), new Class<?>[] { iClass },
 				(proxy, iMethod, args) -> getBaseGetServiceFactory()
-						.getBaseGetService(thriftClient, getSKey(iClass, iMethod), new ReturnData(iMethod)).get(args));
+						.getBaseGetService(thriftClient, getSKey(iClass, iMethod, true), new ReturnData(iMethod))
+						.get(args));
 	}
 
 	@Override
@@ -85,7 +89,8 @@ public class DefaultIkasoaFactory extends GeneralFactory implements IkasoaFactor
 		ThriftClient thriftClient = getThriftClient(serverInfoList, loadBalanceClass);
 		return (T) Proxy.newProxyInstance(iClass.getClassLoader(), new Class<?>[] { iClass },
 				(proxy, iMethod, args) -> getBaseGetServiceFactory()
-						.getBaseGetService(thriftClient, getSKey(iClass, iMethod), new ReturnData(iMethod)).get(args));
+						.getBaseGetService(thriftClient, getSKey(iClass, iMethod, true), new ReturnData(iMethod))
+						.get(args));
 	}
 
 	@Override
@@ -95,43 +100,44 @@ public class DefaultIkasoaFactory extends GeneralFactory implements IkasoaFactor
 		ThriftClient thriftClient = getThriftClient(serverInfoList, loadBalanceClass, param);
 		return (T) Proxy.newProxyInstance(iClass.getClassLoader(), new Class<?>[] { iClass },
 				(proxy, iMethod, args) -> getBaseGetServiceFactory()
-						.getBaseGetService(thriftClient, getSKey(iClass, iMethod), new ReturnData(iMethod)).get(args));
+						.getBaseGetService(thriftClient, getSKey(iClass, iMethod, true), new ReturnData(iMethod))
+						.get(args));
 	}
 
 	@Override
-	public IkasoaServer getIkasoaServer(Class<?> implClass, int serverPort) throws IkasoaException {
-		return getIkasoaServer(serverPort, getServiceMapByImplClass(new ImplClsCon(implClass)));
+	public IkasoaServer getIkasoaServer(Class<?> implClass, int serverPort) throws RpcException {
+		return getIkasoaServer(serverPort, getServiceMapByImplWrapper(new ImplWrapper(implClass)));
 	}
 
 	@Override
-	public IkasoaServer getIkasoaServer(ImplClsCon implClsCon, int serverPort) throws IkasoaException {
-		return getIkasoaServer(serverPort, getServiceMapByImplClass(implClsCon));
+	public IkasoaServer getIkasoaServer(ImplWrapper implWrapper, int serverPort) throws RpcException {
+		return getIkasoaServer(serverPort, getServiceMapByImplWrapper(implWrapper));
 	}
 
 	@Override
-	public IkasoaServer getIkasoaServer(List<ImplClsCon> implClsConList, int serverPort) throws IkasoaException {
+	public IkasoaServer getIkasoaServer(List<ImplWrapper> ImplWrapperList, int serverPort) throws RpcException {
 		Map<String, Service> serviceMap = new HashMap<>();
-		for (ImplClsCon implClsCon : implClsConList)
-			serviceMap.putAll(getServiceMapByImplClass(implClsCon));
+		for (ImplWrapper implWrapper : ImplWrapperList)
+			serviceMap.putAll(getServiceMapByImplWrapper(implWrapper));
 		return getIkasoaServer(serverPort, serviceMap);
 	}
 
 	@Override
-	public IkasoaServer getIkasoaServer(int serverPort, Map<String, Service> serviceMap) throws IkasoaException {
+	public IkasoaServer getIkasoaServer(int serverPort, Map<String, Service> serviceMap) throws RpcException {
 		try {
 			return new IkasoaServerImpl(super.getThriftServer(serverPort, serviceMap), serviceMap);
-		} catch (STException e) {
-			throw new IkasoaException("Create Ikasoa service exception !", e);
+		} catch (IkasoaException e) {
+			throw new RpcException("Create Ikasoa service exception !", e);
 		}
 	}
 
 	@Override
-	public Service getService(ThriftClient thriftClient) throws STException {
+	public Service getService(ThriftClient thriftClient) throws IkasoaException {
 		return super.getService(thriftClient);
 	}
 
 	@Override
-	public Service getService(ThriftClient thriftClient, String serviceName) throws STException {
+	public Service getService(ThriftClient thriftClient, String serviceName) throws IkasoaException {
 		return super.getService(thriftClient, serviceName);
 	}
 
@@ -151,7 +157,7 @@ public class DefaultIkasoaFactory extends GeneralFactory implements IkasoaFactor
 	}
 
 	@Override
-	public ThriftServer getThriftServer(int serverPort, Map<String, Service> serviceMap) throws STException {
+	public ThriftServer getThriftServer(int serverPort, Map<String, Service> serviceMap) throws IkasoaException {
 		return super.getThriftServer(serverPort, serviceMap);
 	}
 
@@ -162,26 +168,28 @@ public class DefaultIkasoaFactory extends GeneralFactory implements IkasoaFactor
 
 	@Override
 	public ThriftServer getThriftServer(String serverName, int serverPort, Map<String, Service> serviceMap)
-			throws STException {
+			throws IkasoaException {
 		return super.getThriftServer(serverName, serverPort, serviceMap);
 	}
 
 	@Override
 	public ThriftServer getThriftServer(String serverName, int serverPort, TProcessor processor) {
 		return configurator.isNonBlockingIO()
-				? super.getNonblockingThriftServer(serverName += " (non-blocking io)", serverPort, processor)
+				? getNonblockingThriftServer(serverName += " (non-blocking io)", serverPort, processor)
 				: super.getThriftServer(serverName, serverPort, processor);
 	}
 
-	private Map<String, Service> getServiceMapByImplClass(ImplClsCon implClsCon) throws IkasoaException {
-		return getServiceMapByClass(new HashMap<String, Service>(), implClsCon.getImplClass(),
-				implClsCon.getImplObject(), implClsCon.getImplClass());
+	private Map<String, Service> getServiceMapByImplWrapper(ImplWrapper implWrapper) throws RpcException {
+		return getServiceMapByClass(new HashMap<String, Service>(), implWrapper.getImplClass(),
+				implWrapper.getImplObject(), implWrapper.getImplClass());
 	}
 
 	private Map<String, Service> getServiceMapByClass(Map<String, Service> serviceMap, Class<?> implClass,
-			Object implObject, Class<?> superClass) throws IkasoaException {
+			Object implObject, Class<?> superClass) throws RpcException {
 		if (implClass == null)
-			throw new IkasoaException("Implement class is not null !");
+			throw new RpcException("Implement class is not null !");
+		if (superClass == null)
+			throw new RpcException("Implement superClass is not null !");
 		if (implClass.getInterfaces().length == 0)
 			LOG.warn("Class ({}) is not this interface implement class , Will ignore .", implClass.getName());
 		for (Class<?> iClass : superClass.getInterfaces())
@@ -192,7 +200,7 @@ public class DefaultIkasoaFactory extends GeneralFactory implements IkasoaFactor
 	}
 
 	private void buildService(Map<String, Service> serviceMap, Class<?> iClass, Class<?> implClass, Object implObject)
-			throws IkasoaException {
+			throws RpcException {
 		try {
 			if (implObject == null)
 				implObject = implClass.newInstance();
@@ -205,13 +213,13 @@ public class DefaultIkasoaFactory extends GeneralFactory implements IkasoaFactor
 				else
 					// 过滤掉无效方法
 					for (Method iMethod : iClass.getMethods())
-						if (compareMethod(iMethod, implMethod)) {
-							isValidMethod = Boolean.TRUE;
-							break;
-						}
+					if (!iMethod.isAnnotationPresent(Invalid.class) && compareMethod(iMethod, implMethod)) {
+					isValidMethod = Boolean.TRUE;
+					break;
+					}
 				if (!isValidMethod)
 					continue;
-				String sKey = getSKey(iClass, implMethod);
+				String sKey = getSKey(iClass, implMethod, false);
 				Service iss = (Service) IkasoaServerService.class.getDeclaredConstructors()[0].newInstance(implObject,
 						implMethod,
 						protocolHandlerFactory.getProtocolHandler(null, configurator.getProtocolHandlerClass()));
@@ -219,13 +227,13 @@ public class DefaultIkasoaFactory extends GeneralFactory implements IkasoaFactor
 				serviceMap.put(sKey, iss);
 			}
 		} catch (Exception e) {
-			throw new IkasoaException("Builder Ikasoa service exception !", e);
+			throw new RpcException("Builder Ikasoa service exception !", e);
 		}
 	}
 
 	private <T> BaseGetServiceFactory<Object[], T> getBaseGetServiceFactory() {
-		BaseGetServiceFactory<Object[], T> bgsFactory = new BaseGetServiceFactory<>(super.thriftServerConfiguration,
-				super.thriftClientConfiguration);
+		BaseGetServiceFactory<Object[], T> bgsFactory = new BaseGetServiceFactory<>(thriftServerConfiguration,
+				thriftClientConfiguration);
 		bgsFactory.setProtocolHandlerClass(configurator.getProtocolHandlerClass());
 		bgsFactory.setClientInvocationHandler(configurator.getClientInvocationHandler());
 		return bgsFactory;
@@ -244,9 +252,11 @@ public class DefaultIkasoaFactory extends GeneralFactory implements IkasoaFactor
 			return Boolean.FALSE;
 	}
 
-	private String getSKey(Class<?> iClass, Method method) {
+	private String getSKey(Class<?> iClass, Method method, boolean isCheckValid) {
+		if (isCheckValid && (iClass == null || method == null || method.isAnnotationPresent(Invalid.class)))
+			return null;
 		return Optional.ofNullable(iClass.getAnnotation(IkasoaService.class))
-				.map(is -> new ServiceKey(is.name(), method).toString())
+				.map(s -> new ServiceKey(s.name(), method).toString())
 				.orElse(new ServiceKey(iClass, method).toString());
 	}
 

@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.ikasoa.rpc.annotation.IkasoaService;
+import com.ikasoa.rpc.annotation.Invalid;
 
 @IkasoaService(name = "ExampleService")
 public interface ExampleService {
@@ -53,5 +54,8 @@ public interface ExampleService {
 	byte[] down() throws FileNotFoundException;
 
 	void tVoid();
+	
+	@Invalid
+	void tInvalid();
 
 }

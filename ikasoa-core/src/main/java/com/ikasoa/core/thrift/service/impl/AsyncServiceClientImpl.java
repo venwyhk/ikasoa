@@ -9,7 +9,7 @@ import org.apache.thrift.async.TAsyncClientManager;
 import org.apache.thrift.protocol.TProtocolFactory;
 import org.apache.thrift.transport.TNonblockingTransport;
 
-import com.ikasoa.core.STException;
+import com.ikasoa.core.IkasoaException;
 import com.ikasoa.core.thrift.service.AsyncService;
 
 /**
@@ -33,7 +33,7 @@ public class AsyncServiceClientImpl extends TAsyncClient implements AsyncService
 	}
 
 	@Override
-	public void get(String arg, AsyncMethodCallback<String> resultHandler) throws STException {
+	public void get(String arg, AsyncMethodCallback<String> resultHandler) throws IkasoaException {
 		checkReady();
 		CallBack methodCall;
 		try {
@@ -41,7 +41,7 @@ public class AsyncServiceClientImpl extends TAsyncClient implements AsyncService
 			super.___currentMethod = methodCall;
 			super.___manager.call(methodCall);
 		} catch (TException e) {
-			throw new STException(e);
+			throw new IkasoaException(e);
 		}
 	}
 

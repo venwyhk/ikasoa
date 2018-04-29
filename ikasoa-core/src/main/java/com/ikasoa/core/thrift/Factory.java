@@ -6,7 +6,7 @@ import java.util.Map;
 import org.apache.thrift.TProcessor;
 import org.apache.thrift.transport.TNonblockingTransport;
 
-import com.ikasoa.core.STException;
+import com.ikasoa.core.IkasoaException;
 import com.ikasoa.core.loadbalance.LoadBalance;
 import com.ikasoa.core.loadbalance.ServerInfo;
 import com.ikasoa.core.thrift.client.ThriftClient;
@@ -106,11 +106,11 @@ public interface Factory {
 	 * @param serviceMap
 	 *            Thrift服务器集合
 	 * @return ThriftServer Thrift服务器
-	 * @throws STException
+	 * @throws IkasoaException
 	 *             异常
 	 */
 	public ThriftServer getThriftServer(String serverName, int serverPort, Map<String, Service> serviceMap)
-			throws STException;
+			throws IkasoaException;
 
 	/**
 	 * 获取NIO的ThriftServer对象
@@ -120,10 +120,10 @@ public interface Factory {
 	 * @param serviceMap
 	 *            Thrift服务器集合
 	 * @return ThriftServer Thrift服务器
-	 * @throws STException
+	 * @throws IkasoaException
 	 *             异常
 	 */
-	public ThriftServer getNonblockingThriftServer(int serverPort, Map<String, Service> serviceMap) throws STException;
+	public ThriftServer getNonblockingThriftServer(int serverPort, Map<String, Service> serviceMap) throws IkasoaException;
 
 	/**
 	 * 获取默认的ThriftServer对象
@@ -133,10 +133,10 @@ public interface Factory {
 	 * @param serviceMap
 	 *            Thrift服务器集合
 	 * @return ThriftServer Thrift服务器
-	 * @throws STException
+	 * @throws IkasoaException
 	 *             异常
 	 */
-	public ThriftServer getThriftServer(int serverPort, Map<String, Service> serviceMap) throws STException;
+	public ThriftServer getThriftServer(int serverPort, Map<String, Service> serviceMap) throws IkasoaException;
 
 	/**
 	 * 获取NIO的ThriftServer对象
@@ -148,11 +148,11 @@ public interface Factory {
 	 * @param serviceMap
 	 *            Thrift服务器集合
 	 * @return ThriftServer Thrift服务器
-	 * @throws STException
+	 * @throws IkasoaException
 	 *             异常
 	 */
 	public ThriftServer getNonblockingThriftServer(String serverName, int serverPort, Map<String, Service> serviceMap)
-			throws STException;
+			throws IkasoaException;
 
 	/**
 	 * 获取默认的ThriftClient对象
@@ -207,10 +207,10 @@ public interface Factory {
 	 * @param thriftClient
 	 *            Thrift客户端
 	 * @return Service 通用服务
-	 * @throws STException
+	 * @throws IkasoaException
 	 *             异常
 	 */
-	public Service getService(ThriftClient thriftClient) throws STException;
+	public Service getService(ThriftClient thriftClient) throws IkasoaException;
 
 	/**
 	 * 获取客户端异步Service对象
@@ -220,10 +220,10 @@ public interface Factory {
 	 * @param transport
 	 *            传输对象
 	 * @return AysncService 异步服务
-	 * @throws STException
+	 * @throws IkasoaException
 	 *             异常
 	 */
-	public AsyncService getAsyncService(TNonblockingTransport transport) throws STException;
+	public AsyncService getAsyncService(TNonblockingTransport transport) throws IkasoaException;
 
 	/**
 	 * 获取客户端Service对象
@@ -233,10 +233,10 @@ public interface Factory {
 	 * @param serviceName
 	 *            服务名
 	 * @return Service 通用服务
-	 * @throws STException
+	 * @throws IkasoaException
 	 *             异常
 	 */
-	public Service getService(ThriftClient thriftClient, String serviceName) throws STException;
+	public Service getService(ThriftClient thriftClient, String serviceName) throws IkasoaException;
 
 	/**
 	 * 获取客户端异步Service对象
@@ -246,9 +246,9 @@ public interface Factory {
 	 * @param serviceName
 	 *            服务名
 	 * @return AysncService 异步服务
-	 * @throws STException
+	 * @throws IkasoaException
 	 *             异常
 	 */
-	public AsyncService getAsyncService(TNonblockingTransport transport, String serviceName) throws STException;
+	public AsyncService getAsyncService(TNonblockingTransport transport, String serviceName) throws IkasoaException;
 
 }

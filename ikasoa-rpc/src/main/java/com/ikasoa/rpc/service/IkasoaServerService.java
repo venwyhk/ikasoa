@@ -6,7 +6,7 @@ import java.lang.reflect.Method;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.ikasoa.rpc.IkasoaException;
+import com.ikasoa.rpc.RpcException;
 import com.ikasoa.rpc.handler.ProtocolHandler;
 
 import lombok.Getter;
@@ -37,11 +37,11 @@ public class IkasoaServerService extends AbstractGetService<Object[], Object> {
 	}
 
 	@Override
-	public Object get(Object[] args) throws IkasoaException {
+	public Object get(Object[] args) throws RpcException {
 		if (method == null)
-			throw new IkasoaException("'method' is null !");
+			throw new RpcException("'method' is null !");
 		if (classObj == null)
-			throw new IkasoaException("'classObj' is null !");
+			throw new RpcException("'classObj' is null !");
 		if (args == null) {
 			LOG.debug("'args' is null , Will create default args object .");
 			args = new Object[] {};
@@ -52,9 +52,9 @@ public class IkasoaServerService extends AbstractGetService<Object[], Object> {
 		try {
 			return method.invoke(classObj, args);
 		} catch (IllegalAccessException e) {
-			throw new IkasoaException("'GET' reflect exception !", e);
+			throw new RpcException("'GET' reflect exception !", e);
 		} catch (IllegalArgumentException e) {
-			throw new IkasoaException("'GET' reflect exception !", e);
+			throw new RpcException("'GET' reflect exception !", e);
 		} catch (InvocationTargetException e) {
 			LOG.debug(e.getTargetException().toString());
 			return e.getTargetException();

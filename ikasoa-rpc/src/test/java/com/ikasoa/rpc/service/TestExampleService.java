@@ -11,7 +11,7 @@ import org.junit.Test;
 import com.ikasoa.core.thrift.server.ServerArgsAspect;
 import com.ikasoa.core.thrift.server.ThriftServerConfiguration;
 import com.ikasoa.rpc.IkasoaServer;
-import com.ikasoa.rpc.ImplClsCon;
+import com.ikasoa.rpc.ImplWrapper;
 import com.ikasoa.rpc.NettyIkasoaFactory;
 import com.ikasoa.rpc.Configurator;
 import com.ikasoa.rpc.DefaultIkasoaFactory;
@@ -101,9 +101,9 @@ public class TestExampleService extends TestCase {
 		try {
 
 			// 获取Ikasoa服务
-			List<ImplClsCon> sList = new ArrayList<>();
-			sList.add(new ImplClsCon(ExampleServiceImpl.class));
-			sList.add(new ImplClsCon(ExampleChildServiceImpl.class));
+			List<ImplWrapper> sList = new ArrayList<>();
+			sList.add(new ImplWrapper(ExampleServiceImpl.class));
+			sList.add(new ImplWrapper(ExampleChildServiceImpl.class));
 			IkasoaServer ikasoaServer = ikasoaFactory.getIkasoaServer(sList, port);
 
 			// 启动服务
@@ -133,6 +133,11 @@ public class TestExampleService extends TestCase {
 			es.tVoid();
 			assertEquals("value", es.testContainerType().get(0).get("key"));
 			assertEquals("oooo", es.testContainerType2().get(0).get(0));
+			try {
+				es.tInvalid();
+			} catch (Exception e) {
+				System.out.println(e);
+			}
 			
 			// 测试接口实现继承
 			ExampleChildService childEs = ikasoaFactory.getIkasoaClient(ExampleChildService.class, "localhost", port);

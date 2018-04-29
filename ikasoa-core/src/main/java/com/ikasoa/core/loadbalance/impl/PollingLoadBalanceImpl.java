@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import com.ikasoa.core.STException;
+import com.ikasoa.core.IkasoaException;
 import com.ikasoa.core.loadbalance.LoadBalance;
 import com.ikasoa.core.loadbalance.ServerInfo;
 import com.ikasoa.core.utils.StringUtil;
@@ -48,7 +48,7 @@ public class PollingLoadBalanceImpl implements LoadBalance {
 		this.serverInfoList = serverInfoList;
 		try {
 			next();
-		} catch (STException e) {
+		} catch (IkasoaException e) {
 			throw new RuntimeException(e);
 		}
 	}
@@ -61,13 +61,13 @@ public class PollingLoadBalanceImpl implements LoadBalance {
 	}
 
 	@Override
-	public synchronized ServerInfo next() throws STException {
+	public synchronized ServerInfo next() throws IkasoaException {
 		int size = serverInfoList.size();
 		if (size == 0)
-			throw new STException("Get server host failed !");
+			throw new IkasoaException("Get server host failed !");
 		ServerInfo serverInfo = serverInfoList.get(i);
 		if (serverInfo == null || StringUtil.isEmpty(serverInfo.getHost()) || serverInfo.getWeightNumber() < 0)
-			throw new STException("serverInfo error !");
+			throw new IkasoaException("serverInfo error !");
 		this.serverInfo = serverInfo;
 		int weightNumber = serverInfo.getWeightNumber();
 		LOG.debug("ServerHost is : {}, WeightNumber is : {}", serverInfo.getHost(), weightNumber);

@@ -1,6 +1,6 @@
 package com.ikasoa.core.loadbalance;
 
-import com.ikasoa.core.STException;
+import com.ikasoa.core.IkasoaException;
 
 /**
  * 负载均衡接口
@@ -28,9 +28,9 @@ public interface LoadBalance {
 	 * 方法获取的服务器信息为切换过后的信息,可能会与之前的不同.
 	 * 
 	 * @return ServerInfo
-	 * @exception STException
+	 * @exception IkasoaException
 	 *                异常
 	 */
-	ServerInfo next() throws STException;
+	ServerInfo next() throws IkasoaException;
 
 }

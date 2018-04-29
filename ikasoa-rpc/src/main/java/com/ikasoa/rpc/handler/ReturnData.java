@@ -3,6 +3,7 @@ package com.ikasoa.rpc.handler;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -19,6 +20,18 @@ import lombok.Data;
  */
 @Data
 public class ReturnData {
+
+	private final static String LIST_CLASS_NAME = "java.util.List";
+
+	private final static String SET_CLASS_NAME = "java.util.Set";
+
+	private final static String MAP_CLASS_NAME = "java.util.Map";
+
+	private final static String[][] BASE_DATA_TYPES = { { "void", null }, { "byte", Byte.class.getName() },
+			{ "short", Short.class.getName() }, { "int", Integer.class.getName() }, { "long", Long.class.getName() },
+			{ "float", Float.class.getName() }, { "double", Double.class.getName() },
+			{ "char", Character.class.getName() }, { "boolean", Boolean.class.getName() },
+			{ "long", Long.class.getName() } };
 
 	/**
 	 * 返回类型名称
@@ -46,13 +59,13 @@ public class ReturnData {
 			classTypes = new Class<?>[types.length];
 			for (int i = 0; i < types.length; i++) {
 				Type type = types[i];
-				if (type.getTypeName().indexOf("java.util.List") == 0) {
+				if (type.getTypeName().indexOf(LIST_CLASS_NAME) == 0) {
 					classTypes[i] = List.class;
 					setContainerType(Boolean.TRUE);
-				} else if (type.getTypeName().indexOf("java.util.Set") == 0) {
+				} else if (type.getTypeName().indexOf(SET_CLASS_NAME) == 0) {
 					classTypes[i] = Set.class;
 					setContainerType(Boolean.TRUE);
-				} else if (type.getTypeName().indexOf("java.util.Map") == 0) {
+				} else if (type.getTypeName().indexOf(MAP_CLASS_NAME) == 0) {
 					classTypes[i] = Map.class;
 					setContainerType(Boolean.TRUE);
 				} else {
@@ -104,29 +117,21 @@ public class ReturnData {
 		return getClassTypes() != null && getClassTypes().length > k ? getClassTypes()[k] : Object.class;
 	}
 
-	private String getClassNameByTypeName(String ClassTypeName) {
-		switch (ClassTypeName) {
-		case "void":
-			return null;
-		case "byte":
-			return Byte.class.getName();
-		case "short":
-			return Short.class.getName();
-		case "int":
-			return Integer.class.getName();
-		case "long":
-			return Long.class.getName();
-		case "float":
-			return Float.class.getName();
-		case "double":
-			return Double.class.getName();
-		case "char":
-			return Character.class.getName();
-		case "boolean":
-			return Boolean.class.getName();
-		default:
-			return ClassTypeName;
+	private String getClassNameByTypeName(String classTypeName) {
+		Map<String, String> dataTypeMap = toMap(BASE_DATA_TYPES);
+		return (dataTypeMap.containsKey(classTypeName)) ? dataTypeMap.get(classTypeName) : classTypeName;
+	}
+
+	public Map<String, String> toMap(String[][] array) {
+		final Map<String, String> map = new HashMap<>((int) (array.length * 1.5));
+		for (int i = 0; i < array.length; i++) {
+			final String[] entry = array[i];
+			if (entry.length < 2)
+				throw new IllegalArgumentException(
+						"Array element " + i + ", '" + entry + "', has a length less than 2");
+			map.put(entry[0], entry[1]);
 		}
+		return map;
 	}
 
 }

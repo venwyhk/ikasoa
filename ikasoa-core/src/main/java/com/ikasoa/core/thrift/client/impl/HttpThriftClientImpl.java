@@ -6,7 +6,7 @@ import org.apache.thrift.transport.TTransportException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.ikasoa.core.STException;
+import com.ikasoa.core.IkasoaException;
 import com.ikasoa.core.thrift.client.ThriftClientConfiguration;
 
 /**
@@ -33,11 +33,11 @@ public class HttpThriftClientImpl extends AbstractThriftClientImpl {
 	}
 
 	@Override
-	protected TTransport getTransport(String serverHost, int serverPort) throws STException {
+	protected TTransport getTransport(String serverHost, int serverPort) throws IkasoaException {
 		try {
 			return new THttpClient(serverHost);
 		} catch (TTransportException e) {
-			throw new STException("Get http transport failed !", e);
+			throw new IkasoaException("Get http transport failed !", e);
 		}
 	}
 

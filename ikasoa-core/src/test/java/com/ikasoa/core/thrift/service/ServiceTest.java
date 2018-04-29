@@ -6,7 +6,7 @@ import org.apache.thrift.server.TThreadPoolServer;
 import org.apache.thrift.transport.TMemoryBuffer;
 import org.junit.Test;
 
-import com.ikasoa.core.STException;
+import com.ikasoa.core.IkasoaException;
 import com.ikasoa.core.thrift.Factory;
 import com.ikasoa.core.thrift.GeneralFactory;
 import com.ikasoa.core.thrift.client.ThriftClient;
@@ -68,7 +68,7 @@ public class ServiceTest extends TestCase {
 	private class TestService implements Service {
 
 		@Override
-		public String get(String arg) throws STException {
+		public String get(String arg) throws IkasoaException {
 			return arg;
 		}
 

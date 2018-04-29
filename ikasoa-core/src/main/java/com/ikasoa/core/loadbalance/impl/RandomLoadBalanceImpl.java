@@ -5,7 +5,7 @@ import java.util.Random;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import com.ikasoa.core.STException;
+import com.ikasoa.core.IkasoaException;
 import com.ikasoa.core.loadbalance.LoadBalance;
 import com.ikasoa.core.loadbalance.ServerInfo;
 
@@ -43,7 +43,7 @@ public class RandomLoadBalanceImpl implements LoadBalance {
 		this.serverInfoList = serverInfoList;
 		try {
 			next();
-		} catch (STException e) {
+		} catch (IkasoaException e) {
 			throw new RuntimeException(e);
 		}
 	}
@@ -56,10 +56,10 @@ public class RandomLoadBalanceImpl implements LoadBalance {
 	}
 
 	@Override
-	public ServerInfo next() throws STException {
+	public ServerInfo next() throws IkasoaException {
 		int size = serverInfoList.size();
 		if (size == 0)
-			throw new STException("Get server info failed !");
+			throw new IkasoaException("Get server info failed !");
 		serverInfo = serverInfoList.get(new Random().nextInt(size) % (size + 1));
 		LOG.debug("ServerInfo is : {}", serverInfo);
 		return getServerInfo();

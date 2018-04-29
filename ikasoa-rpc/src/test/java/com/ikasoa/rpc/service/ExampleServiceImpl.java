@@ -118,4 +118,8 @@ public class ExampleServiceImpl implements ExampleService {
 	public void tVoid() {
 	}
 
+	@Override
+	public void tInvalid() {
+	}
+
 }

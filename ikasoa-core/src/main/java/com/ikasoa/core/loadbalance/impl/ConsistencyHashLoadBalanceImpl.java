@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
-import com.ikasoa.core.STException;
+import com.ikasoa.core.IkasoaException;
 import com.ikasoa.core.loadbalance.LoadBalance;
 import com.ikasoa.core.loadbalance.ServerInfo;
 import com.ikasoa.core.utils.StringUtil;
@@ -57,7 +57,7 @@ public class ConsistencyHashLoadBalanceImpl implements LoadBalance {
 	}
 
 	@Override
-	public ServerInfo next() throws STException {
+	public ServerInfo next() throws IkasoaException {
 		return getServerInfo();
 	}
 

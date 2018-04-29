@@ -6,7 +6,7 @@ import java.lang.reflect.Method;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import com.ikasoa.core.STException;
+import com.ikasoa.core.IkasoaException;
 
 /**
  * Bean工具类
@@ -29,10 +29,10 @@ public class BeanUtil {
 	 *            输出的对象
 	 * @param source
 	 *            原始对象
-	 * @exception STException
+	 * @exception IkasoaException
 	 *                异常
 	 */
-	public static void copyProperties(Object target, Object source) throws STException {
+	public static void copyProperties(Object target, Object source) throws IkasoaException {
 		Class<?> sourceClz = source.getClass();
 		Class<?> targetClz = target.getClass();
 		Field[] fields = sourceClz.getDeclaredFields();
@@ -47,7 +47,7 @@ public class BeanUtil {
 				try {
 					targetField = targetClz.getSuperclass().getDeclaredField(fieldName);
 				} catch (NoSuchFieldException | SecurityException e1) {
-					throw new STException(e1);
+					throw new IkasoaException(e1);
 				}
 			}
 			if (fields[i].getType() == targetField.getType()) {
@@ -64,7 +64,7 @@ public class BeanUtil {
 						try {
 							getMethod = sourceClz.getSuperclass().getDeclaredMethod(getMethodName, new Class[] {});
 						} catch (NoSuchMethodException e1) {
-							throw new STException(e1);
+							throw new IkasoaException(e1);
 						}
 					}
 					try {
@@ -73,17 +73,17 @@ public class BeanUtil {
 						try {
 							setMethod = targetClz.getSuperclass().getDeclaredMethod(setMethodName, fields[i].getType());
 						} catch (NoSuchMethodException e1) {
-							throw new STException(e1);
+							throw new IkasoaException(e1);
 						}
 					}
 					setMethod.invoke(target, getMethod.invoke(source, new Object[] {}));
 				} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-					throw new STException(e);
+					throw new IkasoaException(e);
 				} catch (Exception e) {
 					LOG.warn("Object copy failed : {}", e.getMessage());
 				}
 			} else {
-				throw new STException("Object copy failed ! Attribute type error !");
+				throw new IkasoaException("Object copy failed ! Attribute type error !");
 			}
 		}
 	}

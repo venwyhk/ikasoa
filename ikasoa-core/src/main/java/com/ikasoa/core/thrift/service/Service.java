@@ -1,6 +1,6 @@
 package com.ikasoa.core.thrift.service;
 
-import com.ikasoa.core.STException;
+import com.ikasoa.core.IkasoaException;
 
 /**
  * 通用服务接口
@@ -20,9 +20,9 @@ public interface Service {
 	 * @param arg
 	 *            参数
 	 * @return String 返回值
-	 * @exception STException
+	 * @exception IkasoaException
 	 *                异常
 	 */
-	String get(String arg) throws STException;
+	String get(String arg) throws IkasoaException;
 
 }

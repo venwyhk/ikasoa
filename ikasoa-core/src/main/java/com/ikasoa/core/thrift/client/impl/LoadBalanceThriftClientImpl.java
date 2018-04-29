@@ -3,7 +3,7 @@ package com.ikasoa.core.thrift.client.impl;
 import org.apache.thrift.transport.TTransport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import com.ikasoa.core.STException;
+import com.ikasoa.core.IkasoaException;
 import com.ikasoa.core.ServerCheck;
 import com.ikasoa.core.ServerCheckFailProcessor;
 import com.ikasoa.core.loadbalance.LoadBalance;
@@ -51,7 +51,7 @@ public class LoadBalanceThriftClientImpl extends AbstractThriftClientImpl {
 	 * @return TTransport 服务传输协议
 	 */
 	@Override
-	public TTransport getTransport() throws STException {
+	public TTransport getTransport() throws IkasoaException {
 		updateServerInfo();
 		ServerCheck serverCheck = getServerCheck();
 		// 如果有配置检测实现,则在建立连接前尝试检测服务器,如果服务器不可用则尝试切换到另一台服务器,切换规则取决于负载均衡实现.
@@ -87,7 +87,7 @@ public class LoadBalanceThriftClientImpl extends AbstractThriftClientImpl {
 	private class NextProcessImpl implements ServerCheckFailProcessor {
 
 		@Override
-		public void process(ThriftClient client) throws STException {
+		public void process(ThriftClient client) throws IkasoaException {
 			LOG.warn("Server is not available (serverHost : {}, serverPort : {}) , try next server .",
 					client.getServerHost(), client.getServerPort());
 			loadBalance.next();
