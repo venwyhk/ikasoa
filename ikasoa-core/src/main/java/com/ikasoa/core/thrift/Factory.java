@@ -106,11 +106,8 @@ public interface Factory {
 	 * @param serviceMap
 	 *            Thrift服务器集合
 	 * @return ThriftServer Thrift服务器
-	 * @throws IkasoaException
-	 *             异常
 	 */
-	public ThriftServer getThriftServer(String serverName, int serverPort, Map<String, Service> serviceMap)
-			throws IkasoaException;
+	public ThriftServer getThriftServer(String serverName, int serverPort, Map<String, Service> serviceMap);
 
 	/**
 	 * 获取NIO的ThriftServer对象
@@ -120,10 +117,8 @@ public interface Factory {
 	 * @param serviceMap
 	 *            Thrift服务器集合
 	 * @return ThriftServer Thrift服务器
-	 * @throws IkasoaException
-	 *             异常
 	 */
-	public ThriftServer getNonblockingThriftServer(int serverPort, Map<String, Service> serviceMap) throws IkasoaException;
+	public ThriftServer getNonblockingThriftServer(int serverPort, Map<String, Service> serviceMap);
 
 	/**
 	 * 获取默认的ThriftServer对象
@@ -133,10 +128,8 @@ public interface Factory {
 	 * @param serviceMap
 	 *            Thrift服务器集合
 	 * @return ThriftServer Thrift服务器
-	 * @throws IkasoaException
-	 *             异常
 	 */
-	public ThriftServer getThriftServer(int serverPort, Map<String, Service> serviceMap) throws IkasoaException;
+	public ThriftServer getThriftServer(int serverPort, Map<String, Service> serviceMap);
 
 	/**
 	 * 获取NIO的ThriftServer对象
@@ -148,11 +141,8 @@ public interface Factory {
 	 * @param serviceMap
 	 *            Thrift服务器集合
 	 * @return ThriftServer Thrift服务器
-	 * @throws IkasoaException
-	 *             异常
 	 */
-	public ThriftServer getNonblockingThriftServer(String serverName, int serverPort, Map<String, Service> serviceMap)
-			throws IkasoaException;
+	public ThriftServer getNonblockingThriftServer(String serverName, int serverPort, Map<String, Service> serviceMap);
 
 	/**
 	 * 获取默认的ThriftClient对象

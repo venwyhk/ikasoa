@@ -44,7 +44,7 @@ public class PollingLoadBalanceImpl implements LoadBalance {
 
 	private void init(List<ServerInfo> serverInfoList) {
 		if (serverInfoList == null || serverInfoList.size() == 0)
-			throw new RuntimeException("'serverInfoList' is null !");
+			throw new IllegalArgumentException("'serverInfoList' is null !");
 		this.serverInfoList = serverInfoList;
 		try {
 			next();

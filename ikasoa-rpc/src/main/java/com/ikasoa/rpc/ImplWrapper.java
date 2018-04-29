@@ -6,7 +6,7 @@ import lombok.Data;
  * 接口实现对象包装器
  * 
  * @author <a href="mailto:larry7696@gmail.com">Larry</a>
- * @version 0.4
+ * @version 0.3.2
  */
 @Data
 public class ImplWrapper {

@@ -71,7 +71,7 @@ public abstract class AbstractThriftClientImpl implements ThriftClient {
 	@Override
 	public TProtocol getProtocol(TTransport transport) {
 		if (transport == null)
-			throw new RuntimeException("'transport' is null !");
+			throw new IllegalArgumentException("'transport' is null !");
 		return getThriftClientConfiguration().getProtocolFactory().getProtocol(transport);
 	}
 

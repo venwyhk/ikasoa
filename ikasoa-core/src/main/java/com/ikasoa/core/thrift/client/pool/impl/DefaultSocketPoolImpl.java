@@ -69,7 +69,7 @@ public class DefaultSocketPoolImpl implements SocketPool {
 	 */
 	public synchronized DefaultSocketPoolImpl init(String host, int port) {
 		if (!ServerUtil.checkHostAndPort(host, port))
-			throw new RuntimeException("Server host or port is null !");
+			throw new IllegalArgumentException("Server host or port is null !");
 		DefaultSocketPoolImpl self = new DefaultSocketPoolImpl();
 		selfMap.put(ServerUtil.buildCacheKey(host, port), self);
 		self.socketPool = new Hashtable<>(size);
@@ -90,7 +90,7 @@ public class DefaultSocketPoolImpl implements SocketPool {
 	 */
 	public synchronized void buildThriftSocketPool(String host, int port) {
 		if (!ServerUtil.checkHostAndPort(host, port))
-			throw new RuntimeException("Server host or port is null !");
+			throw new IllegalArgumentException("Server host or port is null !");
 		DefaultSocketPoolImpl self = selfMap.get(ServerUtil.buildCacheKey(host, port));
 		if (self == null)
 			self = init(host, port);
@@ -110,7 +110,7 @@ public class DefaultSocketPoolImpl implements SocketPool {
 	@Override
 	public synchronized ThriftSocket buildThriftSocket(String host, int port) {
 		if (!ServerUtil.checkHostAndPort(host, port))
-			throw new RuntimeException("Server host or port is null !");
+			throw new IllegalArgumentException("Server host or port is null !");
 		DefaultSocketPoolImpl self = selfMap.get(ServerUtil.buildCacheKey(host, port));
 		if (self == null || self.socketStatusArray == null)
 			self = init(host, port);

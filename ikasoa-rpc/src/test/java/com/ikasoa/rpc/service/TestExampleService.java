@@ -13,6 +13,7 @@ import com.ikasoa.core.thrift.server.ThriftServerConfiguration;
 import com.ikasoa.rpc.IkasoaServer;
 import com.ikasoa.rpc.ImplWrapper;
 import com.ikasoa.rpc.NettyIkasoaFactory;
+import com.ikasoa.rpc.ServerInfoWrapper;
 import com.ikasoa.rpc.Configurator;
 import com.ikasoa.rpc.DefaultIkasoaFactory;
 import com.ikasoa.rpc.IkasoaFactory;
@@ -113,7 +114,7 @@ public class TestExampleService extends TestCase {
 			Thread.sleep(1000);
 
 			// 客户端获取远程接口实现
-			ExampleService es = ikasoaFactory.getInstance(ExampleService.class, "localhost", port);
+			ExampleService es = ikasoaFactory.getInstance(ExampleService.class, new ServerInfoWrapper("localhost", port));
 			// 实例化一个本地接口实现
 			ExampleService es2 = new ExampleServiceImpl();
 
@@ -140,7 +141,7 @@ public class TestExampleService extends TestCase {
 			}
 			
 			// 测试接口实现继承
-			ExampleChildService childEs = ikasoaFactory.getInstance(ExampleChildService.class, "localhost", port);
+			ExampleChildService childEs = ikasoaFactory.getInstance(ExampleChildService.class, new ServerInfoWrapper("localhost", port));
 			assertEquals(childEs.helloxx(), Boolean.TRUE);
 			assertEquals(childEs.helloxxx(), Boolean.FALSE);
 

@@ -15,7 +15,7 @@ import java.lang.annotation.Target;
  * 当接口的某些方法只允许本地调用,而不允许远程调用时,可使用该注解来标注,如果远程调用了含有该注解的接口方法,将会直接返回null.
  * 
  * @author <a href="mailto:larry7696@gmail.com">Larry</a>
- * @version 0.4
+ * @version 0.3.2
  */
 @Target(ElementType.METHOD)
 @Documented

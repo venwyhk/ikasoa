@@ -83,7 +83,7 @@ public class JsonProtocolHandlerImpl<T, R> implements ProtocolHandler<T, R> {
 	@SuppressWarnings("unchecked")
 	public R strToResult(String str) {
 		if (str == null)
-			throw new RuntimeException("result string is null !");
+			throw new IllegalArgumentException("result string is null !");
 		if (String.valueOf(ProtocolHandler.V).equals(str))
 			return null;
 		String[] strs = str.split(String.valueOf(ProtocolHandler.CT));

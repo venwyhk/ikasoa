@@ -44,89 +44,78 @@ public class DefaultIkasoaFactory extends GeneralFactory implements IkasoaFactor
 
 	public DefaultIkasoaFactory(ThriftServerConfiguration thriftServerConfiguration) {
 		super.thriftServerConfiguration = thriftServerConfiguration;
-		this.configurator.setThriftServerConfiguration(thriftServerConfiguration);
+		configurator.setThriftServerConfiguration(thriftServerConfiguration);
 	}
 
 	public DefaultIkasoaFactory(ThriftClientConfiguration thriftClientConfiguration) {
 		super.thriftClientConfiguration = thriftClientConfiguration;
-		this.configurator.setThriftClientConfiguration(thriftClientConfiguration);
+		configurator.setThriftClientConfiguration(thriftClientConfiguration);
 	}
 
 	public DefaultIkasoaFactory(Configurator configurator) {
 		if (configurator != null) {
 			this.configurator = configurator;
 			if (configurator.getThriftServerConfiguration() != null)
-				super.thriftServerConfiguration = configurator.getThriftServerConfiguration();
+				thriftServerConfiguration = configurator.getThriftServerConfiguration();
 			if (configurator.getThriftClientConfiguration() != null)
-				super.thriftClientConfiguration = configurator.getThriftClientConfiguration();
+				thriftClientConfiguration = configurator.getThriftClientConfiguration();
 		}
 	}
 
-	@Override
+	public DefaultIkasoaFactory(ServerInfoWrapper siw) {
+		if (siw != null && !siw.isNotNull())
+			configurator = new Configurator(siw);
+	}
+
+	public <T> T getInstance(Class<T> iClass) {
+		return getInstance(iClass, configurator.getServerInfoWrapper());
+	}
+
 	@SuppressWarnings("unchecked")
-	public <T> T getInstance(Class<T> iClass, String serverHost, int serverPort) {
-		ThriftClient thriftClient = getThriftClient(serverHost, serverPort);
-		return (T) Proxy.newProxyInstance(iClass.getClassLoader(), new Class<?>[] { iClass },
-				(proxy, iMethod, args) -> getBaseGetServiceFactory()
-						.getBaseGetService(thriftClient, getSKey(iClass, iMethod, true), new ReturnData(iMethod))
-						.get(args));
+	public <T> T getInstance(Class<T> iClass, ServerInfoWrapper siw) {
+		if (iClass == null)
+			throw new IllegalArgumentException();
+		if (siw == null || !siw.isNotNull())
+			throw new IllegalArgumentException("'serverInfoWrapper' is exist !");
+		return (T) Proxy
+				.newProxyInstance(iClass.getClassLoader(), new Class<?>[] { iClass },
+						(proxy, iMethod,
+								args) -> getBaseGetServiceFactory().getBaseGetService(
+										siw.isCluster()
+												? siw.isCluster()
+														? siw.getLoadBalanceClass() == null
+																? getThriftClient(siw.getServerInfoList())
+																: getThriftClient(siw.getServerInfoList(),
+																		siw.getLoadBalanceClass(), siw.getParam())
+														: getThriftClient(siw.getHost(), siw.getPort())
+												: getThriftClient(siw.getHost(), siw.getPort()),
+										getSKey(iClass, iMethod, true), new ReturnData(iMethod)).get(args));
 	}
 
 	@Override
 	@Deprecated
 	public <T> T getIkasoaClient(Class<T> iClass, String serverHost, int serverPort) {
-		return getInstance(iClass, serverHost, serverPort);
-	}
-
-	@Override
-	@SuppressWarnings("unchecked")
-	public <T> T getInstance(Class<T> iClass, List<ServerInfo> serverInfoList) {
-		ThriftClient thriftClient = getThriftClient(serverInfoList);
-		return (T) Proxy.newProxyInstance(iClass.getClassLoader(), new Class<?>[] { iClass },
-				(proxy, iMethod, args) -> getBaseGetServiceFactory()
-						.getBaseGetService(thriftClient, getSKey(iClass, iMethod, true), new ReturnData(iMethod))
-						.get(args));
+		return getInstance(iClass, new ServerInfoWrapper(serverHost, serverPort));
 	}
 
 	@Override
 	@Deprecated
 	public <T> T getIkasoaClient(Class<T> iClass, List<ServerInfo> serverInfoList) {
-		return getInstance(iClass, serverInfoList);
-	}
-
-	@Override
-	@SuppressWarnings("unchecked")
-	public <T> T getInstance(Class<T> iClass, List<ServerInfo> serverInfoList, Class<LoadBalance> loadBalanceClass) {
-		ThriftClient thriftClient = getThriftClient(serverInfoList, loadBalanceClass);
-		return (T) Proxy.newProxyInstance(iClass.getClassLoader(), new Class<?>[] { iClass },
-				(proxy, iMethod, args) -> getBaseGetServiceFactory()
-						.getBaseGetService(thriftClient, getSKey(iClass, iMethod, true), new ReturnData(iMethod))
-						.get(args));
+		return getInstance(iClass, new ServerInfoWrapper(serverInfoList));
 	}
 
 	@Override
 	@Deprecated
 	public <T> T getIkasoaClient(Class<T> iClass, List<ServerInfo> serverInfoList,
 			Class<LoadBalance> loadBalanceClass) {
-		return getInstance(iClass, serverInfoList, loadBalanceClass);
-	}
-
-	@Override
-	@SuppressWarnings("unchecked")
-	public <T> T getInstance(Class<T> iClass, List<ServerInfo> serverInfoList, Class<LoadBalance> loadBalanceClass,
-			String param) {
-		ThriftClient thriftClient = getThriftClient(serverInfoList, loadBalanceClass, param);
-		return (T) Proxy.newProxyInstance(iClass.getClassLoader(), new Class<?>[] { iClass },
-				(proxy, iMethod, args) -> getBaseGetServiceFactory()
-						.getBaseGetService(thriftClient, getSKey(iClass, iMethod, true), new ReturnData(iMethod))
-						.get(args));
+		return getInstance(iClass, new ServerInfoWrapper(serverInfoList, loadBalanceClass));
 	}
 
 	@Override
 	@Deprecated
 	public <T> T getIkasoaClient(Class<T> iClass, List<ServerInfo> serverInfoList, Class<LoadBalance> loadBalanceClass,
 			String param) {
-		return getInstance(iClass, serverInfoList, loadBalanceClass);
+		return getInstance(iClass, new ServerInfoWrapper(serverInfoList, loadBalanceClass, param));
 	}
 
 	@Override
@@ -148,12 +137,8 @@ public class DefaultIkasoaFactory extends GeneralFactory implements IkasoaFactor
 	}
 
 	@Override
-	public IkasoaServer getIkasoaServer(int serverPort, Map<String, Service> serviceMap) throws RpcException {
-		try {
-			return new IkasoaServerImpl(super.getThriftServer(serverPort, serviceMap), serviceMap);
-		} catch (IkasoaException e) {
-			throw new RpcException("Create Ikasoa service exception !", e);
-		}
+	public IkasoaServer getIkasoaServer(int serverPort, Map<String, Service> serviceMap) {
+		return new IkasoaServerImpl(super.getThriftServer(serverPort, serviceMap), serviceMap);
 	}
 
 	@Override
@@ -182,7 +167,7 @@ public class DefaultIkasoaFactory extends GeneralFactory implements IkasoaFactor
 	}
 
 	@Override
-	public ThriftServer getThriftServer(int serverPort, Map<String, Service> serviceMap) throws IkasoaException {
+	public ThriftServer getThriftServer(int serverPort, Map<String, Service> serviceMap) {
 		return super.getThriftServer(serverPort, serviceMap);
 	}
 
@@ -192,8 +177,7 @@ public class DefaultIkasoaFactory extends GeneralFactory implements IkasoaFactor
 	}
 
 	@Override
-	public ThriftServer getThriftServer(String serverName, int serverPort, Map<String, Service> serviceMap)
-			throws IkasoaException {
+	public ThriftServer getThriftServer(String serverName, int serverPort, Map<String, Service> serviceMap) {
 		return super.getThriftServer(serverName, serverPort, serviceMap);
 	}
 
@@ -212,9 +196,9 @@ public class DefaultIkasoaFactory extends GeneralFactory implements IkasoaFactor
 	private Map<String, Service> getServiceMapByClass(Map<String, Service> serviceMap, Class<?> implClass,
 			Object implObject, Class<?> superClass) throws RpcException {
 		if (implClass == null)
-			throw new RpcException("Implement class is not null !");
+			throw new IllegalArgumentException("Implement 'class' is not null !");
 		if (superClass == null)
-			throw new RpcException("Implement superClass is not null !");
+			throw new IllegalArgumentException("Implement 'superClass' is not null !");
 		if (implClass.getInterfaces().length == 0)
 			LOG.warn("Class ({}) is not this interface implement class , Will ignore .", implClass.getName());
 		for (Class<?> iClass : superClass.getInterfaces())

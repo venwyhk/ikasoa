@@ -28,10 +28,9 @@ public class DESCompactProtocol extends TCompactProtocol {
 		private final String key_;
 
 		public Factory(String key) {
-			if (StringUtil.isNotEmpty(key))
-				key_ = key;
-			else
-				throw new RuntimeException("'key' is null !");
+			if (StringUtil.isEmpty(key))
+				throw new IllegalArgumentException("'key' is null !");
+			key_ = key;
 		}
 
 		public TProtocol getProtocol(TTransport trans) {
@@ -42,7 +41,7 @@ public class DESCompactProtocol extends TCompactProtocol {
 	public DESCompactProtocol(TTransport transport, String key) {
 		super(transport);
 		if (StringUtil.isEmpty(key))
-			throw new RuntimeException("'key' is null !");
+			throw new IllegalArgumentException("'key' is null !");
 		this.key = key.length() < 8 ? formatStr(key, 8) : key;
 	}
 

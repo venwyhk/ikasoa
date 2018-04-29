@@ -23,14 +23,36 @@ public interface IkasoaFactory extends Factory {
 	 *            接口类型
 	 * @param iClass
 	 *            应用接口类
+	 * @return T IKASOA接口实例
+	 */
+	<T> T getInstance(Class<T> iClass);
+
+	/**
+	 * 获取IKASOA接口实例
+	 * 
+	 * @param <T>
+	 *            接口类型
+	 * @param iClass
+	 *            应用接口类
+	 * @param serverInfoWrapper
+	 *            服务信息包装器
+	 * @return T IKASOA接口实例
+	 */
+	<T> T getInstance(Class<T> iClass, ServerInfoWrapper serverInfoWrapper);
+
+	/**
+	 * 获取IKASOA接口实例
+	 * 
+	 * @param <T>
+	 *            接口类型
+	 * @param iClass
+	 *            应用接口类
 	 * @param serverHost
 	 *            服务地址
 	 * @param serverPort
 	 *            服务端口
-	 * @return T IKASOA客户端
+	 * @return T IKASOA接口实例
 	 */
-	<T> T getInstance(Class<T> iClass, String serverHost, int serverPort);
-
 	@Deprecated
 	<T> T getIkasoaClient(Class<T> iClass, String serverHost, int serverPort);
 
@@ -43,10 +65,8 @@ public interface IkasoaFactory extends Factory {
 	 *            应用接口类
 	 * @param serverInfoList
 	 *            服务信息列表(将会通过默认负载均衡策略进行调用)
-	 * @return T IKASOA客户端
+	 * @return T IKASOA接口实例
 	 */
-	<T> T getInstance(Class<T> iClass, List<ServerInfo> serverInfoList);
-
 	@Deprecated
 	<T> T getIkasoaClient(Class<T> iClass, List<ServerInfo> serverInfoList);
 
@@ -61,10 +81,8 @@ public interface IkasoaFactory extends Factory {
 	 *            服务信息列表(将会通过默认负载均衡策略进行调用)
 	 * @param loadBalanceClass
 	 *            负载均衡实现类
-	 * @return T IKASOA客户端
+	 * @return T IKASOA接口实例
 	 */
-	<T> T getInstance(Class<T> iClass, List<ServerInfo> serverInfoList, Class<LoadBalance> loadBalanceClass);
-
 	@Deprecated
 	<T> T getIkasoaClient(Class<T> iClass, List<ServerInfo> serverInfoList, Class<LoadBalance> loadBalanceClass);
 
@@ -81,11 +99,8 @@ public interface IkasoaFactory extends Factory {
 	 *            负载均衡实现类
 	 * @param param
 	 *            自定义参数 (比如负载均衡的hash值等)
-	 * @return T IKASOA客户端
+	 * @return T IKASOA接口实例
 	 */
-	<T> T getInstance(Class<T> iClass, List<ServerInfo> serverInfoList, Class<LoadBalance> loadBalanceClass,
-			String param);
-
 	@Deprecated
 	<T> T getIkasoaClient(Class<T> iClass, List<ServerInfo> serverInfoList, Class<LoadBalance> loadBalanceClass,
 			String param);

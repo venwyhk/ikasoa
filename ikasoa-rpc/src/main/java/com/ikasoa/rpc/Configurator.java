@@ -29,6 +29,11 @@ public class Configurator {
 	private ThriftClientConfiguration thriftClientConfiguration;
 
 	/**
+	 * 客户端配置服务调用信息
+	 */
+	private ServerInfoWrapper serverInfoWrapper;
+
+	/**
 	 * 转换协议实现类
 	 */
 	@SuppressWarnings("rawtypes")
@@ -44,8 +49,18 @@ public class Configurator {
 	 */
 	private boolean isNonBlockingIO = Boolean.FALSE;
 
+	public Configurator(ServerInfoWrapper serverInfoWrapper) {
+		this.serverInfoWrapper = serverInfoWrapper;
+	}
+
 	@SuppressWarnings("rawtypes")
 	public Configurator(Class<ProtocolHandler> protocolHandlerClass) {
+		this.protocolHandlerClass = protocolHandlerClass;
+	}
+
+	@SuppressWarnings("rawtypes")
+	public Configurator(ServerInfoWrapper serverInfoWrapper, Class<ProtocolHandler> protocolHandlerClass) {
+		this.serverInfoWrapper = serverInfoWrapper;
 		this.protocolHandlerClass = protocolHandlerClass;
 	}
 

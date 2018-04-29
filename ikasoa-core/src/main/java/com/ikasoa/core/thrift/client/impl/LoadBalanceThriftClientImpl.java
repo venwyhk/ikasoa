@@ -33,7 +33,7 @@ public class LoadBalanceThriftClientImpl extends AbstractThriftClientImpl {
 
 	public LoadBalanceThriftClientImpl(LoadBalance loadBalance, ThriftClientConfiguration configuration) {
 		if (loadBalance == null)
-			throw new RuntimeException("'loadBalance' is null !");
+			throw new IllegalArgumentException("'loadBalance' is null !");
 		this.loadBalance = loadBalance;
 		updateServerInfo();
 		if (configuration == null) {
