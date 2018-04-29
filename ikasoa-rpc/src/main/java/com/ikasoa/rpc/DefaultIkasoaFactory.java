@@ -64,7 +64,7 @@ public class DefaultIkasoaFactory extends GeneralFactory implements IkasoaFactor
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public <T> T getIkasoaClient(Class<T> iClass, String serverHost, int serverPort) {
+	public <T> T getInstance(Class<T> iClass, String serverHost, int serverPort) {
 		ThriftClient thriftClient = getThriftClient(serverHost, serverPort);
 		return (T) Proxy.newProxyInstance(iClass.getClassLoader(), new Class<?>[] { iClass },
 				(proxy, iMethod, args) -> getBaseGetServiceFactory()
@@ -73,8 +73,14 @@ public class DefaultIkasoaFactory extends GeneralFactory implements IkasoaFactor
 	}
 
 	@Override
+	@Deprecated
+	public <T> T getIkasoaClient(Class<T> iClass, String serverHost, int serverPort) {
+		return getInstance(iClass, serverHost, serverPort);
+	}
+
+	@Override
 	@SuppressWarnings("unchecked")
-	public <T> T getIkasoaClient(Class<T> iClass, List<ServerInfo> serverInfoList) {
+	public <T> T getInstance(Class<T> iClass, List<ServerInfo> serverInfoList) {
 		ThriftClient thriftClient = getThriftClient(serverInfoList);
 		return (T) Proxy.newProxyInstance(iClass.getClassLoader(), new Class<?>[] { iClass },
 				(proxy, iMethod, args) -> getBaseGetServiceFactory()
@@ -83,9 +89,14 @@ public class DefaultIkasoaFactory extends GeneralFactory implements IkasoaFactor
 	}
 
 	@Override
+	@Deprecated
+	public <T> T getIkasoaClient(Class<T> iClass, List<ServerInfo> serverInfoList) {
+		return getInstance(iClass, serverInfoList);
+	}
+
+	@Override
 	@SuppressWarnings("unchecked")
-	public <T> T getIkasoaClient(Class<T> iClass, List<ServerInfo> serverInfoList,
-			Class<LoadBalance> loadBalanceClass) {
+	public <T> T getInstance(Class<T> iClass, List<ServerInfo> serverInfoList, Class<LoadBalance> loadBalanceClass) {
 		ThriftClient thriftClient = getThriftClient(serverInfoList, loadBalanceClass);
 		return (T) Proxy.newProxyInstance(iClass.getClassLoader(), new Class<?>[] { iClass },
 				(proxy, iMethod, args) -> getBaseGetServiceFactory()
@@ -94,14 +105,28 @@ public class DefaultIkasoaFactory extends GeneralFactory implements IkasoaFactor
 	}
 
 	@Override
+	@Deprecated
+	public <T> T getIkasoaClient(Class<T> iClass, List<ServerInfo> serverInfoList,
+			Class<LoadBalance> loadBalanceClass) {
+		return getInstance(iClass, serverInfoList, loadBalanceClass);
+	}
+
+	@Override
 	@SuppressWarnings("unchecked")
-	public <T> T getIkasoaClient(Class<T> iClass, List<ServerInfo> serverInfoList, Class<LoadBalance> loadBalanceClass,
+	public <T> T getInstance(Class<T> iClass, List<ServerInfo> serverInfoList, Class<LoadBalance> loadBalanceClass,
 			String param) {
 		ThriftClient thriftClient = getThriftClient(serverInfoList, loadBalanceClass, param);
 		return (T) Proxy.newProxyInstance(iClass.getClassLoader(), new Class<?>[] { iClass },
 				(proxy, iMethod, args) -> getBaseGetServiceFactory()
 						.getBaseGetService(thriftClient, getSKey(iClass, iMethod, true), new ReturnData(iMethod))
 						.get(args));
+	}
+
+	@Override
+	@Deprecated
+	public <T> T getIkasoaClient(Class<T> iClass, List<ServerInfo> serverInfoList, Class<LoadBalance> loadBalanceClass,
+			String param) {
+		return getInstance(iClass, serverInfoList, loadBalanceClass);
 	}
 
 	@Override
@@ -213,10 +238,10 @@ public class DefaultIkasoaFactory extends GeneralFactory implements IkasoaFactor
 				else
 					// 过滤掉无效方法
 					for (Method iMethod : iClass.getMethods())
-					if (!iMethod.isAnnotationPresent(Invalid.class) && compareMethod(iMethod, implMethod)) {
-					isValidMethod = Boolean.TRUE;
-					break;
-					}
+						if (!iMethod.isAnnotationPresent(Invalid.class) && compareMethod(iMethod, implMethod)) {
+							isValidMethod = Boolean.TRUE;
+							break;
+						}
 				if (!isValidMethod)
 					continue;
 				String sKey = getSKey(iClass, implMethod, false);

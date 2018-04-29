@@ -113,7 +113,7 @@ public class TestExampleService extends TestCase {
 			Thread.sleep(1000);
 
 			// 客户端获取远程接口实现
-			ExampleService es = ikasoaFactory.getIkasoaClient(ExampleService.class, "localhost", port);
+			ExampleService es = ikasoaFactory.getInstance(ExampleService.class, "localhost", port);
 			// 实例化一个本地接口实现
 			ExampleService es2 = new ExampleServiceImpl();
 
@@ -140,7 +140,7 @@ public class TestExampleService extends TestCase {
 			}
 			
 			// 测试接口实现继承
-			ExampleChildService childEs = ikasoaFactory.getIkasoaClient(ExampleChildService.class, "localhost", port);
+			ExampleChildService childEs = ikasoaFactory.getInstance(ExampleChildService.class, "localhost", port);
 			assertEquals(childEs.helloxx(), Boolean.TRUE);
 			assertEquals(childEs.helloxxx(), Boolean.FALSE);
 

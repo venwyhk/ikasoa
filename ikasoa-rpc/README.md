@@ -27,7 +27,7 @@ pom.xml
     <dependency>
         <groupId>com.ikasoa</groupId>
         <artifactId>ikasoa-rpc</artifactId>
-        <version>0.3.1</version>
+        <version>0.3.2-SNAPSHOT</version>
     </dependency>
     ......
 ```
@@ -145,7 +145,7 @@ Client.java
     public class Client {
         public static void call() {
             // 客户端获取远程接口实现
-            ExampleService es = new DefaultIkasoaFactory().getIkasoaClient(ExampleService.class, "localhost", 9999);
+            ExampleService es = new DefaultIkasoaFactory().getInstance(ExampleService.class, "localhost", 9999);
             // 客户端输出结果
             System.out.println(es.findVO(1).getString());
         }
@@ -251,13 +251,13 @@ RpcClient.java
         public static void main(String[] args) {
             // 如果接口之间有继承关系,则只需要配置子接口类
             // 设置服务器地址为”hocalhost”,端口为9993
-            ExampleService es = new DefaultIkasoaFactory().getIkasoaClient(ExampleService.class, "localhost", 9993);
+            ExampleService es = new DefaultIkasoaFactory().getInstance(ExampleService.class, "localhost", 9993);
             // 如果有多个服务提供者,服务器地址和端口也可以传入List,系统将自动执行负载均衡(默认负载均衡规则为轮询,此外还支持随机,详见'负载均衡'文档目录).
             // 例子如下:
             //  List<ServerInfo> serverInfoList = new ArrayList<>();
             //  serverInfoList.add(new ServerInfo("localhost", 9993));
             //  serverInfoList.add(new ServerInfo("192.168.1.41", 9993));
-            //  ExampleService es = new DefaultIkasoaFactory().getIkasoaClient(ExampleService.class, serverInfoList);
+            //  ExampleService es = new DefaultIkasoaFactory().getInstance(ExampleService.class, serverInfoList);
             System.out.println(es.findVO(1).getString());
         }
     }
@@ -476,10 +476,10 @@ web.xml
 
 ```java
     ......
-    XService xs = new DefaultIkasoaFactory().getIkasoaClient(XService.class, serverInfoList);
+    XService xs = new DefaultIkasoaFactory().getInstance(XService.class, serverInfoList);
     // 也可以写为如下方式:
     // Class loadBalanceClass = Class.forName("com.ikasoa.core.loadbalance.impl.PollingLoadBalanceImpl");
-    // XService xs = new DefaultIkasoaFactory().getIkasoaClient(XService.class, serverInfoList, loadBalanceClass);
+    // XService xs = new DefaultIkasoaFactory().getInstance(XService.class, serverInfoList, loadBalanceClass);
     ......
 ```
 
@@ -490,7 +490,7 @@ web.xml
 ```java
     ......
     Class loadBalanceClass = Class.forName("com.ikasoa.core.loadbalance.impl.RandomLoadBalanceImpl");
-    XService xs = new DefaultIkasoaFactory().getIkasoaClient(XService.class, serverInfoList, loadBalanceClass);
+    XService xs = new DefaultIkasoaFactory().getInstance(XService.class, serverInfoList, loadBalanceClass);
     ......
 ```
 
@@ -505,7 +505,7 @@ web.xml
 ```java
     ......
     Class loadBalanceClass = Class.forName("com.xxx.XLoadBalanceImpl");
-    XService xs = new DefaultIkasoaFactory().getIkasoaClient(XService.class, serverInfoList, loadBalanceClass);
+    XService xs = new DefaultIkasoaFactory().getInstance(XService.class, serverInfoList, loadBalanceClass);
     ......
 ```
 
