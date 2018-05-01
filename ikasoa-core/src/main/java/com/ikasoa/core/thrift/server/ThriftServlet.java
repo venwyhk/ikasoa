@@ -33,6 +33,9 @@ public class ThriftServlet extends TServlet {
 		serverName = server.getServerName();
 	}
 
+	/**
+	 * 验证服务是否启动
+	 */
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		PrintWriter w = response.getWriter();

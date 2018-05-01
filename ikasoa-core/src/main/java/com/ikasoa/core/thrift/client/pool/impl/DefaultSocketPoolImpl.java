@@ -133,8 +133,7 @@ public class DefaultSocketPoolImpl implements SocketPool {
 				ThriftSocket thriftSocket = self.socketPool.get(i);
 				if (self.socketStatusArray[i] && (thriftSocket == null || thriftSocket.getSocket() == null
 						|| (thriftSocket.isOpen() && thriftSocket.getSocket().isClosed()))) {
-					thriftSocket = new ThriftSocket(host, port, time);
-					return thriftSocket;
+					return new ThriftSocket(host, port, time);
 				}
 			}
 		} catch (Exception e) {

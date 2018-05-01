@@ -19,6 +19,8 @@ import com.ikasoa.core.utils.StringUtil;
  */
 public class DESCompactProtocol extends TCompactProtocol {
 
+	private final static int KEY_MAX_LENGHT = 8;
+
 	private final String key;
 
 	public static class Factory implements TProtocolFactory {
@@ -42,18 +44,19 @@ public class DESCompactProtocol extends TCompactProtocol {
 		super(transport);
 		if (StringUtil.isEmpty(key))
 			throw new IllegalArgumentException("'key' is null !");
-		this.key = key.length() < 8 ? formatStr(key, 8) : key;
+		this.key = key.length() < KEY_MAX_LENGHT ? formatStr(key, KEY_MAX_LENGHT) : key;
 	}
 
 	@Override
 	public void writeString(String str) throws TException {
 		if (StringUtil.isEmpty(str))
 			super.writeString(str);
-		try {
-			super.writeString(SimpleDESUtil.encrypt(str, getKey()));
-		} catch (Exception e) {
-			throw new TException(e);
-		}
+		else
+			try {
+				super.writeString(SimpleDESUtil.encrypt(str, getKey()));
+			} catch (Exception e) {
+				throw new TException(e);
+			}
 	}
 
 	@Override
@@ -69,7 +72,7 @@ public class DESCompactProtocol extends TCompactProtocol {
 	}
 
 	private String getKey() {
-		return key.length() < 8 ? formatStr(key, 8) : key;
+		return key.length() < KEY_MAX_LENGHT ? formatStr(key, KEY_MAX_LENGHT) : key;
 	}
 
 	private static String formatStr(String str, int length) {

@@ -82,9 +82,7 @@ public abstract class AbstractThriftServerImpl implements ThriftServer {
 					throw new RuntimeException(e);
 				}
 			});
-			Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-				stop();
-			}));
+			Runtime.getRuntime().addShutdownHook(new Thread(() -> stop()));
 			afterStart(getThriftServerConfiguration().getServerAspect());
 		}
 	}

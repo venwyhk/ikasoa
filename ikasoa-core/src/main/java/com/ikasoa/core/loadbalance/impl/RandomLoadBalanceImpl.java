@@ -38,7 +38,7 @@ public class RandomLoadBalanceImpl implements LoadBalance {
 	}
 
 	private void init(List<ServerInfo> serverInfoList) {
-		if (serverInfoList == null || serverInfoList.size() == 0)
+		if (serverInfoList == null || serverInfoList.isEmpty())
 			throw new IllegalArgumentException("'serverInfoList' is null !");
 		this.serverInfoList = serverInfoList;
 		try {
