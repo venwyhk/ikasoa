@@ -4,12 +4,11 @@ import org.apache.thrift.transport.TTransport;
 import org.apache.thrift.transport.TTransportFactory;
 import org.junit.Test;
 
-import com.ikasoa.core.thrift.Factory;
 import com.ikasoa.core.thrift.GeneralFactory;
 import com.ikasoa.core.thrift.client.ThriftClient;
 import com.ikasoa.core.thrift.client.ThriftClientConfiguration;
-import com.ikasoa.core.thrift.client.pool.impl.DefaultSocketPoolImpl;
 import com.ikasoa.core.thrift.client.pool.impl.SimpleSocketPoolImpl;
+import com.ikasoa.core.thrift.client.pool.impl.NoSocketPoolImpl;
 import com.ikasoa.core.thrift.client.socket.ThriftSocket;
 
 import junit.framework.TestCase;
@@ -22,14 +21,14 @@ public class SocketPoolTest extends TestCase {
 	private static String LOCAL_HOST = "localhost";
 
 	@Test
-	public void testDefaultSocketPool() {
-		SocketPool pool = new DefaultSocketPoolImpl();
+	public void testSimpleSocketPool() {
+		SocketPool pool = new SimpleSocketPoolImpl();
 		assertNotNull(pool.buildThriftSocket(LOCAL_HOST, 38001));
 	}
 
 	@Test
-	public void testSimpleSocketPool() {
-		SocketPool pool = new SimpleSocketPoolImpl();
+	public void testNoSocketPool() {
+		SocketPool pool = new NoSocketPoolImpl();
 		assertNotNull(pool.buildThriftSocket(LOCAL_HOST, 38002));
 	}
 
@@ -39,8 +38,7 @@ public class SocketPoolTest extends TestCase {
 		ThriftClientConfiguration configuration = new ThriftClientConfiguration();
 		configuration.setTransportFactory(new TTransportFactory());
 		configuration.setSocketPool(new TestSocketPoolImpl());
-		Factory factory = new GeneralFactory(configuration);
-		try (ThriftClient thriftClient = factory.getThriftClient(LOCAL_HOST, serverPort);
+		try (ThriftClient thriftClient = new GeneralFactory(configuration).getThriftClient(LOCAL_HOST, serverPort);
 				TTransport transport = thriftClient.getTransport()) {
 			assertNull(transport);
 		} catch (Exception e) {

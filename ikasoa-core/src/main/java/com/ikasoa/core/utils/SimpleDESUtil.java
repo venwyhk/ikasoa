@@ -18,7 +18,7 @@ public class SimpleDESUtil {
 	/**
 	 * 加密算法
 	 */
-	private final static String ALGORITHM = "DES";
+	private static final String ALGORITHM = "DES";
 
 	/**
 	 * 对数据进行DES加密.
@@ -31,7 +31,7 @@ public class SimpleDESUtil {
 	 * @throws Exception
 	 *             异常
 	 */
-	public final static String encrypt(String data, String key) throws Exception {
+	public static final String encrypt(String data, String key) throws Exception {
 		return byte2hex(encrypt(data.getBytes(), key.getBytes()));
 	}
 
@@ -46,7 +46,7 @@ public class SimpleDESUtil {
 	 * @throws Exception
 	 *             异常
 	 */
-	public final static String decrypt(String data, String key) throws Exception {
+	public static final String decrypt(String data, String key) throws Exception {
 		return new String(decrypt(hex2byte(data.getBytes()), key.getBytes()));
 	}
 

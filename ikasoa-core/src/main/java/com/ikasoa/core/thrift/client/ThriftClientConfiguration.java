@@ -2,7 +2,7 @@ package com.ikasoa.core.thrift.client;
 
 import com.ikasoa.core.thrift.AbstractThriftConfiguration;
 import com.ikasoa.core.thrift.client.pool.SocketPool;
-import com.ikasoa.core.thrift.client.pool.impl.DefaultSocketPoolImpl;
+import com.ikasoa.core.thrift.client.pool.impl.SimpleSocketPoolImpl;
 import com.ikasoa.core.ServerCheck;
 import com.ikasoa.core.ServerCheckFailProcessor;
 
@@ -14,7 +14,7 @@ import com.ikasoa.core.ServerCheckFailProcessor;
  */
 public class ThriftClientConfiguration extends AbstractThriftConfiguration {
 
-	private SocketPool socketPool = new DefaultSocketPoolImpl();
+	private SocketPool socketPool = new SimpleSocketPoolImpl();
 
 	/**
 	 * 服务器可用性检测接口

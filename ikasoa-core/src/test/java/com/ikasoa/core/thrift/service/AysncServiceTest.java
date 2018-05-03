@@ -60,8 +60,7 @@ public class AysncServiceTest extends TestCase {
 		try {
 			AsyncService service = factory.getAsyncService(new TNonblockingSocket(LOCAL_HOST, serverPort));
 			Thread.sleep(500);
-			TestCallback1 callback = new TestCallback1();
-			service.get(testString1, callback);
+			service.get(testString1, new TestCallback1());
 			Thread.sleep(1000);
 		} catch (Exception e) {
 			fail();
@@ -85,12 +84,10 @@ public class AysncServiceTest extends TestCase {
 			Thread.sleep(500);
 			AsyncService service1 = factory.getAsyncService(new TNonblockingSocket(LOCAL_HOST, serverPort),
 					"testAysncService1");
-			TestCallback1 callback1 = new TestCallback1();
-			service1.get(testString1, callback1);
+			service1.get(testString1, new TestCallback1());
 			AsyncService service2 = factory.getAsyncService(new TNonblockingSocket(LOCAL_HOST, serverPort),
 					"testAysncService2");
-			TestCallback2 callback2 = new TestCallback2();
-			service2.get(testString2, callback2);
+			service2.get(testString2, new TestCallback2());
 			Thread.sleep(1000);
 		} catch (Exception e) {
 			fail();

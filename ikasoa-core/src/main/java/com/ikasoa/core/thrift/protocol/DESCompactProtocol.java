@@ -19,7 +19,7 @@ import com.ikasoa.core.utils.StringUtil;
  */
 public class DESCompactProtocol extends TCompactProtocol {
 
-	private final static int KEY_MAX_LENGHT = 8;
+	private static final int KEY_MAX_LENGHT = 8;
 
 	private final String key;
 

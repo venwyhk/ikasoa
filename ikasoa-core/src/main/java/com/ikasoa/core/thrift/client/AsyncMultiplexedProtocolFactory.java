@@ -1,12 +1,12 @@
 package com.ikasoa.core.thrift.client;
 
+import java.util.Optional;
+
 import org.apache.thrift.protocol.TCompactProtocol;
 import org.apache.thrift.protocol.TMultiplexedProtocol;
 import org.apache.thrift.protocol.TProtocol;
 import org.apache.thrift.protocol.TProtocolFactory;
 import org.apache.thrift.transport.TTransport;
-
-import com.ikasoa.core.utils.StringUtil;
 
 /**
  * AsyncMultiplexedProtocolFactory
@@ -26,8 +26,9 @@ public class AsyncMultiplexedProtocolFactory extends TCompactProtocol.Factory im
 
 	@Override
 	public TProtocol getProtocol(TTransport trans) {
-		return StringUtil.isNotEmpty(serviceName) ? new TMultiplexedProtocol(super.getProtocol(trans), serviceName)
-				: super.getProtocol(trans);
+		return Optional.ofNullable(serviceName)
+				.map(n -> (TProtocol) new TMultiplexedProtocol(super.getProtocol(trans), n))
+				.orElse(super.getProtocol(trans));
 	}
 
 }

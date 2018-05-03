@@ -42,8 +42,7 @@ public class ServiceTest extends TestCase {
 		ThriftClient thriftClient = factory.getThriftClient("localhost", serverPort);
 		try {
 			Thread.sleep(500);
-			Service service = factory.getService(thriftClient);
-			assertEquals(service.get(testString), testString);
+			assertEquals(factory.getService(thriftClient).get(testString), testString);
 		} catch (Exception e) {
 			fail();
 		} finally {

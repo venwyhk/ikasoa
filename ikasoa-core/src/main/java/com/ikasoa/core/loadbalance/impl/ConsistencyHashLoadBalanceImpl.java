@@ -28,7 +28,7 @@ public class ConsistencyHashLoadBalanceImpl implements LoadBalance {
 	/**
 	 * 设置虚拟节点数目
 	 */
-	private int VIRTUAL_NUM = 4;
+	private final int VIRTUAL_NUM = 4;
 
 	private SoftReference<String> hashReference;
 
