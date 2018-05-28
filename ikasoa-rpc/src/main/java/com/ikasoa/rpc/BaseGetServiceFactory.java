@@ -1,8 +1,5 @@
 package com.ikasoa.rpc;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.ikasoa.core.thrift.GeneralFactory;
 import com.ikasoa.core.thrift.client.ThriftClient;
 import com.ikasoa.core.thrift.client.ThriftClientConfiguration;

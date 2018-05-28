@@ -4,8 +4,6 @@ import org.apache.thrift.TProcessor;
 import org.apache.thrift.transport.TServerTransport;
 import org.jboss.netty.channel.group.ChannelGroup;
 import org.jboss.netty.channel.group.DefaultChannelGroup;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import com.ikasoa.core.IkasoaException;
 import com.ikasoa.core.thrift.server.ThriftServer;
 import com.ikasoa.core.thrift.server.ThriftServerConfiguration;

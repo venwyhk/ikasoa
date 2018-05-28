@@ -1,7 +1,5 @@
 package com.ikasoa.springboot.autoconfigure;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 
@@ -11,6 +9,8 @@ import com.ikasoa.rpc.Configurator;
 import com.ikasoa.rpc.IkasoaException;
 import com.ikasoa.springboot.IkasoaFactoryFactory;
 
+import lombok.extern.slf4j.Slf4j;
+
 /**
  * IKASOA自动配置基础类
  * 
@@ -18,9 +18,8 @@ import com.ikasoa.springboot.IkasoaFactoryFactory;
  * @version 0.1
  */
 @Configuration
+@Slf4j
 public abstract class AbstractAutoConfiguration {
-
-	private static final Logger LOG = LoggerFactory.getLogger(AbstractAutoConfiguration.class);
 
 	@Value("${ikasoa.server.host:localhost}")
 	protected String host;
@@ -41,11 +40,11 @@ public abstract class AbstractAutoConfiguration {
 		try {
 			return (Configurator) Class.forName(configurator).newInstance();
 		} catch (ClassNotFoundException e) {
-			LOG.warn(e.getMessage());
+			log.warn(e.getMessage());
 		} catch (InstantiationException e) {
-			LOG.warn(e.getMessage());
+			log.warn(e.getMessage());
 		} catch (IllegalAccessException e) {
-			LOG.warn(e.getMessage());
+			log.warn(e.getMessage());
 		}
 		return null;
 	}

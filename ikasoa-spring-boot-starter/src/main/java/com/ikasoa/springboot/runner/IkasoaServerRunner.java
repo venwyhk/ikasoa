@@ -4,13 +4,13 @@ import java.util.Optional;
 
 import javax.annotation.PreDestroy;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 
 import com.ikasoa.rpc.IkasoaException;
 import com.ikasoa.rpc.IkasoaServer;
+
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * IKASOA服务器Runner类
@@ -18,9 +18,8 @@ import com.ikasoa.rpc.IkasoaServer;
  * @author <a href="mailto:larry7696@gmail.com">Larry</a>
  * @version 0.1
  */
+@Slf4j
 public abstract class IkasoaServerRunner implements CommandLineRunner {
-
-	private static final Logger LOG = LoggerFactory.getLogger(IkasoaServerRunner.class);
 
 	@Autowired
 	protected IkasoaServer server;
@@ -42,10 +41,10 @@ public abstract class IkasoaServerRunner implements CommandLineRunner {
 		server.run();
 		Thread.sleep(getRunWaitTime());
 		if (server.isServing()) {
-			LOG.info("Ikasoa server startup success . ({})", server.getServerName());
+			log.info("Ikasoa server startup success . ({})", server.getServerName());
 			complete(args);
 		} else {
-			LOG.warn("Ikasoa server startup failed ! ({})", server.getServerName());
+			log.warn("Ikasoa server startup failed ! ({})", server.getServerName());
 			fail(args);
 		}
 	}

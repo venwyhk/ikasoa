@@ -3,9 +3,6 @@ package com.ikasoa.rpc.service;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.ikasoa.rpc.RpcException;
 import com.ikasoa.rpc.handler.ProtocolHandler;
 
