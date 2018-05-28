@@ -11,6 +11,7 @@ import com.ikasoa.rpc.handler.ProtocolHandler;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * IKASOA服务端服务实现
@@ -18,9 +19,8 @@ import lombok.Setter;
  * @author <a href="mailto:larry7696@gmail.com">Larry</a>
  * @version 0.1
  */
+@Slf4j
 public class IkasoaServerService extends AbstractGetService<Object[], Object> {
-
-	private static final Logger LOG = LoggerFactory.getLogger(IkasoaServerService.class);
 
 	@Getter
 	@Setter
@@ -43,10 +43,10 @@ public class IkasoaServerService extends AbstractGetService<Object[], Object> {
 		if (classObj == null)
 			throw new RpcException("'classObj' is null !");
 		if (args == null) {
-			LOG.debug("'args' is null , Will create default args object .");
+			log.debug("'args' is null , Will create default args object .");
 			args = new Object[] {};
 		}
-		LOG.debug("Execute class '{}' function '{}' , parameters is '{}' .", classObj.getClass().getName(),
+		log.debug("Execute class '{}' function '{}' , parameters is '{}' .", classObj.getClass().getName(),
 				method.getName(), args.toString());
 		method.setAccessible(Boolean.TRUE);
 		try {
@@ -56,7 +56,7 @@ public class IkasoaServerService extends AbstractGetService<Object[], Object> {
 		} catch (IllegalArgumentException e) {
 			throw new RpcException("'GET' reflect exception !", e);
 		} catch (InvocationTargetException e) {
-			LOG.debug(e.getTargetException().toString());
+			log.debug(e.getTargetException().toString());
 			return e.getTargetException();
 		}
 	}

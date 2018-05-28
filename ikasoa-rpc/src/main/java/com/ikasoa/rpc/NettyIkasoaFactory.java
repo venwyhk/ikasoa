@@ -14,6 +14,7 @@ import com.ikasoa.core.thrift.server.impl.AbstractThriftServerImpl;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 
 import com.facebook.nifty.core.NettyServerConfig;
 import com.facebook.nifty.core.NettyServerTransport;
@@ -27,9 +28,8 @@ import com.facebook.nifty.core.ThriftServerDefBuilder;
  * @version 0.1
  */
 @NoArgsConstructor
+@Slf4j
 public class NettyIkasoaFactory extends DefaultIkasoaFactory {
-
-	private static final Logger LOG = LoggerFactory.getLogger(NettyIkasoaFactory.class);
 
 	@Getter
 	@Setter
@@ -82,7 +82,7 @@ public class NettyIkasoaFactory extends DefaultIkasoaFactory {
 						: new NettyServerTransport(thriftServerDef, nettyServerConfig, channelGroup);
 			}
 			server.start();
-			LOG.debug("Server start .");
+			log.debug("Server start .");
 		}
 
 		@Override
@@ -94,7 +94,7 @@ public class NettyIkasoaFactory extends DefaultIkasoaFactory {
 					throw new RuntimeException("Server stop exception !", e);
 				}
 			else
-				LOG.warn("Server is not start , Can't to execute stop !");
+				log.warn("Server is not start , Can't to execute stop !");
 		}
 	}
 }

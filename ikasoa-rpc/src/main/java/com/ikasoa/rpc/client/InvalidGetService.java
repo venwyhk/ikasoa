@@ -1,12 +1,9 @@
 package com.ikasoa.rpc.client;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.ikasoa.rpc.BaseGetService;
-import com.ikasoa.rpc.BaseGetServiceFactory;
 
 import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * 无效服务实现
@@ -15,13 +12,12 @@ import lombok.NoArgsConstructor;
  * @version 0.1
  */
 @NoArgsConstructor
+@Slf4j
 public class InvalidGetService<T, R> implements BaseGetService<T, R> {
-
-	private static final Logger LOG = LoggerFactory.getLogger(BaseGetServiceFactory.class);
 
 	@Override
 	public R get(T arg) throws Throwable {
-		LOG.warn("Invalid rpc service call !");
+		log.warn("Invalid rpc service call !");
 		return null;
 	}
 

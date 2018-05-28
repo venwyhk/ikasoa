@@ -9,6 +9,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.annotation.JSONField;
 
 import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * 服务标识对象
@@ -17,9 +18,8 @@ import lombok.Data;
  * @version 0.1
  */
 @Data
+@Slf4j
 public class ServiceKey {
-
-	private static final Logger LOG = LoggerFactory.getLogger(ServiceKey.class);
 
 	/**
 	 * 接口名称
@@ -69,7 +69,7 @@ public class ServiceKey {
 			this.parameterTypes = method.getParameterTypes();
 			this.exceptionTypes = method.getExceptionTypes();
 		} else
-			LOG.warn("Method object is null !");
+			log.warn("Method object is null !");
 	}
 
 	@Override

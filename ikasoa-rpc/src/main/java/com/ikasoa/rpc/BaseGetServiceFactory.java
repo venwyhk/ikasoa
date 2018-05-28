@@ -16,6 +16,7 @@ import com.ikasoa.rpc.handler.ReturnData;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * 基础服务工厂
@@ -23,9 +24,8 @@ import lombok.Setter;
  * @author <a href="mailto:larry7696@gmail.com">Larry</a>
  * @version 0.1
  */
+@Slf4j
 public class BaseGetServiceFactory<T, R> extends GeneralFactory {
-
-	private static final Logger LOG = LoggerFactory.getLogger(BaseGetServiceFactory.class);
 
 	private ProtocolHandlerFactory<T, R> protocolHandlerFactory = new ProtocolHandlerFactory<>();
 
@@ -60,7 +60,7 @@ public class BaseGetServiceFactory<T, R> extends GeneralFactory {
 			ProtocolHandler<T, R> protocolHandler) {
 		if (thriftClient == null || serviceKey == null || protocolHandler == null)
 			return new InvalidGetService<T, R>();
-		LOG.debug("Create new instance 'IkasoaClientService' . (serverHost : {}, serverPort : {}, serviceKey : {})",
+		log.debug("Create new instance 'IkasoaClientService' . (serverHost : {}, serverPort : {}, serviceKey : {})",
 				thriftClient.getServerHost(), thriftClient.getServerPort(), serviceKey);
 		return new IkasoaClientService<T, R>(this, thriftClient, serviceKey, protocolHandler, clientInvocationHandler);
 	}

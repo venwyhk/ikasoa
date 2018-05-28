@@ -1,10 +1,10 @@
 package com.ikasoa.rpc.handler.impl;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import com.ikasoa.core.utils.StringUtil;
 import com.ikasoa.rpc.handler.ClientInvocationContext;
 import com.ikasoa.rpc.handler.ClientInvocationHandler;
+
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * 日志输出拦截器实现(测试用)
@@ -12,9 +12,8 @@ import com.ikasoa.rpc.handler.ClientInvocationHandler;
  * @author <a href="mailto:larry7696@gmail.com">Larry</a>
  * @version 0.1
  */
+@Slf4j
 public class LoggerClientInvocationHandlerImpl implements ClientInvocationHandler {
-
-	private static final Logger LOG = LoggerFactory.getLogger(LoggerClientInvocationHandlerImpl.class);
 
 	private long time = 0;
 
@@ -25,7 +24,7 @@ public class LoggerClientInvocationHandlerImpl implements ClientInvocationHandle
 		if (StringUtil.isNotEmpty(context.getServiceKey()))
 			sb.append("接口名: " + context.getServiceKey());
 		sb.append(".");
-		LOG.info(sb.toString());
+		log.info(sb.toString());
 		return context;
 	}
 
@@ -40,7 +39,7 @@ public class LoggerClientInvocationHandlerImpl implements ClientInvocationHandle
 		if (StringUtil.isNotEmpty(context.getServiceKey()))
 			sb.append("接口名: ").append(context.getServiceKey()).append(", ");
 		sb.append("耗时: ").append(System.currentTimeMillis() - time).append("毫秒 .");
-		LOG.info(sb.toString());
+		log.info(sb.toString());
 	}
 
 	@Override
@@ -49,7 +48,7 @@ public class LoggerClientInvocationHandlerImpl implements ClientInvocationHandle
 		if (StringUtil.isNotEmpty(context.getServiceKey()))
 			sb.append("接口名: ").append(context.getServiceKey()).append(", ");
 		sb.append("异常信息: ").append(throwable.getMessage());
-		LOG.info(sb.toString());
+		log.info(sb.toString());
 	}
 
 }

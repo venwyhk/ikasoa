@@ -8,8 +8,6 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.apache.thrift.TProcessor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.ikasoa.core.IkasoaException;
 import com.ikasoa.core.loadbalance.LoadBalance;
@@ -28,6 +26,7 @@ import com.ikasoa.rpc.service.IkasoaServerService;
 import com.ikasoa.rpc.service.impl.IkasoaServerImpl;
 
 import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * 默认IKASOA服务工厂
@@ -36,9 +35,8 @@ import lombok.NoArgsConstructor;
  * @version 0.1
  */
 @NoArgsConstructor
+@Slf4j
 public class DefaultIkasoaFactory extends GeneralFactory implements IkasoaFactory {
-
-	private static final Logger LOG = LoggerFactory.getLogger(DefaultIkasoaFactory.class);
 
 	private Configurator configurator = new Configurator();
 
@@ -202,7 +200,7 @@ public class DefaultIkasoaFactory extends GeneralFactory implements IkasoaFactor
 		if (superClass == null)
 			throw new IllegalArgumentException("Implement 'superClass' is not null !");
 		if (implClass.getInterfaces().length == 0)
-			LOG.warn("Class ({}) is not this interface implement class , Will ignore .", implClass.getName());
+			log.warn("Class ({}) is not this interface implement class , Will ignore .", implClass.getName());
 		for (Class<?> iClass : superClass.getInterfaces())
 			buildService(serviceMap, iClass, implClass, implObject);
 		if (superClass.getSuperclass() != null && !Object.class.equals(superClass.getSuperclass()))
@@ -234,7 +232,7 @@ public class DefaultIkasoaFactory extends GeneralFactory implements IkasoaFactor
 				Service iss = (Service) IkasoaServerService.class.getDeclaredConstructors()[0].newInstance(implObject,
 						implMethod,
 						protocolHandlerFactory.getProtocolHandler(null, configurator.getProtocolHandlerClass()));
-				LOG.debug("Builder Ikasoa service : {}", sKey);
+				log.debug("Builder Ikasoa service : {}", sKey);
 				serviceMap.put(sKey, iss);
 			}
 		} catch (Exception e) {
