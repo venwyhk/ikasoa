@@ -2,12 +2,12 @@ package com.ikasoa.core.loadbalance.impl;
 
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import com.ikasoa.core.IkasoaException;
 import com.ikasoa.core.loadbalance.LoadBalance;
 import com.ikasoa.core.loadbalance.ServerInfo;
 import com.ikasoa.core.utils.StringUtil;
+
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * 轮询负载均衡实现
@@ -15,9 +15,8 @@ import com.ikasoa.core.utils.StringUtil;
  * @author <a href="mailto:larry7696@gmail.com">Larry</a>
  * @version 0.1
  */
+@Slf4j
 public class PollingLoadBalanceImpl implements LoadBalance {
-
-	private static final Logger LOG = LoggerFactory.getLogger(PollingLoadBalanceImpl.class);
 
 	/**
 	 * 临时记数器
@@ -56,7 +55,7 @@ public class PollingLoadBalanceImpl implements LoadBalance {
 	@Override
 	public ServerInfo getServerInfo() {
 		if (serverInfo == null)
-			LOG.error("'serverInfo' is null !");
+			log.error("'serverInfo' is null !");
 		return serverInfo;
 	}
 
@@ -70,7 +69,7 @@ public class PollingLoadBalanceImpl implements LoadBalance {
 			throw new IkasoaException("serverInfo error !");
 		this.serverInfo = serverInfo;
 		int weightNumber = serverInfo.getWeightNumber();
-		LOG.debug("ServerHost is : {}, WeightNumber is : {}", serverInfo.getHost(), weightNumber);
+		log.debug("ServerHost is : {}, WeightNumber is : {}", serverInfo.getHost(), weightNumber);
 		if (size > i + 1)
 			if (weightNumber > j)
 				j++;

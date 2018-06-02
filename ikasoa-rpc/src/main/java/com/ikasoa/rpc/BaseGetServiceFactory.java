@@ -6,9 +6,9 @@ import com.ikasoa.core.thrift.client.ThriftClientConfiguration;
 import com.ikasoa.core.thrift.server.ThriftServerConfiguration;
 import com.ikasoa.rpc.client.IkasoaClientService;
 import com.ikasoa.rpc.client.InvalidGetService;
-import com.ikasoa.rpc.handler.ProtocolHandlerFactory;
 import com.ikasoa.rpc.handler.ClientInvocationHandler;
 import com.ikasoa.rpc.handler.ProtocolHandler;
+import com.ikasoa.rpc.handler.ProtocolHandlerFactory;
 import com.ikasoa.rpc.handler.ReturnData;
 
 import lombok.Getter;

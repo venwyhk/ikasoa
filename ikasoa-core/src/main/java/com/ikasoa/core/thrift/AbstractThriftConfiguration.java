@@ -5,12 +5,15 @@ import org.apache.thrift.protocol.TProtocolFactory;
 import org.apache.thrift.transport.TFramedTransport;
 import org.apache.thrift.transport.TTransportFactory;
 
+import lombok.Data;
+
 /**
  * Thrift服务配置抽象类
  * 
  * @author <a href="mailto:larry7696@gmail.com">Larry</a>
  * @version 0.1
  */
+@Data
 public abstract class AbstractThriftConfiguration {
 
 	/**
@@ -25,21 +28,4 @@ public abstract class AbstractThriftConfiguration {
 	 */
 	private TTransportFactory transportFactory = new TFramedTransport.Factory();
 
-	public TProtocolFactory getProtocolFactory() {
-		// 默认使用二进制方式
-		return protocolFactory;
-	}
-
-	public void setProtocolFactory(TProtocolFactory protocolFactory) {
-		this.protocolFactory = protocolFactory;
-	}
-
-	public TTransportFactory getTransportFactory() {
-		return transportFactory;
-	}
-
-	public void setTransportFactory(TTransportFactory transportFactory) {
-		this.transportFactory = transportFactory;
-	}
-	
 }

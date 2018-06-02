@@ -3,11 +3,11 @@ package com.ikasoa.core.loadbalance.impl;
 import java.util.List;
 import java.util.Random;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import com.ikasoa.core.IkasoaException;
 import com.ikasoa.core.loadbalance.LoadBalance;
 import com.ikasoa.core.loadbalance.ServerInfo;
+
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * 随机负载均衡实现
@@ -15,9 +15,8 @@ import com.ikasoa.core.loadbalance.ServerInfo;
  * @author <a href="mailto:larry7696@gmail.com">Larry</a>
  * @version 0.1
  */
+@Slf4j
 public class RandomLoadBalanceImpl implements LoadBalance {
-
-	private static final Logger LOG = LoggerFactory.getLogger(RandomLoadBalanceImpl.class);
 
 	/**
 	 * 服务器信息列表
@@ -51,7 +50,7 @@ public class RandomLoadBalanceImpl implements LoadBalance {
 	@Override
 	public ServerInfo getServerInfo() {
 		if (serverInfo == null)
-			LOG.error("'serverInfo' is null !");
+			log.error("'serverInfo' is null !");
 		return serverInfo;
 	}
 
@@ -61,7 +60,7 @@ public class RandomLoadBalanceImpl implements LoadBalance {
 		if (size == 0)
 			throw new IkasoaException("Get server info failed !");
 		serverInfo = serverInfoList.get(new Random().nextInt(size) % (size + 1));
-		LOG.debug("ServerInfo is : {}", serverInfo);
+		log.debug("ServerInfo is : {}", serverInfo);
 		return getServerInfo();
 	}
 

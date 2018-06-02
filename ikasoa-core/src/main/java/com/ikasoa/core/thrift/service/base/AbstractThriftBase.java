@@ -12,22 +12,23 @@ import org.apache.thrift.protocol.TType;
 
 import com.ikasoa.core.utils.StringUtil;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
 /**
  * Thrift基础对象抽象类
  * 
  * @author <a href="mailto:larry7696@gmail.com">Larry</a>
  * @version 0.2
  */
+@NoArgsConstructor
 public abstract class AbstractThriftBase
 		implements TBase<AbstractThriftBase, AbstractThriftBase.FieldsEnum>, Cloneable {
 
 	private static final long serialVersionUID = 1L;
 
+	@Getter()
 	private String str;
-
-	public AbstractThriftBase() {
-		// Do nothing
-	}
 
 	public AbstractThriftBase(String str) {
 		this();
@@ -118,10 +119,6 @@ public abstract class AbstractThriftBase
 				return lastComparison;
 		}
 		return 0;
-	}
-
-	public String getStr() {
-		return str;
 	}
 
 	/**

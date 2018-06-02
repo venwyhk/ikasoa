@@ -3,6 +3,9 @@ package com.ikasoa.core.thrift.client.pool.impl;
 import com.ikasoa.core.thrift.client.pool.SocketPool;
 import com.ikasoa.core.thrift.client.socket.ThriftSocket;
 
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+
 /**
  * Socket连接池实现
  * <p>
@@ -11,20 +14,14 @@ import com.ikasoa.core.thrift.client.socket.ThriftSocket;
  * @author <a href="mailto:larry7696@gmail.com">Larry</a>
  * @version 0.4.4
  */
+@AllArgsConstructor
+@NoArgsConstructor
 public class NoSocketPoolImpl implements SocketPool {
 
 	/**
 	 * 连接超时时间
 	 */
 	private int time = 0;
-
-	public NoSocketPoolImpl() {
-		// Do nothing
-	}
-
-	public NoSocketPoolImpl(int time) {
-		this.time = time;
-	}
 
 	@Override
 	public ThriftSocket buildThriftSocket(String host, int port) {

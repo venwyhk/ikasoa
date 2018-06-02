@@ -11,12 +11,12 @@ import org.apache.thrift.TException;
 import org.apache.thrift.async.AsyncMethodCallback;
 import org.apache.thrift.protocol.TMessageType;
 import org.apache.thrift.server.AbstractNonblockingServer.AsyncFrameBuffer;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.ikasoa.core.IkasoaException;
 import com.ikasoa.core.thrift.service.base.ArgsThriftBase;
 import com.ikasoa.core.thrift.service.base.ResultThriftBase;
+
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * 异步服务处理器
@@ -38,9 +38,8 @@ public class AsyncServiceProcessor extends TBaseAsyncProcessor<AsyncService> imp
 		return processMap;
 	}
 
+	@Slf4j
 	public static class GetAsyncProcessFunction extends AsyncProcessFunction<AsyncService, ArgsThriftBase, String> {
-
-		private static final Logger LOG = LoggerFactory.getLogger(GetAsyncProcessFunction.class);
 
 		public GetAsyncProcessFunction() {
 			super(FUNCTION_NAME);
@@ -60,7 +59,7 @@ public class AsyncServiceProcessor extends TBaseAsyncProcessor<AsyncService> imp
 						fcall.sendResponse(fb, result, TMessageType.REPLY, seqid);
 						return;
 					} catch (Exception e) {
-						LOG.error("Exception writing to internal frame buffer : {}", e.getMessage());
+						log.error("Exception writing to internal frame buffer : {}", e.getMessage());
 					}
 					fb.close();
 				}
@@ -77,7 +76,7 @@ public class AsyncServiceProcessor extends TBaseAsyncProcessor<AsyncService> imp
 						fcall.sendResponse(fb, msg, msgType, seqid);
 						return;
 					} catch (Exception ex) {
-						LOG.error("Exception writing to internal frame buffer : {}", ex.getMessage());
+						log.error("Exception writing to internal frame buffer : {}", ex.getMessage());
 					}
 					fb.close();
 				}
@@ -90,7 +89,7 @@ public class AsyncServiceProcessor extends TBaseAsyncProcessor<AsyncService> imp
 
 		public void start(AsyncService service, ArgsThriftBase args, AsyncMethodCallback<String> resultHandler)
 				throws TException {
-			LOG.debug("Args is : {}", args.getStr());
+			log.debug("Args is : {}", args.getStr());
 			try {
 				service.get((String) args.getStr(), resultHandler);
 			} catch (IkasoaException e) {

@@ -6,12 +6,19 @@ import org.apache.thrift.TProcessorFactory;
 import org.apache.thrift.server.TServerEventHandler;
 import com.ikasoa.core.thrift.AbstractThriftConfiguration;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 /**
  * Thrift服务器配置
  * 
  * @author <a href="mailto:larry7696@gmail.com">Larry</a>
  * @version 0.1
  */
+@Getter
+@NoArgsConstructor
+@Setter
 public class ThriftServerConfiguration extends AbstractThriftConfiguration {
 
 	/**
@@ -35,52 +42,8 @@ public class ThriftServerConfiguration extends AbstractThriftConfiguration {
 
 	private ServerArgsAspect serverArgsAspect = new ServerArgsAspect();
 
-	public ThriftServerConfiguration() {
-		// Do nothing
-	}
-	
 	public ThriftServerConfiguration(TProcessorFactory processorFactory) {
 		this.processorFactory = processorFactory;
-	}
-
-	public void setProcessorFactory(TProcessorFactory processorFactory) {
-		this.processorFactory = processorFactory;
-	}
-
-	public TProcessorFactory getProcessorFactory() {
-		return processorFactory;
-	}
-
-	public ServerAspect getServerAspect() {
-		return serverAspect;
-	}
-
-	public void setServerAspect(ServerAspect serverAspect) {
-		this.serverAspect = serverAspect;
-	}
-
-	public TServerEventHandler getServerEventHandler() {
-		return serverEventHandler;
-	}
-
-	public void setServerEventHandler(TServerEventHandler serverEventHandler) {
-		this.serverEventHandler = serverEventHandler;
-	}
-
-	public ExecutorService getExecutorService() {
-		return executorService;
-	}
-
-	public void setExecutorService(ExecutorService executorService) {
-		this.executorService = executorService;
-	}
-
-	public ServerArgsAspect getServerArgsAspect() {
-		return serverArgsAspect;
-	}
-
-	public void setServerArgsAspect(ServerArgsAspect serverArgsAspect) {
-		this.serverArgsAspect = serverArgsAspect;
 	}
 
 }

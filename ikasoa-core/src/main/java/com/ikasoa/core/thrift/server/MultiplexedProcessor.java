@@ -5,8 +5,8 @@ import java.util.Map.Entry;
 
 import org.apache.thrift.TMultiplexedProcessor;
 import org.apache.thrift.TProcessor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Thrift嵌套服务处理器
@@ -19,13 +19,12 @@ import org.slf4j.LoggerFactory;
  * @author <a href="mailto:larry7696@gmail.com">Larry</a>
  * @version 0.1
  */
+@Slf4j
 public class MultiplexedProcessor extends TMultiplexedProcessor {
-
-	private static final Logger LOG = LoggerFactory.getLogger(MultiplexedProcessor.class);
 
 	public MultiplexedProcessor(Map<String, TProcessor> processorMap) {
 		if (processorMap == null)
-			LOG.warn("'processorMap' is null !");
+			log.warn("'processorMap' is null !");
 		for (Entry<String, TProcessor> e : processorMap.entrySet())
 			registerProcessor(e.getKey(), e.getValue());
 	}

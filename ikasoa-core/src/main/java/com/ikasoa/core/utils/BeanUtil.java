@@ -8,15 +8,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.ikasoa.core.IkasoaException;
 
+import lombok.extern.slf4j.Slf4j;
+
 /**
  * Bean工具类
  * 
  * @author <a href="mailto:larry7696@gmail.com">Larry</a>
  * @version 0.1
  */
+@Slf4j
 public class BeanUtil {
-
-	private static final Logger LOG = LoggerFactory.getLogger(BeanUtil.class);
 
 	/**
 	 * 对象属性拷贝方法
@@ -80,7 +81,7 @@ public class BeanUtil {
 				} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
 					throw new IkasoaException(e);
 				} catch (Exception e) {
-					LOG.warn("Object copy failed : {}", e.getMessage());
+					log.warn("Object copy failed : {}", e.getMessage());
 				}
 			} else {
 				throw new IkasoaException("Object copy failed ! Attribute type error !");

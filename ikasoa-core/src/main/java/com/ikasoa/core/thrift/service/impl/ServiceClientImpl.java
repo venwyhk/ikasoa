@@ -5,13 +5,13 @@ import org.apache.thrift.TException;
 import org.apache.thrift.TServiceClient;
 import org.apache.thrift.protocol.TProtocol;
 import org.apache.thrift.transport.TTransport;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import com.ikasoa.core.IkasoaException;
 import com.ikasoa.core.thrift.service.Processor;
 import com.ikasoa.core.thrift.service.Service;
 import com.ikasoa.core.thrift.service.base.ArgsThriftBase;
 import com.ikasoa.core.thrift.service.base.ResultThriftBase;
+
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * 通用服务客户端实现类
@@ -21,9 +21,8 @@ import com.ikasoa.core.thrift.service.base.ResultThriftBase;
  * @author <a href="mailto:larry7696@gmail.com">Larry</a>
  * @version 0.2
  */
+@Slf4j
 public class ServiceClientImpl extends TServiceClient implements Service {
-
-	private static final Logger LOG = LoggerFactory.getLogger(ServiceClientImpl.class);
 
 	public ServiceClientImpl(TProtocol prot) {
 		super(prot);
@@ -35,12 +34,12 @@ public class ServiceClientImpl extends TServiceClient implements Service {
 		try {
 			if (!transport.isOpen())
 				transport.open();
-			LOG.debug("Transport is open .");
+			log.debug("Transport is open .");
 			sendGet(arg);
 			return recvGet();
 		} catch (TException e) {
 			transport.close();
-			LOG.debug("Transport is close .");
+			log.debug("Transport is close .");
 			throw new IkasoaException("Execute failed !", e);
 		}
 	}

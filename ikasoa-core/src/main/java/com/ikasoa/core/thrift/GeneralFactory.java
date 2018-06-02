@@ -31,12 +31,17 @@ import com.ikasoa.core.thrift.service.impl.AsyncServiceClientImpl;
 import com.ikasoa.core.thrift.service.impl.ServiceClientImpl;
 import com.ikasoa.core.utils.StringUtil;
 
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+
 /**
  * 通用工厂实现
  * 
  * @author <a href="mailto:larry7696@gmail.com">Larry</a>
  * @version 0.2
  */
+@AllArgsConstructor
+@NoArgsConstructor
 public class GeneralFactory implements Factory {
 
 	/**
@@ -54,21 +59,11 @@ public class GeneralFactory implements Factory {
 	 */
 	private static final String DEFAULT_LOAD_BALANCE_CLASS_NAME = "com.ikasoa.core.loadbalance.impl.PollingLoadBalanceImpl";
 
-	public GeneralFactory() {
-		// Do nothing
-	}
-
 	public GeneralFactory(ThriftServerConfiguration thriftServerConfiguration) {
 		this.thriftServerConfiguration = thriftServerConfiguration;
 	}
 
 	public GeneralFactory(ThriftClientConfiguration thriftClientConfiguration) {
-		this.thriftClientConfiguration = thriftClientConfiguration;
-	}
-
-	public GeneralFactory(ThriftServerConfiguration thriftServerConfiguration,
-			ThriftClientConfiguration thriftClientConfiguration) {
-		this.thriftServerConfiguration = thriftServerConfiguration;
 		this.thriftClientConfiguration = thriftClientConfiguration;
 	}
 

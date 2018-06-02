@@ -63,7 +63,7 @@ public class NettyIkasoaFactory extends DefaultIkasoaFactory {
 		public NiftyThriftServerImpl(String serverName, int serverPort, TProcessor processor) {
 			setServerName(serverName);
 			setServerPort(serverPort);
-			setThriftServerConfiguration(new ThriftServerConfiguration());
+			setConfiguration(new ThriftServerConfiguration());
 			setProcessor(processor);
 		}
 

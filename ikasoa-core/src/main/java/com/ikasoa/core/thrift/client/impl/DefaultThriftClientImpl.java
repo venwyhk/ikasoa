@@ -1,9 +1,9 @@
 package com.ikasoa.core.thrift.client.impl;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.ikasoa.core.thrift.client.ThriftClientConfiguration;
+
+import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * 默认Thrift客户端实现
@@ -11,22 +11,18 @@ import com.ikasoa.core.thrift.client.ThriftClientConfiguration;
  * @author <a href="mailto:larry7696@gmail.com">Larry</a>
  * @version 0.1
  */
+@NoArgsConstructor
+@Slf4j
 public class DefaultThriftClientImpl extends AbstractThriftClientImpl {
-	
-	private static final Logger LOG = LoggerFactory.getLogger(DefaultThriftClientImpl.class);
-
-	public DefaultThriftClientImpl() {
-		// Do nothing
-	}
 
 	public DefaultThriftClientImpl(String serverHost, int serverPort, ThriftClientConfiguration configuration) {
 		setServerHost(serverHost);
 		setServerPort(serverPort);
 		if (configuration == null) {
-			LOG.debug("Thrift client configuration is null .");
+			log.debug("Thrift client configuration is null .");
 			configuration = new ThriftClientConfiguration();
 		}
-		setThriftClientConfiguration(configuration);
+		setConfiguration(configuration);
 	}
 
 }

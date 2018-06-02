@@ -1,7 +1,6 @@
 package com.ikasoa.core.utils;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * 字符串常用操作工具类
@@ -9,9 +8,8 @@ import org.slf4j.LoggerFactory;
  * @author <a href="mailto:larry7696@gmail.com">Larry</a>
  * @version 0.2
  */
+@Slf4j
 public class StringUtil {
-
-	private static final Logger LOG = LoggerFactory.getLogger(StringUtil.class);
 
 	public static boolean isEmpty(String str) {
 		return str == null || str.length() == 0;
@@ -45,7 +43,7 @@ public class StringUtil {
 			try {
 				return Integer.parseInt(str);
 			} catch (Exception e) {
-				LOG.warn(e.getMessage());
+				log.warn(e.getMessage());
 				return 0;
 			}
 		return 0;

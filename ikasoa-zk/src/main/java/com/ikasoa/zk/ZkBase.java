@@ -8,11 +8,11 @@ import org.I0Itec.zkclient.IZkDataListener;
 import org.I0Itec.zkclient.IZkStateListener;
 import org.I0Itec.zkclient.ZkClient;
 import org.apache.zookeeper.Watcher.Event.KeeperState;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.ikasoa.core.loadbalance.ServerInfo;
 import com.ikasoa.core.utils.StringUtil;
+
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Zookeeper基础操作类
@@ -20,9 +20,8 @@ import com.ikasoa.core.utils.StringUtil;
  * @author <a href="mailto:larry7696@gmail.com">Larry</a>
  * @version 0.1
  */
+@Slf4j
 public class ZkBase {
-
-	private static final Logger LOG = LoggerFactory.getLogger(ZkBase.class);
 
 	private ZkClient zkClient;
 
@@ -44,12 +43,12 @@ public class ZkBase {
 
 			@Override
 			public void handleDataChange(String nodePath, Object nodeObj) throws Exception {
-				LOG.debug("handleDataChange (nodePath : {}, nodeObj : {})", nodePath, nodeObj);
+				log.debug("handleDataChange (nodePath : {}, nodeObj : {})", nodePath, nodeObj);
 			}
 
 			@Override
 			public void handleDataDeleted(String nodePath) throws Exception {
-				LOG.warn("handleDataDeleted (nodePath : {})", nodePath);
+				log.warn("handleDataDeleted (nodePath : {})", nodePath);
 			}
 
 		});
@@ -58,18 +57,18 @@ public class ZkBase {
 
 			@Override
 			public void handleNewSession() throws Exception {
-				LOG.debug("handleNewSession");
+				log.debug("handleNewSession");
 				nodeList = getChildren();
 			}
 
 			@Override
 			public void handleSessionEstablishmentError(Throwable t) throws Exception {
-				LOG.error(t.getMessage());
+				log.error(t.getMessage());
 			}
 
 			@Override
 			public void handleStateChanged(KeeperState state) throws Exception {
-				LOG.debug("handleStateChanged (state : {})", state);
+				log.debug("handleStateChanged (state : {})", state);
 			}
 
 		});
@@ -78,7 +77,7 @@ public class ZkBase {
 
 			@Override
 			public void handleChildChange(String parentPath, List<String> currentChildList) throws Exception {
-				LOG.debug("handleChildChange (parentPath : {}, currentChildList : {})", parentPath, currentChildList);
+				log.debug("handleChildChange (parentPath : {}, currentChildList : {})", parentPath, currentChildList);
 				nodeList = currentChildList;
 			}
 
@@ -94,7 +93,7 @@ public class ZkBase {
 					.readData(new StringBuilder(zkNode).append("/").append(n).toString());
 			serverInfoList.add(new ServerInfo(zksn.getServerHost(), zksn.getServerPort()));
 		}
-		LOG.debug("ServerInfoList is : {}", serverInfoList);
+		log.debug("ServerInfoList is : {}", serverInfoList);
 		return serverInfoList;
 	}
 

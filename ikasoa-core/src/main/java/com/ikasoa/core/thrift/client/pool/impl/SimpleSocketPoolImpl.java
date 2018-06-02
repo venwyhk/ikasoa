@@ -5,12 +5,12 @@ import java.util.Hashtable;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.ikasoa.core.thrift.client.pool.SocketPool;
 import com.ikasoa.core.thrift.client.socket.ThriftSocket;
 import com.ikasoa.core.utils.ServerUtil;
+
+import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * 简单Socket连接池实现
@@ -18,9 +18,9 @@ import com.ikasoa.core.utils.ServerUtil;
  * @author <a href="mailto:larry7696@gmail.com">Larry</a>
  * @version 0.3.3
  */
+@NoArgsConstructor
+@Slf4j
 public class SimpleSocketPoolImpl implements SocketPool {
-
-	private static final Logger LOG = LoggerFactory.getLogger(SimpleSocketPoolImpl.class);
 
 	/**
 	 * 单个池容量
@@ -40,10 +40,6 @@ public class SimpleSocketPoolImpl implements SocketPool {
 	private boolean[] socketStatusArray = null;
 
 	private Hashtable<Byte, ThriftSocket> socketPool;
-
-	public SimpleSocketPoolImpl() {
-		// Do nothing
-	}
 
 	public SimpleSocketPoolImpl(byte size) {
 		this.size = size;
@@ -75,7 +71,7 @@ public class SimpleSocketPoolImpl implements SocketPool {
 		self.socketPool = new Hashtable<>(size);
 		self.socketStatusArray = new boolean[size];
 		// 初始化连接池
-		LOG.debug("Initiation pool ......");
+		log.debug("Initiation pool ......");
 		buildThriftSocketPool(host, port);
 		return self;
 	}
@@ -139,16 +135,16 @@ public class SimpleSocketPoolImpl implements SocketPool {
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
-		LOG.warn("Not enough pooled connection ! Again retry initiation pool .");
+		log.warn("Not enough pooled connection ! Again retry initiation pool .");
 		init(host, port);
 		return buildThriftSocket(host, port);
 	}
 
 	private ThriftSocket getThriftSocket(SimpleSocketPoolImpl self, byte i, String host, int port) {
-		LOG.debug("Get socket number is {} .", i);
+		log.debug("Get socket number is {} .", i);
 		ThriftSocket thriftSocket = self.socketPool.get(new Byte(i));
 		if (thriftSocket == null || thriftSocket.getSocket() == null) {
-			LOG.warn("Socket is null ! Again retry initiation pool .");
+			log.warn("Socket is null ! Again retry initiation pool .");
 			init(host, port);
 			return buildThriftSocket(host, port);
 		} else
@@ -171,14 +167,14 @@ public class SimpleSocketPoolImpl implements SocketPool {
 	public synchronized void releaseThriftSocket(ThriftSocket thriftSocket, String host, int port) {
 		if (thriftSocket == null || thriftSocket.getSocket() == null
 				|| thriftSocket.getSocket().getInetAddress() == null) {
-			LOG.warn("Release unsuccessful .");
+			log.warn("Release unsuccessful .");
 			return;
 		}
 		if (!ServerUtil.checkHostAndPort(host, port)) {
-			LOG.error("Server host or port is null ! Release unsuccessful .");
+			log.error("Server host or port is null ! Release unsuccessful .");
 			return;
 		}
-		LOG.debug("Release socket , host is {} and port is {} .", host, port);
+		log.debug("Release socket , host is {} and port is {} .", host, port);
 		SimpleSocketPoolImpl self = selfMap.get(ServerUtil.buildCacheKey(host, port));
 		if (self == null)
 			self = init(host, port);
@@ -209,7 +205,7 @@ public class SimpleSocketPoolImpl implements SocketPool {
 					socket.close();
 					self.socketStatusArray[i] = Boolean.FALSE;
 				} catch (Exception e) {
-					LOG.error(e.getMessage());
+					log.error(e.getMessage());
 				}
 			}
 		}

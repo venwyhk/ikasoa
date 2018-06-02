@@ -1,8 +1,6 @@
 package com.ikasoa.core.thrift.client.impl;
 
 import org.apache.thrift.transport.TTransport;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import com.ikasoa.core.IkasoaException;
 import com.ikasoa.core.ServerCheck;
 import com.ikasoa.core.ServerCheckFailProcessor;
@@ -10,6 +8,9 @@ import com.ikasoa.core.loadbalance.LoadBalance;
 import com.ikasoa.core.loadbalance.ServerInfo;
 import com.ikasoa.core.thrift.client.ThriftClient;
 import com.ikasoa.core.thrift.client.ThriftClientConfiguration;
+
+import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * 负载均衡Thrift客户端实现
@@ -19,17 +20,13 @@ import com.ikasoa.core.thrift.client.ThriftClientConfiguration;
  * @author <a href="mailto:larry7696@gmail.com">Larry</a>
  * @version 0.1
  */
+@NoArgsConstructor
+@Slf4j
 public class LoadBalanceThriftClientImpl extends AbstractThriftClientImpl {
-
-	private static final Logger LOG = LoggerFactory.getLogger(LoadBalanceThriftClientImpl.class);
 
 	private LoadBalance loadBalance;
 
 	private ServerCheckFailProcessor serverCheckFailProcessor = getServerCheckFailProcessor(new NextProcessImpl());
-
-	public LoadBalanceThriftClientImpl() {
-		// Do nothing
-	}
 
 	public LoadBalanceThriftClientImpl(LoadBalance loadBalance, ThriftClientConfiguration configuration) {
 		if (loadBalance == null)
@@ -37,10 +34,10 @@ public class LoadBalanceThriftClientImpl extends AbstractThriftClientImpl {
 		this.loadBalance = loadBalance;
 		updateServerInfo();
 		if (configuration == null) {
-			LOG.debug("Thrift client configuration is null .");
+			log.debug("Thrift client configuration is null .");
 			configuration = new ThriftClientConfiguration();
 		}
-		setThriftClientConfiguration(configuration);
+		setConfiguration(configuration);
 	}
 
 	/**
@@ -76,7 +73,7 @@ public class LoadBalanceThriftClientImpl extends AbstractThriftClientImpl {
 			throw new RuntimeException("'serverInfo' is null !");
 		setServerHost(serverInfo.getHost());
 		setServerPort(serverInfo.getPort());
-		LOG.debug("Update server info . ({})", serverInfo.toString());
+		log.debug("Update server info . ({})", serverInfo.toString());
 	}
 
 	/**
@@ -88,7 +85,7 @@ public class LoadBalanceThriftClientImpl extends AbstractThriftClientImpl {
 
 		@Override
 		public void process(ThriftClient client) throws IkasoaException {
-			LOG.warn("Server is not available (serverHost : {}, serverPort : {}) , try next server .",
+			log.warn("Server is not available (serverHost : {}, serverPort : {}) , try next server .",
 					client.getServerHost(), client.getServerPort());
 			loadBalance.next();
 		}

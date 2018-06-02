@@ -5,17 +5,16 @@ import org.apache.thrift.server.TThreadPoolServer;
 import org.apache.thrift.transport.TServerTransport;
 import com.ikasoa.core.thrift.server.ThriftServerConfiguration;
 
+import lombok.NoArgsConstructor;
+
 /**
  * 默认Thrift服务器实现
  * 
  * @author <a href="mailto:larry7696@gmail.com">Larry</a>
  * @version 0.1
  */
+@NoArgsConstructor
 public class DefaultThriftServerImpl extends AbstractThriftServerImpl {
-
-	public DefaultThriftServerImpl() {
-		// Do nothing
-	}
 
 	public DefaultThriftServerImpl(String serverName, int serverPort, ThriftServerConfiguration configuration,
 			TProcessor processor) {
@@ -23,7 +22,7 @@ public class DefaultThriftServerImpl extends AbstractThriftServerImpl {
 		setServerPort(serverPort);
 		if (configuration == null)
 			configuration = new ThriftServerConfiguration();
-		setThriftServerConfiguration(configuration);
+		setConfiguration(configuration);
 		setProcessor(processor);
 	}
 

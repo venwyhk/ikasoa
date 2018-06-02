@@ -6,6 +6,8 @@ import org.apache.thrift.server.TSimpleServer;
 import org.apache.thrift.transport.TServerTransport;
 import com.ikasoa.core.thrift.server.ThriftServerConfiguration;
 
+import lombok.NoArgsConstructor;
+
 /**
  * 单线程Thrift服务器实现
  * <p>
@@ -14,17 +16,14 @@ import com.ikasoa.core.thrift.server.ThriftServerConfiguration;
  * @author <a href="mailto:larry7696@gmail.com">Larry</a>
  * @version 0.1
  */
+@NoArgsConstructor
 public class SimpleThriftServerImpl extends AbstractThriftServerImpl {
-
-	public SimpleThriftServerImpl() {
-		// Do nothing
-	}
 
 	public SimpleThriftServerImpl(String serverName, int serverPort, ThriftServerConfiguration configuration,
 			TProcessor processor) {
 		setServerName(serverName);
 		setServerPort(serverPort);
-		setThriftServerConfiguration(configuration);
+		setConfiguration(configuration);
 		setProcessor(processor);
 	}
 

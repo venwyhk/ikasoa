@@ -7,11 +7,11 @@ import org.apache.thrift.ProcessFunction;
 import org.apache.thrift.TBase;
 import org.apache.thrift.TBaseProcessor;
 import org.apache.thrift.TException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import com.ikasoa.core.IkasoaException;
 import com.ikasoa.core.thrift.service.base.ArgsThriftBase;
 import com.ikasoa.core.thrift.service.base.ResultThriftBase;
+
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * 通用服务处理器
@@ -33,9 +33,8 @@ public class ServiceProcessor extends TBaseProcessor<Service> implements Process
 		return processMap;
 	}
 
+	@Slf4j
 	private static class GetProcessFunction extends ProcessFunction<Service, ArgsThriftBase> {
-
-		private static final Logger LOG = LoggerFactory.getLogger(GetProcessFunction.class);
 
 		public GetProcessFunction() {
 			super(FUNCTION_NAME);
@@ -50,7 +49,7 @@ public class ServiceProcessor extends TBaseProcessor<Service> implements Process
 		}
 
 		public ResultThriftBase getResult(Service service, ArgsThriftBase args) throws TException {
-			LOG.debug("Args is : {}", args.getStr());
+			log.debug("Args is : {}", args.getStr());
 			try {
 				// 在这里执行服务端实现类的'get'方法
 				return new ResultThriftBase(service.get(args.getStr()));

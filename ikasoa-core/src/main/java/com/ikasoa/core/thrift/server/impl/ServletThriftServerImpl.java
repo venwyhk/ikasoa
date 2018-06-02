@@ -3,10 +3,13 @@ package com.ikasoa.core.thrift.server.impl;
 import org.apache.thrift.TProcessor;
 import org.apache.thrift.transport.TServerTransport;
 import org.apache.thrift.transport.TTransportException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import com.ikasoa.core.thrift.server.ThriftServer;
 import com.ikasoa.core.thrift.server.ThriftServerConfiguration;
+
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Thrift服务器Servlet实现
@@ -20,26 +23,27 @@ import com.ikasoa.core.thrift.server.ThriftServerConfiguration;
  * @author <a href="mailto:larry7696@gmail.com">Larry</a>
  * @version 0.2
  */
+@NoArgsConstructor
+@Slf4j
 public class ServletThriftServerImpl implements ThriftServer {
-
-	private static final Logger LOG = LoggerFactory.getLogger(ServletThriftServerImpl.class);
 
 	/**
 	 * Thrift服务名称
 	 */
+	@Getter
+	@Setter
 	private String serverName;
 
+	@Setter
 	private ThriftServerConfiguration configuration;
 
+	@Getter
+	@Setter
 	private TProcessor processor;
-
-	public ServletThriftServerImpl() {
-		// Do nothing
-	}
 
 	public ServletThriftServerImpl(String serverName, ThriftServerConfiguration configuration, TProcessor processor) {
 		setServerName(serverName);
-		setThriftServerConfiguration(configuration);
+		setConfiguration(configuration);
 		setProcessor(processor);
 	}
 
@@ -64,17 +68,8 @@ public class ServletThriftServerImpl implements ThriftServer {
 	}
 
 	@Override
-	public String getServerName() {
-		return serverName;
-	}
-
-	public void setServerName(String serverName) {
-		this.serverName = serverName;
-	}
-
-	@Override
 	public int getServerPort() {
-		LOG.debug("This function not run .");
+		log.debug("This function not run .");
 		return 0;
 	}
 
@@ -83,19 +78,6 @@ public class ServletThriftServerImpl implements ThriftServer {
 		if (configuration == null)
 			throw new RuntimeException("'configuration' is null !");
 		return configuration;
-	}
-
-	public void setThriftServerConfiguration(ThriftServerConfiguration configuration) {
-		this.configuration = configuration;
-	}
-
-	@Override
-	public TProcessor getProcessor() {
-		return processor;
-	}
-
-	public void setProcessor(TProcessor processor) {
-		this.processor = processor;
 	}
 
 }

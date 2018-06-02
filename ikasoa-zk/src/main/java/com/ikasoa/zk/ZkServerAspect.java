@@ -7,10 +7,13 @@ import java.util.Optional;
 
 import org.I0Itec.zkclient.ZkClient;
 import org.apache.thrift.TProcessor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.ikasoa.zk.utils.LocalUtil;
+
+import lombok.Getter;
+import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
+
 import com.ikasoa.core.thrift.server.ServerAspect;
 import com.ikasoa.core.thrift.server.ThriftServer;
 import com.ikasoa.core.thrift.server.ThriftServerConfiguration;
@@ -25,20 +28,23 @@ import com.ikasoa.core.utils.StringUtil;
  * @author <a href="mailto:larry7696@gmail.com">Larry</a>
  * @version 0.1
  */
+@Slf4j
 public class ZkServerAspect implements ServerAspect {
-
-	private static final Logger LOG = LoggerFactory.getLogger(ZkServerAspect.class);
 
 	private ZkBase zkBase;
 
 	/**
 	 * 自定义注册到Zookeeper的服务地址
 	 */
+	@Getter
+	@Setter
 	private String host;
 
 	/**
 	 * 自定义注册到Zookeeper的端口
 	 */
+	@Getter
+	@Setter
 	private int port;
 
 	/**
@@ -104,7 +110,7 @@ public class ZkServerAspect implements ServerAspect {
 					zkSNObj.setTransportFactoryClassName(configuration.getProcessorFactory().getClass().getName());
 			}
 			Optional.ofNullable(processor).ifPresent(p -> zkSNObj.setProcessorClassName(p.getClass().getName()));
-			LOG.debug("Create server node : {}", sNodeStr);
+			log.debug("Create server node : {}", sNodeStr);
 			zkClient.createEphemeralSequential(sNodeStr, zkSNObj);
 		} catch (UnknownHostException e) {
 			throw new RuntimeException(e);
@@ -123,25 +129,9 @@ public class ZkServerAspect implements ServerAspect {
 	public void afterStop(String serverName, int serverPort, ThriftServerConfiguration configuration,
 			TProcessor processor, ThriftServer server) {
 		if (StringUtil.isNotEmpty(sNodeStr)) {
-			LOG.debug("Delete server node : {}", sNodeStr);
+			log.debug("Delete server node : {}", sNodeStr);
 			zkBase.getZkClient().delete(sNodeStr);
 		}
-	}
-
-	public String getHost() {
-		return host;
-	}
-
-	public void setHost(String host) {
-		this.host = host;
-	}
-
-	public int getPort() {
-		return port;
-	}
-
-	public void setPort(int port) {
-		this.port = port;
 	}
 
 }

@@ -16,6 +16,8 @@ import com.ikasoa.core.thrift.client.socket.ThriftSocket;
 import com.ikasoa.core.utils.ServerUtil;
 import com.ikasoa.core.utils.StringUtil;
 
+import lombok.Setter;
+
 /**
  * Thrift客户端实现抽象
  * 
@@ -31,16 +33,19 @@ public abstract class AbstractThriftClientImpl implements ThriftClient {
 	/**
 	 * 需连接的Thrift服务地址
 	 */
+	@Setter
 	private String serverHost;
 
 	/**
 	 * 需连接的Thrift服务端口
 	 */
+	@Setter
 	private int serverPort;
 
 	/**
 	 * 连接的Thrift服务所需的配置信息
 	 */
+	@Setter
 	private ThriftClientConfiguration configuration = new ThriftClientConfiguration();
 
 	/**
@@ -87,10 +92,6 @@ public abstract class AbstractThriftClientImpl implements ThriftClient {
 		return serverHost;
 	}
 
-	public void setServerHost(String serverHost) {
-		this.serverHost = serverHost;
-	}
-
 	@Override
 	public int getServerPort() {
 		if (!ServerUtil.isSocketPort(serverPort))
@@ -98,19 +99,11 @@ public abstract class AbstractThriftClientImpl implements ThriftClient {
 		return serverPort;
 	}
 
-	public void setServerPort(int serverPort) {
-		this.serverPort = serverPort;
-	}
-
 	@Override
 	public ThriftClientConfiguration getThriftClientConfiguration() {
 		if (configuration == null)
 			throw new RuntimeException("Get thrift protocol failed ! Configuration is null !");
 		return configuration;
-	}
-
-	public void setThriftClientConfiguration(ThriftClientConfiguration configuration) {
-		this.configuration = configuration;
 	}
 
 	protected ServerCheck getServerCheck() {
