@@ -112,7 +112,7 @@ public abstract class AbstractThriftClientImpl implements ThriftClient {
 
 	protected ServerCheck getServerCheck(ServerCheck defaultServerCheck) {
 		if (defaultServerCheck == null)
-			LOG.warn("'defaultServerCheck' is null !");
+			LOG.debug("'defaultServerCheck' is null !");
 		if (serverCheck == null)
 			serverCheck = getThriftClientConfiguration().getServerCheck() == null ? defaultServerCheck
 					: getThriftClientConfiguration().getServerCheck();
@@ -125,7 +125,7 @@ public abstract class AbstractThriftClientImpl implements ThriftClient {
 
 	protected ServerCheckFailProcessor getServerCheckFailProcessor(ServerCheckFailProcessor defaultProcessor) {
 		if (defaultProcessor == null)
-			LOG.warn("'defaultProcessor' is null !");
+			LOG.debug("'defaultProcessor' is null !");
 		if (serverCheckFailProcessor == null)
 			serverCheckFailProcessor = getThriftClientConfiguration().getServerCheckFailProcessor() == null
 					? defaultProcessor : getThriftClientConfiguration().getServerCheckFailProcessor();

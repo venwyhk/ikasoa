@@ -152,7 +152,7 @@ public abstract class AbstractThriftServerImpl implements ThriftServer {
 			log.info("Stoping server ...... (name: {})", serverName);
 			afterStop(getThriftServerConfiguration().getServerAspect());
 		} else
-			log.info("Server not run. (name: {})", serverName);
+			log.debug("Server not run . (name: {})", serverName);
 	}
 
 	private void beforeStart(ServerAspect serverAspect) {
