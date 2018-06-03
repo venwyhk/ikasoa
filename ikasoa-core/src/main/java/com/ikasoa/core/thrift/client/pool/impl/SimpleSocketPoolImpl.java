@@ -155,15 +155,6 @@ public class SimpleSocketPoolImpl implements SocketPool {
 	 * 回收ThriftSocket连接
 	 */
 	@Override
-	public synchronized void releaseThriftSocket(ThriftSocket thriftSocket) {
-		releaseThriftSocket(thriftSocket, thriftSocket.getSocket().getInetAddress().getHostName(),
-				thriftSocket.getSocket().getPort());
-	}
-
-	/**
-	 * 回收ThriftSocket连接
-	 */
-	@Override
 	public synchronized void releaseThriftSocket(ThriftSocket thriftSocket, String host, int port) {
 		if (thriftSocket == null || thriftSocket.getSocket() == null
 				|| thriftSocket.getSocket().getInetAddress() == null) {

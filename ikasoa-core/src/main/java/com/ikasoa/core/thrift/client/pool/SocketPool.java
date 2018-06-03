@@ -23,16 +23,6 @@ public interface SocketPool {
 
 	/**
 	 * 回收ThriftSocket连接
-	 * <p>
-	 * 将会从Socket中获取服务器的地址和端口,以判断具体的池.
-	 * 
-	 * @param thriftSocket
-	 *            待回收的ThriftSocket连接对象
-	 */
-	void releaseThriftSocket(ThriftSocket thriftSocket);
-
-	/**
-	 * 回收ThriftSocket连接
 	 * 
 	 * @param thriftSocket
 	 *            待回收的ThriftSocket连接对象
@@ -42,6 +32,15 @@ public interface SocketPool {
 	 *            服务器端口
 	 */
 	void releaseThriftSocket(ThriftSocket thriftSocket, String host, int port);
+
+	default void releaseThriftSocket(ThriftSocket thriftSocket) {
+		if (thriftSocket != null)
+			if (thriftSocket.getSocket() != null && thriftSocket.getSocket().getInetAddress() != null)
+				releaseThriftSocket(thriftSocket, thriftSocket.getSocket().getInetAddress().getHostName(),
+						thriftSocket.getSocket().getPort());
+			else
+				thriftSocket.close();
+	}
 
 	/**
 	 * 回收所有ThriftSocket连接

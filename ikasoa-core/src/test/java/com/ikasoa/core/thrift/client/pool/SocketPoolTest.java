@@ -59,11 +59,6 @@ public class SocketPoolTest extends TestCase {
 		}
 
 		@Override
-		public void releaseThriftSocket(ThriftSocket thriftSocket) {
-			assertNull(thriftSocket);
-		}
-
-		@Override
 		public void releaseThriftSocket(ThriftSocket thriftSocket, String host, int port) {
 			assertNull(thriftSocket);
 			assertEquals(host, LOCAL_HOST);

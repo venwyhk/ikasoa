@@ -29,12 +29,6 @@ public class NoSocketPoolImpl implements SocketPool {
 	}
 
 	@Override
-	public void releaseThriftSocket(ThriftSocket thriftSocket) {
-		if (thriftSocket != null)
-			thriftSocket.close();
-	}
-
-	@Override
 	public void releaseThriftSocket(ThriftSocket thriftSocket, String host, int port) {
 		if (thriftSocket != null)
 			thriftSocket.close();
