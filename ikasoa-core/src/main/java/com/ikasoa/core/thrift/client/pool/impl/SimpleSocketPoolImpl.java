@@ -25,12 +25,12 @@ public class SimpleSocketPoolImpl implements SocketPool {
 	/**
 	 * 单个池容量
 	 */
-	private byte size = 0x10;
+	private byte size = defaultSize;
 
 	/**
 	 * 连接超时时间
 	 */
-	private int time = 0;
+	private int time = defaultTime;
 
 	private static Map<String, SimpleSocketPoolImpl> selfMap = new HashMap<>();
 
@@ -185,7 +185,7 @@ public class SimpleSocketPoolImpl implements SocketPool {
 	 */
 	@Override
 	public synchronized void releaseAllThriftSocket() {
-		if (selfMap == null || selfMap.size() == 0)
+		if (selfMap == null || selfMap.isEmpty())
 			return;
 		ThriftSocket socket;
 		for (Entry<String, SimpleSocketPoolImpl> entry : selfMap.entrySet()) {

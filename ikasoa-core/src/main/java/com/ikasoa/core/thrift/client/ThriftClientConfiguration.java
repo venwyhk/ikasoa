@@ -22,6 +22,9 @@ import com.ikasoa.core.ServerCheckFailProcessor;
 @Setter
 public class ThriftClientConfiguration extends AbstractThriftConfiguration {
 
+	/**
+	 * 默认Socket连接池实现
+	 */
 	private SocketPool socketPool = new SimpleSocketPoolImpl();
 
 	/**

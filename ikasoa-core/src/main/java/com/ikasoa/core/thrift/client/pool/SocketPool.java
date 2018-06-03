@@ -11,6 +11,16 @@ import com.ikasoa.core.thrift.client.socket.ThriftSocket;
 public interface SocketPool {
 
 	/**
+	 * 连接池默认大小
+	 */
+	byte defaultSize = 0x10;
+
+	/**
+	 * 连接默认超时时间
+	 */
+	int defaultTime = 0;
+
+	/**
 	 * 从连接池中获取一个空闲的ThriftSocket连接
 	 * 
 	 * @param host
