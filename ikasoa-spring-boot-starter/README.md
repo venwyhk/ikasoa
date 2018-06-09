@@ -114,7 +114,7 @@ ServerStartupRunner.java
     @Autowired
     IkasoaServiceProxy proxy;
     ......
-    ExampleService es = proxy.getDefaultService(ExampleService.class);
+    ExampleService es = proxy.getService(ExampleService.class);
     System.out.println(es.findVO(1).getString());
     ......
 ```

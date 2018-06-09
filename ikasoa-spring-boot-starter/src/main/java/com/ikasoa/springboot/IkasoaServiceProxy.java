@@ -26,7 +26,7 @@ public class IkasoaServiceProxy {
 		this.ikasoaFactoryFactory = ikasoaFactoryFactory;
 	}
 
-	public <T> T getDefaultService(Class<T> iClass) {
+	public <T> T getService(Class<T> iClass) {
 		if (defaultFactory == null)
 			defaultFactory = ikasoaFactoryFactory.getIkasoaDefaultFactory();
 		return defaultFactory.getIkasoaClient(iClass, host, port);
