@@ -2,8 +2,7 @@ package com.ikasoa.core.loadbalance;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 
 /**
  * 服务器信息
@@ -13,19 +12,17 @@ import lombok.RequiredArgsConstructor;
  */
 @AllArgsConstructor
 @Data
-@RequiredArgsConstructor
+@ToString
 public class ServerInfo {
 
 	/**
 	 * 服务器地址
 	 */
-	@NonNull
 	private String host;
 
 	/**
 	 * 服务器端口
 	 */
-	@NonNull
 	private int port;
 
 	/**
@@ -33,9 +30,9 @@ public class ServerInfo {
 	 */
 	private int weightNumber = 0;
 
-	public String toString() {
-		return new StringBuilder("host : ").append(host).append(" , port : ").append(port).append(" , weightNumber : ")
-				.append(weightNumber).toString();
+	public ServerInfo(String host, int port) {
+		this.host = host;
+		this.port = port;
 	}
 
 }

@@ -1,6 +1,8 @@
 package com.ikasoa.rpc.handler;
 
 import lombok.Data;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 
 /**
  * 客户端拦截器上下文对象
@@ -9,7 +11,11 @@ import lombok.Data;
  * @version 0.1
  */
 @Data
+@RequiredArgsConstructor
 public class ClientInvocationContext {
+
+	@NonNull
+	private String uuid;
 
 	/**
 	 * 服务器地址

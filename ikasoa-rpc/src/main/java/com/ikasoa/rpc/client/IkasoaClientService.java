@@ -1,5 +1,7 @@
 package com.ikasoa.rpc.client;
 
+import java.util.UUID;
+
 import com.ikasoa.core.thrift.Factory;
 import com.ikasoa.core.thrift.client.ThriftClient;
 import com.ikasoa.rpc.BaseGetService;
@@ -51,7 +53,7 @@ public class IkasoaClientService<T, R> implements BaseGetService<T, R> {
 	public R get(T arg) throws Throwable {
 		ClientInvocationContext context = null;
 		if (invocationHandler != null) {
-			context = new ClientInvocationContext();
+			context = new ClientInvocationContext(UUID.randomUUID().toString());
 			context.setServerHost(thriftClient.getServerHost());
 			context.setServerPort(thriftClient.getServerPort());
 			context.setServiceKey(serviceKey);
