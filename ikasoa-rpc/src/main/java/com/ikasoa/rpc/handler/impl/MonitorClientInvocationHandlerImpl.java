@@ -41,8 +41,10 @@ public class MonitorClientInvocationHandlerImpl implements ClientInvocationHandl
 		StringBuilder sb = new StringBuilder("远程接口调用完成. ");
 		if (timeMap.containsKey(context.getUuid())) {
 			if (StringUtil.isNotEmpty(context.getServiceKey()))
+				sb.append(context.getUuid()).append(" ");
 				sb.append("接口名: ").append(context.getServiceKey()).append(", ");
 			sb.append("耗时: ").append(System.currentTimeMillis() - timeMap.get(context.getUuid())).append("毫秒 .");
+			timeMap.remove(context.getUuid());
 		}
 		log.info(sb.toString());
 	}
