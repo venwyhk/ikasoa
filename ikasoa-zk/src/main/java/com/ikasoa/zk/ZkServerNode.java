@@ -3,8 +3,6 @@ package com.ikasoa.zk;
 import java.io.Serializable;
 
 import lombok.Data;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 
 /**
  * 服务注册对象
@@ -13,18 +11,14 @@ import lombok.RequiredArgsConstructor;
  * @version 0.1
  */
 @Data
-@RequiredArgsConstructor
 public class ZkServerNode implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	@NonNull
 	private String serverName;
 
-	@NonNull
 	private String serverHost;
 
-	@NonNull
 	private int serverPort;
 
 	private String transportFactoryClassName;
@@ -34,5 +28,11 @@ public class ZkServerNode implements Serializable {
 	private String processorFactoryClassName;
 
 	private String processorClassName;
+
+	public ZkServerNode(String serverName, String serverHost, int serverPort) {
+		this.serverName = serverName;
+		this.serverHost = serverHost;
+		this.serverPort = serverPort;
+	}
 
 }

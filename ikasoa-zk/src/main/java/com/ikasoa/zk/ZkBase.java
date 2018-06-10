@@ -12,6 +12,8 @@ import org.apache.zookeeper.Watcher.Event.KeeperState;
 import com.ikasoa.core.loadbalance.ServerInfo;
 import com.ikasoa.core.utils.StringUtil;
 
+import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -23,8 +25,12 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class ZkBase {
 
+	@Getter
+	@Setter
 	private ZkClient zkClient;
 
+	@Getter
+	@Setter
 	private String zkNode;
 
 	private List<String> nodeList;
@@ -109,22 +115,6 @@ public class ZkBase {
 
 	public List<String> getChildren() {
 		return zkClient.getChildren(zkNode);
-	}
-
-	public ZkClient getZkClient() {
-		return zkClient;
-	}
-
-	public void setZkClient(ZkClient zkClient) {
-		this.zkClient = zkClient;
-	}
-
-	public String getZkNode() {
-		return zkNode;
-	}
-
-	public void setZkNode(String zkNode) {
-		this.zkNode = zkNode;
 	}
 
 }
