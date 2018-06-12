@@ -6,7 +6,7 @@
     <version>0.3.2-SNAPSHOT</version>
     <packaging>jar</packaging>
     <name>Ikasoa RPC</name>
-    <description>ikasoa is a java distributed service framework.</description>
+    <description>ikasoa-rpc is a high performance RPC（Remote Procedure Call) framework.</description>
     <url>http://ikasoa.com/</url>
     
     <licenses>
@@ -123,7 +123,7 @@
         <dependency>
             <groupId>com.ikasoa</groupId>
             <artifactId>ikasoa-core</artifactId>
-            <version>0.5.3-SNAPSHOT</version>
+            <version>0.5.3</version>
         </dependency>
         <dependency>
             <groupId>io.netty</groupId>
@@ -159,7 +159,7 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.16.20</version>
+            <version>1.18.0</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
