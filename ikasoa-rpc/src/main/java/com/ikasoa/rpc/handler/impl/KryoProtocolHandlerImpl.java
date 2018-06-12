@@ -27,14 +27,14 @@ public class KryoProtocolHandlerImpl<T, R> implements ProtocolHandler<T, R> {
 		this.resultData = resultData;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
+	@SuppressWarnings("unchecked")
 	public T strToArg(String str) {
 		return (T) kryo.readObject(new Input(Base64Util.decode(str)), kryo.register(Object[].class).getType());
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
+	@SuppressWarnings("unchecked")
 	public String argToStr(T arg) {
 		arg = Optional.ofNullable(arg).orElse((T) new Object[0]);
 		Output output = new Output(1, 4096);
@@ -55,8 +55,8 @@ public class KryoProtocolHandlerImpl<T, R> implements ProtocolHandler<T, R> {
 		return Base64Util.encode(bb);
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
+	@SuppressWarnings("unchecked")
 	public R strToResult(String str) {
 		if (String.valueOf(ProtocolHandler.V).equals(str))
 			return null;
