@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.ikasoa</groupId>
     <artifactId>ikasoa-core</artifactId>
-    <version>0.5.3-SNAPSHOT</version>
+    <version>0.5.3</version>
     <packaging>jar</packaging>
     <name>Ikasoa Core</name>
     <description>ikasoa is a java distributed service framework.</description>
@@ -150,7 +150,7 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.16.20</version>
+            <version>1.18.0</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
