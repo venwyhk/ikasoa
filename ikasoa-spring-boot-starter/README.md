@@ -1,6 +1,6 @@
 [![](https://raw.githubusercontent.com/venwyhk/ikasoa/master/ikasoalogo_small.png)](http://ikasoa.com)<br />
 
-&nbsp;[![](https://codeship.com/projects/9cf2f150-1507-0134-ee57-3adebfc67210/status?branch=master)](https://codeship.com/projects/157977)&nbsp;&nbsp;[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.ikasoa/ikasoa-spring-boot-starter/badge.svg?style=plastic)](https://maven-badges.herokuapp.com/maven-central/com.ikasoa/ikasoa-spring-boot-starter)&nbsp;&nbsp;[![](https://img.shields.io/badge/license-MIT-097ABA.svg?style=plastic)](https://opensource.org/licenses/mit-license.php)&nbsp;&nbsp;
+&nbsp;[![](https://codeship.com/projects/9cf2f150-1507-0134-ee57-3adebfc67210/status?branch=master)](https://codeship.com/projects/157977)&nbsp;&nbsp;[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.ikasoa/ikasoa-spring-boot-starter/badge.svg?style=plastic)](https://maven-badges.herokuapp.com/maven-central/com.ikasoa/ikasoa-spring-boot-starter)&nbsp;&nbsp;[![Javadocs](http://javadoc.io/badge/com.ikasoa/ikasoa-spring-boot-starter.svg?style=plastic)](http://javadoc.io/doc/com.ikasoa/ikasoa-spring-boot-starter)&nbsp;&nbsp;[![](https://img.shields.io/badge/license-MIT-097ABA.svg?style=plastic)](https://opensource.org/licenses/mit-license.php)&nbsp;&nbsp;
 
 ***
 
@@ -51,19 +51,19 @@ pom.xml
     <td>ikasoa.server.port</td>
     <td>服务端口</td>
     <td>9999</td>
-    <td>必须为1024到65535之间的数值.</td>
+    <td>需为1024到65535之间的数值,且不能使用已被占用的端口号.</td>
   </tr>
   <tr>
     <td>ikasoa.server.names</td>
     <td>服务名称</td>
     <td>(无)</td>
-    <td>服务端设置时与'ikasoa.server.classes'必填其中一项,可由@Service注解定义,多项可以","分隔.</td>
+    <td>服务端设置时与'ikasoa.server.classes'必填其中一项,可由@Service注解定义,多项可以","分隔.客户端设置不需要填写.</td>
   </tr>
   <tr>
     <td>ikasoa.server.classes</td>
     <td>服务实现类名</td>
     <td>(无)</td>
-    <td>服务端设置时与'ikasoa.server.names'必填其中一项,设置服务接口实现类的完整类路径,多项可以","分隔.</td>
+    <td>服务端设置时与'ikasoa.server.names'必填其中一项,设置服务接口实现类的完整类路径,多项可以","分隔.客户端设置不需要填写.</td>
   </tr>
   <tr>
     <td>ikasoa.configurator</td>
@@ -86,7 +86,7 @@ application.properties
     ......
 ```
 
-  服务端须在application.properties中设置ikasoa.server.names(或ikasoa.server.classes)属性,该属性为允许远程调用的接口实现类名称(或类路径).如有多个可以","分隔.
+  服务端须在application.properties中设置'ikasoa.server.names'(或'ikasoa.server.classes')属性,该属性为允许远程调用的接口实现类名称(或类路径).如有多个可以","分隔.
   
   其中类名对应注解:@Service("exampleService")中定义的名称.
 
@@ -119,7 +119,7 @@ ServerStartupRunner.java
     ......
 ```
 
-  如果调用远程服务,需在application.properties设置ikasoa.server.host和ikasoa.server.port属性,并与服务端匹配.
+  如果调用远程服务,需在application.properties设置'ikasoa.server.host'和'ikasoa.server.port'属性,并与服务端匹配.
 
 ## License ##
 
