@@ -21,7 +21,7 @@ public class NoSocketPoolImpl implements SocketPool {
 	/**
 	 * 连接超时时间
 	 */
-	private int time = 0;
+	private int time = defaultTime;
 
 	@Override
 	public ThriftSocket buildThriftSocket(String host, int port) {

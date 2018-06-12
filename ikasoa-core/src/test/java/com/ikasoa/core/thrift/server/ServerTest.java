@@ -27,6 +27,7 @@ import com.ikasoa.core.thrift.server.ThriftSimpleService;
 import com.ikasoa.core.thrift.server.ThriftSimpleService.Iface;
 
 import junit.framework.TestCase;
+import lombok.SneakyThrows;
 
 /**
  * Thrift服务端单元测试
@@ -275,16 +276,14 @@ public class ServerTest extends TestCase {
 			assertFalse(server.isServing());
 		}
 
+		@SneakyThrows
 		@Test
 		@Override
 		public void afterStart(String serverName, int serverPort, ThriftServerConfiguration configuration,
 				TProcessor processor, ThriftServer server) {
 			assertEquals(ServerTest.serverName, serverName);
 			assertEquals(39301, serverPort);
-			try {
-				Thread.sleep(500);
-			} catch (InterruptedException e) {
-			}
+			Thread.sleep(500);
 			assertTrue(server.isServing());
 		}
 
@@ -297,16 +296,14 @@ public class ServerTest extends TestCase {
 			assertTrue(server.isServing());
 		}
 
+		@SneakyThrows
 		@Test
 		@Override
 		public void afterStop(String serverName, int serverPort, ThriftServerConfiguration configuration,
 				TProcessor processor, ThriftServer server) {
 			assertEquals(ServerTest.serverName, serverName);
 			assertEquals(39301, serverPort);
-			try {
-				Thread.sleep(500);
-			} catch (InterruptedException e) {
-			}
+			Thread.sleep(500);
 			assertFalse(server.isServing());
 		}
 

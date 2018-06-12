@@ -61,8 +61,8 @@ public class AsyncServiceProcessor extends TBaseAsyncProcessor<AsyncService> imp
 						return;
 					} catch (Exception e) {
 						log.error("Exception writing to internal frame buffer : {}", e.getMessage());
+						fb.close();
 					}
-					fb.close();
 				}
 
 				public void onError(Exception e) {
@@ -78,8 +78,8 @@ public class AsyncServiceProcessor extends TBaseAsyncProcessor<AsyncService> imp
 						return;
 					} catch (Exception ex) {
 						log.error("Exception writing to internal frame buffer : {}", ex.getMessage());
+						fb.close();
 					}
-					fb.close();
 				}
 			};
 		}

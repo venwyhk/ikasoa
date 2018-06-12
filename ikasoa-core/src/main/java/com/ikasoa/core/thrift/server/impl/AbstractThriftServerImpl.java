@@ -121,7 +121,7 @@ public abstract class AbstractThriftServerImpl implements ThriftServer {
 				return;
 			}
 			server.serve();
-			log.info("Starting server ...... (name : {} , port : {})", serverName, serverPort);
+			log.info("Starting server ... (name : {} , port : {})", serverName, serverPort);
 		} else
 			log.warn("Startup server failed !");
 	}
@@ -149,7 +149,7 @@ public abstract class AbstractThriftServerImpl implements ThriftServer {
 			server = null;
 			serverSocket = null;
 			executorService = null;
-			log.info("Stoping server ...... (name: {})", serverName);
+			log.info("Stoping server ... (name: {})", serverName);
 			afterStop(getThriftServerConfiguration().getServerAspect());
 		} else
 			log.debug("Server not run . (name: {})", serverName);

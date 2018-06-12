@@ -26,6 +26,9 @@ public class ThriftServerConfiguration extends AbstractThriftConfiguration {
 	 */
 	private TProcessorFactory processorFactory;
 
+	/**
+	 * Thrift服务器切面对象
+	 */
 	private ServerAspect serverAspect;
 
 	/**

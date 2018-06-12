@@ -32,8 +32,7 @@ public class BeanUtil {
 	 *                异常
 	 */
 	public static void copyProperties(Object target, Object source) throws IkasoaException {
-		Class<?> sourceClz = source.getClass();
-		Class<?> targetClz = target.getClass();
+		Class<?> sourceClz = source.getClass(), targetClz = target.getClass();
 		Field[] fields = sourceClz.getDeclaredFields();
 		if (fields.length == 0)
 			fields = sourceClz.getSuperclass().getDeclaredFields();
@@ -54,30 +53,22 @@ public class BeanUtil {
 						.append(fieldName.substring(1)).toString();
 				String setMethodName = new StringBuilder("set").append(fieldName.substring(0, 1).toUpperCase())
 						.append(fieldName.substring(1)).toString();
-				Method getMethod;
-				Method setMethod;
+				Method getMethod, setMethod;
 				try {
 					try {
 						getMethod = sourceClz.getDeclaredMethod(getMethodName, new Class[] {});
 					} catch (NoSuchMethodException e) {
-						try {
-							getMethod = sourceClz.getSuperclass().getDeclaredMethod(getMethodName, new Class[] {});
-						} catch (NoSuchMethodException e1) {
-							throw new IkasoaException(e1);
-						}
+						getMethod = sourceClz.getSuperclass().getDeclaredMethod(getMethodName, new Class[] {});
 					}
 					try {
 						setMethod = targetClz.getDeclaredMethod(setMethodName, fields[i].getType());
 					} catch (NoSuchMethodException e) {
-						try {
-							setMethod = targetClz.getSuperclass().getDeclaredMethod(setMethodName, fields[i].getType());
-						} catch (NoSuchMethodException e1) {
-							throw new IkasoaException(e1);
-						}
+						setMethod = targetClz.getSuperclass().getDeclaredMethod(setMethodName, fields[i].getType());
 					}
 					setMethod.invoke(target, getMethod.invoke(source, new Object[] {}));
 				} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
 					throw new IkasoaException(e);
+				} catch (NoSuchMethodException e) {
 				} catch (Exception e) {
 					log.warn("Object copy failed : {}", e.getMessage());
 				}

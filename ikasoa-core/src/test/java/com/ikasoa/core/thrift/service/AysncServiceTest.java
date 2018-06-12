@@ -34,11 +34,10 @@ public class AysncServiceTest extends TestCase {
 
 	private String testString2 = "1234567890-= ";
 
-	private ThriftServerConfiguration thriftServerConfiguration;
+	private ThriftServerConfiguration thriftServerConfiguration = new ThriftServerConfiguration();
 
 	@Before
 	public void setUp() {
-		thriftServerConfiguration = new ThriftServerConfiguration();
 		thriftServerConfiguration.setProtocolFactory(new TCompactProtocol.Factory());
 		thriftServerConfiguration.setServerArgsAspect(new ServerArgsAspect() {
 			@Override

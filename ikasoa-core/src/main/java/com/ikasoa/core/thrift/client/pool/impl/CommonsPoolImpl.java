@@ -50,6 +50,7 @@ public class CommonsPoolImpl implements SocketPool {
 	}
 
 	public CommonsPoolImpl(byte size) {
+		this.size = size;
 		conf.setMaxTotal(size);
 	}
 
@@ -90,10 +91,11 @@ public class CommonsPoolImpl implements SocketPool {
 
 	@Override
 	public synchronized void releaseAllThriftSocket() {
-		if (poolMap == null || poolMap.isEmpty())
+		if (poolMap == null || poolMap.isEmpty()) {
+			log.debug("Release unsuccessful .");
 			return;
-		for (Map.Entry<String, ObjectPool<ThriftSocket>> entry : poolMap.entrySet())
-			entry.getValue().close();
+		}
+		poolMap.forEach((k, v) -> v.close());
 		poolMap.clear();
 	}
 

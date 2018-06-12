@@ -158,7 +158,7 @@ public class SimpleSocketPoolImpl implements SocketPool {
 	public synchronized void releaseThriftSocket(ThriftSocket thriftSocket, String host, int port) {
 		if (thriftSocket == null || thriftSocket.getSocket() == null
 				|| thriftSocket.getSocket().getInetAddress() == null) {
-			log.warn("Release unsuccessful .");
+			log.debug("Release unsuccessful .");
 			return;
 		}
 		if (!ServerUtil.checkHostAndPort(host, port)) {

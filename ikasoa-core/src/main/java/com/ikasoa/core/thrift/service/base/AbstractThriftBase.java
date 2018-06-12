@@ -27,7 +27,7 @@ public abstract class AbstractThriftBase
 
 	private static final long serialVersionUID = 1L;
 
-	@Getter()
+	@Getter
 	private String str;
 
 	public AbstractThriftBase(String str) {
