@@ -549,7 +549,7 @@ web.xml
   
 ```java
     ......
-    public class CommonsPoolImpl implements SocketPool {
+    public class CustomerPoolImpl implements SocketPool {
     ......
     }
 ```
