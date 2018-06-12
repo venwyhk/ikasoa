@@ -1,5 +1,7 @@
 package com.ikasoa.rpc.handler;
 
+import lombok.SneakyThrows;
+
 /**
  * 转换协议处理器工厂
  * 
@@ -14,19 +16,16 @@ public class ProtocolHandlerFactory<T, R> {
 		return getProtocolHandler(resultData, null);
 	}
 
+	@SneakyThrows
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public ProtocolHandler<T, R> getProtocolHandler(ReturnData resultData,
 			Class<ProtocolHandler> protocolHandlerClass) {
-		try {
-			Class[] paramTypes = { ReturnData.class };
-			Object[] params = { resultData };
-			return protocolHandlerClass == null
-					? (ProtocolHandler<T, R>) Class.forName(DEFAULT_PROTOCOL_HANDLER_CLASS_STRING)
-							.getConstructor(paramTypes).newInstance(params)
-					: (ProtocolHandler<T, R>) protocolHandlerClass.getConstructor(paramTypes).newInstance(params);
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
+		Class[] paramTypes = { ReturnData.class };
+		Object[] params = { resultData };
+		return protocolHandlerClass == null
+				? (ProtocolHandler<T, R>) Class.forName(DEFAULT_PROTOCOL_HANDLER_CLASS_STRING)
+						.getConstructor(paramTypes).newInstance(params)
+				: (ProtocolHandler<T, R>) protocolHandlerClass.getConstructor(paramTypes).newInstance(params);
 	}
 
 }

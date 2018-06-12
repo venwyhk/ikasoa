@@ -511,6 +511,58 @@ web.xml
     ......
 ```
 
+## 客户端Socket连接池 ##
+
+  *ikasoa提供了3种Socket连接池实现.*
+
+##### 使用simple连接池实现(默认) #####
+
+  这是ikasoa提供的一种简单的Socket连接池,也是默认的连接池实现,所以使用这种连接池并不需要特别指定.
+
+##### 不使用连接池实现 #####
+
+  该实现不会使用任何Socket连接池,每次请求都会新创建连接,请慎用.
+
+```java
+    ......
+    ThriftClientConfiguration configuration = new ThriftClientConfiguration();
+    configuration.setSocketPool(new NoSocketPoolImpl());
+    ......
+```
+
+##### 使用commons-pool2连接池实现 #####
+
+  这是将使用apache-commons-pool2作为Socket连接池实现.
+
+```java
+    ......
+    ThriftClientConfiguration configuration = new ThriftClientConfiguration();
+    configuration.setSocketPool(new CommonsPoolImpl());
+    ......
+```
+
+  *如果需要更多连接池相关设置,可以通过构造函数传入GenericObjectPoolConfig.*
+
+##### 自定义Socket连接池 #####
+
+  自定义Socket连接池首先需要实现接口`com.ikasoa.core.thrift.client.pool.SocketPool`.
+  
+```java
+    ......
+    public class CommonsPoolImpl implements SocketPool {
+    ......
+    }
+```
+
+  之后将新创建的CommonsPoolImpl实例传入到configuration中:
+
+```java
+    ......
+    ThriftClientConfiguration configuration = new ThriftClientConfiguration();
+    configuration.setSocketPool(new CustomerPoolImpl());
+    ......
+```
+
 ## 序列化 ##
 
   *ikasoa提供了3种序列化方式,分别为fastjson,xml,kryo,默认使用fastjson.*

@@ -16,6 +16,7 @@ import com.ikasoa.core.IkasoaException;
 import com.ikasoa.core.thrift.service.base.ArgsThriftBase;
 import com.ikasoa.core.thrift.service.base.ResultThriftBase;
 
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -87,14 +88,11 @@ public class AsyncServiceProcessor extends TBaseAsyncProcessor<AsyncService> imp
 			return Boolean.FALSE;
 		}
 
+		@SneakyThrows(IkasoaException.class)
 		public void start(AsyncService service, ArgsThriftBase args, AsyncMethodCallback<String> resultHandler)
 				throws TException {
 			log.debug("Args is : {}", args.getStr());
-			try {
-				service.get((String) args.getStr(), resultHandler);
-			} catch (IkasoaException e) {
-				throw new TException(e);
-			}
+			service.get((String) args.getStr(), resultHandler);
 		}
 	}
 

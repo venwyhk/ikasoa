@@ -16,6 +16,7 @@ import com.ikasoa.core.thrift.client.socket.ThriftSocket;
 import com.ikasoa.core.utils.ServerUtil;
 
 import lombok.AllArgsConstructor;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -78,16 +79,13 @@ public class CommonsPoolImpl implements SocketPool {
 	}
 
 	@Override
+	@SneakyThrows
 	public synchronized void releaseThriftSocket(ThriftSocket thriftSocket, String host, int port) {
 		if (thriftSocket == null)
 			return;
-		try {
-			ObjectPool<ThriftSocket> pool = poolMap.get(ServerUtil.buildCacheKey(host, port));
-			if (pool != null)
-				pool.returnObject(thriftSocket);
-		} catch (Exception e) {
-			log.error(e.getMessage());
-		}
+		ObjectPool<ThriftSocket> pool = poolMap.get(ServerUtil.buildCacheKey(host, port));
+		if (pool != null)
+			pool.returnObject(thriftSocket);
 	}
 
 	@Override

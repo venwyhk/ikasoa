@@ -3,7 +3,6 @@ package com.ikasoa.core.loadbalance.impl;
 import java.io.UnsupportedEncodingException;
 import java.lang.ref.SoftReference;
 import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
@@ -14,6 +13,8 @@ import com.ikasoa.core.IkasoaException;
 import com.ikasoa.core.loadbalance.LoadBalance;
 import com.ikasoa.core.loadbalance.ServerInfo;
 import com.ikasoa.core.utils.StringUtil;
+
+import lombok.SneakyThrows;
 
 /**
  * 一致性Hash负载均衡实现
@@ -32,19 +33,16 @@ public class ConsistencyHashLoadBalanceImpl implements LoadBalance {
 
 	private SoftReference<String> hashReference;
 
+	@SneakyThrows
 	public ConsistencyHashLoadBalanceImpl(List<ServerInfo> serverInfoList, String hash) {
 		if (StringUtil.isEmpty(hash))
 			throw new RuntimeException("Constructor must exist hash parameter !");
-		try {
-			hashReference = new SoftReference<String>(InetAddress.getLocalHost().getHostAddress() + hash);
-			nodes = new TreeMap<>();
-			for (int i = 0; i < serverInfoList.size(); i++) {
-				ServerInfo serverInfo = serverInfoList.get(i);
-				for (int j = 0; j < VIRTUAL_NUM; j++)
-					nodes.put(hash(computeMd5("SHARD-" + i + "-NODE-" + j), j), serverInfo);
-			}
-		} catch (UnknownHostException e) {
-			throw new RuntimeException(e);
+		hashReference = new SoftReference<String>(InetAddress.getLocalHost().getHostAddress() + hash);
+		nodes = new TreeMap<>();
+		for (int i = 0; i < serverInfoList.size(); i++) {
+			ServerInfo serverInfo = serverInfoList.get(i);
+			for (int j = 0; j < VIRTUAL_NUM; j++)
+				nodes.put(hash(computeMd5("SHARD-" + i + "-NODE-" + j), j), serverInfo);
 		}
 	}
 

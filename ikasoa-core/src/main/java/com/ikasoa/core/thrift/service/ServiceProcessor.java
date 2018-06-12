@@ -11,6 +11,7 @@ import com.ikasoa.core.IkasoaException;
 import com.ikasoa.core.thrift.service.base.ArgsThriftBase;
 import com.ikasoa.core.thrift.service.base.ResultThriftBase;
 
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -48,14 +49,11 @@ public class ServiceProcessor extends TBaseProcessor<Service> implements Process
 			return Boolean.FALSE;
 		}
 
+		@SneakyThrows(IkasoaException.class)
 		public ResultThriftBase getResult(Service service, ArgsThriftBase args) throws TException {
 			log.debug("Args is : {}", args.getStr());
-			try {
-				// 在这里执行服务端实现类的'get'方法
-				return new ResultThriftBase(service.get(args.getStr()));
-			} catch (IkasoaException e) {
-				throw new TException(e);
-			}
+			// 在这里执行服务端实现类的'get'方法
+			return new ResultThriftBase(service.get(args.getStr()));
 		}
 	}
 

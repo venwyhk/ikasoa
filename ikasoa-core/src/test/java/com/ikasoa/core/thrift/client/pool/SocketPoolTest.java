@@ -8,6 +8,7 @@ import com.ikasoa.core.thrift.GeneralFactory;
 import com.ikasoa.core.thrift.client.ThriftClient;
 import com.ikasoa.core.thrift.client.ThriftClientConfiguration;
 import com.ikasoa.core.thrift.client.pool.impl.SimpleSocketPoolImpl;
+import com.ikasoa.core.thrift.client.pool.impl.CommonsPoolImpl;
 import com.ikasoa.core.thrift.client.pool.impl.NoSocketPoolImpl;
 import com.ikasoa.core.thrift.client.socket.ThriftSocket;
 
@@ -33,11 +34,47 @@ public class SocketPoolTest extends TestCase {
 	}
 
 	@Test
-	public void testCustomSocketPool() {
-		int serverPort = 38003;
+	public void testCommonsSocketPool() {
+		SocketPool pool = new CommonsPoolImpl();
+		assertNotNull(pool.buildThriftSocket(LOCAL_HOST, 38003));
+	}
+
+	@Test
+	public void testCustomSimpleSocketPool() {
+		int serverPort = 38004;
 		ThriftClientConfiguration configuration = new ThriftClientConfiguration();
 		configuration.setTransportFactory(new TTransportFactory());
-		configuration.setSocketPool(new TestSocketPoolImpl());
+		configuration.setSocketPool(new TestSocketPoolImpl(serverPort));
+		try (ThriftClient thriftClient = new GeneralFactory(configuration).getThriftClient(LOCAL_HOST, serverPort);
+				TTransport transport = thriftClient.getTransport()) {
+			assertNull(transport);
+		} catch (Exception e) {
+			fail();
+		}
+	}
+
+	@Test
+	public void testCustomNoSocketPool() {
+		int serverPort = 38005;
+		ThriftClientConfiguration configuration = new ThriftClientConfiguration();
+		configuration.setSocketPool(new NoSocketPoolImpl());
+		configuration.setTransportFactory(new TTransportFactory());
+		configuration.setSocketPool(new TestSocketPoolImpl(serverPort));
+		try (ThriftClient thriftClient = new GeneralFactory(configuration).getThriftClient(LOCAL_HOST, serverPort);
+				TTransport transport = thriftClient.getTransport()) {
+			assertNull(transport);
+		} catch (Exception e) {
+			fail();
+		}
+	}
+
+	@Test
+	public void testCustomCommonsSocketPool() {
+		int serverPort = 38006;
+		ThriftClientConfiguration configuration = new ThriftClientConfiguration();
+		configuration.setSocketPool(new CommonsPoolImpl());
+		configuration.setTransportFactory(new TTransportFactory());
+		configuration.setSocketPool(new TestSocketPoolImpl(serverPort));
 		try (ThriftClient thriftClient = new GeneralFactory(configuration).getThriftClient(LOCAL_HOST, serverPort);
 				TTransport transport = thriftClient.getTransport()) {
 			assertNull(transport);
@@ -48,13 +85,16 @@ public class SocketPoolTest extends TestCase {
 
 	private class TestSocketPoolImpl implements SocketPool {
 
-		public TestSocketPoolImpl() {
+		private int port;
+
+		public TestSocketPoolImpl(int port) {
+			this.port = port;
 		}
 
 		@Override
 		public ThriftSocket buildThriftSocket(String host, int port) {
 			assertEquals(host, LOCAL_HOST);
-			assertEquals(port, 38003);
+			assertEquals(port, this.port);
 			return null;
 		}
 
@@ -62,7 +102,7 @@ public class SocketPoolTest extends TestCase {
 		public void releaseThriftSocket(ThriftSocket thriftSocket, String host, int port) {
 			assertNull(thriftSocket);
 			assertEquals(host, LOCAL_HOST);
-			assertEquals(port, 38003);
+			assertEquals(port, this.port);
 		}
 
 		@Override

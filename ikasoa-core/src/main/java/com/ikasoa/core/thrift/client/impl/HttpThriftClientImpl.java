@@ -2,12 +2,11 @@ package com.ikasoa.core.thrift.client.impl;
 
 import org.apache.thrift.transport.THttpClient;
 import org.apache.thrift.transport.TTransport;
-import org.apache.thrift.transport.TTransportException;
 
-import com.ikasoa.core.IkasoaException;
 import com.ikasoa.core.thrift.client.ThriftClientConfiguration;
 
 import lombok.NoArgsConstructor;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -30,12 +29,9 @@ public class HttpThriftClientImpl extends AbstractThriftClientImpl {
 	}
 
 	@Override
-	protected TTransport getTransport(String serverHost, int serverPort) throws IkasoaException {
-		try {
-			return new THttpClient(serverHost);
-		} catch (TTransportException e) {
-			throw new IkasoaException("Get http transport failed !", e);
-		}
+	@SneakyThrows
+	protected TTransport getTransport(String serverHost, int serverPort) {
+		return new THttpClient(serverHost);
 	}
 
 	@Override

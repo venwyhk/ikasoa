@@ -26,6 +26,7 @@ import com.ikasoa.rpc.service.IkasoaServerService;
 import com.ikasoa.rpc.service.impl.IkasoaServerImpl;
 
 import lombok.NoArgsConstructor;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -76,20 +77,14 @@ public class DefaultIkasoaFactory extends GeneralFactory implements IkasoaFactor
 		if (siw == null || !siw.isNotNull())
 			throw new IllegalArgumentException("'serverInfoWrapper' is exist !");
 		return (T) Proxy
-				.newProxyInstance(iClass.getClassLoader(),
-						new Class<?>[] {
-								iClass },
-						(proxy, iMethod,
-								args) -> getBaseGetServiceFactory()
-										.getBaseGetService(
-												siw.isCluster()
-														? siw.getLoadBalanceClass() == null
-																? getThriftClient(siw.getServerInfoList())
-																: getThriftClient(siw.getServerInfoList(),
-																		siw.getLoadBalanceClass(), siw.getParam())
-														: getThriftClient(siw.getHost(), siw.getPort()),
-												getSKey(iClass, iMethod, true), new ReturnData(iMethod))
-										.get(args));
+				.newProxyInstance(iClass.getClassLoader(), new Class<?>[] { iClass },
+						(proxy, iMethod, args) -> getBaseGetServiceFactory().getBaseGetService(
+								siw.isCluster()
+										? siw.getLoadBalanceClass() == null ? getThriftClient(siw.getServerInfoList())
+												: getThriftClient(siw.getServerInfoList(), siw.getLoadBalanceClass(),
+														siw.getParam())
+										: getThriftClient(siw.getHost(), siw.getPort()),
+								getSKey(iClass, iMethod, true), new ReturnData(iMethod)).get(args));
 	}
 
 	@Override
@@ -208,35 +203,32 @@ public class DefaultIkasoaFactory extends GeneralFactory implements IkasoaFactor
 		return serviceMap;
 	}
 
+	@SneakyThrows
 	private void buildService(Map<String, Service> serviceMap, Class<?> iClass, Class<?> implClass, Object implObject)
 			throws RpcException {
-		try {
-			if (implObject == null)
-				implObject = implClass.newInstance();
-			ProtocolHandlerFactory<Object[], Object> protocolHandlerFactory = new ProtocolHandlerFactory<>();
-			for (Method implMethod : implClass.getMethods()) {
-				boolean isValidMethod = Boolean.FALSE;
-				// 对hashCode和toString两个方法做特殊处理
-				if ("hashCode".equals(implMethod.getName()) || "toString".equals(implMethod.getName()))
-					isValidMethod = Boolean.TRUE;
-				else
-					// 过滤掉无效方法
-					for (Method iMethod : iClass.getMethods())
-						if (!iMethod.isAnnotationPresent(Invalid.class) && compareMethod(iMethod, implMethod)) {
-							isValidMethod = Boolean.TRUE;
-							break;
-						}
-				if (!isValidMethod)
-					continue;
-				String sKey = getSKey(iClass, implMethod, false);
-				Service iss = (Service) IkasoaServerService.class.getDeclaredConstructors()[0].newInstance(implObject,
-						implMethod,
-						protocolHandlerFactory.getProtocolHandler(null, configurator.getProtocolHandlerClass()));
-				log.debug("Builder Ikasoa service : {}", sKey);
-				serviceMap.put(sKey, iss);
-			}
-		} catch (Exception e) {
-			throw new RpcException("Builder Ikasoa service exception !", e);
+		if (implObject == null)
+			implObject = implClass.newInstance();
+		ProtocolHandlerFactory<Object[], Object> protocolHandlerFactory = new ProtocolHandlerFactory<>();
+		for (Method implMethod : implClass.getMethods()) {
+			boolean isValidMethod = Boolean.FALSE;
+			// 对hashCode和toString两个方法做特殊处理
+			if ("hashCode".equals(implMethod.getName()) || "toString".equals(implMethod.getName()))
+				isValidMethod = Boolean.TRUE;
+			else
+				// 过滤掉无效方法
+				for (Method iMethod : iClass.getMethods())
+					if (!iMethod.isAnnotationPresent(Invalid.class) && compareMethod(iMethod, implMethod)) {
+						isValidMethod = Boolean.TRUE;
+						break;
+					}
+			if (!isValidMethod)
+				continue;
+			String sKey = getSKey(iClass, implMethod, false);
+			Service iss = (Service) IkasoaServerService.class.getDeclaredConstructors()[0].newInstance(implObject,
+					implMethod,
+					protocolHandlerFactory.getProtocolHandler(null, configurator.getProtocolHandlerClass()));
+			log.debug("Builder Ikasoa service : {}", sKey);
+			serviceMap.put(sKey, iss);
 		}
 	}
 

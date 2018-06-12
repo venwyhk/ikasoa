@@ -3,6 +3,9 @@ package com.ikasoa.rpc.service;
 import com.ikasoa.core.thrift.service.Service;
 import com.ikasoa.core.utils.StringUtil;
 import com.ikasoa.rpc.handler.ProtocolHandler;
+
+import lombok.SneakyThrows;
+
 import com.ikasoa.rpc.BaseGetService;
 import com.ikasoa.rpc.RpcException;
 
@@ -17,16 +20,13 @@ public abstract class AbstractGetService<T, R> implements Service, BaseGetServic
 	protected ProtocolHandler<T, R> protocolHandler;
 
 	@Override
+	@SneakyThrows
 	public String get(String argStr) throws RpcException {
 		if (protocolHandler == null)
 			throw new RpcException("'protocolHandler' is null !");
 		if (StringUtil.isEmpty(argStr))
 			throw new RpcException("'argStr' is null !");
-		try {
-			return protocolHandler.resultToStr(get(protocolHandler.strToArg(argStr)));
-		} catch (Throwable t) {
-			throw new RpcException(t);
-		}
+		return protocolHandler.resultToStr(get(protocolHandler.strToArg(argStr)));
 	}
 
 }

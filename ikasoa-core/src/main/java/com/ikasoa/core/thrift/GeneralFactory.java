@@ -33,6 +33,7 @@ import com.ikasoa.core.utils.StringUtil;
 
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+import lombok.SneakyThrows;
 
 /**
  * 通用工厂实现
@@ -159,14 +160,11 @@ public class GeneralFactory implements Factory {
 	 * 获取带负载均衡的ThriftClient对象
 	 */
 	@Override
+	@SneakyThrows
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public ThriftClient getThriftClient(List<ServerInfo> serverInfoList) {
-		try {
-			Class cls = Class.forName(DEFAULT_LOAD_BALANCE_CLASS_NAME);
-			return getThriftClient(serverInfoList, cls);
-		} catch (ClassNotFoundException e) {
-			throw new RuntimeException(e);
-		}
+		Class cls = Class.forName(DEFAULT_LOAD_BALANCE_CLASS_NAME);
+		return getThriftClient(serverInfoList, cls);
 	}
 
 	@Override
@@ -178,18 +176,15 @@ public class GeneralFactory implements Factory {
 	 * 获取带负载均衡的ThriftClient对象
 	 */
 	@Override
+	@SneakyThrows
 	@SuppressWarnings("rawtypes")
 	public ThriftClient getThriftClient(List<ServerInfo> serverInfoList, Class<LoadBalance> loadBalanceClass,
 			String param) {
-		try {
-			Class[] paramTypes = { List.class, String.class };
-			Object[] params = { serverInfoList, param };
-			return new LoadBalanceThriftClientImpl(
-					(LoadBalance) loadBalanceClass.getConstructor(paramTypes).newInstance(params),
-					thriftClientConfiguration);
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
+		Class[] paramTypes = { List.class, String.class };
+		Object[] params = { serverInfoList, param };
+		return new LoadBalanceThriftClientImpl(
+				(LoadBalance) loadBalanceClass.getConstructor(paramTypes).newInstance(params),
+				thriftClientConfiguration);
 	}
 
 	/**
