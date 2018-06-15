@@ -616,7 +616,7 @@ web.xml
 
 ## 加密传输 ##
 
-  ikasoa默认没有进行加密传输,但可选择使用DES对称加密传输方式以提高传输数据的安全性.采用加密传输方式,性能会略有下降.
+  ikasoa默认没有进行加密传输,但可选择使用DES对称加密传输方式以提高传输数据的安全性.
 
 ##### DES对称加密传输 #####
 
@@ -639,6 +639,8 @@ web.xml
     clientConfiguration.setProtocolFactory(new DESCompactProtocol.Factory(key));
     ......
 ```
+
+  *采用加密传输方式,性能会略有下降.*
 
 ## 注意事项 ##
 
