@@ -16,43 +16,46 @@
 
 ## 环境搭建 ##
 
-##### Maven配置 #####
+##### 引用依赖包 #####
 
-  需要修改pom.xml文件,添加ikasoa-rpc的依赖:
-
-pom.xml
+Maven
 
 ```xml
     ......
     <dependency>
         <groupId>com.ikasoa</groupId>
         <artifactId>ikasoa-rpc</artifactId>
-        <version>0.3.2-SNAPSHOT</version>
+        <version>0.3.2-BETA</version>
     </dependency>
     ......
 ```
 
-##### Maven配置(ikasoa-core) #####
+Gradle
+```
+    compile group: 'com.ikasoa', name: 'ikasoa-rpc', version: '0.3.2-BETA'
+```
+
+
+##### 引用依赖包(ikasoa-core) #####
 
   如果仅使用thrift兼容方式,则可以只添加ikasoa-core依赖:
 
-pom.xml
+Maven
 
 ```xml
     ......
     <dependency>
         <groupId>com.ikasoa</groupId>
         <artifactId>ikasoa-core</artifactId>
-        <version>0.5.2</version>
+        <version>0.5.3</version>
     </dependency>
     ......
 ```
 
-##### 导入工程&编译代码 #####
-
-  工程目录下命令行执行命令`mvn eclipse:eclipse`,并导入eclipse.(如果IDE非eclipse,则使用相对应的方式导入)
-
-  执行命令`mvn clean package`打包.
+Gradle
+```
+    compile group: 'com.ikasoa', name: 'ikasoa-core', version: '0.5.3'
+```
 
 ## HelloWorld ##
 
@@ -307,7 +310,7 @@ ThriftClientDemo.java
     }
 ```
 
-##### Spring配置Thrift服务端例子 #####
+##### Spring配置Thrift服务端例子(以xml设置为例) #####
 
 ```xml
     <?xml version="1.0" encoding="UTF-8"?>
@@ -335,7 +338,7 @@ ThriftClientDemo.java
     </beans>
 ```
 
-##### Spring配置Thrift服务端例子(嵌套方式) #####
+##### Spring配置Thrift(嵌套方式)服务端例子 #####
 
 ```xml
     <?xml version="1.0" encoding="UTF-8"?>
@@ -470,9 +473,9 @@ web.xml
 
 ## 负载均衡 ##
 
-  *ikasoa提供了3种负载均衡方式,分别为轮循(含权重),随机和一致性hash.*
+  ikasoa提供了3种负载均衡方式,分别为轮循(含权重),随机和一致性hash.
 
-  *ikasoa-rpc支持其中2种,分别为轮循和随机,默认使用轮循.*
+  ikasoa-rpc支持其中2种,分别为轮循和随机,默认使用轮循.
 
 ##### 使用轮循负载均衡(默认) #####
 
@@ -513,11 +516,11 @@ web.xml
 
 ## 客户端Socket连接池 ##
 
-  *ikasoa提供了3种Socket连接池实现.*
+  ikasoa提供了3种Socket连接池实现.
 
 ##### 使用simple连接池实现(默认) #####
 
-  这是ikasoa提供的一种简单的Socket连接池,也是默认的连接池实现,所以使用这种连接池并不需要特别指定.
+  这是ikasoa提供的一种简单的Socket连接池(SimpleSocketPoolImpl),这也是默认的连接池实现,所以使用这种连接池并不需要特别设置.
 
 ##### 不使用连接池实现 #####
 
@@ -565,7 +568,7 @@ web.xml
 
 ## 序列化 ##
 
-  *ikasoa提供了3种序列化方式,分别为fastjson,xml,kryo,默认使用fastjson.*
+  ikasoa提供了3种序列化方式,分别为fastjson,xml,kryo,默认使用fastjson.
 
 ##### 使用fastjson作为序列化方式(默认) #####
 
@@ -608,6 +611,32 @@ web.xml
     ......
     Class protocolHandlerClass = Class.forName("com.xx.XProtocolHandlerImpl");
     IkasoaFactory ikasoaFactory = new DefaultIkasoaFactory(new Configurator(protocolHandlerClass));
+    ......
+```
+
+## 加密传输 ##
+
+  ikasoa默认没有进行加密传输,但可选择使用DES对称加密传输方式以提高传输数据的安全性.采用加密传输方式,性能会略有下降.
+
+##### DES对称加密传输 #####
+
+服务端
+
+```java
+    ......
+    String key = "12345678"; // 密钥,可自定义
+    ThriftServerConfiguration serverConfiguration = new ThriftServerConfiguration();
+    serverConfiguration.setProtocolFactory(new DESCompactProtocol.Factory(key));
+    ......
+```
+
+客户端
+
+```java
+    ......
+    String key = "12345678"; // 密钥,需与服务端密钥相同
+    ThriftClientConfiguration clientConfiguration = new ThriftClientConfiguration();
+    clientConfiguration.setProtocolFactory(new DESCompactProtocol.Factory(key));
     ......
 ```
 
