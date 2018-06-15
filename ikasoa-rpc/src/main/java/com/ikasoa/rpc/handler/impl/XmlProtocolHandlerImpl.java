@@ -13,19 +13,18 @@ import com.esotericsoftware.minlog.Log;
 import com.ikasoa.rpc.handler.ProtocolHandler;
 import com.ikasoa.rpc.handler.ReturnData;
 
+import lombok.AllArgsConstructor;
+
 /**
  * 转换协议处理器XML实现
  * 
  * @author <a href="mailto:larry7696@gmail.com">Larry</a>
  * @version 0.1
  */
+@AllArgsConstructor
 public class XmlProtocolHandlerImpl<T, R> implements ProtocolHandler<T, R> {
 
 	private ReturnData resultData;
-
-	public XmlProtocolHandlerImpl(ReturnData resultData) {
-		this.resultData = resultData;
-	}
 
 	@Override
 	@SuppressWarnings("unchecked")

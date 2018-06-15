@@ -27,7 +27,7 @@ public class IkasoaClientService<T, R> implements BaseGetService<T, R> {
 	@Setter
 	private ThriftClient thriftClient;
 
-	protected String serviceKey = null;
+	protected String serviceKey;
 
 	protected ProtocolHandler<T, R> protocolHandler;
 

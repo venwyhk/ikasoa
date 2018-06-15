@@ -11,22 +11,20 @@ import com.ikasoa.core.thrift.server.ThriftServerConfiguration;
 import com.ikasoa.core.thrift.service.Service;
 import com.ikasoa.rpc.IkasoaServer;
 
+import lombok.AllArgsConstructor;
+
 /**
  * IKASOA服务端实现
  * 
  * @author <a href="mailto:larry7696@gmail.com">Larry</a>
  * @version 0.1
  */
+@AllArgsConstructor
 public class IkasoaServerImpl implements IkasoaServer {
 
 	private ThriftServer thriftServer;
 
 	private Map<String, Service> serviceMap;
-
-	public IkasoaServerImpl(ThriftServer thriftServer, Map<String, Service> serviceMap) {
-		this.thriftServer = thriftServer;
-		this.serviceMap = serviceMap;
-	}
 
 	@Override
 	public Map<String, Service> getIkasoaServiceMap() {

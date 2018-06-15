@@ -18,6 +18,7 @@ import com.ikasoa.core.thrift.client.ThriftClientConfiguration;
 import com.ikasoa.core.thrift.server.ThriftServer;
 import com.ikasoa.core.thrift.server.ThriftServerConfiguration;
 import com.ikasoa.core.thrift.service.Service;
+import com.ikasoa.core.utils.StringUtil;
 import com.ikasoa.rpc.annotation.IkasoaService;
 import com.ikasoa.rpc.annotation.Invalid;
 import com.ikasoa.rpc.handler.ProtocolHandlerFactory;
@@ -77,14 +78,20 @@ public class DefaultIkasoaFactory extends GeneralFactory implements IkasoaFactor
 		if (siw == null || !siw.isNotNull())
 			throw new IllegalArgumentException("'serverInfoWrapper' is exist !");
 		return (T) Proxy
-				.newProxyInstance(iClass.getClassLoader(), new Class<?>[] { iClass },
-						(proxy, iMethod, args) -> getBaseGetServiceFactory().getBaseGetService(
-								siw.isCluster()
-										? siw.getLoadBalanceClass() == null ? getThriftClient(siw.getServerInfoList())
-												: getThriftClient(siw.getServerInfoList(), siw.getLoadBalanceClass(),
-														siw.getParam())
-										: getThriftClient(siw.getHost(), siw.getPort()),
-								getSKey(iClass, iMethod, true), new ReturnData(iMethod)).get(args));
+				.newProxyInstance(iClass.getClassLoader(),
+						new Class<?>[] {
+								iClass },
+						(proxy, iMethod,
+								args) -> getBaseGetServiceFactory()
+										.getBaseGetService(
+												siw.isCluster()
+														? siw.getLoadBalanceClass() == null
+																? getThriftClient(siw.getServerInfoList())
+																: getThriftClient(siw.getServerInfoList(),
+																		siw.getLoadBalanceClass(), siw.getParam())
+														: getThriftClient(siw.getHost(), siw.getPort()),
+												getSKey(iClass, iMethod, true), new ReturnData(iMethod))
+										.get(args));
 	}
 
 	@Override
@@ -204,8 +211,7 @@ public class DefaultIkasoaFactory extends GeneralFactory implements IkasoaFactor
 	}
 
 	@SneakyThrows
-	private void buildService(Map<String, Service> serviceMap, Class<?> iClass, Class<?> implClass, Object implObject)
-			throws RpcException {
+	private void buildService(Map<String, Service> serviceMap, Class<?> iClass, Class<?> implClass, Object implObject) {
 		if (implObject == null)
 			implObject = implClass.newInstance();
 		ProtocolHandlerFactory<Object[], Object> protocolHandlerFactory = new ProtocolHandlerFactory<>();
@@ -224,6 +230,8 @@ public class DefaultIkasoaFactory extends GeneralFactory implements IkasoaFactor
 			if (!isValidMethod)
 				continue;
 			String sKey = getSKey(iClass, implMethod, false);
+			if (StringUtil.isEmpty(sKey))
+				continue;
 			Service iss = (Service) IkasoaServerService.class.getDeclaredConstructors()[0].newInstance(implObject,
 					implMethod,
 					protocolHandlerFactory.getProtocolHandler(null, configurator.getProtocolHandlerClass()));

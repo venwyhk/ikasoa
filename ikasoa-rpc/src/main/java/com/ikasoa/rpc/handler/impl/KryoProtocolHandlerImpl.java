@@ -21,10 +21,11 @@ public class KryoProtocolHandlerImpl<T, R> implements ProtocolHandler<T, R> {
 
 	private ReturnData resultData;
 
-	private Kryo kryo = new Kryo();
+	private Kryo kryo;
 
 	public KryoProtocolHandlerImpl(ReturnData resultData) {
 		this.resultData = resultData;
+		this.kryo = new Kryo();
 	}
 
 	@Override

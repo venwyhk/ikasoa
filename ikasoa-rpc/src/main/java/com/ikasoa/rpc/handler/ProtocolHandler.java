@@ -9,19 +9,9 @@ package com.ikasoa.rpc.handler;
 public interface ProtocolHandler<T, R> {
 
 	/**
-	 * 类型分隔符
+	 * 类型分隔符, 异常标识符, 空标识符
 	 */
-	char CT = (char) 0x96;
-
-	/**
-	 * 异常标识符
-	 */
-	char E = (char) 0x97;
-
-	/**
-	 * 空标识符
-	 */
-	char V = (char) 0x98;
+	char CT = (char) 0x96, E = (char) 0x97, V = (char) 0x98;
 
 	/**
 	 * 字符串转为参数对象
