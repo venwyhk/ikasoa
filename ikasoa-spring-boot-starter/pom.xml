@@ -7,7 +7,7 @@
     <version>0.1-BETA</version>
     <packaging>jar</packaging>
     <name>Ikasoa Spring-boot Starter</name>
-    <description>ikasoa is a java distributed service framework.</description>
+    <description>spring-boot starter for ikasoa.</description>
     <url>http://ikasoa.com/</url>
 
     <licenses>
@@ -129,12 +129,12 @@
         <dependency>
             <groupId>com.ikasoa</groupId>
             <artifactId>ikasoa-rpc</artifactId>
-            <version>0.3.1</version>
+            <version>0.3.2-BETA</version>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.16.20</version>
+            <version>1.18.0</version>
             <scope>provided</scope>
         </dependency>
         <dependency>

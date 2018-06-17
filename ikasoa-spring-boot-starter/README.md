@@ -16,20 +16,23 @@
 
 ## 环境搭建 ##
 
-##### Maven配置 #####
+##### 引用依赖包 #####
 
-需要修改pom.xml文件,添加ikasoa-spring-boot-starter的依赖:
-
-pom.xml
+Maven
 
 ```xml
     ......
     <dependency>
         <groupId>com.ikasoa</groupId>
         <artifactId>ikasoa-spring-boot-starter</artifactId>
-        <version>0.1-ALPHA</version>
+        <version>0.1-BETA</version>
     </dependency>
     ......
+```
+
+Gradle
+```
+    compile group: 'com.ikasoa', name: 'ikasoa-spring-boot-starter', version: '0.1-BETA'
 ```
 
 ## application.properties设置说明 ##
