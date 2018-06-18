@@ -171,7 +171,7 @@ public class Application {
 }
 ```
 
-  *更多关于Eureka项目使用可访问[](https://github.com/Netflix/eureka).*
+  *更多关于Eureka项目使用可访问[Eureka](https://github.com/Netflix/eureka).*
 
 ## License ##
 
