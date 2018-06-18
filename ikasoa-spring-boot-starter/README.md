@@ -25,14 +25,14 @@ Maven
     <dependency>
         <groupId>com.ikasoa</groupId>
         <artifactId>ikasoa-spring-boot-starter</artifactId>
-        <version>0.1-BETA</version>
+        <version>0.1-ALPHA2</version>
     </dependency>
     ......
 ```
 
 Gradle
 ```
-    compile group: 'com.ikasoa', name: 'ikasoa-spring-boot-starter', version: '0.1-BETA'
+    compile group: 'com.ikasoa', name: 'ikasoa-spring-boot-starter', version: '0.1-ALPHA2'
 ```
 
 ## application.properties设置说明 ##
@@ -173,7 +173,7 @@ public class Application {
 
   *更多关于Eureka项目可访问[这里](https://github.com/Netflix/eureka).*
   
-  *如果需要注册到ZooKeeper服务,请使用[ikasoa-zk](https://github.com/venwyhk/ikasoa/tree/master/ikasoa-zk)包.*
+  *如果需要注册到ZooKeeper,请使用[ikasoa-zk](https://github.com/venwyhk/ikasoa/tree/master/ikasoa-zk)包.*
 
 ## License ##
 
