@@ -171,6 +171,8 @@ public class Application {
 }
 ```
 
+  *更多关于Eureka项目使用可访问[](https://github.com/Netflix/eureka).*
+
 ## License ##
 
 *ikasoa is free to use under [MIT license](https://github.com/venwyhk/ikasoa/blob/master/LICENSE).*
