@@ -123,6 +123,53 @@ ServerStartupRunner.java
 ```
 
   如果调用远程服务,需在application.properties设置'ikasoa.server.host'和'ikasoa.server.port'属性,并与服务端匹配.
+  
+## 将IkasoaServer注册到Eureka ##
+
+  ikasoaServer可以作为Eureka客户端直接注册到Eureka,与其它springboot项目并无区别.
+
+##### 引用Eureka依赖包 #####
+
+Maven
+
+```xml
+    ......
+    <dependency>
+        <groupId>org.springframework.cloud</groupId>
+        <artifactId>spring-cloud-starter-eureka</artifactId>
+        <version>1.4.4.RELEASE</version>
+    </dependency>
+    ......
+```
+
+Gradle
+```
+    compile 'org.springframework.cloud:spring-cloud-starter-eureka:1.4.4.RELEASE'
+```
+
+##### 设置EurekaServer地址 #####
+
+application.properties
+```
+    eureka.client.serviceUrl.defaultZone=http://[EurekaServerHost]:[EurekaServerPort]/eureka/v2/
+```
+
+##### Application增加@EnableEurekaClient注解 #####
+
+Application.java
+```
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
+
+@EnableEurekaClient
+@SpringBootApplication
+public class Application {
+        public static void main(String[] args) throws Exception {
+                SpringApplication.run(Application.class, args);
+        }
+}
+```
 
 ## License ##
 
