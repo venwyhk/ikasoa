@@ -172,6 +172,8 @@ public class Application {
 ```
 
   *更多关于Eureka项目使用可访问[Eureka](https://github.com/Netflix/eureka).*
+  
+  *如果需要注册到ZooKeeper服务,请使用[ikasoa-zk](https://github.com/venwyhk/ikasoa/tree/master/ikasoa-zk)包.*
 
 ## License ##
 
