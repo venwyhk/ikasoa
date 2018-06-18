@@ -7,7 +7,7 @@ import javax.annotation.PreDestroy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 
-import com.ikasoa.rpc.IkasoaException;
+import com.ikasoa.rpc.RpcException;
 import com.ikasoa.rpc.IkasoaServer;
 
 import lombok.extern.slf4j.Slf4j;
@@ -24,20 +24,20 @@ public abstract class IkasoaServerRunner implements CommandLineRunner {
 	@Autowired
 	protected IkasoaServer server;
 
-	protected long getRunWaitTime() throws IkasoaException {
+	protected long getRunWaitTime() throws RpcException {
 		return 1000L;
 	};
 
-	protected void complete(String... args) throws IkasoaException {
+	protected void complete(String... args) throws RpcException {
 	};
 
-	protected void fail(String... args) throws IkasoaException {
+	protected void fail(String... args) throws RpcException {
 	};
 
 	@Override
-	public void run(String... args) throws IkasoaException, InterruptedException {
+	public void run(String... args) throws RpcException, InterruptedException {
 		if (server == null)
-			throw new IkasoaException("Ikasoa server initialize failed !");
+			throw new RpcException("Ikasoa server initialize failed !");
 		server.run();
 		Thread.sleep(getRunWaitTime());
 		if (server.isServing()) {

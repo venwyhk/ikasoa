@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import com.ikasoa.core.utils.ServerUtil;
 import com.ikasoa.core.utils.StringUtil;
 import com.ikasoa.rpc.Configurator;
-import com.ikasoa.rpc.IkasoaException;
+import com.ikasoa.rpc.RpcException;
 import com.ikasoa.springboot.IkasoaFactoryFactory;
 
 import lombok.extern.slf4j.Slf4j;
@@ -53,18 +53,18 @@ public abstract class AbstractAutoConfiguration {
 		return new IkasoaFactoryFactory(getConfigurator());
 	}
 
-	protected String getHost() throws IkasoaException {
+	protected String getHost() throws RpcException {
 		if (StringUtil.isEmpty(host))
-			throw new IkasoaException("Server configuration (${ikasoa.server.host}) is error !");
+			throw new RpcException("Server configuration (${ikasoa.server.host}) is error !");
 		return host;
 	}
 
-	protected int getPort() throws IkasoaException {
+	protected int getPort() throws RpcException {
 		if (StringUtil.isEmpty(port))
-			throw new IkasoaException("Server port (${ikasoa.server.port}) is null !");
+			throw new RpcException("Server port (${ikasoa.server.port}) is null !");
 		int iPort = StringUtil.toInt(port.trim());
 		if (!ServerUtil.isPort(iPort))
-			throw new IkasoaException("Server configuration (${ikasoa.server.port}) is error !");
+			throw new RpcException("Server configuration (${ikasoa.server.port}) is error !");
 		return iPort;
 	}
 

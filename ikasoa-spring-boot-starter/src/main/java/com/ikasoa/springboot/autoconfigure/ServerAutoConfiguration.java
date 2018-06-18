@@ -10,10 +10,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import com.ikasoa.core.utils.StringUtil;
-import com.ikasoa.rpc.IkasoaException;
+import com.ikasoa.rpc.RpcException;
 import com.ikasoa.rpc.IkasoaFactory;
 import com.ikasoa.rpc.IkasoaServer;
-import com.ikasoa.rpc.ImplClsCon;
+import com.ikasoa.rpc.ImplWrapper;
 
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -32,21 +32,22 @@ public class ServerAutoConfiguration extends AbstractAutoConfiguration implement
 	private ApplicationContext applicationContext;
 
 	@Bean
-	public IkasoaServer getServer() throws IkasoaException {
+	public IkasoaServer getServer() throws RpcException {
 		return getServer(getIkasoaFactoryFactory().getIkasoaDefaultFactory());
 	}
 
-	private IkasoaServer getServer(IkasoaFactory factory) throws IkasoaException {
+	private IkasoaServer getServer(IkasoaFactory factory) throws RpcException {
 		if (StringUtil.isEmpty(names) && StringUtil.isEmpty(classes))
 			log.warn("Server configuration (${ikasoa.server.names} or ${ikasoa.server.classes}) is null !");
-		List<ImplClsCon> implClsConList = new ArrayList<>();
+		List<ImplWrapper> implWrapperList = new ArrayList<>();
 		String[] nameStrs = names.split(",");
 		for (String name : nameStrs) {
 			log.debug("Add ikasoa service : {}", name);
 			try {
-				ImplClsCon icc = applicationContext != null && applicationContext.getBean(name) != null
-						? new ImplClsCon(applicationContext.getBean(name).getClass()) : null;
-				Optional.ofNullable(icc).map(i -> implClsConList.add(i)).orElseThrow(IkasoaException::new);
+				ImplWrapper iw = applicationContext != null && applicationContext.getBean(name) != null
+						? new ImplWrapper(applicationContext.getBean(name).getClass())
+						: null;
+				Optional.ofNullable(iw).map(i -> implWrapperList.add(i)).orElseThrow(RpcException::new);
 			} catch (Exception e) {
 				log.debug(e.getMessage());
 			}
@@ -55,13 +56,13 @@ public class ServerAutoConfiguration extends AbstractAutoConfiguration implement
 		for (String classStr : classStrs) {
 			log.debug("Add ikasoa service : {}", classStr);
 			try {
-				ImplClsCon icc = StringUtil.isNotEmpty(classStr) ? new ImplClsCon(Class.forName(classStr)) : null;
-				Optional.ofNullable(icc).map(i -> implClsConList.add(i)).orElseThrow(IkasoaException::new);
+				ImplWrapper iw = StringUtil.isNotEmpty(classStr) ? new ImplWrapper(Class.forName(classStr)) : null;
+				Optional.ofNullable(iw).map(i -> implWrapperList.add(i)).orElseThrow(RpcException::new);
 			} catch (Exception e) {
 				log.debug(e.getMessage());
 			}
 		}
-		return factory.getIkasoaServer(implClsConList, getPort());
+		return factory.getIkasoaServer(implWrapperList, getPort());
 	}
 
 }

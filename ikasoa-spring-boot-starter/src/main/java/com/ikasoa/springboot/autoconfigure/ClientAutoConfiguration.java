@@ -3,7 +3,7 @@ package com.ikasoa.springboot.autoconfigure;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import com.ikasoa.rpc.IkasoaException;
+import com.ikasoa.rpc.RpcException;
 import com.ikasoa.springboot.IkasoaServiceProxy;
 
 /**
@@ -18,7 +18,7 @@ public class ClientAutoConfiguration extends AbstractAutoConfiguration {
 	private IkasoaServiceProxy ikasoaServiceProxy;
 
 	@Bean
-	public IkasoaServiceProxy getServiceFactory() throws IkasoaException {
+	public IkasoaServiceProxy getServiceFactory() throws RpcException {
 		return ikasoaServiceProxy != null ? ikasoaServiceProxy
 				: new IkasoaServiceProxy(getHost(), getPort(), getIkasoaFactoryFactory());
 	}

@@ -2,7 +2,7 @@ package com.ikasoa.springboot.autoconfigure;
 
 import org.junit.Test;
 
-import com.ikasoa.rpc.IkasoaException;
+import com.ikasoa.rpc.RpcException;
 
 import junit.framework.TestCase;
 
@@ -18,7 +18,7 @@ public class TestAutoConfigurationBase extends TestCase {
 	public void testGetHost() {
 		try {
 			assertEquals(TEST_HOST, testAutoConfiguration.getHost());
-		} catch (IkasoaException e) {
+		} catch (RpcException e) {
 			fail();
 		}
 	}
@@ -27,7 +27,7 @@ public class TestAutoConfigurationBase extends TestCase {
 	public void testGetPort() {
 		try {
 			assertEquals(Integer.parseInt(TEST_PORT), testAutoConfiguration.getPort());
-		} catch (IkasoaException e) {
+		} catch (RpcException e) {
 			fail();
 		}
 	}
@@ -39,11 +39,11 @@ public class TestAutoConfigurationBase extends TestCase {
 			super.port = TEST_PORT;
 		}
 
-		public String getHost() throws IkasoaException {
+		public String getHost() throws RpcException {
 			return super.getHost();
 		}
 
-		protected int getPort() throws IkasoaException {
+		protected int getPort() throws RpcException {
 			return super.getPort();
 		}
 
