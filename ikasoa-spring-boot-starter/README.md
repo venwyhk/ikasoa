@@ -126,7 +126,7 @@ ServerStartupRunner.java
   
 ## 将IkasoaServer注册到Eureka ##
 
-  ikasoaServer可以作为Eureka客户端直接注册到Eureka,与其它springboot项目并无区别.
+  ikasoaServer可以直接注册到Eureka,与其它springboot项目并无区别.
 
 ##### 引用Eureka依赖包 #####
 
