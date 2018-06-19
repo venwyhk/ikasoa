@@ -28,11 +28,9 @@ public abstract class IkasoaServerRunner implements CommandLineRunner {
 		return 1000L;
 	};
 
-	protected void complete(String... args) throws RpcException {
-	};
+	protected abstract void complete(String... args) throws RpcException;
 
-	protected void fail(String... args) throws RpcException {
-	};
+	protected abstract void fail(String... args) throws RpcException;
 
 	@Override
 	public void run(String... args) throws RpcException, InterruptedException {
