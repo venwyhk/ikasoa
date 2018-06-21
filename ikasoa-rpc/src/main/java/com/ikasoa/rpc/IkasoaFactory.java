@@ -121,6 +121,21 @@ public interface IkasoaFactory extends Factory {
 	/**
 	 * 获取IKASOA服务端
 	 * 
+	 * @param serverName
+	 *            服务名称
+	 * @param implClass
+	 *            应用接口实现类
+	 * @param serverPort
+	 *            服务端口
+	 * @return IkasoaServer IKASOA服务端
+	 * @exception RpcException
+	 *                异常
+	 */
+	IkasoaServer getIkasoaServer(String serverName, Class<?> implClass, int serverPort) throws RpcException;
+
+	/**
+	 * 获取IKASOA服务端
+	 * 
 	 * @param implWrapper
 	 *            接口实现对象包装器
 	 * @param serverPort
@@ -130,6 +145,21 @@ public interface IkasoaFactory extends Factory {
 	 *                异常
 	 */
 	IkasoaServer getIkasoaServer(ImplWrapper implWrapper, int serverPort) throws RpcException;
+
+	/**
+	 * 获取IKASOA服务端
+	 * 
+	 * @param serverName
+	 *            服务名称
+	 * @param implWrapper
+	 *            接口实现对象包装器
+	 * @param serverPort
+	 *            服务端口
+	 * @return IkasoaServer IKASOA服务端
+	 * @exception RpcException
+	 *                异常
+	 */
+	IkasoaServer getIkasoaServer(String serverName, ImplWrapper implWrapper, int serverPort) throws RpcException;
 
 	/**
 	 * 获取IKASOA服务端
@@ -147,6 +177,22 @@ public interface IkasoaFactory extends Factory {
 	/**
 	 * 获取IKASOA服务端
 	 * 
+	 * @param serverName
+	 *            服务名称
+	 * @param implWrapperList
+	 *            接口实现对象包装器
+	 * @param serverPort
+	 *            服务端口
+	 * @return IkasoaServer IKASOA服务端
+	 * @exception RpcException
+	 *                异常
+	 */
+	IkasoaServer getIkasoaServer(String serverName, List<ImplWrapper> implWrapperList, int serverPort)
+			throws RpcException;
+
+	/**
+	 * 获取IKASOA服务端
+	 * 
 	 * @param serverPort
 	 *            服务端口
 	 * @param serviceMap
@@ -156,5 +202,21 @@ public interface IkasoaFactory extends Factory {
 	 *                异常
 	 */
 	IkasoaServer getIkasoaServer(int serverPort, Map<String, Service> serviceMap) throws RpcException;
+
+	/**
+	 * 获取IKASOA服务端
+	 * 
+	 * @param serverName
+	 *            服务名称
+	 * @param serverPort
+	 *            服务端口
+	 * @param serviceMap
+	 *            服务Map
+	 * @return IkasoaServer IKASOA服务端
+	 * @exception RpcException
+	 *                异常
+	 */
+	IkasoaServer getIkasoaServer(String serverName, int serverPort, Map<String, Service> serviceMap)
+			throws RpcException;
 
 }

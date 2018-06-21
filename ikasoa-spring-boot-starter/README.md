@@ -111,11 +111,11 @@ ServerStartupRunner.java
 ```java
     ......
     import org.springframework.beans.factory.annotation.Autowired;
-    import com.ikasoa.springboot.IkasoaServiceProxy;
+    import com.ikasoa.springboot.ServiceProxy;
     import com.ikasoa.example.rpc.ExampleService;
     ......
     @Autowired
-    IkasoaServiceProxy proxy;
+    ServiceProxy proxy;
     ......
     ExampleService es = proxy.getService(ExampleService.class);
     System.out.println(es.findVO(1).getString());
@@ -124,7 +124,7 @@ ServerStartupRunner.java
 
   如果调用远程服务,需在application.properties设置'ikasoa.server.host'和'ikasoa.server.port'属性,并与服务端匹配.
   
-## 将IkasoaServer注册到Eureka ##
+## 与Eureka结合 ##
 
   ikasoaServer可以直接注册到Eureka,与其它springboot项目并无区别.
 
@@ -169,6 +169,29 @@ public class Application {
                 SpringApplication.run(Application.class, args);
         }
 }
+```
+
+##### 从Eureka获取IkasoaServer地址 #####
+  
+```java
+    ......
+    import org.springframework.beans.factory.annotation.Autowired;
+    import org.springframework.cloud.client.ServiceInstance;
+    import org.springframework.cloud.client.discovery.DiscoveryClient;
+    import com.ikasoa.springboot.ServiceProxy;
+    import com.ikasoa.example.rpc.ExampleService;
+    ......
+    @Autowired
+    DiscoveryClient discoveryClient;
+    @Value("${ikasoa.server.port}")
+	int port;
+    ......
+    ServiceInstance instance = discoveryClient.getInstances("[服务端注册到Eureka的名称(服务端spring.application.name的值)]").get(0);
+    ServiceProxy proxy = new ServiceProxy(instance.getHost(), port);
+    ......
+    ExampleService es = proxy.getService(ExampleService.class);
+    System.out.println(es.findVO(1).getString());
+    
 ```
 
   *更多关于Eureka项目可访问[这里](https://github.com/Netflix/eureka).*

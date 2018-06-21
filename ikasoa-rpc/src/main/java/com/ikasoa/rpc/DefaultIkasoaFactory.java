@@ -78,20 +78,14 @@ public class DefaultIkasoaFactory extends GeneralFactory implements IkasoaFactor
 		if (siw == null || !siw.isNotNull())
 			throw new IllegalArgumentException("'serverInfoWrapper' is exist !");
 		return (T) Proxy
-				.newProxyInstance(iClass.getClassLoader(),
-						new Class<?>[] {
-								iClass },
-						(proxy, iMethod,
-								args) -> getBaseGetServiceFactory()
-										.getBaseGetService(
-												siw.isCluster()
-														? siw.getLoadBalanceClass() == null
-																? getThriftClient(siw.getServerInfoList())
-																: getThriftClient(siw.getServerInfoList(),
-																		siw.getLoadBalanceClass(), siw.getParam())
-														: getThriftClient(siw.getHost(), siw.getPort()),
-												getSKey(iClass, iMethod, true), new ReturnData(iMethod))
-										.get(args));
+				.newProxyInstance(iClass.getClassLoader(), new Class<?>[] { iClass },
+						(proxy, iMethod, args) -> getBaseGetServiceFactory().getBaseGetService(
+								siw.isCluster()
+										? siw.getLoadBalanceClass() == null ? getThriftClient(siw.getServerInfoList())
+												: getThriftClient(siw.getServerInfoList(), siw.getLoadBalanceClass(),
+														siw.getParam())
+										: getThriftClient(siw.getHost(), siw.getPort()),
+								getSKey(iClass, iMethod, true), new ReturnData(iMethod)).get(args));
 	}
 
 	@Override
@@ -126,21 +120,47 @@ public class DefaultIkasoaFactory extends GeneralFactory implements IkasoaFactor
 	}
 
 	@Override
+	public IkasoaServer getIkasoaServer(String serverName, Class<?> implClass, int serverPort) throws RpcException {
+		return getIkasoaServer(serverName, serverPort, getServiceMapByImplWrapper(new ImplWrapper(implClass)));
+	}
+
+	@Override
 	public IkasoaServer getIkasoaServer(ImplWrapper implWrapper, int serverPort) throws RpcException {
 		return getIkasoaServer(serverPort, getServiceMapByImplWrapper(implWrapper));
 	}
 
 	@Override
-	public IkasoaServer getIkasoaServer(List<ImplWrapper> ImplWrapperList, int serverPort) throws RpcException {
+	public IkasoaServer getIkasoaServer(String serverName, ImplWrapper implWrapper, int serverPort)
+			throws RpcException {
+		return getIkasoaServer(serverName, serverPort, getServiceMapByImplWrapper(implWrapper));
+	}
+
+	@Override
+	public IkasoaServer getIkasoaServer(List<ImplWrapper> implWrapperList, int serverPort) throws RpcException {
 		Map<String, Service> serviceMap = new HashMap<>();
-		for (ImplWrapper implWrapper : ImplWrapperList)
+		for (ImplWrapper implWrapper : implWrapperList)
 			serviceMap.putAll(getServiceMapByImplWrapper(implWrapper));
 		return getIkasoaServer(serverPort, serviceMap);
 	}
 
 	@Override
+	public IkasoaServer getIkasoaServer(String serverName, List<ImplWrapper> implWrapperList, int serverPort)
+			throws RpcException {
+		Map<String, Service> serviceMap = new HashMap<>();
+		for (ImplWrapper implWrapper : implWrapperList)
+			serviceMap.putAll(getServiceMapByImplWrapper(implWrapper));
+		return getIkasoaServer(serverName, serverPort, serviceMap);
+	}
+
+	@Override
 	public IkasoaServer getIkasoaServer(int serverPort, Map<String, Service> serviceMap) {
 		return new IkasoaServerImpl(super.getThriftServer(serverPort, serviceMap), serviceMap);
+	}
+
+	@Override
+	public IkasoaServer getIkasoaServer(String serverName, int serverPort, Map<String, Service> serviceMap)
+			throws RpcException {
+		return new IkasoaServerImpl(super.getThriftServer(serverName, serverPort, serviceMap), serviceMap);
 	}
 
 	@Override
@@ -185,8 +205,7 @@ public class DefaultIkasoaFactory extends GeneralFactory implements IkasoaFactor
 
 	@Override
 	public ThriftServer getThriftServer(String serverName, int serverPort, TProcessor processor) {
-		return configurator.isNonBlockingIO()
-				? getNonblockingThriftServer(serverName += " (non-blocking io)", serverPort, processor)
+		return configurator.isNonBlockingIO() ? getNonblockingThriftServer(serverName, serverPort, processor)
 				: super.getThriftServer(serverName, serverPort, processor);
 	}
 

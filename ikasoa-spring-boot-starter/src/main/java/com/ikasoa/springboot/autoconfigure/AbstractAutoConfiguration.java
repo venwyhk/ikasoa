@@ -29,12 +29,16 @@ public abstract class AbstractAutoConfiguration {
 
 	@Value("${ikasoa.server.names:}")
 	protected String names;
-	
+
 	@Value("${ikasoa.server.classes:}")
 	protected String classes;
 
 	@Value("${ikasoa.configurator:com.ikasoa.rpc.Configurator}")
 	protected String configurator;
+
+	protected IkasoaFactoryFactory getIkasoaFactoryFactory() {
+		return new IkasoaFactoryFactory(getConfigurator());
+	}
 
 	protected Configurator getConfigurator() {
 		try {
@@ -47,10 +51,6 @@ public abstract class AbstractAutoConfiguration {
 			log.warn(e.getMessage());
 		}
 		return null;
-	}
-
-	protected IkasoaFactoryFactory getIkasoaFactoryFactory() {
-		return new IkasoaFactoryFactory(getConfigurator());
 	}
 
 	protected String getHost() throws RpcException {
