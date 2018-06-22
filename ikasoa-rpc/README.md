@@ -25,14 +25,14 @@ Maven
     <dependency>
         <groupId>com.ikasoa</groupId>
         <artifactId>ikasoa-rpc</artifactId>
-        <version>0.3.2-BETA</version>
+        <version>0.3.2-BETA2</version>
     </dependency>
     ......
 ```
 
 Gradle
 ```
-    compile group: 'com.ikasoa', name: 'ikasoa-rpc', version: '0.3.2-BETA'
+    compile group: 'com.ikasoa', name: 'ikasoa-rpc', version: '0.3.2-BETA2'
 ```
 
 
