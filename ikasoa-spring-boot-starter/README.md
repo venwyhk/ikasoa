@@ -25,7 +25,7 @@ Maven
     <dependency>
         <groupId>com.ikasoa</groupId>
         <artifactId>ikasoa-spring-boot-starter</artifactId>
-        <version>0.1-ALPHA2</version>
+        <version>0.1-ALPHA3</version>
     </dependency>
     ......
 ```
@@ -171,7 +171,7 @@ public class Application {
 }
 ```
 
-##### 从Eureka获取IkasoaServer地址 #####
+##### 客户端从Eureka获取IkasoaServer地址 #####
   
 ```java
     ......
@@ -184,7 +184,7 @@ public class Application {
     @Autowired
     DiscoveryClient discoveryClient;
     @Value("${ikasoa.server.port}")
-	int port;
+    int port;
     ......
     ServiceInstance instance = discoveryClient.getInstances("[服务端注册到Eureka的名称(服务端spring.application.name的值)]").get(0);
     ServiceProxy proxy = new ServiceProxy(instance.getHost(), port);
