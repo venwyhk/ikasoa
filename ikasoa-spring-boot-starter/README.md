@@ -32,7 +32,7 @@ Maven
 
 Gradle
 ```
-    compile group: 'com.ikasoa', name: 'ikasoa-spring-boot-starter', version: '0.1-ALPHA2'
+    compile group: 'com.ikasoa', name: 'ikasoa-spring-boot-starter', version: '0.1-ALPHA3'
 ```
 
 ## application.properties设置说明 ##
