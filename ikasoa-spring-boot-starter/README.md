@@ -157,7 +157,7 @@ application.properties
 ##### Application增加@EnableEurekaClient注解 #####
 
 Application.java
-```
+```java
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
@@ -165,9 +165,9 @@ import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 @EnableEurekaClient
 @SpringBootApplication
 public class Application {
-        public static void main(String[] args) throws Exception {
-                SpringApplication.run(Application.class, args);
-        }
+    public static void main(String[] args) throws Exception {
+        SpringApplication.run(Application.class, args);
+    }
 }
 ```
 
