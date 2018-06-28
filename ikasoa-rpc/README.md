@@ -31,6 +31,7 @@ Maven
 ```
 
 Gradle
+
 ```
     compile group: 'com.ikasoa', name: 'ikasoa-rpc', version: '0.3.2-BETA2'
 ```
@@ -53,6 +54,7 @@ Maven
 ```
 
 Gradle
+
 ```
     compile group: 'com.ikasoa', name: 'ikasoa-core', version: '0.5.3'
 ```
