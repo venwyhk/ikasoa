@@ -110,7 +110,7 @@ ServerStartupRunner.java
 
 ##### 客户端 #####
 
-配置方式
+配置方式(单服务)
 
 application.properties
 
@@ -121,9 +121,23 @@ application.properties
     ......
 ```
 
+```java
+    ......
+    import org.springframework.beans.factory.annotation.Autowired;
+    import com.ikasoa.springboot.ServiceProxy;
+    import com.ikasoa.example.rpc.ExampleService;
+    ......
+    @Autowired
+    ServiceProxy proxy;
+    ......
+    ExampleService es = proxy.getService(ExampleService.class);
+    System.out.println(es.findVO(1).getString());
+    ......
+```
+
   *调用远程服务时需在application.properties设置'ikasoa.server.host'和'ikasoa.server.port'属性,并与服务端匹配.*
   
-注解方式
+注解方式(单服务)
 
 Application.java
 
@@ -141,8 +155,6 @@ public class Application {
 }
 ```
 
-获取服务实例
-
 ```java
     ......
     import org.springframework.beans.factory.annotation.Autowired;
@@ -155,6 +167,23 @@ public class Application {
     ExampleService es = proxy.getService(ExampleService.class);
     System.out.println(es.findVO(1).getString());
     ......
+```
+
+编码方式(多服务)
+
+```java
+    ......
+    import org.springframework.beans.factory.annotation.Autowired;
+    import org.springframework.cloud.client.ServiceInstance;
+    import org.springframework.cloud.client.discovery.DiscoveryClient;
+    import com.ikasoa.springboot.ServiceProxy;
+    import com.ikasoa.example.rpc.ExampleService;
+    ......
+    ServiceProxy proxy = new ServiceProxy("xxx.xxx.xxx.xxx", 9999);
+    // ServiceProxy proxy2 = new ServiceProxy("xxx.xxx.xxx.xxx", 9998);
+    ......
+    ExampleService es = proxy.getService(ExampleService.class);
+    System.out.println(es.findVO(1).getString());
 ```
   
 ## 与Eureka结合 ##
