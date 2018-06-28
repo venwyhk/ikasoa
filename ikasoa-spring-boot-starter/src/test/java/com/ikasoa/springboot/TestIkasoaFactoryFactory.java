@@ -8,6 +8,9 @@ import com.ikasoa.rpc.NettyIkasoaFactory;
 
 import junit.framework.TestCase;
 
+/**
+ * IkasoaFactoryFactory测试
+ */
 public class TestIkasoaFactoryFactory extends TestCase {
 
 	@Test

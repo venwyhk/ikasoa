@@ -20,6 +20,9 @@ import lombok.extern.slf4j.Slf4j;
 @Configuration
 @Slf4j
 public abstract class AbstractAutoConfiguration {
+	
+	@Value("${spring.application.name}")
+	protected String name;
 
 	@Value("${ikasoa.server.host:localhost}")
 	protected String host;

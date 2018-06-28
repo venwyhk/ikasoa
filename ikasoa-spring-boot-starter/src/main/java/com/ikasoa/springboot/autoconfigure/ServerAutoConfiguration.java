@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Bean;
@@ -27,6 +28,9 @@ import lombok.extern.slf4j.Slf4j;
 @Configuration
 @Slf4j
 public class ServerAutoConfiguration extends AbstractAutoConfiguration implements ApplicationContextAware {
+
+	@Value("${eureka.instance.appname}")
+	private String eurekaAppName;
 
 	@Setter
 	private ApplicationContext applicationContext;
@@ -62,7 +66,11 @@ public class ServerAutoConfiguration extends AbstractAutoConfiguration implement
 				log.debug(e.getMessage());
 			}
 		}
-		return factory.getIkasoaServer(implWrapperList, getPort());
+
+		return StringUtil.isNotEmpty(name) ? factory.getIkasoaServer(name, implWrapperList, getPort())
+				: StringUtil.isNotEmpty(eurekaAppName)
+						? factory.getIkasoaServer(eurekaAppName, implWrapperList, getPort())
+						: factory.getIkasoaServer(implWrapperList, getPort());
 	}
 
 }
