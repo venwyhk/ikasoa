@@ -91,10 +91,10 @@ application.properties
     ......
 ```
 
-  服务端须在application.properties中设置'ikasoa.server.names'(或'ikasoa.server.classes')属性,该属性为允许远程调用的接口实现类名称(或类路径).如有多个可以","分隔.
+  *服务端须在application.properties中设置'ikasoa.server.names'(或'ikasoa.server.classes')属性,该属性为允许远程调用的接口实现类名称(或类路径).如有多个可以","分隔.*
   
-  其中类名对应注解:@Service("exampleService")中定义的名称.
-
+  *其中类名对应注解:@Service("exampleService")中定义的名称.*
+  
 ServerStartupRunner.java
 
 ```java
@@ -106,7 +106,7 @@ ServerStartupRunner.java
     }
 ```
 
-  创建ServerStartupRunner类,ikasoa服务将会随spring-boot一起自动启动.
+  *创建ServerStartupRunner类,ikasoa服务将会随spring-boot一起自动启动.*
 
 ##### 客户端 #####
 
@@ -176,6 +176,7 @@ Maven
 ```
 
 Gradle
+
 ```
     compile 'org.springframework.cloud:spring-cloud-starter-eureka:1.4.4.RELEASE'
 ```
@@ -183,6 +184,7 @@ Gradle
 ##### 设置EurekaServer地址 #####
 
 application.properties
+
 ```
     eureka.client.serviceUrl.defaultZone=http://[EurekaServerHost]:[EurekaServerPort]/eureka/v2/
 ```
@@ -206,6 +208,12 @@ public class Application {
 ```
 
 ##### 客户端从Eureka获取IkasoaServer地址 #####
+
+application.properties
+
+```
+    eureka.client.serviceUrl.defaultZone=http://[EurekaServerHost]:[EurekaServerPort]/eureka/v2/
+```
 
 编码方式
 
@@ -245,8 +253,6 @@ public class Application {
     }
 }
 ```
-
-获取服务实例
 
 ```java
     ......
