@@ -135,7 +135,7 @@ application.properties
     ......
 ```
 
-  *调用远程服务时需在application.properties设置'ikasoa.server.host'和'ikasoa.server.port'属性,并与服务端匹配.*
+  *在application.properties设置'ikasoa.server.host'和'ikasoa.server.port'属性,并与服务端匹配.*
   
 注解方式(单服务)
 
