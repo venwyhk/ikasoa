@@ -117,7 +117,7 @@ application.properties
 ```
     ......
     ikasoa.server.host=xxx.xxx.xxx.xxx
-    # ikasoa.server.port=9999
+    ikasoa.server.port=9999
     ......
 ```
 
