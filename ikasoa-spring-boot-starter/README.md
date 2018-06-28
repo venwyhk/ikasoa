@@ -244,28 +244,7 @@ application.properties
     eureka.client.serviceUrl.defaultZone=http://[EurekaServerHost]:[EurekaServerPort]/eureka/v2/
 ```
 
-编码方式
-
-```java
-    ......
-    import org.springframework.beans.factory.annotation.Autowired;
-    import org.springframework.cloud.client.ServiceInstance;
-    import org.springframework.cloud.client.discovery.DiscoveryClient;
-    import com.ikasoa.springboot.ServiceProxy;
-    import com.ikasoa.example.rpc.ExampleService;
-    ......
-    @Autowired
-    DiscoveryClient discoveryClient;
-    int port = 9999; // 服务端口
-    ......
-    ServiceInstance instance = discoveryClient.getInstances("[服务端注册到Eureka的名称]").get(0);
-    ServiceProxy proxy = new ServiceProxy(instance.getHost(), port);
-    ......
-    ExampleService es = proxy.getService(ExampleService.class);
-    System.out.println(es.findVO(1).getString());
-```
-
-注解方式
+注解方式(单服务)
 
 Application.java
 
@@ -295,6 +274,27 @@ public class Application {
     ExampleService es = proxy.getService(ExampleService.class);
     System.out.println(es.findVO(1).getString());
     ......
+```
+
+编码方式(多服务)
+
+```java
+    ......
+    import org.springframework.beans.factory.annotation.Autowired;
+    import org.springframework.cloud.client.ServiceInstance;
+    import org.springframework.cloud.client.discovery.DiscoveryClient;
+    import com.ikasoa.springboot.ServiceProxy;
+    import com.ikasoa.example.rpc.ExampleService;
+    ......
+    @Autowired
+    DiscoveryClient discoveryClient;
+    int port = 9999; // 服务端口
+    ......
+    ServiceInstance instance = discoveryClient.getInstances("[服务端注册到Eureka的名称]").get(0);
+    ServiceProxy proxy = new ServiceProxy(instance.getHost(), port);
+    ......
+    ExampleService es = proxy.getService(ExampleService.class);
+    System.out.println(es.findVO(1).getString());
 ```
 
   *更多关于Eureka项目可访问[这里](https://github.com/Netflix/eureka).*
