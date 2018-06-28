@@ -31,6 +31,7 @@ Maven
 ```
 
 Gradle
+
 ```
     compile group: 'com.ikasoa', name: 'ikasoa-spring-boot-starter', version: '0.1-ALPHA3'
 ```
@@ -85,7 +86,8 @@ application.properties
 ```
     ......
     ikasoa.server.names=exampleService
-    #ikasoa.server.classes=com.ikasoa.example.rpc.ExampleServiceImpl
+    # ikasoa.server.port=9999
+    # ikasoa.server.classes=com.ikasoa.example.rpc.ExampleServiceImpl
     ......
 ```
 
@@ -108,6 +110,39 @@ ServerStartupRunner.java
 
 ##### 客户端 #####
 
+配置方式
+
+application.properties
+
+```
+    ......
+    ikasoa.server.host=xxx.xxx.xxx.xxx
+    # ikasoa.server.port=9999
+    ......
+```
+
+  *调用远程服务时需在application.properties设置'ikasoa.server.host'和'ikasoa.server.port'属性,并与服务端匹配.*
+  
+注解方式
+
+Application.java
+
+```java
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import com.ikasoa.springboot.annotation.RpcClient;
+
+@SpringBootApplication
+@@RpcClient(host = "xxx.xxx.xxx.xxx", port = 9999)
+public class Application {
+    public static void main(String[] args) throws Exception {
+        SpringApplication.run(Application.class, args);
+    }
+}
+```
+
+获取服务实例
+
 ```java
     ......
     import org.springframework.beans.factory.annotation.Autowired;
@@ -121,8 +156,6 @@ ServerStartupRunner.java
     System.out.println(es.findVO(1).getString());
     ......
 ```
-
-  如果调用远程服务,需在application.properties设置'ikasoa.server.host'和'ikasoa.server.port'属性,并与服务端匹配.
   
 ## 与Eureka结合 ##
 
@@ -157,6 +190,7 @@ application.properties
 ##### Application增加@EnableEurekaClient注解 #####
 
 Application.java
+
 ```java
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -172,7 +206,9 @@ public class Application {
 ```
 
 ##### 客户端从Eureka获取IkasoaServer地址 #####
-  
+
+编码方式
+
 ```java
     ......
     import org.springframework.beans.factory.annotation.Autowired;
@@ -183,15 +219,47 @@ public class Application {
     ......
     @Autowired
     DiscoveryClient discoveryClient;
-    @Value("${ikasoa.server.port}")
-    int port;
+    int port = 9999; // 服务端口
     ......
-    ServiceInstance instance = discoveryClient.getInstances("[服务端注册到Eureka的名称(服务端spring.application.name的值)]").get(0);
+    ServiceInstance instance = discoveryClient.getInstances("[服务端注册到Eureka的名称]").get(0);
     ServiceProxy proxy = new ServiceProxy(instance.getHost(), port);
     ......
     ExampleService es = proxy.getService(ExampleService.class);
     System.out.println(es.findVO(1).getString());
-    
+```
+
+注解方式
+
+Application.java
+
+```java
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import com.ikasoa.springboot.annotation.RpcEurekaClient;
+
+@SpringBootApplication
+@RpcEurekaClient(name = "[服务端注册到Eureka的名称]", port = 9999)
+public class Application {
+    public static void main(String[] args) throws Exception {
+        SpringApplication.run(Application.class, args);
+    }
+}
+```
+
+获取服务实例
+
+```java
+    ......
+    import org.springframework.beans.factory.annotation.Autowired;
+    import com.ikasoa.springboot.ServiceProxy;
+    import com.ikasoa.example.rpc.ExampleService;
+    ......
+    @Autowired
+    ServiceProxy proxy;
+    ......
+    ExampleService es = proxy.getService(ExampleService.class);
+    System.out.println(es.findVO(1).getString());
+    ......
 ```
 
   *更多关于Eureka项目可访问[这里](https://github.com/Netflix/eureka).*
