@@ -184,6 +184,7 @@ public class Application {
     ......
     ExampleService es = proxy.getService(ExampleService.class);
     System.out.println(es.findVO(1).getString());
+    ......
 ```
   
 ## 与Eureka结合 ##
@@ -295,6 +296,7 @@ public class Application {
     ......
     ExampleService es = proxy.getService(ExampleService.class);
     System.out.println(es.findVO(1).getString());
+    ......
 ```
 
   *更多关于Eureka项目可访问[这里](https://github.com/Netflix/eureka).*
