@@ -147,7 +147,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import com.ikasoa.springboot.annotation.RpcClient;
 
 @SpringBootApplication
-@@RpcClient(host = "xxx.xxx.xxx.xxx", port = 9999)
+@RpcClient(host = "xxx.xxx.xxx.xxx", port = 9999)
 public class Application {
     public static void main(String[] args) throws Exception {
         SpringApplication.run(Application.class, args);
