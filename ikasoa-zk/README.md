@@ -27,7 +27,7 @@ pom.xml
     <dependency>
         <groupId>com.ikasoa</groupId>
         <artifactId>ikasoa-zk</artifactId>
-        <version>0.1-ALPHA</version>
+        <version>0.1-BETA</version>
     </dependency>
     ......
 ```
