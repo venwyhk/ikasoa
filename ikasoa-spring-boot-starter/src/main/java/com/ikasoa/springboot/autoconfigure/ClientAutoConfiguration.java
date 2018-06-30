@@ -2,6 +2,7 @@ package com.ikasoa.springboot.autoconfigure;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.ServiceInstance;
@@ -11,6 +12,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.ImportAware;
 import org.springframework.core.type.AnnotationMetadata;
 
+import com.ikasoa.core.loadbalance.ServerInfo;
 import com.ikasoa.core.utils.ServerUtil;
 import com.ikasoa.core.utils.StringUtil;
 import com.ikasoa.rpc.RpcException;
@@ -47,8 +49,10 @@ public class ClientAutoConfiguration extends AbstractAutoConfiguration implement
 			List<ServiceInstance> instanceList = discoveryClient.getInstances(eurekaAppName);
 			if (instanceList.isEmpty())
 				throw new RpcException("Service '" + eurekaAppName + "' is empty !");
-			return StringUtil.isEmpty(configurator) ? new ServiceProxy(instanceList.get(0).getHost(), eurekaAppPort)
-					: new ServiceProxy(instanceList.get(0).getHost(), eurekaAppPort, getConfigurator());
+			List<ServerInfo> serverInfoList = instanceList.stream().map(i -> new ServerInfo(i.getHost(), eurekaAppPort))
+					.collect(Collectors.toList());
+			return StringUtil.isEmpty(configurator) ? new ServiceProxy(serverInfoList)
+					: new ServiceProxy(serverInfoList, getConfigurator());
 		} else
 			return StringUtil.isEmpty(configurator) ? new ServiceProxy(getHost(), getPort())
 					: new ServiceProxy(getHost(), getPort(), getConfigurator());
@@ -75,7 +79,6 @@ public class ClientAutoConfiguration extends AbstractAutoConfiguration implement
 			if (rpcEurekaClientAttributes.containsKey("config"))
 				configurator = rpcClientAttributes.get("config").toString();
 		}
-
 	}
 
 }
