@@ -65,7 +65,7 @@ public class TestExampleService extends TestCase {
 		configurator.setThriftServerConfiguration(thriftServerConfiguration);
 		Class protocolHandlerClass = Class.forName("com.ikasoa.rpc.handler.impl.KryoProtocolHandlerImpl");
 		configurator.setProtocolHandlerClass(protocolHandlerClass);
-//		invoke(new DefaultIkasoaFactory(configurator), 9994);
+		invoke(new DefaultIkasoaFactory(configurator), 9994);
 		// 测试NIO方式
 		configurator.setNonBlockingIO(true);
 		invoke(new DefaultIkasoaFactory(configurator), 9995);
@@ -85,7 +85,7 @@ public class TestExampleService extends TestCase {
 		configurator.setThriftServerConfiguration(thriftServerConfiguration);
 		Class protocolHandlerClass = Class.forName("com.ikasoa.rpc.handler.impl.XmlProtocolHandlerImpl");
 		configurator.setProtocolHandlerClass(protocolHandlerClass);
-//		invoke(new DefaultIkasoaFactory(configurator), 9997);
+		invoke(new DefaultIkasoaFactory(configurator), 9997);
 		// 测试NIO方式
 		configurator.setNonBlockingIO(true);
 		invoke(new DefaultIkasoaFactory(configurator), 9998);
@@ -110,8 +110,10 @@ public class TestExampleService extends TestCase {
 			// 启动服务
 			ikasoaServer.run();
 
-			// 启动后等待一秒
+			// 启动后等待一会儿
 			Thread.sleep(1000);
+			if (!ikasoaServer.isServing())
+				Thread.sleep(1000);
 
 			// 客户端获取远程接口实现
 			ExampleService es = ikasoaFactory.getInstance(ExampleService.class, new ServerInfoWrapper("localhost", port));
