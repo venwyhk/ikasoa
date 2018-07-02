@@ -1,3 +1,4 @@
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/33ded171c7074724b29708d6f99c8575)](https://app.codacy.com/app/larry7696/ikasoa?utm_source=github.com&utm_medium=referral&utm_content=venwyhk/ikasoa&utm_campaign=badger)
 [![](https://raw.githubusercontent.com/venwyhk/ikasoa/master/ikasoalogo_small.png)](http://ikasoa.com)<br />
 
 &nbsp;[![](https://codeship.com/projects/9cf2f150-1507-0134-ee57-3adebfc67210/status?branch=master)](https://codeship.com/projects/157977)&nbsp;&nbsp;[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.ikasoa/ikasoa-core/badge.svg?style=plastic)](https://maven-badges.herokuapp.com/maven-central/com.ikasoa/ikasoa-core)&nbsp;&nbsp;[![Javadocs](http://javadoc.io/badge/com.ikasoa/ikasoa-core.svg?style=plastic)](http://javadoc.io/doc/com.ikasoa/ikasoa-core)&nbsp;&nbsp;[![](https://img.shields.io/badge/license-MIT-097ABA.svg?style=plastic)](https://opensource.org/licenses/mit-license.php)&nbsp;&nbsp;
