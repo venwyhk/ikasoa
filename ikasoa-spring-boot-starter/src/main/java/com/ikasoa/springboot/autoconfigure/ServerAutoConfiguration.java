@@ -10,8 +10,11 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import com.ikasoa.core.thrift.server.ThriftServerConfiguration;
 import com.ikasoa.core.utils.StringUtil;
 import com.ikasoa.rpc.RpcException;
+import com.ikasoa.zk.ZkServerAspect;
+import com.ikasoa.rpc.Configurator;
 import com.ikasoa.rpc.IkasoaFactory;
 import com.ikasoa.rpc.IkasoaServer;
 import com.ikasoa.rpc.ImplWrapper;
@@ -29,7 +32,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class ServerAutoConfiguration extends AbstractAutoConfiguration implements ApplicationContextAware {
 
-	@Value("${eureka.instance.appname}")
+	@Value("${eureka.instance.appname:}")
 	private String eurekaAppName;
 
 	@Setter
@@ -37,7 +40,9 @@ public class ServerAutoConfiguration extends AbstractAutoConfiguration implement
 
 	@Bean
 	public IkasoaServer getServer() throws RpcException {
-		return getServer(getIkasoaFactoryFactory().getIkasoaDefaultFactory());
+		return StringUtil.isEmpty(zkServerString) ? getServer(getIkasoaFactoryFactory().getIkasoaDefaultFactory())
+				: getServer(getIkasoaFactoryFactory(new ZkClientConfigurator(zkServerString, zkNode))
+						.getIkasoaDefaultFactory());
 	}
 
 	private IkasoaServer getServer(IkasoaFactory factory) throws RpcException {
@@ -71,6 +76,16 @@ public class ServerAutoConfiguration extends AbstractAutoConfiguration implement
 				: StringUtil.isNotEmpty(eurekaAppName)
 						? factory.getIkasoaServer(eurekaAppName, implWrapperList, getPort())
 						: factory.getIkasoaServer(implWrapperList, getPort());
+	}
+
+	private class ZkClientConfigurator extends Configurator {
+
+		public ZkClientConfigurator(String zkServerString, String zkNode) {
+			ThriftServerConfiguration thriftServerConfiguration = new ThriftServerConfiguration();
+			thriftServerConfiguration.setServerAspect(new ZkServerAspect(zkServerString, zkNode));
+			setThriftServerConfiguration(thriftServerConfiguration);
+		}
+
 	}
 
 }

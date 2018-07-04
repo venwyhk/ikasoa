@@ -1,6 +1,6 @@
 [![](https://raw.githubusercontent.com/venwyhk/ikasoa/master/ikasoalogo_small.png)](http://ikasoa.com)<br />
 
-&nbsp;[![](https://codeship.com/projects/9cf2f150-1507-0134-ee57-3adebfc67210/status?branch=master)](https://codeship.com/projects/157977)&nbsp;&nbsp;[![Codacy Badge](https://api.codacy.com/project/badge/Grade/bd57bbda21bf4864aafcf230629140cd)](https://www.codacy.com/app/larry7696/ikasoa?utm_source=github.com&utm_medium=referral&utm_content=venwyhk/ikasoa&utm_campaign=Badge_Grade)&nbsp;<br/>&nbsp;[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.ikasoa/ikasoa-spring-boot-starter/badge.svg?style=plastic)](https://maven-badges.herokuapp.com/maven-central/com.ikasoa/ikasoa-spring-boot-starter)&nbsp;&nbsp;[![Javadocs](http://javadoc.io/badge/com.ikasoa/ikasoa-spring-boot-starter.svg?style=plastic)](http://javadoc.io/doc/com.ikasoa/ikasoa-spring-boot-starter)&nbsp;&nbsp;[![](https://img.shields.io/badge/license-MIT-097ABA.svg?style=plastic)](https://opensource.org/licenses/mit-license.php)&nbsp;&nbsp;
+&nbsp;[![](https://codeship.com/projects/9cf2f150-1507-0134-ee57-3adebfc67210/status?branch=master)](https://codeship.com/projects/157977)&nbsp;&nbsp;[![Codacy Badge](https://api.codacy.com/project/badge/Grade/bd57bbda21bf4864aafcf230629140cd)](https://www.codacy.com/app/larry7696/ikasoa?utm_source=github.com&utm_medium=referral&utm_content=venwyhk/ikasoa&utm_campaign=Badge_Grade)&nbsp;<br/>&nbsp;[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.ikasoa/ikasoa-spring-boot-starter/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.ikasoa/ikasoa-spring-boot-starter)&nbsp;&nbsp;[![Javadocs](http://javadoc.io/badge/com.ikasoa/ikasoa-spring-boot-starter.svg)](http://javadoc.io/doc/com.ikasoa/ikasoa-spring-boot-starter)&nbsp;&nbsp;[![](https://img.shields.io/badge/license-MIT-097ABA.svg)](https://opensource.org/licenses/mit-license.php)&nbsp;&nbsp;
 
 ***
 
@@ -25,7 +25,7 @@ Maven
     <dependency>
         <groupId>com.ikasoa</groupId>
         <artifactId>ikasoa-spring-boot-starter</artifactId>
-        <version>0.1-ALPHA3</version>
+        <version>0.1.1-ALPHA</version>
     </dependency>
     ......
 ```
@@ -74,6 +74,18 @@ Gradle
     <td>服务配置类地址</td>
     <td>com.ikasoa.rpc.Configurator</td>
     <td>可继承Configurator实现高级设置.</td>
+  </tr>
+  <tr>
+    <td>ikasoa.server.zkserver</td>
+    <td>zookeeper服务注册地址</td>
+    <td>(无)</td>
+    <td>可选配置,zookeeper服务器信息.例如:'localhost:2181'.如有多条服务器信息则以','分隔.</td>
+  </tr>
+  <tr>
+    <td>ikasoa.server.zknode</td>
+    <td>zookeeper节点路径</td>
+    <td>/</td>
+    <td>可选配置,zookeeper节点,如果不设置默认为跟节点.</td>
   </tr>
 </table>
 
@@ -298,10 +310,6 @@ public class Application {
     System.out.println(es.findVO(1).getString());
     ......
 ```
-
-  *更多关于Eureka项目可访问[这里](https://github.com/Netflix/eureka).*
-  
-  *如果需要注册到ZooKeeper,请使用[ikasoa-zk](https://github.com/venwyhk/ikasoa/tree/master/ikasoa-zk)包.*
 
 ## License ##
 

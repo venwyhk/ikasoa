@@ -13,11 +13,14 @@ import org.springframework.context.annotation.ImportAware;
 import org.springframework.core.type.AnnotationMetadata;
 
 import com.ikasoa.core.loadbalance.ServerInfo;
+import com.ikasoa.core.thrift.client.ThriftClientConfiguration;
 import com.ikasoa.core.utils.ServerUtil;
 import com.ikasoa.core.utils.StringUtil;
+import com.ikasoa.rpc.Configurator;
 import com.ikasoa.rpc.RpcException;
 import com.ikasoa.springboot.ServiceProxy;
 import com.ikasoa.springboot.annotation.RpcEurekaClient;
+import com.ikasoa.zk.ZkServerCheck;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -53,6 +56,12 @@ public class ClientAutoConfiguration extends AbstractAutoConfiguration implement
 					.collect(Collectors.toList());
 			return StringUtil.isEmpty(configurator) ? new ServiceProxy(serverInfoList)
 					: new ServiceProxy(serverInfoList, getConfigurator());
+		} else if (StringUtil.isNotEmpty(zkServerString)) {
+			Configurator configurator = getConfigurator();
+			ThriftClientConfiguration thriftClientConfiguration = new ThriftClientConfiguration();
+			thriftClientConfiguration.setServerCheck(new ZkServerCheck(zkServerString, zkNode));
+			configurator.setThriftClientConfiguration(thriftClientConfiguration);
+			return new ServiceProxy(getHost(), getPort(), configurator);
 		} else
 			return StringUtil.isEmpty(configurator) ? new ServiceProxy(getHost(), getPort())
 					: new ServiceProxy(getHost(), getPort(), getConfigurator());

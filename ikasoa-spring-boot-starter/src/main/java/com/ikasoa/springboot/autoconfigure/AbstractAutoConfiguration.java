@@ -38,9 +38,19 @@ public abstract class AbstractAutoConfiguration {
 
 	@Value("${ikasoa.configurator:com.ikasoa.rpc.Configurator}")
 	protected String configurator;
+	
+	@Value("${ikasoa.server.zkserver:}")
+	protected String zkServerString;
+
+	@Value("${ikasoa.server.zknode:/}")
+	protected String zkNode;
 
 	protected IkasoaFactoryFactory getIkasoaFactoryFactory() {
 		return new IkasoaFactoryFactory(getConfigurator());
+	}
+	
+	protected IkasoaFactoryFactory getIkasoaFactoryFactory(Configurator configurator) {
+		return new IkasoaFactoryFactory(configurator);
 	}
 
 	protected Configurator getConfigurator() {

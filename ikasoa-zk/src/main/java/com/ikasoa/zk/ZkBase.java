@@ -45,7 +45,7 @@ public class ZkBase {
 
 		this.zkNode = StringUtil.isEmpty(zkNode) ? ZK_ROOT_NODE : zkNode;
 
-		zkClient.subscribeDataChanges(zkNode, new IZkDataListener() {
+		zkClient.subscribeDataChanges(this.zkNode, new IZkDataListener() {
 
 			@Override
 			public void handleDataChange(String nodePath, Object nodeObj) throws Exception {

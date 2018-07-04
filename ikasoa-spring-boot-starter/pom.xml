@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.ikasoa</groupId>
     <artifactId>ikasoa-spring-boot-starter</artifactId>
-    <version>0.1-ALPHA4</version>
+    <version>0.1.1-ALPHA</version>
     <packaging>jar</packaging>
     <name>Ikasoa Spring-boot Starter</name>
     <description>spring-boot starter for ikasoa.</description>
@@ -19,6 +19,7 @@
 
     <developers>
         <developer>
+            <id>venwyhk</id>
             <name>Larry</name>
             <email>larry7696@gmail.com</email>
             <organization>ikasoa</organization>
@@ -141,6 +142,11 @@
             <artifactId>ikasoa-rpc</artifactId>
             <version>0.3.2-BETA2</version>
         </dependency>
+        <dependency>
+		    <groupId>com.ikasoa</groupId>
+		    <artifactId>ikasoa-zk</artifactId>
+		    <version>0.1</version>
+		</dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
