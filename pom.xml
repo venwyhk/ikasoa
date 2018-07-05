@@ -9,6 +9,12 @@
     <description>ikasoa is a java distributed service framework.</description>
     <url>http://ikasoa.com/</url>
     
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <java.version>1.8</java.version>
+    </properties>
+    
     <build>
         <plugins>
             <plugin>
