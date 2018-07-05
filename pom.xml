@@ -9,6 +9,16 @@
     <description>ikasoa is a java distributed service framework.</description>
     <url>http://ikasoa.com/</url>
     
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.eluder.coveralls</groupId>
+                <artifactId>coveralls-maven-plugin</artifactId>
+                <version>4.3.0</version>
+            </plugin>
+        </plugins>
+    </build>
+    
     <modules>
         <module>ikasoa-core</module>
         <module>ikasoa-rpc</module>
