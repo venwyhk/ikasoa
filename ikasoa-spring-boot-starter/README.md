@@ -85,7 +85,7 @@ Gradle
     <td>ikasoa.server.zknode</td>
     <td>zookeeper节点路径</td>
     <td>/</td>
-    <td>可选配置,zookeeper节点,如果不设置默认为跟节点.</td>
+    <td>可选配置,zookeeper节点,如果不设置默认为根节点.</td>
   </tr>
 </table>
 
