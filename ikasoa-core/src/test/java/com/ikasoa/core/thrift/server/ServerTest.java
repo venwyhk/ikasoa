@@ -19,7 +19,8 @@ import com.ikasoa.core.thrift.client.CompactThriftClientConfiguration;
 import com.ikasoa.core.thrift.client.ThriftClient;
 import com.ikasoa.core.thrift.client.ThriftClientConfiguration;
 import com.ikasoa.core.thrift.client.TupleThriftClientConfiguration;
-import com.ikasoa.core.thrift.protocol.DESCompactProtocol;
+import com.ikasoa.core.thrift.protocol.DESCompactProtocolFactory;
+import com.ikasoa.core.thrift.protocol.RC4CompactProtocolFactory;
 import com.ikasoa.core.thrift.server.impl.DefaultThriftServerImpl;
 import com.ikasoa.core.thrift.server.impl.ServletThriftServerImpl;
 import com.ikasoa.core.thrift.server.impl.SimpleThriftServerImpl;
@@ -214,9 +215,34 @@ public class ServerTest extends TestCase {
 		int serverPort = 39203;
 		String key = "12345678";
 		ThriftServerConfiguration serverConfiguration = new ThriftServerConfiguration();
-		serverConfiguration.setProtocolFactory(new DESCompactProtocol.Factory(key));
+		serverConfiguration.setProtocolFactory(new DESCompactProtocolFactory(key));
 		ThriftClientConfiguration clientConfiguration = new ThriftClientConfiguration();
-		clientConfiguration.setProtocolFactory(new DESCompactProtocol.Factory(key));
+		clientConfiguration.setProtocolFactory(new DESCompactProtocolFactory(key));
+		Factory factory = new GeneralFactory(serverConfiguration, clientConfiguration);
+		ThriftServer defaultThriftServer = factory.getThriftServer(serverName, serverPort,
+				new ThriftSimpleService.Processor<Iface>(new ThriftSimpleServiceImpl()));
+		defaultThriftServer.run();
+		try (ThriftClient thriftClient = factory.getThriftClient(LOCAL_HOST, serverPort);
+				TTransport transport = thriftClient.getTransport()) {
+			Thread.sleep(500);
+			transport.open();
+			assertEquals(testString,
+					new ThriftSimpleService.Client(thriftClient.getProtocol(transport)).get(testString));
+		} catch (Exception e) {
+			fail();
+		} finally {
+			defaultThriftServer.stop();
+		}
+	}
+
+	@Test
+	public void testRC4CompactDefaultThriftServerImpl() {
+		int serverPort = 39204;
+		String key = "87654321abcde"; // RC4的key可以超过8位
+		ThriftServerConfiguration serverConfiguration = new ThriftServerConfiguration();
+		serverConfiguration.setProtocolFactory(new RC4CompactProtocolFactory(key));
+		ThriftClientConfiguration clientConfiguration = new ThriftClientConfiguration();
+		clientConfiguration.setProtocolFactory(new RC4CompactProtocolFactory(key));
 		Factory factory = new GeneralFactory(serverConfiguration, clientConfiguration);
 		ThriftServer defaultThriftServer = factory.getThriftServer(serverName, serverPort,
 				new ThriftSimpleService.Processor<Iface>(new ThriftSimpleServiceImpl()));

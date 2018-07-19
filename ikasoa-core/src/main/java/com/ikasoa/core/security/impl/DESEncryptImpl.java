@@ -1,4 +1,4 @@
-package com.ikasoa.core.utils;
+package com.ikasoa.core.security.impl;
 
 import java.security.SecureRandom;
 
@@ -7,13 +7,18 @@ import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.DESKeySpec;
 
+import com.ikasoa.core.security.SymmetricKeyEncrypt;
+
+import lombok.NoArgsConstructor;
+
 /**
- * 简单DES加解密工具类
+ * DES加解密实现类
  * 
  * @author <a href="mailto:larry7696@gmail.com">Larry</a>
  * @version 0.4.5
  */
-public class SimpleDESUtil {
+@NoArgsConstructor
+public class DESEncryptImpl implements SymmetricKeyEncrypt {
 
 	/**
 	 * 加密算法
@@ -24,14 +29,15 @@ public class SimpleDESUtil {
 	 * 对数据进行DES加密.
 	 * 
 	 * @param data
-	 *            待进行DES加密的数据
+	 *            待进行加密的数据
 	 * @param key
-	 *            DES加密的key
-	 * @return 返回经过DES加密后的数据
+	 *            加密的key
+	 * @return 返回经过加密后的数据
 	 * @throws Exception
 	 *             异常
 	 */
-	public static final String encrypt(String data, String key) throws Exception {
+	@Override
+	public String encrypt(String data, String key) throws Exception {
 		return byte2hex(encrypt(data.getBytes(), key.getBytes()));
 	}
 
@@ -39,14 +45,15 @@ public class SimpleDESUtil {
 	 * 对用DES加密过的数据进行解密.
 	 * 
 	 * @param data
-	 *            DES加密数据
+	 *            加密数据
 	 * @param key
-	 *            DES加密的key
+	 *            加密的key
 	 * @return 返回解密后的数据
 	 * @throws Exception
 	 *             异常
 	 */
-	public static final String decrypt(String data, String key) throws Exception {
+	@Override
+	public String decrypt(String data, String key) throws Exception {
 		return new String(decrypt(hex2byte(data.getBytes()), key.getBytes()));
 	}
 
@@ -56,12 +63,12 @@ public class SimpleDESUtil {
 	 * @param data
 	 *            待加密的数据
 	 * @param key
-	 *            DES加密的key
-	 * @return 返回DES加密后的数据
+	 *            加密的key
+	 * @return 返回加密后的数据
 	 * @throws Exception
 	 *             异常
 	 */
-	private static byte[] encrypt(byte[] data, byte[] key) throws Exception {
+	private byte[] encrypt(byte[] data, byte[] key) throws Exception {
 		SecureRandom sr = new SecureRandom();
 		DESKeySpec dks = new DESKeySpec(key);
 		SecretKeyFactory keyFactory = SecretKeyFactory.getInstance(ALGORITHM);
@@ -82,7 +89,7 @@ public class SimpleDESUtil {
 	 * @throws Exception
 	 *             异常
 	 */
-	private static byte[] decrypt(byte[] data, byte[] key) throws Exception {
+	private byte[] decrypt(byte[] data, byte[] key) throws Exception {
 		SecureRandom sr = new SecureRandom();
 		DESKeySpec dks = new DESKeySpec(key);
 		SecretKeyFactory keyFactory = SecretKeyFactory.getInstance(ALGORITHM);
