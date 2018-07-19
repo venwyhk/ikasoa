@@ -41,7 +41,7 @@ public class CommonsPoolImpl implements SocketPool {
 	/**
 	 * 连接池设置
 	 */
-	private GenericObjectPoolConfig conf = new GenericObjectPoolConfig();
+	private GenericObjectPoolConfig<ThriftSocket> conf = new GenericObjectPoolConfig<>();
 
 	private static Map<String, ObjectPool<ThriftSocket>> poolMap = new HashMap<>();
 
@@ -54,7 +54,7 @@ public class CommonsPoolImpl implements SocketPool {
 		conf.setMaxTotal(size);
 	}
 
-	public CommonsPoolImpl(GenericObjectPoolConfig conf) {
+	public CommonsPoolImpl(GenericObjectPoolConfig<ThriftSocket> conf) {
 		this.conf = conf;
 	}
 
