@@ -20,6 +20,7 @@ public class RC4CompactProtocolFactory extends SecurityCompactProtocol.Factory i
 		super(key, new RC4EncryptImpl());
 	}
 
+	@Override
 	public TProtocol getProtocol(TTransport trans) {
 		return new SecurityCompactProtocol(trans, key_, encrypt_);
 	}
