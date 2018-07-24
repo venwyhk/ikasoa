@@ -559,7 +559,7 @@ web.xml
     }
 ```
 
-  之后将新创建的CommonsPoolImpl实例传入到configuration中:
+  之后将新创建的CustomerPoolImpl实例传入到configuration中:
 
 ```java
     ......
