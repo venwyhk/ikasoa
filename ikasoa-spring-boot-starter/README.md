@@ -154,17 +154,17 @@ application.properties
 Application.java
 
 ```java
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import com.ikasoa.springboot.annotation.RpcClient;
+    import org.springframework.boot.SpringApplication;
+    import org.springframework.boot.autoconfigure.SpringBootApplication;
+    import com.ikasoa.springboot.annotation.RpcClient;
 
-@SpringBootApplication
-@RpcClient(host = "xxx.xxx.xxx.xxx", port = 9999)
-public class Application {
-    public static void main(String[] args) throws Exception {
-        SpringApplication.run(Application.class, args);
+    @SpringBootApplication
+    @RpcClient(host = "xxx.xxx.xxx.xxx", port = 9999)
+    public class Application {
+        public static void main(String[] args) throws Exception {
+            SpringApplication.run(Application.class, args);
+        }
     }
-}
 ```
 
 ```java
@@ -236,17 +236,17 @@ application.properties
 Application.java
 
 ```java
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
+    import org.springframework.boot.SpringApplication;
+    import org.springframework.boot.autoconfigure.SpringBootApplication;
+    import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 
-@EnableEurekaClient
-@SpringBootApplication
-public class Application {
-    public static void main(String[] args) throws Exception {
-        SpringApplication.run(Application.class, args);
+    @EnableEurekaClient
+    @SpringBootApplication
+    public class Application {
+        public static void main(String[] args) throws Exception {
+            SpringApplication.run(Application.class, args);
+        }
     }
-}
 ```
 
 ##### 客户端从Eureka获取IkasoaServer地址 #####
@@ -262,17 +262,17 @@ application.properties
 Application.java
 
 ```java
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import com.ikasoa.springboot.annotation.RpcEurekaClient;
+    import org.springframework.boot.SpringApplication;
+    import org.springframework.boot.autoconfigure.SpringBootApplication;
+    import com.ikasoa.springboot.annotation.RpcEurekaClient;
 
-@SpringBootApplication
-@RpcEurekaClient(name = "[服务端注册到Eureka的名称]", port = 9999)
-public class Application {
-    public static void main(String[] args) throws Exception {
-        SpringApplication.run(Application.class, args);
+    @SpringBootApplication
+    @RpcEurekaClient(name = "[服务端注册到Eureka的名称]", port = 9999)
+    public class Application {
+        public static void main(String[] args) throws Exception {
+            SpringApplication.run(Application.class, args);
+        }
     }
-}
 ```
 
 ```java
