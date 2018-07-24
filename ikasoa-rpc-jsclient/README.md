@@ -6,7 +6,9 @@
 
 ## 概述 ##
 
-  ikasoa-rpc的javascript客户端.可以使用javascript直接调用远程java服务端rpc接口.(目前为内部测试阶段,所以暂不提供使用实例)
+  ikasoa-rpc的javascript客户端.可以通过javascript直接调用远程java服务端rpc接口.
+  
+  (目前为内部测试阶段,所以暂不提供使用实例)
 
 ## 引用地址 ##
 
