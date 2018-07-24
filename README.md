@@ -18,6 +18,8 @@
 
 - [ikasoa-rpc](https://github.com/venwyhk/ikasoa/blob/master/ikasoa-rpc/README.md) : *实现RPC功能的代码*
 
+- [ikasoa-rpc-jsclient](https://github.com/venwyhk/ikasoa/blob/master/ikasoa-rpc-jsclient/README.md) : *ikasoa-rpc的javascript客户端*
+
 - [ikasoa-spring-boot-starter](https://github.com/venwyhk/ikasoa/blob/master/ikasoa-spring-boot-starter/README.md) : *spring-boot启动器(starter),用于在spring-boot项目中使用ikasoa相关功能*
 
 - [ikasoa-zk](https://github.com/venwyhk/ikasoa/tree/master/ikasoa-zk/README.md) : *利用zookeeper注册和更新服务*
