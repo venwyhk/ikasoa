@@ -134,8 +134,8 @@
         </dependency>
         <dependency>
             <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-eureka</artifactId>
-            <version>1.4.4.RELEASE</version>
+            <artifactId>spring-cloud-commons</artifactId>
+            <version>1.3.3.RELEASE</version>
         </dependency>
         <dependency>
             <groupId>com.ikasoa</groupId>

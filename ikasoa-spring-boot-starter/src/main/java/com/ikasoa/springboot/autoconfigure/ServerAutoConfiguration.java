@@ -7,16 +7,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import javax.servlet.Servlet;
-
 import org.apache.thrift.protocol.TJSONProtocol;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.servlet.HandlerAdapter;
-import org.springframework.web.servlet.handler.SimpleServletHandlerAdapter;
 
 import com.ikasoa.core.thrift.server.ThriftServer;
 import com.ikasoa.core.thrift.server.ThriftServerConfiguration;
