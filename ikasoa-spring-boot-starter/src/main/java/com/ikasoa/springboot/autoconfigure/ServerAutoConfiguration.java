@@ -1,18 +1,33 @@
 package com.ikasoa.springboot.autoconfigure;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
+import javax.servlet.Servlet;
+
+import org.apache.thrift.protocol.TJSONProtocol;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.HandlerAdapter;
+import org.springframework.web.servlet.handler.SimpleServletHandlerAdapter;
 
+import com.ikasoa.core.thrift.server.ThriftServer;
 import com.ikasoa.core.thrift.server.ThriftServerConfiguration;
+import com.ikasoa.core.thrift.server.ThriftServlet;
+import com.ikasoa.core.thrift.server.impl.ServletThriftServerImpl;
+import com.ikasoa.core.thrift.service.Service;
 import com.ikasoa.core.utils.StringUtil;
 import com.ikasoa.rpc.RpcException;
+import com.ikasoa.rpc.ServiceKey;
+import com.ikasoa.rpc.annotation.IkasoaService;
+import com.ikasoa.rpc.annotation.Invalid;
 import com.ikasoa.zk.ZkServerAspect;
 import com.ikasoa.rpc.Configurator;
 import com.ikasoa.rpc.IkasoaFactory;
@@ -40,12 +55,13 @@ public class ServerAutoConfiguration extends AbstractAutoConfiguration implement
 
 	@Bean
 	public IkasoaServer getServer() throws RpcException {
-		return StringUtil.isEmpty(zkServerString) ? getServer(getIkasoaFactoryFactory().getIkasoaDefaultFactory())
+		return StringUtil.isEmpty(zkServerString)
+				? getServer(getIkasoaFactoryFactory().getIkasoaDefaultFactory(), getImplWrapperList())
 				: getServer(getIkasoaFactoryFactory(new ZkClientConfigurator(zkServerString, zkNode))
-						.getIkasoaDefaultFactory());
+						.getIkasoaDefaultFactory(), getImplWrapperList());
 	}
 
-	private IkasoaServer getServer(IkasoaFactory factory) throws RpcException {
+	protected List<ImplWrapper> getImplWrapperList() {
 		if (StringUtil.isEmpty(names) && StringUtil.isEmpty(classes))
 			log.warn("Server configuration (${ikasoa.server.names} or ${ikasoa.server.classes}) is null !");
 		List<ImplWrapper> implWrapperList = new ArrayList<>();
@@ -71,7 +87,10 @@ public class ServerAutoConfiguration extends AbstractAutoConfiguration implement
 				log.debug(e.getMessage());
 			}
 		}
+		return implWrapperList;
+	}
 
+	protected IkasoaServer getServer(IkasoaFactory factory, List<ImplWrapper> implWrapperList) throws RpcException {
 		return StringUtil.isNotEmpty(name) ? factory.getIkasoaServer(name, implWrapperList, getPort())
 				: StringUtil.isNotEmpty(eurekaAppName)
 						? factory.getIkasoaServer(eurekaAppName, implWrapperList, getPort())

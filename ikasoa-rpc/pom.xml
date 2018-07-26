@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.ikasoa</groupId>
     <artifactId>ikasoa-rpc</artifactId>
-    <version>0.3.2-BETA2</version>
+    <version>0.3.2</version>
     <packaging>jar</packaging>
     <name>Ikasoa RPC</name>
     <description>ikasoa-rpc is a high performance RPC（Remote Procedure Call) framework.</description>
@@ -18,6 +18,7 @@
     
     <developers>
         <developer>
+            <id>venwyhk</id>
             <name>Larry</name>
             <email>larry7696@gmail.com</email>
             <organization>ikasoa</organization>

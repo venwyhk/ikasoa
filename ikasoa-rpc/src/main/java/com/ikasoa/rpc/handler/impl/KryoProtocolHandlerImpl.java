@@ -48,7 +48,7 @@ public class KryoProtocolHandlerImpl<T, R> implements ProtocolHandler<T, R> {
 	@Override
 	public String resultToStr(R result) {
 		if (result == null)
-			return String.valueOf(ProtocolHandler.V);
+			return String.valueOf(V);
 		Output output = new Output(1, 4096);
 		kryo.writeObject(output, result);
 		byte[] bb = output.toBytes();
@@ -59,7 +59,7 @@ public class KryoProtocolHandlerImpl<T, R> implements ProtocolHandler<T, R> {
 	@Override
 	@SuppressWarnings("unchecked")
 	public R strToResult(String str) {
-		if (String.valueOf(ProtocolHandler.V).equals(str))
+		if (String.valueOf(V).equals(str))
 			return null;
 		return resultData.isArray()
 				? (R) kryo.readObject(new Input(Base64Util.decode(str)),
