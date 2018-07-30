@@ -21,6 +21,10 @@ public class ServletServerIkasoaFactory extends DefaultIkasoaFactory {
 
 	private static final String SERVER_NAME_PREFIX = "ServletServer-";
 
+	public ServletServerIkasoaFactory(Configurator configurator) {
+		super(configurator);
+	}
+
 	public ServletServerIkasoaFactory(ThriftServerConfiguration thriftServerConfiguration) {
 		super.thriftServerConfiguration = thriftServerConfiguration;
 	}
@@ -30,18 +34,22 @@ public class ServletServerIkasoaFactory extends DefaultIkasoaFactory {
 		return null;
 	}
 
+	@Override
 	public ThriftServer getThriftServer(int serverPort, Service service) {
 		return getThriftServer(SERVER_NAME_PREFIX + serverPort, serverPort, service);
 	}
 
+	@Override
 	public ThriftServer getThriftServer(int serverPort, Map<String, Service> serviceMap) {
 		return getThriftServer(SERVER_NAME_PREFIX + serverPort, serverPort, serviceMap);
 	}
 
+	@Override
 	public ThriftServer getThriftServer(String serverName, int serverPort, TProcessor processor) {
 		return new ServletThriftServerImpl(serverName, thriftServerConfiguration, processor);
 	}
 
+	@Override
 	public ThriftServer getNonblockingThriftServer(String serverName, int serverPort, TProcessor processor) {
 		log.error("Can't get the server !");
 		return null;
