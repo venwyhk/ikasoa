@@ -11,6 +11,8 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class StringUtil {
 
+	private final static String HEX_16 = "0123456789ABCDEF";
+
 	public static boolean isEmpty(String str) {
 		return str == null || str.length() == 0;
 	}
@@ -38,13 +40,74 @@ public class StringUtil {
 				: isNotEmpty(str1) && isNotEmpty(str2) ? str1.equals(str2) : Boolean.FALSE;
 	}
 
+	public static byte[] strToBytes(String str) {
+		return hexStrToBytes(strToHexStr(str));
+	}
+
+	public static String bytesToStr(byte[] bytes) {
+		return hexStrToStr(bytesToHexStr(bytes));
+	}
+
+	public static String strToHexStr(String str) {
+		if (isEmpty(str))
+			return null;
+		char[] chars = HEX_16.toCharArray();
+		StringBuilder sb = new StringBuilder("");
+		byte[] bytes = str.getBytes();
+		int bit;
+		for (int i = 0; i < bytes.length; i++) {
+			bit = (bytes[i] & 0x0f0) >> 4;
+			sb.append(chars[bit]);
+			bit = bytes[i] & 0x0f;
+			sb.append(chars[bit]);
+		}
+		return sb.toString().trim();
+	}
+
+	public static String hexStrToStr(String hexStr) {
+		if (isEmpty(hexStr))
+			return null;
+		char[] hexs = hexStr.toCharArray();
+		byte[] bytes = new byte[hexStr.length() / 2];
+		int n;
+		for (int i = 0; i < bytes.length; i++) {
+			n = HEX_16.indexOf(hexs[2 * i]) * 16;
+			n += HEX_16.indexOf(hexs[2 * i + 1]);
+			bytes[i] = (byte) (n & 0xff);
+		}
+		return new String(bytes);
+	}
+
+	public static byte[] hexStrToBytes(String hexStr) {
+		if (hexStr == null)
+			return null;
+		if (hexStr.length() == 0)
+			return new byte[0];
+		byte[] byteArray = new byte[hexStr.length() / 2];
+		for (int i = 0; i < byteArray.length; i++)
+			byteArray[i] = ((byte) Integer.parseInt(hexStr.substring(2 * i, 2 * i + 2), 16));
+		return byteArray;
+	}
+
+	public static String bytesToHexStr(byte[] bytes) {
+		if (bytes == null)
+			return null;
+		char[] hexArray = HEX_16.toCharArray();
+		char[] hexChars = new char[bytes.length * 2];
+		for (int i = 0; i < bytes.length; i++) {
+			int x = bytes[i] & 0xFF;
+			hexChars[i * 2] = hexArray[x >>> 4];
+			hexChars[i * 2 + 1] = hexArray[x & 0x0F];
+		}
+		return new String(hexChars);
+	}
+
 	public static int toInt(String str) {
 		if (isNotEmpty(str))
 			try {
-				return Integer.parseInt(str);
+				return Integer.parseInt(str.trim());
 			} catch (Exception e) {
 				log.warn(e.getMessage());
-				return 0;
 			}
 		return 0;
 	}

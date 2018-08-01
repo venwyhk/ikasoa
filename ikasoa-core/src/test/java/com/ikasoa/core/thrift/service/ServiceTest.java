@@ -31,7 +31,7 @@ public class ServiceTest extends TestCase {
 		ThriftServerConfiguration thriftServerConfiguration = new ThriftServerConfiguration();
 		thriftServerConfiguration.setServerArgsAspect(new ServerArgsAspect() {
 			@Override
-			public TThreadPoolServer.Args TThreadPoolServerArgsAspect(TThreadPoolServer.Args args) {
+			public TThreadPoolServer.Args tThreadPoolServerArgsAspect(TThreadPoolServer.Args args) {
 				args.stopTimeoutVal = 1;
 				return args;
 			}

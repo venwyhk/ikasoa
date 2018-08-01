@@ -53,7 +53,7 @@ public class NonblockingThriftServerImpl extends AbstractThriftServerImpl {
 		if (configuration.getExecutorService() != null)
 			args.executorService(configuration.getExecutorService());
 		server = new TThreadedSelectorServer(
-				configuration.getServerArgsAspect().TThreadedSelectorServerArgsAspect(args).processor(getProcessor()));
+				configuration.getServerArgsAspect().tThreadedSelectorServerArgsAspect(args).processor(getProcessor()));
 		if (configuration.getServerEventHandler() != null)
 			server.setServerEventHandler(configuration.getServerEventHandler());
 	}
