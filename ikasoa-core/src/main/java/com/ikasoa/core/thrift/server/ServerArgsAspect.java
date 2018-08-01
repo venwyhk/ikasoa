@@ -16,23 +16,23 @@ import org.apache.thrift.server.TThreadedSelectorServer;
  */
 public class ServerArgsAspect {
 
-	public TServer.Args TServerArgsAspect(TServer.Args args) {
+	public TServer.Args tServerArgsAspect(TServer.Args args) {
 		return args;
 	}
 
-	public TThreadPoolServer.Args TThreadPoolServerArgsAspect(TThreadPoolServer.Args args) {
+	public TThreadPoolServer.Args tThreadPoolServerArgsAspect(TThreadPoolServer.Args args) {
 		return args;
 	}
 
-	public TThreadedSelectorServer.Args TThreadedSelectorServerArgsAspect(TThreadedSelectorServer.Args args) {
+	public TThreadedSelectorServer.Args tThreadedSelectorServerArgsAspect(TThreadedSelectorServer.Args args) {
 		return args;
 	}
 
-	public TNonblockingServer.Args TNonblockingServerArgsAspect(TNonblockingServer.Args args) {
+	public TNonblockingServer.Args tNonblockingServerArgsAspect(TNonblockingServer.Args args) {
 		return args;
 	}
 
-	public THsHaServer.Args THsHaServerArgsAspect(THsHaServer.Args args) {
+	public THsHaServer.Args tHsHaServerArgsAspect(THsHaServer.Args args) {
 		return args;
 	}
 

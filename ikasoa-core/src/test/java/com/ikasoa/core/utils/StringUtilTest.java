@@ -44,8 +44,28 @@ public class StringUtilTest extends TestCase {
 	}
 
 	@Test
+	public void testStrTohexStrAndHexStrToStr() {
+		String str = "abc123xyz";
+		assertEquals(StringUtil.hexStrToStr(StringUtil.strToHexStr(str)), str);
+	}
+
+	@Test
+	public void testHexStrToBytesAndBytesToHexStr() {
+		String hexStr = "123456ABCDEF";
+		assertEquals(StringUtil.bytesToHexStr(StringUtil.hexStrToBytes(hexStr)), hexStr);
+	}
+
+	@Test
+	public void testStrToBytesAndBytesToStr() {
+		String str = "测试数据xyz";
+		assertEquals(
+				StringUtil.hexStrToStr(StringUtil.bytesToHexStr(StringUtil.hexStrToBytes(StringUtil.strToHexStr(str)))),
+				str);
+	}
+
+	@Test
 	public void testToInt() {
-		assertEquals(StringUtil.toInt("123"), 123);
+		assertEquals(StringUtil.toInt("123 "), 123);
 	}
 
 }

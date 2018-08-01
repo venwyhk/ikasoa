@@ -44,7 +44,7 @@ public class DefaultThriftServerImpl extends AbstractThriftServerImpl {
 		if (configuration.getExecutorService() != null)
 			args.executorService(configuration.getExecutorService());
 		server = new TThreadPoolServer(
-				configuration.getServerArgsAspect().TThreadPoolServerArgsAspect(args).processor(getProcessor()));
+				configuration.getServerArgsAspect().tThreadPoolServerArgsAspect(args).processor(getProcessor()));
 		if (configuration.getServerEventHandler() != null)
 			server.setServerEventHandler(configuration.getServerEventHandler());
 	}
