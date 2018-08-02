@@ -1,4 +1,4 @@
-[![](https://raw.githubusercontent.com/venwyhk/ikasoa/master/ikasoalogo_small.png)](http://ikasoa.com)<br />
+[![](http://ikasoa.com/ikasoalogo_small.png)](http://ikasoa.com)<br />
 
 &nbsp;[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.ikasoa/ikasoa-zk/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.ikasoa/ikasoa-zk)&nbsp;&nbsp;[![Javadocs](http://javadoc.io/badge/com.ikasoa/ikasoa-zk.svg)](http://javadoc.io/doc/com.ikasoa/ikasoa-zk)&nbsp;&nbsp;
 

@@ -1,4 +1,4 @@
-[![](https://raw.githubusercontent.com/venwyhk/ikasoa/master/ikasoalogo_small.png)](http://ikasoa.com)<br />
+[![](http://ikasoa.com/ikasoalogo_small.png)](http://ikasoa.com)<br />
 
 ***
 
