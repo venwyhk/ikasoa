@@ -42,7 +42,7 @@ public class RC4EncryptImpl implements SymmetricKeyEncrypt {
 	public String decrypt(String data, String key) {
 		if (data == null || key == null)
 			return null;
-		return new String(RC4Base(HexString2Bytes(data), key));
+		return new String(rc4Base(HexString2Bytes(data), key));
 	}
 
 	/**
@@ -57,7 +57,7 @@ public class RC4EncryptImpl implements SymmetricKeyEncrypt {
 	public byte[] encryptByte(String data, String key) {
 		if (data == null || key == null)
 			return null;
-		return RC4Base(data.getBytes(), key);
+		return rc4Base(data.getBytes(), key);
 	}
 
 	/**
@@ -72,7 +72,7 @@ public class RC4EncryptImpl implements SymmetricKeyEncrypt {
 	public String decrypt(byte[] data, String key) {
 		if (data == null || key == null)
 			return null;
-		return asString(RC4Base(data, key));
+		return asString(rc4Base(data, key));
 	}
 
 	private static String asString(byte[] buf) {
@@ -124,7 +124,7 @@ public class RC4EncryptImpl implements SymmetricKeyEncrypt {
 				^ (char) Byte.decode("0x" + new String(new byte[] { src1 })).byteValue());
 	}
 
-	private static byte[] RC4Base(byte[] input, String mKkey) {
+	private byte[] rc4Base(byte[] input, String mKkey) {
 		int x = 0, y = 0;
 		int xorIndex;
 		byte[] key = initKey(mKkey), result = new byte[input.length];
