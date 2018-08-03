@@ -25,7 +25,7 @@ Maven
     <dependency>
         <groupId>com.ikasoa</groupId>
         <artifactId>ikasoa-rpc</artifactId>
-        <version>0.3.2</version>
+        <version>0.3.3-ALPHA2</version>
     </dependency>
     ......
 ```
@@ -33,7 +33,7 @@ Maven
 Gradle
 
 ```
-    compile group: 'com.ikasoa', name: 'ikasoa-rpc', version: '0.3.2'
+    compile group: 'com.ikasoa', name: 'ikasoa-rpc', version: '0.3.3-ALPHA2'
 ```
 
 
@@ -48,7 +48,7 @@ Maven
     <dependency>
         <groupId>com.ikasoa</groupId>
         <artifactId>ikasoa-core</artifactId>
-        <version>0.5.3</version>
+        <version>0.5.4-ALPHA</version>
     </dependency>
     ......
 ```
@@ -56,7 +56,7 @@ Maven
 Gradle
 
 ```
-    compile group: 'com.ikasoa', name: 'ikasoa-core', version: '0.5.3'
+    compile group: 'com.ikasoa', name: 'ikasoa-core', version: '0.5.4-ALPHA'
 ```
 
 ## HelloWorld ##
@@ -618,7 +618,7 @@ web.xml
 
 ## 加密传输 ##
 
-  ikasoa默认没有进行加密传输,但可选择使用DES对称加密传输方式以提高传输数据的安全性.
+  ikasoa默认没有进行加密传输,但可选择使用DES和RC4对称加密传输方式以提高传输数据的安全性.
 
 ##### DES对称加密传输 #####
 
@@ -628,7 +628,7 @@ web.xml
     ......
     String key = "12345678"; // 密钥,可自定义
     ThriftServerConfiguration serverConfiguration = new ThriftServerConfiguration();
-    serverConfiguration.setProtocolFactory(new DESCompactProtocol.Factory(key));
+    serverConfiguration.setProtocolFactory(new DESCompactProtocolFactory(key));
     ......
 ```
 
@@ -638,7 +638,29 @@ web.xml
     ......
     String key = "12345678"; // 密钥,需与服务端密钥相同
     ThriftClientConfiguration clientConfiguration = new ThriftClientConfiguration();
-    clientConfiguration.setProtocolFactory(new DESCompactProtocol.Factory(key));
+    clientConfiguration.setProtocolFactory(new DESCompactProtocolFactory(key));
+    ......
+```
+
+##### RC4对称加密传输 #####
+
+服务端
+
+```java
+    ......
+    String key = "87654321abcde"; // 密钥,可自定义
+    ThriftServerConfiguration serverConfiguration = new ThriftServerConfiguration();
+    serverConfiguration.setProtocolFactory(new RC4CompactProtocolFactory(key));
+    ......
+```
+
+客户端
+
+```java
+    ......
+    String key = "87654321abcde"; // 密钥,需与服务端密钥相同
+    ThriftClientConfiguration clientConfiguration = new ThriftClientConfiguration();
+    clientConfiguration.setProtocolFactory(new RC4CompactProtocolFactory(key));
     ......
 ```
 

@@ -1,7 +1,11 @@
 package com.ikasoa.rpc.service;
 
-public abstract class ExampleSuperVO {
+import java.io.Serializable;
 
+public abstract class ExampleSuperVO implements Serializable {
+
+	private static final long serialVersionUID = 1L;
+	
 	private String descriptor;
 
 	public String getDescriptor() {

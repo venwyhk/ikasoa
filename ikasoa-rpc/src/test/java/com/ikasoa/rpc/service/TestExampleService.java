@@ -36,7 +36,7 @@ public class TestExampleService extends TestCase {
 		// LoggerClientInvocationHandlerImpl());
 		thriftServerConfiguration.setServerArgsAspect(new ServerArgsAspect() {
 			@Override
-			public TThreadPoolServer.Args TThreadPoolServerArgsAspect(TThreadPoolServer.Args args) {
+			public TThreadPoolServer.Args tThreadPoolServerArgsAspect(TThreadPoolServer.Args args) {
 				args.stopTimeoutVal = 1;
 				return args;
 			}
@@ -47,15 +47,15 @@ public class TestExampleService extends TestCase {
 	public void testDefaultService() {
 		Configurator configurator = new Configurator();
 		configurator.setThriftServerConfiguration(thriftServerConfiguration);
-		invoke(new DefaultIkasoaFactory(configurator), 9991);
+		invoke(new DefaultIkasoaFactory(configurator), 9901);
 		// 测试NIO方式
 		configurator.setNonBlockingIO(true);
-		invoke(new DefaultIkasoaFactory(configurator), 9992);
+		invoke(new DefaultIkasoaFactory(configurator), 9902);
 	}
 
 	@Test
 	public void testNettyService() {
-		invoke(new NettyIkasoaFactory(), 9993);
+		invoke(new NettyIkasoaFactory(), 9903);
 	}
 
 	@Test
@@ -65,17 +65,17 @@ public class TestExampleService extends TestCase {
 		configurator.setThriftServerConfiguration(thriftServerConfiguration);
 		Class protocolHandlerClass = Class.forName("com.ikasoa.rpc.handler.impl.KryoProtocolHandlerImpl");
 		configurator.setProtocolHandlerClass(protocolHandlerClass);
-		invoke(new DefaultIkasoaFactory(configurator), 9994);
+		invoke(new DefaultIkasoaFactory(configurator), 9904);
 		// 测试NIO方式
 		configurator.setNonBlockingIO(true);
-		invoke(new DefaultIkasoaFactory(configurator), 9995);
+		invoke(new DefaultIkasoaFactory(configurator), 9905);
 	}
 
 	@Test
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void testNettyKryoService() throws ClassNotFoundException {
 		Class protocolHandlerClass = Class.forName("com.ikasoa.rpc.handler.impl.KryoProtocolHandlerImpl");
-		invoke(new NettyIkasoaFactory(new Configurator(protocolHandlerClass)), 9996);
+		invoke(new NettyIkasoaFactory(new Configurator(protocolHandlerClass)), 9906);
 	}
 
 	@Test
@@ -85,17 +85,37 @@ public class TestExampleService extends TestCase {
 		configurator.setThriftServerConfiguration(thriftServerConfiguration);
 		Class protocolHandlerClass = Class.forName("com.ikasoa.rpc.handler.impl.XmlProtocolHandlerImpl");
 		configurator.setProtocolHandlerClass(protocolHandlerClass);
-		invoke(new DefaultIkasoaFactory(configurator), 9997);
+		invoke(new DefaultIkasoaFactory(configurator), 9907);
 		// 测试NIO方式
 		configurator.setNonBlockingIO(true);
-		invoke(new DefaultIkasoaFactory(configurator), 9998);
+		invoke(new DefaultIkasoaFactory(configurator), 9908);
 	}
 
 	@Test
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void testNettyXmlService() throws ClassNotFoundException {
 		Class protocolHandlerClass = Class.forName("com.ikasoa.rpc.handler.impl.XmlProtocolHandlerImpl");
-		invoke(new NettyIkasoaFactory(new Configurator(protocolHandlerClass)), 9999);
+		invoke(new NettyIkasoaFactory(new Configurator(protocolHandlerClass)), 9909);
+	}
+	
+	@Test
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public void testDefaultSerializableService() throws ClassNotFoundException {
+		Configurator configurator = new Configurator();
+		configurator.setThriftServerConfiguration(thriftServerConfiguration);
+		Class protocolHandlerClass = Class.forName("com.ikasoa.rpc.handler.impl.SerializableProtocolHandlerImpl");
+		configurator.setProtocolHandlerClass(protocolHandlerClass);
+		invoke(new DefaultIkasoaFactory(configurator), 9910);
+		// 测试NIO方式
+		configurator.setNonBlockingIO(true);
+		invoke(new DefaultIkasoaFactory(configurator), 9911);
+	}
+
+	@Test
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public void testNettySerializableService() throws ClassNotFoundException {
+		Class protocolHandlerClass = Class.forName("com.ikasoa.rpc.handler.impl.SerializableProtocolHandlerImpl");
+		invoke(new NettyIkasoaFactory(new Configurator(protocolHandlerClass)), 9912);
 	}
 
 	private void invoke(IkasoaFactory ikasoaFactory, int port) {

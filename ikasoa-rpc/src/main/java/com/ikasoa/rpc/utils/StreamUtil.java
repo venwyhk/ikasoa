@@ -2,8 +2,11 @@ package com.ikasoa.rpc.utils;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+
+import lombok.SneakyThrows;
 
 /**
  * 流处理工具
@@ -13,19 +16,40 @@ import java.io.InputStream;
  */
 public class StreamUtil {
 
+	@SneakyThrows
 	public static byte[] inputStreamToBytes(InputStream is) {
 		try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
 			int i;
 			while ((i = is.read()) != -1)
 				baos.write(i);
 			return baos.toByteArray();
-		} catch (IOException e) {
-			throw new RuntimeException(e);
 		}
 	}
 
 	public static InputStream bytesToInputStream(byte[] bytes) {
 		return new ByteArrayInputStream(bytes);
+	}
+
+	@SneakyThrows
+	public static byte[] objectToBytes(Object obj) {
+		byte[] bytes = null;
+		try (ByteArrayOutputStream bos = new ByteArrayOutputStream();
+				ObjectOutputStream oos = new ObjectOutputStream(bos)) {
+			oos.writeObject(obj);
+			oos.flush();
+			bytes = bos.toByteArray();
+		}
+		return bytes;
+	}
+
+	@SneakyThrows
+	public static Object bytesToObject(byte[] bytes) {
+		Object obj = null;
+		try (ByteArrayInputStream bis = new ByteArrayInputStream(bytes);
+				ObjectInputStream ois = new ObjectInputStream(bis)) {
+			obj = ois.readObject();
+		}
+		return obj;
 	}
 
 }

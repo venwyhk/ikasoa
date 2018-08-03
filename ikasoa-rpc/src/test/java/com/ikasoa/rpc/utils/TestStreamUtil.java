@@ -6,10 +6,17 @@ import junit.framework.TestCase;
 
 public class TestStreamUtil extends TestCase {
 
+	private final String str = "测试字符串string";
+
 	@Test
 	public void testStreamChangeUtil() {
-		String str = "测试字符串string";
 		assertEquals(str, new String(StreamUtil.inputStreamToBytes(StreamUtil.bytesToInputStream(str.getBytes()))));
+	}
+
+	@Test
+	public void testObjectStreamChangeUtil() {
+		assertEquals(str, ((SerializableTestObject) StreamUtil
+				.bytesToObject(StreamUtil.objectToBytes(new SerializableTestObject(str)))).getValue());
 	}
 
 }

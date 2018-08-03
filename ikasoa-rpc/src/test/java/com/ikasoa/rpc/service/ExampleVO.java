@@ -2,6 +2,8 @@ package com.ikasoa.rpc.service;
 
 public class ExampleVO extends ExampleSuperVO {
 
+	private static final long serialVersionUID = 1L;
+
 	private int id;
 
 	private String string;
