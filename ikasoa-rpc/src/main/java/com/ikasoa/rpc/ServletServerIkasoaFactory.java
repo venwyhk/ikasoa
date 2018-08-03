@@ -5,6 +5,7 @@ import com.ikasoa.core.thrift.server.ThriftServerConfiguration;
 import com.ikasoa.core.thrift.server.impl.ServletThriftServerImpl;
 import com.ikasoa.core.thrift.service.Service;
 
+import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Map;
@@ -16,6 +17,7 @@ import org.apache.thrift.TProcessor;
  * @author <a href="mailto:larry7696@gmail.com">Larry</a>
  * @version 0.3.2
  */
+@NoArgsConstructor
 @Slf4j
 public class ServletServerIkasoaFactory extends DefaultIkasoaFactory {
 

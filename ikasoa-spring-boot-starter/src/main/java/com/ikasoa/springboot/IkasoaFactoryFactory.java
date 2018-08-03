@@ -40,7 +40,7 @@ public class IkasoaFactoryFactory {
 				.orElse(new ThriftServerConfiguration());
 		config.setProtocolFactory(new TJSONProtocol.Factory()); // Servlet需要使用Json协议
 		configurator.setThriftServerConfiguration(config);
-		return new ServletServerIkasoaFactory(config);
+		return new ServletServerIkasoaFactory(configurator);
 	}
 
 }

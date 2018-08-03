@@ -15,7 +15,7 @@
 ```html
     ......
     <script src="http://ikasoa.com/libs/thrift/0.11.0/thrift.min.js" type="text/javascript"></script>
-    <script src="http://ikasoa.com/libs/ikj/0.1-snapshot/ikj.min.js" type="text/javascript"></script>
+    <script src="http://ikasoa.com/libs/ikasoa-rpc-jsclient/1.0/ikasoa-rpc-jsclient.min.js" type="text/javascript"></script>
     ......
 ```
 
