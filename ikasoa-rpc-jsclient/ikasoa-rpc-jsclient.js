@@ -7,130 +7,37 @@
  */
 
 JavaType = {
-  _byte: {
-    value: 'byte',
-    array: 0
-  },
-  Byte: {
-    value: 'java.lang.Byte',
-    array: 0
-  },
-  _int: {
-    value: 'int',
-    array: 0
-  },
-  Integer: {
-    value: 'java.lang.Integer',
-    array: 0
-  },
-  _long: {
-    value: 'long',
-    array: 0
-  },
-  Long: {
-    value: 'java.lang.Long',
-    array: 0
-  },
-  String: {
-    value: 'java.lang.String',
-    array: 0
-  },
-  _float: {
-    value: 'float',
-    array: 0
-  },
-  Float: {
-    value: 'java.lang.Float',
-    array: 0
-  },
-  _double: {
-    value: 'double',
-    array: 0
-  },
-  Double: {
-    value: 'java.lang.Double',
-    array: 0
-  },
-  _boolean: {
-    value: 'boolean',
-    array: 0
-  },
-  Boolean: {
-    value: 'java.lang.Boolean',
-    array: 0
-  },
-  _char: {
-    value: 'char',
-    array: 0
-  },
-  Char: {
-    value: 'java.lang.Character',
-    array: 0
-  },
-  String_: {
-    value: '[Ljava.lang.String;',
-    array: 1
-  },
-  _byte_: {
-    value: '[B',
-    array: 1
-  },
-  Byte_: {
-    value: '[Ljava.lang.Byte;',
-    array: 1
-  },
-  _int_: {
-    value: '[I',
-    array: 1
-  },
-  Integer_: {
-    value: '[Ljava.lang.Integer;',
-    array: 1
-  },
-  _long_: {
-    value: '[L',
-    array: 1
-    },
-  Long_: {
-    value: '[Ljava.lang.Long;',
-    array: 1
-  },
-  _float_: {
-    value: '[F',
-    array: 1
-  },
-  Float_: {
-    value: '[Ljava.lang.Float;',
-    array: 1
-  },
-  _double_: {
-    value: '[D',
-    array: 1
-  },
-  Double_: {
-    value: '[Ljava.lang.Double;',
-    array: 1
-  },
-  _boolean_: {
-    value: '[Z',
-    array: 1
-  },
-  Boolean_: {
-    value: '[Ljava.lang.Boolean;',
-    array: 1
-  },
-  List: {
-    value: 'java.util.List',
-    array: 1
-  },
-  Map: {
-    value: 'java.util.Map',
-    array: 1
-  },
-  Set: {
-    value: 'java.util.Set',
-    array: 1
-  }
+  _byte: { value: 'byte', array: 0 },
+  Byte: { value: 'java.lang.Byte', array: 0 },
+  _int: { value: 'int', array: 0 },
+  Integer: { value: 'java.lang.Integer', array: 0 },
+  _long: { value: 'long', array: 0 },
+  Long: { value: 'java.lang.Long', array: 0 },
+  String: { value: 'java.lang.String', array: 0 },
+  _float: { value: 'float', array: 0 },
+  Float: { value: 'java.lang.Float', array: 0 },
+  _double: { value: 'double', array: 0 },
+  Double: { value: 'java.lang.Double', array: 0 },
+  _boolean: { value: 'boolean', array: 0 },
+  Boolean: { value: 'java.lang.Boolean', array: 0 },
+  _char: { value: 'char', array: 0 },
+  Char: { value: 'java.lang.Character', array: 0 },
+  String_: { value: '[Ljava.lang.String;', array: 1 },
+  _byte_: { value: '[B', array: 1 },
+  Byte_: { value: '[Ljava.lang.Byte;', array: 1 },
+  _int_: { value: '[I', array: 1 },
+  Integer_: { value: '[Ljava.lang.Integer;', array: 1 },
+  _long_: { value: '[L', array: 1 },
+  Long_: { value: '[Ljava.lang.Long;', array: 1 },
+  _float_: { value: '[F', array: 1 },
+  Float_: { value: '[Ljava.lang.Float;', array: 1 },
+  _double_: { value: '[D', array: 1 },
+  Double_: { value: '[Ljava.lang.Double;', array: 1 },
+  _boolean_: { value: '[Z', array: 1 },
+  Boolean_: { value: '[Ljava.lang.Boolean;', array: 1 },
+  List: { value: 'java.util.List', array: 1 },
+  Map: { value: 'java.util.Map', array: 1 },
+  Set: { value: 'java.util.Set', array: 1 }
 };
 
 _JavaType = function(value, array) {
