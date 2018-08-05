@@ -6,7 +6,7 @@
  * @version 1.0
  */
 
-JavaType = {
+var JavaType = {
     _byte: { value: "byte", array: 0 },
     Byte: { value: "java.lang.Byte", array: 0 },
     _int: { value: "int", array: 0 },
@@ -40,7 +40,7 @@ JavaType = {
     Set: { value: "java.util.Set", array: 1 }
 };
 
-_JavaType = function(value, array) {
+var _JavaType = function(value, array) {
     this.value = value;
     this.array = array;
 };
@@ -55,7 +55,7 @@ function getService(sUrl, cName, mName, rType, pTypes) {
         if(!(pTypes instanceof Array)) pTypes = new Array(pTypes);
         if (pTypes.length > 0) {
             pTypesStr = "[";
-            for(i = 0; i < pTypes.length; i++) {
+            for(var i = 0; i < pTypes.length; i++) {
                 var prefix = suffix = "\"";
                 if(pTypes.length !== i + 1) suffix += ",";
                 pTypesStr += prefix + pTypes[i].value + suffix;
@@ -78,7 +78,7 @@ Service.prototype.execute = function() {
     if (arguments.length > 0) {
         if(arguments.length < this.pTypes.length) throw "Arguments length error !";
         argsStr = String.fromCharCode(150) + "[";
-        for(i = 0; i < this.pTypes.length; i++) {
+        for(var i = 0; i < this.pTypes.length; i++) {
             argsStr += JSON.stringify(arguments[i]);
             if(arguments.length !== i + 1) argsStr += ",";
         }
