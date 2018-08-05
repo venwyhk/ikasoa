@@ -64,7 +64,7 @@ function getService(sUrl, cName, mName, rType, pTypes) {
         }
     }
     return new Service(tMp.createClient(('{"iClass"|"' + cName + '","methodName"|"' + mName + '","parameterTypes"|' + pTypesStr + ',"returnType"|"' + rTypeStr + '"}').replace(/\"/g, '\\"'), ServiceClient, tTp), pTypes, pTypesStr, rType);
-};
+}
 
 Service = function(tService, pTypes, pTypesStr, rType) {
     this.tService = tService;
