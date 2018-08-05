@@ -274,8 +274,13 @@ public class ServerTest extends TestCase {
 		configuration.setServerAspect(new TestServerAspectImpl());
 		ThriftServer defaultThriftServer = new GeneralFactory(configuration).getThriftServer(serverName, serverPort,
 				new ThriftSimpleService.Processor<Iface>(new ThriftSimpleServiceImpl()));
-		defaultThriftServer.run();
-		defaultThriftServer.stop();
+		try {
+			defaultThriftServer.run();
+		} catch (Exception e) {
+			fail();
+		} finally {
+			defaultThriftServer.stop();
+		}
 	}
 
 	private class TestCallback implements AsyncMethodCallback<String> {
