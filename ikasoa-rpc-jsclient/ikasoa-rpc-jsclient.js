@@ -23,7 +23,7 @@ JavaType = {
   _char: { value: "char", array: 0 },
   Char: { value: "java.lang.Character", array: 0 },
   String_: { value: "[Ljava.lang.String;", array: 1 },
-  _byte_: { value: "[B', array: 1 },
+  _byte_: { value: "[B", array: 1 },
   Byte_: { value: "[Ljava.lang.Byte;", array: 1 },
   _int_: { value: "[I", array: 1 },
   Integer_: { value: "[Ljava.lang.Integer;", array: 1 },
