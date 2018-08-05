@@ -13,23 +13,39 @@ public class TestProtocolHandler extends TestCase {
 	private ExampleVO evo = new ExampleVO(testId, testStr);
 
 	@Test
-	public void testJsonProtocolHandlerImpl() throws ClassNotFoundException {
-		test(null);
+	public void testJsonProtocolHandlerImpl() {
+		try {
+			test(null);
+		} catch (Exception e) {
+			fail();
+		}
 	}
 
 	@Test
-	public void testXmlProtocolHandlerImpl() throws ClassNotFoundException {
-		test(Class.forName("com.ikasoa.rpc.handler.impl.XmlProtocolHandlerImpl"));
+	public void testXmlProtocolHandlerImpl() {
+		try {
+			test(Class.forName("com.ikasoa.rpc.handler.impl.XmlProtocolHandlerImpl"));
+		} catch (Exception e) {
+			fail();
+		}
 	}
 
 	@Test
-	public void testKryoProtocolHandlerImpl() throws ClassNotFoundException {
-		test(Class.forName("com.ikasoa.rpc.handler.impl.KryoProtocolHandlerImpl"));
+	public void testKryoProtocolHandlerImpl() {
+		try {
+			test(Class.forName("com.ikasoa.rpc.handler.impl.KryoProtocolHandlerImpl"));
+		} catch (Exception e) {
+			fail();
+		}
 	}
 
 	@Test
-	public void testSerializableProtocolHandlerImpl() throws ClassNotFoundException {
-		test(Class.forName("com.ikasoa.rpc.handler.impl.SerializableProtocolHandlerImpl"));
+	public void testSerializableProtocolHandlerImpl() {
+		try {
+			test(Class.forName("com.ikasoa.rpc.handler.impl.SerializableProtocolHandlerImpl"));
+		} catch (Exception e) {
+			fail();
+		}
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
