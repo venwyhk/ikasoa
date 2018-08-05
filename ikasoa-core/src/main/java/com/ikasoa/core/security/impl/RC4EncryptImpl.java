@@ -42,7 +42,7 @@ public class RC4EncryptImpl implements SymmetricKeyEncrypt {
 	public String decrypt(String data, String key) {
 		if (data == null || key == null)
 			return null;
-		return new String(rc4Base(HexString2Bytes(data), key));
+		return new String(rc4Base(toBytes(data), key));
 	}
 
 	/**
@@ -83,18 +83,18 @@ public class RC4EncryptImpl implements SymmetricKeyEncrypt {
 	}
 
 	private static byte[] initKey(String aKey) {
-		byte[] b_key = aKey.getBytes(), state = new byte[256];
+		byte[] bKey = aKey.getBytes(), state = new byte[256];
 		for (int i = 0; i < 256; i++)
 			state[i] = (byte) i;
 		int index1 = 0, index2 = 0;
-		if (b_key == null || b_key.length == 0)
+		if (bKey == null || bKey.length == 0)
 			return null;
 		for (int i = 0; i < 256; i++) {
-			index2 = ((b_key[index1] & 0xff) + (state[i] & 0xff) + index2) & 0xff;
+			index2 = ((bKey[index1] & 0xff) + (state[i] & 0xff) + index2) & 0xff;
 			byte tmp = state[i];
 			state[i] = state[index2];
 			state[index2] = tmp;
-			index1 = (index1 + 1) % b_key.length;
+			index1 = (index1 + 1) % bKey.length;
 		}
 		return state;
 	}
@@ -111,7 +111,7 @@ public class RC4EncryptImpl implements SymmetricKeyEncrypt {
 		return str; // 0x表示十六进制
 	}
 
-	private static byte[] HexString2Bytes(String src) {
+	private static byte[] toBytes(String src) {
 		int size = src.length();
 		byte[] ret = new byte[size / 2], tmp = src.getBytes();
 		for (int i = 0; i < size / 2; i++)

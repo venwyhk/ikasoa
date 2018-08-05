@@ -36,7 +36,7 @@ public class ConsistencyHashLoadBalanceImpl implements LoadBalance {
 	@SneakyThrows
 	public ConsistencyHashLoadBalanceImpl(List<ServerInfo> serverInfoList, String hash) {
 		if (StringUtil.isEmpty(hash))
-			throw new RuntimeException("Constructor must exist hash parameter !");
+			throw new IllegalArgumentException("Constructor must exist hash parameter !");
 		hashReference = new SoftReference<String>(InetAddress.getLocalHost().getHostAddress() + hash);
 		nodes = new TreeMap<>();
 		for (int i = 0; i < serverInfoList.size(); i++) {
@@ -59,31 +59,25 @@ public class ConsistencyHashLoadBalanceImpl implements LoadBalance {
 		return getServerInfo();
 	}
 
-	/**
-	 * 根据2^32把节点分布到圆环上面。
-	 */
 	private long hash(byte[] digest, int nTime) {
 		long rv = ((long) (digest[3 + nTime * 4] & 0xFF) << 24) | ((long) (digest[2 + nTime * 4] & 0xFF) << 16)
 				| ((long) (digest[1 + nTime * 4] & 0xFF) << 8) | (digest[0 + nTime * 4] & 0xFF);
-		return rv & 0xffffffffL; // Truncate to 32-bits
+		return rv & 0xffffffffL;
 	}
 
-	/**
-	 * Get the md5 of the given key.
-	 */
 	private byte[] computeMd5(String value) {
 		MessageDigest md5;
 		try {
 			md5 = MessageDigest.getInstance("MD5");
 		} catch (NoSuchAlgorithmException e) {
-			throw new RuntimeException("MD5 not supported", e);
+			throw new RuntimeException("MD5 not supported .", e);
 		}
 		md5.reset();
 		byte[] keyBytes = null;
 		try {
 			keyBytes = value.getBytes("UTF-8");
 		} catch (UnsupportedEncodingException e) {
-			throw new RuntimeException("Unknown string :" + value, e);
+			throw new IllegalArgumentException("Unknown string :" + value, e);
 		}
 		md5.update(keyBytes);
 		return md5.digest();

@@ -31,6 +31,7 @@ public class CallBack extends TAsyncMethodCall<String> {
 		this.arg = arg;
 	}
 
+	@Override
 	public void write_args(TProtocol prot) throws TException {
 		prot.writeMessageBegin(new TMessage(Processor.FUNCTION_NAME, TMessageType.CALL, 0));
 		ArgsThriftBase args = new ArgsThriftBase();
@@ -39,6 +40,7 @@ public class CallBack extends TAsyncMethodCall<String> {
 		prot.writeMessageEnd();
 	}
 
+	@Override
 	public String getResult() throws TException {
 		if (getState() != TAsyncMethodCall.State.RESPONSE_READ)
 			throw new IllegalStateException("Method call not finished !");

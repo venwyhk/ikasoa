@@ -29,18 +29,18 @@ public class JsonProtocolHandlerImpl<T, R> implements ProtocolHandler<T, R> {
 	@SuppressWarnings("unchecked")
 	public T strToArg(String str) {
 		if (StringUtil.isEmpty(str))
-			throw new RuntimeException("parameters string can't null !");
+			throw new IllegalArgumentException("parameters string can't null !");
 		if ("[]".equals(str))
 			return null;
 		String[] strs = str.split(String.valueOf(CT));
 		if (strs.length != 2)
-			throw new RuntimeException("arg json string error : " + str);
+			throw new IllegalArgumentException("arg json string error : " + str);
 		String argClassStr = strs[0];
 		Class<?>[] argClasses = JSON.parseObject(argClassStr, Class[].class);
 		String argStr = strs[1];
 		String[] argStrs = JSON.parseObject(argStr, String[].class);
 		if (argStrs.length != argClasses.length)
-			throw new RuntimeException("parameters length is error !");
+			throw new IllegalArgumentException("parameters length is error !");
 		Object[] objs = new Object[argClasses.length];
 		for (int i = 0; i < argClasses.length; i++) {
 			String s = argStrs[i];
@@ -87,18 +87,18 @@ public class JsonProtocolHandlerImpl<T, R> implements ProtocolHandler<T, R> {
 			return null;
 		String[] strs = str.split(String.valueOf(CT));
 		if (strs.length != 2)
-			throw new RuntimeException("result json string error : " + str);
+			throw new IllegalArgumentException("result json string error : " + str);
 		String resultStr = strs[1];
 		R result = null;
 		if (resultData.isArray()) {
 			if (!resultData.isContainerType() && (List.class.getName().equals(resultData.getClassType().getName())
 					|| Set.class.getName().equals(resultData.getClassType().getName())))
-				throw new RuntimeException("'List' or 'Set' must appoint type ! eg : 'List<String>' .");
+				throw new IllegalArgumentException("'List' or 'Set' must appoint type ! eg : 'List<String>' .");
 			result = (R) JSON.parseArray(resultStr, resultData.getClassType());
 		} else if (resultData.isMap()) {
 			if (!resultData.isContainerType() && (Map.class.getName().equals(resultData.getClassType().getName())
 					&& resultData.getClassTypes().length != 2))
-				throw new RuntimeException("'Map' must appoint type ! eg : 'Map<String, String>' .");
+				throw new IllegalArgumentException("'Map' must appoint type ! eg : 'Map<String, String>' .");
 			JSONObject jsonMap = JSON.parseObject(resultStr);
 			Map<Object, Object> map = new HashMap<>(jsonMap.size());
 			for (String key : jsonMap.keySet())
