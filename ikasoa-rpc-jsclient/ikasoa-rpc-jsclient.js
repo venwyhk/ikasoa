@@ -10,10 +10,10 @@ JavaType = {
   _byte: { value: "byte", array: 0 },
   Byte: { value: "java.lang.Byte", array: 0 },
   _int: { value: "int", array: 0 },
-  Integer: { value: 'java.lang.Integer', array: 0 },
+  Integer: { value: "java.lang.Integer", array: 0 },
   _long: { value: "long", array: 0 },
   Long: { value: "java.lang.Long", array: 0 },
-  String: { value: 'java.lang.String', array: 0 },
+  String: { value: "java.lang.String", array: 0 },
   _float: { value: "float", array: 0 },
   Float: { value: "java.lang.Float", array: 0 },
   _double: { value: "double", array: 0 },
@@ -56,8 +56,8 @@ function getService(sUrl, cName, mName, rType, pTypes) {
     if (pTypes.length > 0) {
       pTypesStr = "[";
       for(i = 0; i < pTypes.length; i++) {
-        var prefix = suffix = '"';
-        if(pTypes.length != i + 1) suffix += ',';
+        var prefix = suffix = "\"";
+        if(pTypes.length !== i + 1) suffix += ",";
         pTypesStr += prefix + pTypes[i].value + suffix;
       }
       pTypesStr += "]";
@@ -71,7 +71,7 @@ Service = function(tService, pTypes, pTypesStr, rType) {
   this.pTypes = pTypes;
   this.pTypesStr = pTypesStr;
   this.rType = rType;
-}
+};
 
 Service.prototype.execute = function() {
   var argsStr = "";
@@ -80,7 +80,7 @@ Service.prototype.execute = function() {
     argsStr = String.fromCharCode(150) + "[";
     for(i = 0; i < this.pTypes.length; i++) {
       argsStr += JSON.stringify(arguments[i]);
-      if(arguments.length != i + 1) argsStr += ',';
+      if(arguments.length !== i + 1) argsStr += ",";
     }
     argsStr += "]";
   }
