@@ -50,8 +50,8 @@ function getService(sUrl, cName, mName, rType, pTypes) {
   var tTp = new Thrift.Transport(sUrl);
   var rTypeStr = "void";
   var pTypesStr = "[]";
-  if(rType !== null) rTypeStr = rType.value;
-  if(pTypes !== null) {
+  if(rType != null) rTypeStr = rType.value;
+  if(pTypes != null) {
     if(!(pTypes instanceof Array)) pTypes = new Array(pTypes);
     if (pTypes.length > 0) {
       pTypesStr = "[";
