@@ -158,7 +158,7 @@ ServiceClient.prototype.get = function(arg) {
 ServiceClient.prototype.sendGet = function(arg) {
     this.output.writeMessageBegin("get", Thrift.MessageType.CALL, this.seqid);
     var params = {
-        arg: arg
+        arg
     };
     var args = new ServiceGetArgs(params);
     args.write(this.output);
