@@ -39,7 +39,7 @@ public class ZkBase {
 
 	public ZkBase(String zkServerString, String zkNode) {
 		if (StringUtil.isEmpty(zkServerString))
-			throw new RuntimeException("'zkServerString' is null !");
+			throw new IllegalArgumentException("'zkServerString' is null !");
 		else
 			zkClient = new ZkClient(zkServerString);
 
