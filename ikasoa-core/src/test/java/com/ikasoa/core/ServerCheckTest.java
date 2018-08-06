@@ -30,7 +30,7 @@ public class ServerCheckTest extends TestCase {
 				configuration)) {
 			assertNull(defaultThriftClient1.getTransport());
 		} catch (Exception e) {
-			assertTrue(!StringUtil.equals("", e.getMessage()));
+			assertFalse(StringUtil.equals("", e.getMessage()));
 		}
 		try (ThriftClient defaultThriftClient2 = new DefaultThriftClientImpl("192.168.1.2", serverPort,
 				configuration)) {
