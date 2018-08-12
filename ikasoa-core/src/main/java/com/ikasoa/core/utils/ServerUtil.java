@@ -2,12 +2,15 @@ package com.ikasoa.core.utils;
 
 import java.util.regex.Pattern;
 
+import lombok.experimental.UtilityClass;
+
 /**
  * 服务器相关工具类
  * 
  * @author <a href="mailto:larry7696@gmail.com">Larry</a>
  * @version 0.4.5
  */
+@UtilityClass
 public class ServerUtil {
 
 	public static boolean isIpv4(String ip) {

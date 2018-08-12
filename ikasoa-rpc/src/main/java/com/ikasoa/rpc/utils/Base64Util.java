@@ -2,12 +2,15 @@ package com.ikasoa.rpc.utils;
 
 import java.util.Base64;
 
+import lombok.experimental.UtilityClass;
+
 /**
  * 编码工具
  * 
  * @author <a href="mailto:larry7696@gmail.com">Larry</a>
  * @version 0.1
  */
+@UtilityClass
 public class Base64Util {
 
 	/**

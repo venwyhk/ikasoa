@@ -7,6 +7,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
 import lombok.SneakyThrows;
+import lombok.experimental.UtilityClass;
 
 /**
  * 流处理工具
@@ -14,6 +15,7 @@ import lombok.SneakyThrows;
  * @author <a href="mailto:larry7696@gmail.com">Larry</a>
  * @version 0.1
  */
+@UtilityClass
 public class StreamUtil {
 
 	@SneakyThrows

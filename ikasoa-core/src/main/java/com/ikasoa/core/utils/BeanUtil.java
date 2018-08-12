@@ -6,6 +6,7 @@ import java.lang.reflect.Method;
 
 import com.ikasoa.core.IkasoaException;
 
+import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -15,6 +16,7 @@ import lombok.extern.slf4j.Slf4j;
  * @version 0.1
  */
 @Slf4j
+@UtilityClass
 public class BeanUtil {
 
 	/**

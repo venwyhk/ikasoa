@@ -1,5 +1,6 @@
 package com.ikasoa.core.utils;
 
+import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -9,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
  * @version 0.2
  */
 @Slf4j
+@UtilityClass
 public class StringUtil {
 
 	private final static String HEX_16 = "0123456789ABCDEF";
