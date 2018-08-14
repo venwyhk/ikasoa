@@ -55,7 +55,7 @@ public class ServerAutoConfiguration extends AbstractAutoConfiguration implement
 			log.debug("Add ikasoa service : {}", name);
 			try {
 				ImplWrapper iw = applicationContext != null && applicationContext.containsBean(name)
-						? new ImplWrapper(applicationContext.getBean(name).getClass())
+						? new ImplWrapper(applicationContext.getBean(name).getClass(), applicationContext.getBean(name))
 						: null;
 				Optional.ofNullable(iw).map(i -> implWrapperList.add(i)).orElseThrow(RpcException::new);
 			} catch (Exception e) {
