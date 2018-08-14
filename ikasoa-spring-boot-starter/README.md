@@ -61,7 +61,7 @@ Gradle
     <td>ikasoa.server.names</td>
     <td>服务名称</td>
     <td>(无)</td>
-    <td>服务端设置时与'ikasoa.server.classes'必填其中一项,可由@Service注解定义,多项可以","分隔.客户端设置不需要填写.</td>
+    <td>服务端设置时与'ikasoa.server.classes'必填其中一项,可由@Service注解定义,多项可以","分隔.客户端设置不需要填写.(推荐)</td>
   </tr>
   <tr>
     <td>ikasoa.server.classes</td>
