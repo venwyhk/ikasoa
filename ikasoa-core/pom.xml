@@ -8,36 +8,35 @@
     <name>Ikasoa Core</name>
     <description>ikasoa is a java distributed service framework.</description>
     <url>http://ikasoa.com/</url>
-    
+    <inceptionYear>2016</inceptionYear>
     <licenses>
         <license>
             <name>The MIT License</name>
             <url>http://www.opensource.org/licenses/mit-license.php</url>
         </license>
     </licenses>
-    
     <developers>
         <developer>
             <id>venwyhk</id>
             <name>Larry</name>
             <email>larry7696@gmail.com</email>
+            <roles> 
+                <role>Developer</role> 
+            </roles>
             <organization>ikasoa</organization>
             <organizationUrl>http://ikasoa.com/</organizationUrl>
         </developer>
     </developers>
-    
     <scm>
         <connection>scm:git:git://github.com/venwyhk/ikasoa.git</connection>
         <developerConnection>scm:git:ssh://github.com:venwyhk/ikasoa.git</developerConnection>
-        <url>http://github.com/venwyhk/ikasoa/tree/master</url>
+        <url>http://github.com/venwyhk/ikasoa</url>
     </scm>
-    
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
     </properties>
-    
     <build>
         <sourceDirectory>src/main/java</sourceDirectory>
         <testSourceDirectory>src/test/java</testSourceDirectory>
@@ -108,7 +107,6 @@
             </plugin>
         </plugins>
     </build>
-    
     <distributionManagement>
         <snapshotRepository>
             <id>ossrh</id>
@@ -119,7 +117,6 @@
             <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
         </repository>
     </distributionManagement>
-    
     <dependencies>
         <dependency>
             <groupId>javax.servlet</groupId>

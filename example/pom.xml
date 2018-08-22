@@ -8,29 +8,30 @@
     <name>Ikasoa RPC Example</name>
     <description>ikasoa is a java distributed service framework.</description>
     <url>http://ikasoa.com/</url>
-    
+    <inceptionYear>2016</inceptionYear>
     <licenses>
         <license>
             <name>The MIT License</name>
             <url>http://www.opensource.org/licenses/mit-license.php</url>
         </license>
     </licenses>
-    
     <developers>
         <developer>
+            <id>venwyhk</id>
             <name>Larry</name>
             <email>larry7696@gmail.com</email>
+            <roles> 
+                <role>Developer</role> 
+            </roles>
             <organization>ikasoa</organization>
             <organizationUrl>http://ikasoa.com/</organizationUrl>
         </developer>
     </developers>
-    
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
     </properties>
-    
     <build>
         <sourceDirectory>src/main/java</sourceDirectory>
         <plugins>
@@ -61,7 +62,6 @@
             </plugin>
         </plugins>
     </build>
-    
     <dependencies>
         <dependency>
             <groupId>com.ikasoa</groupId>
