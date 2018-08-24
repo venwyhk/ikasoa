@@ -25,7 +25,7 @@ Maven
     <dependency>
         <groupId>com.ikasoa</groupId>
         <artifactId>ikasoa-rpc</artifactId>
-        <version>0.3.3-ALPHA2</version>
+        <version>0.3.3-BETA</version>
     </dependency>
     ......
 ```
@@ -33,7 +33,7 @@ Maven
 Gradle
 
 ```
-    compile group: 'com.ikasoa', name: 'ikasoa-rpc', version: '0.3.3-ALPHA2'
+    compile group: 'com.ikasoa', name: 'ikasoa-rpc', version: '0.3.3-BETA'
 ```
 
 
@@ -48,7 +48,7 @@ Maven
     <dependency>
         <groupId>com.ikasoa</groupId>
         <artifactId>ikasoa-core</artifactId>
-        <version>0.5.4-ALPHA</version>
+        <version>0.5.4</version>
     </dependency>
     ......
 ```
@@ -56,7 +56,7 @@ Maven
 Gradle
 
 ```
-    compile group: 'com.ikasoa', name: 'ikasoa-core', version: '0.5.4-ALPHA'
+    compile group: 'com.ikasoa', name: 'ikasoa-core', version: '0.5.4'
 ```
 
 ## HelloWorld ##
@@ -485,8 +485,7 @@ web.xml
     ......
     XService xs = new DefaultIkasoaFactory().getInstance(XService.class, new ServerInfoWrapper(serverInfoList));
     // 也可以写为如下方式:
-    // Class loadBalanceClass = Class.forName("com.ikasoa.core.loadbalance.impl.PollingLoadBalanceImpl");
-    // XService xs = new DefaultIkasoaFactory().getInstance(XService.class, new ServerInfoWrapper(serverInfoList, loadBalanceClass));
+    // XService xs = new DefaultIkasoaFactory().getInstance(XService.class, new ServerInfoWrapper(serverInfoList, new PollingLoadBalanceImpl()));
     ......
 ```
 
@@ -496,8 +495,7 @@ web.xml
 
 ```java
     ......
-    Class loadBalanceClass = Class.forName("com.ikasoa.core.loadbalance.impl.RandomLoadBalanceImpl");
-    XService xs = new DefaultIkasoaFactory().getInstance(XService.class, new ServerInfoWrapper(serverInfoList, loadBalanceClass));
+    XService xs = new DefaultIkasoaFactory().getInstance(XService.class, new ServerInfoWrapper(serverInfoList, new RandomLoadBalanceImpl()));
     ......
 ```
 
@@ -511,8 +509,7 @@ web.xml
 
 ```java
     ......
-    Class loadBalanceClass = Class.forName("com.xxx.XLoadBalanceImpl");
-    XService xs = new DefaultIkasoaFactory().getInstance(XService.class, new ServerInfoWrapper(serverInfoList, loadBalanceClass));
+    XService xs = new DefaultIkasoaFactory().getInstance(XService.class, new ServerInfoWrapper(serverInfoList, new com.xxx.XLoadBalanceImpl()));
     ......
 ```
 
@@ -578,8 +575,7 @@ web.xml
     ......
     IkasoaFactory ikasoaFactory = new DefaultIkasoaFactory();
     // 也可以写为如下方式:
-    // Class protocolHandlerClass = Class.forName("com.ikasoa.rpc.handler.impl.JsonProtocolHandlerImpl");
-    // IkasoaFactory ikasoaFactory = new DefaultIkasoaFactory(new Configurator(protocolHandlerClass));
+    // IkasoaFactory ikasoaFactory = new DefaultIkasoaFactory(new Configurator(new JsonProtocolHandlerImpl<>()));
     ......
 ```
 
@@ -587,8 +583,7 @@ web.xml
 
 ```java
     ......
-    Class protocolHandlerClass = Class.forName("com.ikasoa.rpc.handler.impl.XmlProtocolHandlerImpl");
-    IkasoaFactory ikasoaFactory = new DefaultIkasoaFactory(new Configurator(protocolHandlerClass));
+    IkasoaFactory ikasoaFactory = new DefaultIkasoaFactory(new Configurator(new XmlProtocolHandlerImpl<>()));
     ......
 ```
 
@@ -596,8 +591,7 @@ web.xml
 
 ```java
     ......
-    Class protocolHandlerClass = Class.forName("com.ikasoa.rpc.handler.impl.KryoProtocolHandlerImpl");
-    IkasoaFactory ikasoaFactory = new DefaultIkasoaFactory(new Configurator(protocolHandlerClass));
+    IkasoaFactory ikasoaFactory = new DefaultIkasoaFactory(new Configurator(new KryoProtocolHandlerImpl<>()));
     ......
 ```
 
@@ -611,8 +605,7 @@ web.xml
 
 ```java
     ......
-    Class protocolHandlerClass = Class.forName("com.xx.XProtocolHandlerImpl");
-    IkasoaFactory ikasoaFactory = new DefaultIkasoaFactory(new Configurator(protocolHandlerClass));
+    IkasoaFactory ikasoaFactory = new DefaultIkasoaFactory(new Configurator(new com.xxx.XProtocolHandlerImpl<>()));
     ......
 ```
 

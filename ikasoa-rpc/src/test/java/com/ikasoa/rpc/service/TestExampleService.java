@@ -14,6 +14,9 @@ import com.ikasoa.rpc.IkasoaServer;
 import com.ikasoa.rpc.ImplWrapper;
 import com.ikasoa.rpc.NettyIkasoaFactory;
 import com.ikasoa.rpc.ServerInfoWrapper;
+import com.ikasoa.rpc.handler.impl.KryoProtocolHandlerImpl;
+import com.ikasoa.rpc.handler.impl.SerializableProtocolHandlerImpl;
+import com.ikasoa.rpc.handler.impl.XmlProtocolHandlerImpl;
 import com.ikasoa.rpc.Configurator;
 import com.ikasoa.rpc.DefaultIkasoaFactory;
 import com.ikasoa.rpc.IkasoaFactory;
@@ -59,12 +62,10 @@ public class TestExampleService extends TestCase {
 	}
 
 	@Test
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void testDefaultKryoService() throws ClassNotFoundException {
 		Configurator configurator = new Configurator();
 		configurator.setThriftServerConfiguration(thriftServerConfiguration);
-		Class protocolHandlerClass = Class.forName("com.ikasoa.rpc.handler.impl.KryoProtocolHandlerImpl");
-		configurator.setProtocolHandlerClass(protocolHandlerClass);
+		configurator.setProtocolHandler(new KryoProtocolHandlerImpl<>());
 		invoke(new DefaultIkasoaFactory(configurator), 9904);
 		// 测试NIO方式
 		configurator.setNonBlockingIO(true);
@@ -72,19 +73,15 @@ public class TestExampleService extends TestCase {
 	}
 
 	@Test
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void testNettyKryoService() throws ClassNotFoundException {
-		Class protocolHandlerClass = Class.forName("com.ikasoa.rpc.handler.impl.KryoProtocolHandlerImpl");
-		invoke(new NettyIkasoaFactory(new Configurator(protocolHandlerClass)), 9906);
+		invoke(new NettyIkasoaFactory(new Configurator(new KryoProtocolHandlerImpl<>())), 9906);
 	}
 
 	@Test
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void testDefaultXmlService() throws ClassNotFoundException {
 		Configurator configurator = new Configurator();
 		configurator.setThriftServerConfiguration(thriftServerConfiguration);
-		Class protocolHandlerClass = Class.forName("com.ikasoa.rpc.handler.impl.XmlProtocolHandlerImpl");
-		configurator.setProtocolHandlerClass(protocolHandlerClass);
+		configurator.setProtocolHandler(new XmlProtocolHandlerImpl<>());
 		invoke(new DefaultIkasoaFactory(configurator), 9907);
 		// 测试NIO方式
 		configurator.setNonBlockingIO(true);
@@ -92,19 +89,15 @@ public class TestExampleService extends TestCase {
 	}
 
 	@Test
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void testNettyXmlService() throws ClassNotFoundException {
-		Class protocolHandlerClass = Class.forName("com.ikasoa.rpc.handler.impl.XmlProtocolHandlerImpl");
-		invoke(new NettyIkasoaFactory(new Configurator(protocolHandlerClass)), 9909);
+		invoke(new NettyIkasoaFactory(new Configurator(new XmlProtocolHandlerImpl<>())), 9909);
 	}
 	
 	@Test
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void testDefaultSerializableService() throws ClassNotFoundException {
 		Configurator configurator = new Configurator();
 		configurator.setThriftServerConfiguration(thriftServerConfiguration);
-		Class protocolHandlerClass = Class.forName("com.ikasoa.rpc.handler.impl.SerializableProtocolHandlerImpl");
-		configurator.setProtocolHandlerClass(protocolHandlerClass);
+		configurator.setProtocolHandler(new SerializableProtocolHandlerImpl<>());
 		invoke(new DefaultIkasoaFactory(configurator), 9910);
 		// 测试NIO方式
 		configurator.setNonBlockingIO(true);
@@ -112,10 +105,8 @@ public class TestExampleService extends TestCase {
 	}
 
 	@Test
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void testNettySerializableService() throws ClassNotFoundException {
-		Class protocolHandlerClass = Class.forName("com.ikasoa.rpc.handler.impl.SerializableProtocolHandlerImpl");
-		invoke(new NettyIkasoaFactory(new Configurator(protocolHandlerClass)), 9912);
+		invoke(new NettyIkasoaFactory(new Configurator(new SerializableProtocolHandlerImpl<>())), 9912);
 	}
 
 	private void invoke(IkasoaFactory ikasoaFactory, int port) {

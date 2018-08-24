@@ -36,8 +36,7 @@ public class Configurator {
 	/**
 	 * 转换协议实现类
 	 */
-	@SuppressWarnings("rawtypes")
-	private Class<ProtocolHandler> protocolHandlerClass;
+	private ProtocolHandler<?, ?> protocolHandler;
 
 	/**
 	 * 客户端调用拦截器
@@ -53,15 +52,13 @@ public class Configurator {
 		this.serverInfoWrapper = serverInfoWrapper;
 	}
 
-	@SuppressWarnings("rawtypes")
-	public Configurator(Class<ProtocolHandler> protocolHandlerClass) {
-		this.protocolHandlerClass = protocolHandlerClass;
+	public Configurator(ProtocolHandler<?, ?> protocolHandler) {
+		this.protocolHandler = protocolHandler;
 	}
 
-	@SuppressWarnings("rawtypes")
-	public Configurator(ServerInfoWrapper serverInfoWrapper, Class<ProtocolHandler> protocolHandlerClass) {
+	public Configurator(ServerInfoWrapper serverInfoWrapper, ProtocolHandler<?, ?> protocolHandler) {
 		this.serverInfoWrapper = serverInfoWrapper;
-		this.protocolHandlerClass = protocolHandlerClass;
+		this.protocolHandler = protocolHandler;
 	}
 
 }

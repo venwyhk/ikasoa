@@ -28,8 +28,7 @@ public class BaseGetServiceFactory<T, R> extends GeneralFactory {
 
 	@Getter
 	@Setter
-	@SuppressWarnings("rawtypes")
-	private Class<ProtocolHandler> protocolHandlerClass;
+	private ProtocolHandler<?, ?> protocolHandler;
 
 	@Getter
 	@Setter
@@ -50,7 +49,7 @@ public class BaseGetServiceFactory<T, R> extends GeneralFactory {
 
 	public BaseGetService<T, R> getBaseGetService(ThriftClient thriftClient, String serviceKey, ReturnData resultData) {
 		return getBaseGetService(thriftClient, serviceKey,
-				protocolHandlerFactory.getProtocolHandler(resultData, getProtocolHandlerClass()));
+				protocolHandlerFactory.getProtocolHandler(resultData, getProtocolHandler()));
 	}
 
 	public BaseGetService<T, R> getBaseGetService(ThriftClient thriftClient, String serviceKey,

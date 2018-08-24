@@ -1,5 +1,7 @@
 package com.ikasoa.rpc.handler;
 
+import com.ikasoa.rpc.handler.impl.JsonProtocolHandlerImpl;
+
 import lombok.SneakyThrows;
 
 /**
@@ -10,7 +12,10 @@ import lombok.SneakyThrows;
  */
 public class ProtocolHandlerFactory<T, R> {
 
-	private static final String DEFAULT_PROTOCOL_HANDLER_CLASS_STRING = "com.ikasoa.rpc.handler.impl.JsonProtocolHandlerImpl";
+	/**
+	 * 默认转换协议处理器F实现
+	 */
+	private static final ProtocolHandler<?, ?> DEFAULT_PROTOCOL_HANDLER = new JsonProtocolHandlerImpl<>();
 
 	public ProtocolHandler<T, R> getProtocolHandler(ReturnData resultData) {
 		return getProtocolHandler(resultData, null);
@@ -18,14 +23,13 @@ public class ProtocolHandlerFactory<T, R> {
 
 	@SneakyThrows
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public ProtocolHandler<T, R> getProtocolHandler(ReturnData resultData,
-			Class<ProtocolHandler> protocolHandlerClass) {
+	public ProtocolHandler<T, R> getProtocolHandler(ReturnData resultData, ProtocolHandler<?, ?> protocolHandler) {
 		Class[] paramTypes = { ReturnData.class };
 		Object[] params = { resultData };
-		return protocolHandlerClass == null
-				? (ProtocolHandler<T, R>) Class.forName(DEFAULT_PROTOCOL_HANDLER_CLASS_STRING)
-						.getConstructor(paramTypes).newInstance(params)
-				: (ProtocolHandler<T, R>) protocolHandlerClass.getConstructor(paramTypes).newInstance(params);
+		return protocolHandler == null
+				? (ProtocolHandler<T, R>) DEFAULT_PROTOCOL_HANDLER.getClass().getConstructor(paramTypes)
+						.newInstance(params)
+				: (ProtocolHandler<T, R>) protocolHandler.getClass().getConstructor(paramTypes).newInstance(params);
 	}
 
 }

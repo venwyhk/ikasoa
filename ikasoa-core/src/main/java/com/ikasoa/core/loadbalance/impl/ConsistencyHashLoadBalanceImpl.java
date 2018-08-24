@@ -14,6 +14,7 @@ import com.ikasoa.core.loadbalance.LoadBalance;
 import com.ikasoa.core.loadbalance.ServerInfo;
 import com.ikasoa.core.utils.StringUtil;
 
+import lombok.NoArgsConstructor;
 import lombok.SneakyThrows;
 
 /**
@@ -22,6 +23,7 @@ import lombok.SneakyThrows;
  * @author <a href="mailto:larry7696@gmail.com">Larry</a>
  * @version 0.5
  */
+@NoArgsConstructor
 public class ConsistencyHashLoadBalanceImpl implements LoadBalance {
 
 	private TreeMap<Long, ServerInfo> nodes = null;

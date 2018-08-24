@@ -7,6 +7,7 @@ import com.ikasoa.core.IkasoaException;
 import com.ikasoa.core.loadbalance.LoadBalance;
 import com.ikasoa.core.loadbalance.ServerInfo;
 
+import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -15,6 +16,7 @@ import lombok.extern.slf4j.Slf4j;
  * @author <a href="mailto:larry7696@gmail.com">Larry</a>
  * @version 0.1
  */
+@NoArgsConstructor
 @Slf4j
 public class RandomLoadBalanceImpl implements LoadBalance {
 

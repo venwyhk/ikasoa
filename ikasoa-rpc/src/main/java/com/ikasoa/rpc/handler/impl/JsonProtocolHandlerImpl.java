@@ -13,6 +13,7 @@ import com.ikasoa.rpc.handler.ProtocolHandler;
 import com.ikasoa.rpc.handler.ReturnData;
 
 import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 
 /**
  * 转换协议处理器JSON实现
@@ -21,6 +22,7 @@ import lombok.AllArgsConstructor;
  * @version 0.1
  */
 @AllArgsConstructor
+@NoArgsConstructor
 public class JsonProtocolHandlerImpl<T, R> implements ProtocolHandler<T, R> {
 
 	private ReturnData resultData;

@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.ikasoa</groupId>
     <artifactId>ikasoa-spring-boot-starter</artifactId>
-    <version>0.1.2-ALPHA</version>
+    <version>0.1.2-BETA</version>
     <packaging>jar</packaging>
     <name>Ikasoa Spring-boot Starter</name>
     <description>spring-boot starter for ikasoa.</description>
@@ -137,7 +137,7 @@
         <dependency>
             <groupId>com.ikasoa</groupId>
             <artifactId>ikasoa-rpc</artifactId>
-            <version>0.3.3-ALPHA2</version>
+            <version>0.3.3-BETA</version>
         </dependency>
         <dependency>
             <groupId>com.ikasoa</groupId>

@@ -60,12 +60,9 @@ public class ClientTest extends TestCase {
 			String serverHost2 = "127.0.0.1";
 			int serverPort2 = 29002;
 			serverInfoList.add(new ServerInfo(serverHost2, serverPort2));
-			@SuppressWarnings("rawtypes")
-			Class cls = Class.forName("com.ikasoa.core.loadbalance.impl.PollingLoadBalanceImpl");
 			@Cleanup
-			@SuppressWarnings("unchecked")
 			ThriftClient loadBalanceThriftClient2 = new GeneralFactory(configuration).getThriftClient(serverInfoList,
-					cls);
+					new PollingLoadBalanceImpl());
 			loadBalanceThriftClient2.getTransport();
 			assertEquals(loadBalanceThriftClient2.getServerHost(), serverHost1);
 			assertEquals(loadBalanceThriftClient2.getServerPort(), serverPort1);

@@ -65,11 +65,11 @@ public class ServiceProxy {
 		return defaultFactory.getInstance(iClass, new ServerInfoWrapper(host, port));
 	}
 
-	public <T> T getService(Class<T> iClass, Class<LoadBalance> loadBalanceClass) {
+	public <T> T getService(Class<T> iClass, LoadBalance loadBalance) {
 		if (defaultFactory == null)
 			defaultFactory = ikasoaFactoryFactory.getIkasoaDefaultFactory();
-		return !serverInfoList.isEmpty() && loadBalanceClass != null
-				? defaultFactory.getInstance(iClass, new ServerInfoWrapper(serverInfoList, loadBalanceClass))
+		return !serverInfoList.isEmpty() && loadBalance != null
+				? defaultFactory.getInstance(iClass, new ServerInfoWrapper(serverInfoList, loadBalance))
 				: getService(iClass);
 	}
 
@@ -79,11 +79,11 @@ public class ServiceProxy {
 		return nettyFactory.getInstance(iClass, new ServerInfoWrapper(host, port));
 	}
 
-	public <T> T getNettyService(Class<T> iClass, Class<LoadBalance> loadBalanceClass) {
+	public <T> T getNettyService(Class<T> iClass, LoadBalance loadBalance) {
 		if (nettyFactory == null)
 			nettyFactory = ikasoaFactoryFactory.getIkasoaNettyFactory();
-		return !serverInfoList.isEmpty() && loadBalanceClass != null
-				? nettyFactory.getInstance(iClass, new ServerInfoWrapper(serverInfoList, loadBalanceClass))
+		return !serverInfoList.isEmpty() && loadBalance != null
+				? nettyFactory.getInstance(iClass, new ServerInfoWrapper(serverInfoList, loadBalance))
 				: getNettyService(iClass);
 	}
 

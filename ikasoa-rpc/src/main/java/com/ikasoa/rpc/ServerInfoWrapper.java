@@ -26,7 +26,7 @@ public class ServerInfoWrapper {
 	/**
 	 * 负载均衡实现类
 	 */
-	private Class<LoadBalance> loadBalanceClass;
+	private LoadBalance loadBalance;
 
 	/**
 	 * 自定义参数 (比如负载均衡的hash值等)
@@ -41,17 +41,15 @@ public class ServerInfoWrapper {
 		this.serverInfoList = serverInfoList;
 	}
 
-	public ServerInfoWrapper(List<ServerInfo> serverInfoList, Class<LoadBalance> loadBalanceClass) {
+	public ServerInfoWrapper(List<ServerInfo> serverInfoList, LoadBalance loadBalance) {
 		this.serverInfoList = serverInfoList;
-		this.loadBalanceClass = loadBalanceClass;
-
+		this.loadBalance = loadBalance;
 	}
 
-	public ServerInfoWrapper(List<ServerInfo> serverInfoList, Class<LoadBalance> loadBalanceClass, String param) {
+	public ServerInfoWrapper(List<ServerInfo> serverInfoList, LoadBalance loadBalance, String param) {
 		this.serverInfoList = serverInfoList;
-		this.loadBalanceClass = loadBalanceClass;
+		this.loadBalance = loadBalance;
 		this.param = param;
-
 	}
 
 	public boolean isNotNull() {

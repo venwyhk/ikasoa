@@ -10,7 +10,6 @@ import java.util.Optional;
 import org.apache.thrift.TProcessor;
 
 import com.ikasoa.core.IkasoaException;
-import com.ikasoa.core.loadbalance.LoadBalance;
 import com.ikasoa.core.loadbalance.ServerInfo;
 import com.ikasoa.core.thrift.GeneralFactory;
 import com.ikasoa.core.thrift.client.ThriftClient;
@@ -78,40 +77,20 @@ public class DefaultIkasoaFactory extends GeneralFactory implements IkasoaFactor
 		if (siw == null || !siw.isNotNull())
 			throw new IllegalArgumentException("'serverInfoWrapper' is exist !");
 		return (T) Proxy
-				.newProxyInstance(iClass.getClassLoader(), new Class<?>[] { iClass },
-						(proxy, iMethod, args) -> getBaseGetServiceFactory().getBaseGetService(
-								siw.isCluster()
-										? siw.getLoadBalanceClass() == null ? getThriftClient(siw.getServerInfoList())
-												: getThriftClient(siw.getServerInfoList(), siw.getLoadBalanceClass(),
-														siw.getParam())
-										: getThriftClient(siw.getHost(), siw.getPort()),
-								getSKey(iClass, iMethod, true), new ReturnData(iMethod)).get(args));
-	}
-
-	@Override
-	@Deprecated
-	public <T> T getIkasoaClient(Class<T> iClass, String serverHost, int serverPort) {
-		return getInstance(iClass, new ServerInfoWrapper(serverHost, serverPort));
-	}
-
-	@Override
-	@Deprecated
-	public <T> T getIkasoaClient(Class<T> iClass, List<ServerInfo> serverInfoList) {
-		return getInstance(iClass, new ServerInfoWrapper(serverInfoList));
-	}
-
-	@Override
-	@Deprecated
-	public <T> T getIkasoaClient(Class<T> iClass, List<ServerInfo> serverInfoList,
-			Class<LoadBalance> loadBalanceClass) {
-		return getInstance(iClass, new ServerInfoWrapper(serverInfoList, loadBalanceClass));
-	}
-
-	@Override
-	@Deprecated
-	public <T> T getIkasoaClient(Class<T> iClass, List<ServerInfo> serverInfoList, Class<LoadBalance> loadBalanceClass,
-			String param) {
-		return getInstance(iClass, new ServerInfoWrapper(serverInfoList, loadBalanceClass, param));
+				.newProxyInstance(iClass.getClassLoader(),
+						new Class<?>[] {
+								iClass },
+						(proxy, iMethod,
+								args) -> getBaseGetServiceFactory()
+										.getBaseGetService(
+												siw.isCluster()
+														? siw.getLoadBalance() == null
+																? getThriftClient(siw.getServerInfoList())
+																: getThriftClient(siw.getServerInfoList(),
+																		siw.getLoadBalance(), siw.getParam())
+														: getThriftClient(siw.getHost(), siw.getPort()),
+												getSKey(iClass, iMethod, true), new ReturnData(iMethod))
+										.get(args));
 	}
 
 	@Override
@@ -242,18 +221,17 @@ public class DefaultIkasoaFactory extends GeneralFactory implements IkasoaFactor
 			else
 				// 过滤掉无效方法
 				for (Method iMethod : iClass.getMethods())
-					if (!iMethod.isAnnotationPresent(Invalid.class) && compareMethod(iMethod, implMethod)) {
-						isValidMethod = Boolean.TRUE;
-						break;
-					}
+				if (!iMethod.isAnnotationPresent(Invalid.class) && compareMethod(iMethod, implMethod)) {
+				isValidMethod = Boolean.TRUE;
+				break;
+				}
 			if (!isValidMethod)
 				continue;
 			String sKey = getSKey(iClass, implMethod, false);
 			if (StringUtil.isEmpty(sKey))
 				continue;
 			Service iss = (Service) IkasoaServerService.class.getDeclaredConstructors()[0].newInstance(implObject,
-					implMethod,
-					protocolHandlerFactory.getProtocolHandler(null, configurator.getProtocolHandlerClass()));
+					implMethod, protocolHandlerFactory.getProtocolHandler(null, configurator.getProtocolHandler()));
 			log.debug("Builder Ikasoa service : {}", sKey);
 			serviceMap.put(sKey, iss);
 		}
@@ -262,7 +240,7 @@ public class DefaultIkasoaFactory extends GeneralFactory implements IkasoaFactor
 	private <T> BaseGetServiceFactory<Object[], T> getBaseGetServiceFactory() {
 		BaseGetServiceFactory<Object[], T> bgsFactory = new BaseGetServiceFactory<>(thriftServerConfiguration,
 				thriftClientConfiguration);
-		bgsFactory.setProtocolHandlerClass(configurator.getProtocolHandlerClass());
+		bgsFactory.setProtocolHandler(configurator.getProtocolHandler());
 		bgsFactory.setClientInvocationHandler(configurator.getClientInvocationHandler());
 		return bgsFactory;
 	}

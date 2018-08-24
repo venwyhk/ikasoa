@@ -6,6 +6,7 @@ import com.ikasoa.rpc.handler.ReturnData;
 import com.ikasoa.rpc.utils.StreamUtil;
 
 import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 
 /**
  * 转换协议处理器JavaSerializable实现 (BETA)
@@ -16,6 +17,7 @@ import lombok.AllArgsConstructor;
  * @version 0.3.3
  */
 @AllArgsConstructor
+@NoArgsConstructor
 public class SerializableProtocolHandlerImpl<T, R> implements ProtocolHandler<T, R> {
 
 	private ReturnData resultData;

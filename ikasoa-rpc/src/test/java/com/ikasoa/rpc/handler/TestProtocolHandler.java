@@ -2,6 +2,9 @@ package com.ikasoa.rpc.handler;
 
 import org.junit.Test;
 
+import com.ikasoa.rpc.handler.impl.KryoProtocolHandlerImpl;
+import com.ikasoa.rpc.handler.impl.SerializableProtocolHandlerImpl;
+import com.ikasoa.rpc.handler.impl.XmlProtocolHandlerImpl;
 import com.ikasoa.rpc.service.ExampleVO;
 
 import junit.framework.TestCase;
@@ -24,7 +27,7 @@ public class TestProtocolHandler extends TestCase {
 	@Test
 	public void testXmlProtocolHandlerImpl() {
 		try {
-			test(Class.forName("com.ikasoa.rpc.handler.impl.XmlProtocolHandlerImpl"));
+			test(new XmlProtocolHandlerImpl<>());
 		} catch (Exception e) {
 			fail();
 		}
@@ -33,7 +36,7 @@ public class TestProtocolHandler extends TestCase {
 	@Test
 	public void testKryoProtocolHandlerImpl() {
 		try {
-			test(Class.forName("com.ikasoa.rpc.handler.impl.KryoProtocolHandlerImpl"));
+			test(new KryoProtocolHandlerImpl<>());
 		} catch (Exception e) {
 			fail();
 		}
@@ -42,17 +45,16 @@ public class TestProtocolHandler extends TestCase {
 	@Test
 	public void testSerializableProtocolHandlerImpl() {
 		try {
-			test(Class.forName("com.ikasoa.rpc.handler.impl.SerializableProtocolHandlerImpl"));
+			test(new SerializableProtocolHandlerImpl<>());
 		} catch (Exception e) {
 			fail();
 		}
 	}
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	private void test(Class protocolHandlerClass) throws ClassNotFoundException {
+	private void test(ProtocolHandler<?, ?> protocolHandler) throws ClassNotFoundException {
 		ProtocolHandlerFactory<Object[], ExampleVO> chf = new ProtocolHandlerFactory<>();
 		ReturnData rd = new ReturnData(ExampleVO.class);
-		ProtocolHandler<Object[], ExampleVO> ch = chf.getProtocolHandler(rd, protocolHandlerClass);
+		ProtocolHandler<Object[], ExampleVO> ch = chf.getProtocolHandler(rd, protocolHandler);
 
 		String as = ch.argToStr(new Object[] { evo });
 		Object[] evoo = ch.strToArg(as);

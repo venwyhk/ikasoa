@@ -11,12 +11,15 @@ import com.ikasoa.rpc.handler.ProtocolHandler;
 import com.ikasoa.rpc.handler.ReturnData;
 import com.ikasoa.rpc.utils.Base64Util;
 
+import lombok.NoArgsConstructor;
+
 /**
  * 转换协议处理器Kryo实现
  * 
  * @author <a href="mailto:larry7696@gmail.com">Larry</a>
  * @version 0.1
  */
+@NoArgsConstructor
 public class KryoProtocolHandlerImpl<T, R> implements ProtocolHandler<T, R> {
 
 	private ReturnData resultData;

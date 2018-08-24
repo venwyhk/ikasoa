@@ -169,25 +169,24 @@ public interface Factory {
 	 * 
 	 * @param serverInfoList
 	 *            服务器信息列表
-	 * @param loadBalanceClass
+	 * @param loadBalance
 	 *            负载均衡实现类
 	 * @return ThriftClient Thrift客户端
 	 */
-	public ThriftClient getThriftClient(List<ServerInfo> serverInfoList, Class<LoadBalance> loadBalanceClass);
+	public ThriftClient getThriftClient(List<ServerInfo> serverInfoList, LoadBalance loadBalance);
 
 	/**
 	 * 获取带负载均衡的ThriftClient对象
 	 * 
 	 * @param serverInfoList
 	 *            服务器信息列表
-	 * @param loadBalanceClass
+	 * @param loadBalance
 	 *            负载均衡实现类
 	 * @param param
 	 *            负载均衡实现参数
 	 * @return ThriftClient Thrift客户端
 	 */
-	public ThriftClient getThriftClient(List<ServerInfo> serverInfoList, Class<LoadBalance> loadBalanceClass,
-			String param);
+	public ThriftClient getThriftClient(List<ServerInfo> serverInfoList, LoadBalance loadBalance, String param);
 
 	/**
 	 * 获取客户端Service对象

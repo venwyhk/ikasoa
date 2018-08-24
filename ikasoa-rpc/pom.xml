@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.ikasoa</groupId>
     <artifactId>ikasoa-rpc</artifactId>
-    <version>0.3.3-ALPHA2</version>
+    <version>0.3.3-BETA</version>
     <packaging>jar</packaging>
     <name>Ikasoa RPC</name>
     <description>ikasoa-rpc is a high performance RPC（Remote Procedure Call) framework.</description>
@@ -121,7 +121,7 @@
         <dependency>
             <groupId>com.ikasoa</groupId>
             <artifactId>ikasoa-core</artifactId>
-            <version>0.5.4-ALPHA</version>
+            <version>0.5.4</version>
         </dependency>
         <dependency>
             <groupId>io.netty</groupId>

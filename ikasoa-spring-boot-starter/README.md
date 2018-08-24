@@ -25,7 +25,7 @@ Maven
     <dependency>
         <groupId>com.ikasoa</groupId>
         <artifactId>ikasoa-spring-boot-starter</artifactId>
-        <version>0.1.1-ALPHA</version>
+        <version>0.1.2-BETA</version>
     </dependency>
     ......
 ```
@@ -33,7 +33,7 @@ Maven
 Gradle
 
 ```
-    compile group: 'com.ikasoa', name: 'ikasoa-spring-boot-starter', version: '0.1.1-ALPHA'
+    compile group: 'com.ikasoa', name: 'ikasoa-spring-boot-starter', version: '0.1.2-BETA'
 ```
 
 ## application.properties设置说明 ##
