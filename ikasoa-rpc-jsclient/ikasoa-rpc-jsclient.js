@@ -50,14 +50,15 @@ function getService(sUrl, cName, mName, rType, pTypes) {
     var tTp = new Thrift.Transport(sUrl);
     var rTypeStr = "void";
     var pTypesStr = "[]";
-    if(rType != null) rTypeStr = rType.value;
+    if(rType != null) {rTypeStr = rType.value;}
     if(pTypes != null) {
-        if(!(pTypes instanceof Array)) pTypes = new Array(pTypes);
+        if(!(pTypes instanceof Array)) {pTypes = new Array(pTypes);}
         if (pTypes.length > 0) {
             pTypesStr = "[";
             for(var i = 0; i < pTypes.length; i++) {
-                var prefix = suffix = "\"";
-                if(pTypes.length !== i + 1) suffix += ",";
+                var prefix = "\"";
+                var suffix = prefix;
+                if(pTypes.length !== i + 1) {suffix += ",";}
                 pTypesStr += prefix + pTypes[i].value + suffix;
             }
             pTypesStr += "]";
@@ -66,7 +67,7 @@ function getService(sUrl, cName, mName, rType, pTypes) {
     return new Service(tMp.createClient(('{"iClass"|"' + cName + '","methodName"|"' + mName + '","parameterTypes"|' + pTypesStr + ',"returnType"|"' + rTypeStr + '"}').replace(/\"/g, '\\"'), ServiceClient, tTp), pTypes, pTypesStr, rType);
 }
 
-Service = function(tService, pTypes, pTypesStr, rType) {
+var Service = function(tService, pTypes, pTypesStr, rType) {
     this.tService = tService;
     this.pTypes = pTypes;
     this.pTypesStr = pTypesStr;
@@ -76,25 +77,26 @@ Service = function(tService, pTypes, pTypesStr, rType) {
 Service.prototype.execute = function() {
     var argsStr = "";
     if (arguments.length > 0) {
-        if(arguments.length < this.pTypes.length) throw "Arguments length error !";
+        if(arguments.length < this.pTypes.length) {throw "Arguments length error !";}
         argsStr = String.fromCharCode(150) + "[";
         for(var i = 0; i < this.pTypes.length; i++) {
             argsStr += JSON.stringify(arguments[i]);
-            if(arguments.length !== i + 1) argsStr += ",";
+            if(arguments.length !== i + 1) {argsStr += ",";}
         }
         argsStr += "]";
     }
     var r = this.tService.get(this.pTypesStr + argsStr).split(String.fromCharCode(150));
-    if(r.length == 1)
-        if(r[0] == String.fromCharCode(152)) return;
-        else throw JSON.parse(r[0]);
-    if(this.rType.array) return JSON.parse(r[1]);
+    if(r.length == 1) {
+        if(r[0] == String.fromCharCode(152)) {return;}
+        else {throw JSON.parse(r[0]);}
+    }
+    if(this.rType.array) {return JSON.parse(r[1]);}
     return r[1];
 };
 
-ServiceGetArgs = function(args) {
+var ServiceGetArgs = function(args) {
     this.arg = null;
-    if (args && args.arg !== undefined && args.arg !== null) this.arg = args.arg;
+    if (args && args.arg !== undefined && args.arg !== null) {this.arg = args.arg;}
 };
 
 ServiceGetArgs.prototype = {};
@@ -111,9 +113,9 @@ ServiceGetArgs.prototype.write = function(output) {
     return;
 };
 
-ServiceGetResult = function(args) {
+var ServiceGetResult = function(args) {
     this.success = null;
-    if (args && args.success !== undefined && args.success !== null) this.success = args.success;
+    if (args && args.success !== undefined && args.success !== null) {this.success = args.success;}
 };
 
 ServiceGetResult.prototype = {};
@@ -122,8 +124,8 @@ ServiceGetResult.prototype.read = function(input) {
     input.readStructBegin();
     while(true) {
         var ret = input.readFieldBegin();
-        if(ret.ftype == Thrift.Type.STOP) break;
-        if(ret.fid == 0) this.success = input.readString().value;
+        if(ret.ftype == Thrift.Type.STOP) {break;}
+        if(ret.fid == 0) {this.success = input.readString().value;}
         input.readFieldEnd();
     }
     input.readStructEnd();
@@ -142,7 +144,7 @@ ServiceGetResult.prototype.write = function(output) {
     return;
 };
 
-ServiceClient = function(input, output) {
+var ServiceClient = function(input, output) {
     this.input = input;
     this.output = (!output) ? input : output;
     this.seqid = 0;
@@ -157,9 +159,7 @@ ServiceClient.prototype.get = function(arg) {
 
 ServiceClient.prototype.sendGet = function(arg) {
     this.output.writeMessageBegin("get", Thrift.MessageType.CALL, this.seqid);
-    var params = {
-        arg: arg
-    };
+    var params = {arg: arg};
     var args = new ServiceGetArgs(params);
     args.write(this.output);
     this.output.writeMessageEnd();
@@ -171,6 +171,6 @@ ServiceClient.prototype.recvGet = function() {
     var result = new ServiceGetResult();
     result.read(this.input);
     this.input.readMessageEnd();
-    if (null !== result.success) return result.success;
+    if (null !== result.success) {return result.success;}
     throw "get failed: unknown result";
 };
