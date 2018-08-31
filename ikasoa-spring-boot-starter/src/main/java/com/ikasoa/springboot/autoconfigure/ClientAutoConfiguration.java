@@ -86,7 +86,7 @@ public class ClientAutoConfiguration extends AbstractAutoConfiguration implement
 			if (rpcEurekaClientAttributes.containsKey("port"))
 				eurekaAppPort = (Integer) rpcEurekaClientAttributes.get("port");
 			if (rpcEurekaClientAttributes.containsKey("config"))
-				configurator = rpcClientAttributes.get("config").toString();
+				configurator = rpcEurekaClientAttributes.get("config").toString();
 		}
 	}
 
