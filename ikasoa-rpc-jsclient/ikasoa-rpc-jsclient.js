@@ -45,6 +45,13 @@ var _JavaType = function(value, array) {
     this.array = array;
 };
 
+var Service = function(tService, pTypes, pTypesStr, rType) {
+    this.tService = tService;
+    this.pTypes = pTypes;
+    this.pTypesStr = pTypesStr;
+    this.rType = rType;
+};
+
 function getService(sUrl, cName, mName, rType, pTypes) {
     var tMp = new Thrift.Multiplexer();
     var tTp = new Thrift.Transport(sUrl);
@@ -66,13 +73,6 @@ function getService(sUrl, cName, mName, rType, pTypes) {
     }
     return new Service(tMp.createClient(('{"iClass"|"' + cName + '","methodName"|"' + mName + '","parameterTypes"|' + pTypesStr + ',"returnType"|"' + rTypeStr + '"}').replace(/\"/g, '\\"'), ServiceClient, tTp), pTypes, pTypesStr, rType);
 }
-
-var Service = function(tService, pTypes, pTypesStr, rType) {
-    this.tService = tService;
-    this.pTypes = pTypes;
-    this.pTypesStr = pTypesStr;
-    this.rType = rType;
-};
 
 Service.prototype.execute = function() {
     var argsStr = "";
