@@ -2,19 +2,19 @@ package com.ikasoa.core.utils;
 
 import org.junit.Test;
 
-import junit.framework.TestCase;
+import com.ikasoa.core.TestBase;
 
 /**
  * 服务器工具单元测试
  */
-public class ServerUtilTest extends TestCase {
+public class ServerUtilTest extends TestBase {
 
 	@Test
 	public void testIsIpv4() {
 		assertTrue(ServerUtil.isIpv4("127.0.0.1"));
 		assertTrue(ServerUtil.isIpv4("192.168.1.111"));
 		assertFalse(ServerUtil.isIpv4("99999.99999.99999.00000"));
-		assertFalse(ServerUtil.isIpv4("localhost"));
+		assertFalse(ServerUtil.isIpv4(LOCAL_HOST));
 		assertFalse(ServerUtil.isIpv4(" "));
 	}
 
@@ -36,14 +36,14 @@ public class ServerUtilTest extends TestCase {
 
 	@Test
 	public void testCheckHostAndPort() {
-		assertTrue(ServerUtil.checkHostAndPort("localhost", 8080));
+		assertTrue(ServerUtil.checkHostAndPort(LOCAL_HOST, 8080));
 		assertFalse(ServerUtil.checkHostAndPort("", 6666));
-		assertFalse(ServerUtil.checkHostAndPort("localhost", 65536));
+		assertFalse(ServerUtil.checkHostAndPort(LOCAL_HOST, 65536));
 	}
 
 	@Test
 	public void testBuildCacheKey() {
-		assertEquals(ServerUtil.buildCacheKey("localhost", 8080), "localhost:8080");
+		assertEquals(ServerUtil.buildCacheKey(LOCAL_HOST, 8080), LOCAL_HOST + ":8080");
 	}
 
 }

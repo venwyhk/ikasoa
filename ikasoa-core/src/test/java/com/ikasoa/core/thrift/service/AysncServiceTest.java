@@ -14,6 +14,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.ikasoa.core.IkasoaException;
+import com.ikasoa.core.TestBase;
 import com.ikasoa.core.thrift.Factory;
 import com.ikasoa.core.thrift.GeneralFactory;
 import com.ikasoa.core.thrift.server.MultiplexedProcessor;
@@ -21,16 +22,12 @@ import com.ikasoa.core.thrift.server.ServerArgsAspect;
 import com.ikasoa.core.thrift.server.ThriftServer;
 import com.ikasoa.core.thrift.server.ThriftServerConfiguration;
 
-import junit.framework.TestCase;
-
 /**
  * 异步服务单元测试
  */
-public class AysncServiceTest extends TestCase {
+public class AysncServiceTest extends TestBase {
 
-	private static String LOCAL_HOST = "localhost";
-
-	private String testString1 = "12345678abcdefgABCDEFG~!@#$%^&*()_+";
+	private String testString1 = TEST_STRING;
 
 	private String testString2 = "1234567890-= ";
 
@@ -50,7 +47,7 @@ public class AysncServiceTest extends TestCase {
 
 	@Test
 	public void testAysncServiceImpl() {
-		int serverPort = 49001;
+		int serverPort = getNewPort();
 		TProcessor p = new ServiceProcessor(new TestThriftServiceImpl1());
 		thriftServerConfiguration.setProcessorFactory(new TProcessorFactory(p));
 		Factory factory = new GeneralFactory(thriftServerConfiguration);
@@ -70,7 +67,7 @@ public class AysncServiceTest extends TestCase {
 
 	@Test
 	public void testAysncMultiplexedServiceImpl() {
-		int serverPort = 49002;
+		int serverPort = getNewPort();
 		Map<String, TProcessor> processorMap = new HashMap<>();
 		processorMap.put("testAysncService1", new ServiceProcessor(new TestThriftServiceImpl1()));
 		processorMap.put("testAysncService2", new ServiceProcessor(new TestThriftServiceImpl2()));

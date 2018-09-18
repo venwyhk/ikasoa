@@ -4,18 +4,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Test;
+
+import com.ikasoa.core.TestBase;
 import com.ikasoa.core.IkasoaException;
 import com.ikasoa.core.loadbalance.LoadBalance;
 import com.ikasoa.core.loadbalance.impl.ConsistencyHashLoadBalanceImpl;
 import com.ikasoa.core.loadbalance.impl.PollingLoadBalanceImpl;
 import com.ikasoa.core.loadbalance.impl.RandomLoadBalanceImpl;
 
-import junit.framework.TestCase;
-
 /**
  * 负载均衡单元测试
  */
-public class LoadBalanceTest extends TestCase {
+public class LoadBalanceTest extends TestBase {
 
 	private static String LOCAL_IP = "127.0.0.1";
 
@@ -27,25 +27,26 @@ public class LoadBalanceTest extends TestCase {
 		int testSize = 10;
 		List<ServerInfo> serverInfoList = new ArrayList<>();
 		for (int i = 1; i <= testSize; i++)
-			serverInfoList.add(new ServerInfo(new StringBuilder("192.168.1.").append(i).toString(), 20000 + i));
+			serverInfoList.add(new ServerInfo(new StringBuilder("192.168.1.").append(i).toString(),
+					getNewPort("testPollingLoadBalanceImpl_" + i)));
 		LoadBalance loadBalance = new PollingLoadBalanceImpl(serverInfoList);
 		for (int j = 1; j <= testSize; j++) {
 			ServerInfo serverInfo = loadBalance.getServerInfo();
 			assertNotNull(serverInfo);
 			assertEquals(serverInfo.getHost(), new StringBuilder("192.168.1.").append(j).toString());
-			assertEquals(serverInfo.getPort(), 20000 + j);
+			assertEquals(serverInfo.getPort(), getNewPort("testPollingLoadBalanceImpl_" + j));
 			serverInfo = loadBalance.getServerInfo();
 			assertEquals(serverInfo.getHost(), new StringBuilder("192.168.1.").append(j).toString());
-			assertEquals(serverInfo.getPort(), 20000 + j);
+			assertEquals(serverInfo.getPort(), getNewPort("testPollingLoadBalanceImpl_" + j));
 			next(loadBalance);
 		}
 		// 测试新增服务器地址
-		serverInfoList.add(new ServerInfo(LOCAL_IP, 33333));
+		serverInfoList.add(new ServerInfo(LOCAL_IP, getNewPort("testPollingLoadBalanceImpl_new")));
 		for (int k = 1; k <= testSize; k++)
 			next(loadBalance);
 		ServerInfo serverInfo = loadBalance.getServerInfo();
 		assertEquals(serverInfo.getHost(), LOCAL_IP);
-		assertEquals(serverInfo.getPort(), 33333);
+		assertEquals(serverInfo.getPort(), getNewPort("testPollingLoadBalanceImpl_new"));
 	}
 
 	/**
@@ -54,35 +55,35 @@ public class LoadBalanceTest extends TestCase {
 	@Test
 	public void testWeightPollingLoadBalanceImpl() {
 		List<ServerInfo> serverInfoList = new ArrayList<>();
-		serverInfoList.add(new ServerInfo("192.168.1.1", 30001, 1));
-		serverInfoList.add(new ServerInfo("192.168.1.2", 30002, 0));
-		serverInfoList.add(new ServerInfo("192.168.1.3", 30003, 1));
+		serverInfoList.add(new ServerInfo("192.168.1.1", getNewPort("testWeightPollingLoadBalanceImpl_1"), 1));
+		serverInfoList.add(new ServerInfo("192.168.1.2", getNewPort("testWeightPollingLoadBalanceImpl_2"), 0));
+		serverInfoList.add(new ServerInfo("192.168.1.3", getNewPort("testWeightPollingLoadBalanceImpl_3"), 1));
 		LoadBalance loadBalance = new PollingLoadBalanceImpl(serverInfoList);
 		ServerInfo serverInfo = loadBalance.getServerInfo();
 		assertNotNull(serverInfo);
 		assertEquals(serverInfo.getHost(), "192.168.1.1");
-		assertEquals(serverInfo.getPort(), 30001);
+		assertEquals(serverInfo.getPort(), getNewPort("testWeightPollingLoadBalanceImpl_1"));
 		serverInfo = loadBalance.getServerInfo();
 		assertEquals(serverInfo.getHost(), "192.168.1.1");
-		assertEquals(serverInfo.getPort(), 30001);
+		assertEquals(serverInfo.getPort(), getNewPort("testWeightPollingLoadBalanceImpl_1"));
 		serverInfo = next(loadBalance);
 		assertEquals(serverInfo.getHost(), "192.168.1.1");
-		assertEquals(serverInfo.getPort(), 30001);
+		assertEquals(serverInfo.getPort(), getNewPort("testWeightPollingLoadBalanceImpl_1"));
 		serverInfo = next(loadBalance);
 		assertEquals(serverInfo.getHost(), "192.168.1.2");
-		assertEquals(serverInfo.getPort(), 30002);
+		assertEquals(serverInfo.getPort(), getNewPort("testWeightPollingLoadBalanceImpl_2"));
 		serverInfo = next(loadBalance);
 		assertEquals(serverInfo.getHost(), "192.168.1.3");
-		assertEquals(serverInfo.getPort(), 30003);
+		assertEquals(serverInfo.getPort(), getNewPort("testWeightPollingLoadBalanceImpl_3"));
 		serverInfo = next(loadBalance);
 		assertEquals(serverInfo.getHost(), "192.168.1.3");
-		assertEquals(serverInfo.getPort(), 30003);
+		assertEquals(serverInfo.getPort(), getNewPort("testWeightPollingLoadBalanceImpl_3"));
 		// 测试新增服务器地址
-		serverInfoList.add(new ServerInfo(LOCAL_IP, 30004, 0));
+		serverInfoList.add(new ServerInfo(LOCAL_IP, getNewPort("testWeightPollingLoadBalanceImpl_4"), 0));
 		for (int i = 1; i <= 6; i++)
 			serverInfo = next(loadBalance);
 		assertEquals(serverInfo.getHost(), LOCAL_IP);
-		assertEquals(serverInfo.getPort(), 30004);
+		assertEquals(serverInfo.getPort(), getNewPort("testWeightPollingLoadBalanceImpl_4"));
 	}
 
 	/**
@@ -91,9 +92,9 @@ public class LoadBalanceTest extends TestCase {
 	@Test
 	public void testRandomLoadBalanceImpl() {
 		List<ServerInfo> serverInfoList = new ArrayList<>();
-		serverInfoList.add(new ServerInfo("192.168.1.1", 40001));
-		serverInfoList.add(new ServerInfo("192.168.1.2", 40002));
-		serverInfoList.add(new ServerInfo("192.168.1.3", 40003));
+		serverInfoList.add(new ServerInfo("192.168.1.1", getNewPort()));
+		serverInfoList.add(new ServerInfo("192.168.1.2", getNewPort()));
+		serverInfoList.add(new ServerInfo("192.168.1.3", getNewPort()));
 		LoadBalance loadBalance = new RandomLoadBalanceImpl(serverInfoList);
 		ServerInfo serverInfo = loadBalance.getServerInfo();
 		assertNotNull(serverInfo.getHost());
@@ -110,15 +111,15 @@ public class LoadBalanceTest extends TestCase {
 	@Test
 	public void testConsistencyHashLoadBalanceImpl() {
 		List<ServerInfo> serverInfoList = new ArrayList<>();
-		serverInfoList.add(new ServerInfo("192.168.1.1", 50001));
-		serverInfoList.add(new ServerInfo("192.168.1.2", 50002));
-		serverInfoList.add(new ServerInfo("192.168.1.3", 50003));
-		serverInfoList.add(new ServerInfo("192.168.1.4", 50004));
-		serverInfoList.add(new ServerInfo("192.168.1.5", 50005));
-		serverInfoList.add(new ServerInfo("192.168.1.6", 50006));
-		serverInfoList.add(new ServerInfo("192.168.1.7", 50007));
-		serverInfoList.add(new ServerInfo("192.168.1.8", 50008));
-		serverInfoList.add(new ServerInfo("192.168.1.9", 50009));
+		serverInfoList.add(new ServerInfo("192.168.1.1", getNewPort()));
+		serverInfoList.add(new ServerInfo("192.168.1.2", getNewPort()));
+		serverInfoList.add(new ServerInfo("192.168.1.3", getNewPort()));
+		serverInfoList.add(new ServerInfo("192.168.1.4", getNewPort()));
+		serverInfoList.add(new ServerInfo("192.168.1.5", getNewPort()));
+		serverInfoList.add(new ServerInfo("192.168.1.6", getNewPort()));
+		serverInfoList.add(new ServerInfo("192.168.1.7", getNewPort()));
+		serverInfoList.add(new ServerInfo("192.168.1.8", getNewPort()));
+		serverInfoList.add(new ServerInfo("192.168.1.9", getNewPort()));
 		try {
 			ServerInfo serverInfo1 = testSimpleConsistencyHashLoadBalanceImpl(serverInfoList, "abcdef");
 			ServerInfo serverInfo2 = testSimpleConsistencyHashLoadBalanceImpl(serverInfoList, "123456");

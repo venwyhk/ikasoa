@@ -7,6 +7,7 @@ import org.apache.thrift.transport.TMemoryBuffer;
 import org.junit.Test;
 
 import com.ikasoa.core.IkasoaException;
+import com.ikasoa.core.TestBase;
 import com.ikasoa.core.thrift.Factory;
 import com.ikasoa.core.thrift.GeneralFactory;
 import com.ikasoa.core.thrift.client.ThriftClient;
@@ -16,18 +17,14 @@ import com.ikasoa.core.thrift.server.ThriftServerConfiguration;
 import com.ikasoa.core.thrift.service.base.ArgsThriftBase;
 import com.ikasoa.core.thrift.service.base.ResultThriftBase;
 
-import junit.framework.TestCase;
-
 /**
  * 通用服务单元测试
  */
-public class ServiceTest extends TestCase {
-
-	private String testString = "12345678abcdefg";
+public class ServiceTest extends TestBase {
 
 	@Test
 	public void testDefaultServiceImpl() {
-		int serverPort = 49000;
+		int serverPort = getNewPort();
 		ThriftServerConfiguration thriftServerConfiguration = new ThriftServerConfiguration();
 		thriftServerConfiguration.setServerArgsAspect(new ServerArgsAspect() {
 			@Override
@@ -39,10 +36,10 @@ public class ServiceTest extends TestCase {
 		Factory factory = new GeneralFactory(thriftServerConfiguration);
 		ThriftServer thriftServer = factory.getThriftServer(serverPort, new TestService());
 		thriftServer.run();
-		ThriftClient thriftClient = factory.getThriftClient("localhost", serverPort);
+		ThriftClient thriftClient = factory.getThriftClient(LOCAL_HOST, serverPort);
 		try {
 			Thread.sleep(500);
-			assertEquals(factory.getService(thriftClient).get(testString), testString);
+			assertEquals(factory.getService(thriftClient).get(TEST_STRING), TEST_STRING);
 		} catch (Exception e) {
 			fail();
 		} finally {
@@ -53,12 +50,12 @@ public class ServiceTest extends TestCase {
 	@Test
 	public void testThriftBaseReadWrite() {
 		TBinaryProtocol protocol = new TBinaryProtocol(new TMemoryBuffer(16));
-		ArgsThriftBase args = new ArgsThriftBase(testString);
+		ArgsThriftBase args = new ArgsThriftBase(TEST_STRING);
 		ResultThriftBase result = new ResultThriftBase();
 		try {
 			args.write(protocol);
 			result.read(protocol);
-			assertEquals(args.getStr(), result.getStr(), testString);
+			assertEquals(args.getStr(), result.getStr(), TEST_STRING);
 		} catch (TException e) {
 			fail();
 		}

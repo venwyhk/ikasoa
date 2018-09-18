@@ -12,14 +12,12 @@ import com.ikasoa.core.thrift.client.impl.DefaultThriftClientImpl;
 import com.ikasoa.core.thrift.client.impl.LoadBalanceThriftClientImpl;
 import com.ikasoa.core.utils.StringUtil;
 
-import junit.framework.TestCase;
-
 /**
  * 服务器检测接口测试
  */
-public class ServerCheckTest extends TestCase {
+public class ServerCheckTest extends TestBase {
 
-	private int serverPort = 19000;
+	private int serverPort = getNewPort();
 
 	private ThriftClientConfiguration configuration = new ThriftClientConfiguration();
 

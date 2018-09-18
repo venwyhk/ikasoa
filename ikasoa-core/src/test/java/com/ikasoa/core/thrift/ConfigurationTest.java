@@ -8,15 +8,15 @@ import org.apache.thrift.server.ServerContext;
 import org.apache.thrift.server.TServerEventHandler;
 import org.apache.thrift.transport.TTransport;
 import org.junit.Test;
+
+import com.ikasoa.core.TestBase;
 import com.ikasoa.core.thrift.client.ThriftClientConfiguration;
 import com.ikasoa.core.thrift.server.ThriftServerConfiguration;
-
-import junit.framework.TestCase;
 
 /**
  * 配置对象单元测试
  */
-public class ConfigurationTest extends TestCase {
+public class ConfigurationTest extends TestBase {
 
 	@Test
 	public void testThriftClientConfiguration() {

@@ -2,13 +2,14 @@ package com.ikasoa.core.utils;
 
 import org.junit.Test;
 
-import junit.framework.TestCase;
+import com.ikasoa.core.TestBase;
+
 import lombok.Data;
 
 /**
  * Bean工具单元测试
  */
-public class BeanUtilTest extends TestCase {
+public class BeanUtilTest extends TestBase {
 
 	/**
 	 * 对象拷贝测试

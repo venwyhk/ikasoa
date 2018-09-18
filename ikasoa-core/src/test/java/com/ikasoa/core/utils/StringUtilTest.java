@@ -2,12 +2,12 @@ package com.ikasoa.core.utils;
 
 import org.junit.Test;
 
-import junit.framework.TestCase;
+import com.ikasoa.core.TestBase;
 
 /**
  * 字符串工具单元测试
  */
-public class StringUtilTest extends TestCase {
+public class StringUtilTest extends TestBase {
 
 	@Test
 	public void testIsEmpty() {
@@ -57,7 +57,7 @@ public class StringUtilTest extends TestCase {
 
 	@Test
 	public void testStrToBytesAndBytesToStr() {
-		String str = "测试数据xyz";
+		String str = TEST_STRING;
 		assertEquals(
 				StringUtil.hexStrToStr(StringUtil.bytesToHexStr(StringUtil.hexStrToBytes(StringUtil.strToHexStr(str)))),
 				str);
