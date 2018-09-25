@@ -14,10 +14,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
-import com.facebook.nifty.core.NettyServerConfig;
-import com.facebook.nifty.core.NettyServerTransport;
-import com.facebook.nifty.core.ThriftServerDef;
-import com.facebook.nifty.core.ThriftServerDefBuilder;
+import com.ikasoa.core.nifty.server.NettyServerConfiguration;
+import com.ikasoa.core.nifty.server.NiftyServerConfiguration;
+import com.ikasoa.core.nifty.server.impl.NettyServerImpl;
 
 /**
  * IKASOA服务工厂(Netty实现)
@@ -31,7 +30,7 @@ public class NettyIkasoaFactory extends DefaultIkasoaFactory {
 
 	@Getter
 	@Setter
-	private NettyServerConfig nettyServerConfig;
+	private NettyServerConfiguration nettyServerConfig;
 
 	@Getter
 	@Setter
@@ -41,12 +40,12 @@ public class NettyIkasoaFactory extends DefaultIkasoaFactory {
 		super(configurator);
 	}
 
-	public NettyIkasoaFactory(NettyServerConfig nettyServerConfig) {
+	public NettyIkasoaFactory(NettyServerConfiguration nettyServerConfig) {
 		this.nettyServerConfig = nettyServerConfig;
 		this.channelGroup = new DefaultChannelGroup();
 	}
 
-	public NettyIkasoaFactory(NettyServerConfig nettyServerConfig, ChannelGroup channelGroup) {
+	public NettyIkasoaFactory(NettyServerConfiguration nettyServerConfig, ChannelGroup channelGroup) {
 		this.nettyServerConfig = nettyServerConfig;
 		this.channelGroup = channelGroup == null ? new DefaultChannelGroup() : channelGroup;
 	}
@@ -58,7 +57,7 @@ public class NettyIkasoaFactory extends DefaultIkasoaFactory {
 
 	private class NiftyThriftServerImpl extends AbstractThriftServerImpl {
 
-		private NettyServerTransport server;
+		private NettyServerImpl server;
 
 		public NiftyThriftServerImpl(String serverName, int serverPort, TProcessor processor) {
 			setServerName(serverName);
@@ -74,23 +73,18 @@ public class NettyIkasoaFactory extends DefaultIkasoaFactory {
 		@Override
 		public void start() throws IkasoaException {
 			if (server == null) {
-				ThriftServerDef thriftServerDef = new ThriftServerDefBuilder().listen(getServerPort())
-						.withProcessor(getProcessor()).build();
-				server = nettyServerConfig == null ? new NettyServerTransport(thriftServerDef)
-						: new NettyServerTransport(thriftServerDef, nettyServerConfig, channelGroup);
+				NiftyServerConfiguration niftyServer = new NiftyServerConfiguration("NiftyServer", getServerPort(), getProcessor());
+				server = nettyServerConfig == null ? new NettyServerImpl(niftyServer)
+						: new NettyServerImpl(niftyServer, nettyServerConfig, channelGroup);
 			}
-			server.start();
+			server.run();
 			log.debug("Server start .");
 		}
 
 		@Override
 		public void stop() {
 			if (server != null)
-				try {
-					server.stop();
-				} catch (InterruptedException e) {
-					throw new RuntimeException("Server stop exception !", e);
-				}
+				server.stop();
 			else
 				log.warn("Server is not start , Can't to execute stop !");
 		}

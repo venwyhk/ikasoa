@@ -30,7 +30,7 @@ public interface ThriftClient extends AutoCloseable {
 	 *            传输类型
 	 * @return TProtocol 传输协议
 	 */
-	TProtocol getProtocol(TTransport transport);
+	TProtocol getProtocol(final TTransport transport);
 
 	/**
 	 * 获取Thrift传输协议
@@ -46,7 +46,7 @@ public interface ThriftClient extends AutoCloseable {
 	 *            服务名
 	 * @return TProtocol 传输协议
 	 */
-	TProtocol getProtocol(TTransport transport, String serviceName);
+	TProtocol getProtocol(final TTransport transport, final String serviceName);
 
 	/**
 	 * 获取Thrift服务器地址

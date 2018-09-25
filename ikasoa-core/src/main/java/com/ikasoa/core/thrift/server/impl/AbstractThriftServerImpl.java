@@ -137,9 +137,8 @@ public abstract class AbstractThriftServerImpl implements ThriftServer {
 			if (executorService != null && !executorService.isShutdown()) {
 				executorService.shutdown();
 				try {
-					while (executorService != null && !executorService.isTerminated()) {
+					while (executorService != null && !executorService.isTerminated())
 						executorService.awaitTermination(10, TimeUnit.SECONDS);
-					}
 				} catch (InterruptedException e) {
 					log.debug("Server thread shutdown exception !");
 					executorService.shutdownNow();

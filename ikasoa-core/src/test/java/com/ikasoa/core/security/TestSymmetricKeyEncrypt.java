@@ -2,20 +2,24 @@ package com.ikasoa.core.security;
 
 import org.junit.Test;
 
-import com.ikasoa.core.TestBase;
+import com.ikasoa.core.TestConstants;
 import com.ikasoa.core.security.impl.DESEncryptImpl;
 import com.ikasoa.core.security.impl.RC4EncryptImpl;
+
+import junit.framework.TestCase;
 
 /**
  * 对称加密单元测试
  */
-public class TestSymmetricKeyEncrypt extends TestBase {
+public class TestSymmetricKeyEncrypt extends TestCase {
 
 	@Test
 	public void testDES() {
 		SymmetricKeyEncrypt encrypt = new DESEncryptImpl();
 		try {
-			assertEquals(TEST_STRING, new String(encrypt.decrypt(encrypt.encrypt(TEST_STRING, TEST_KEY8), TEST_KEY8)));
+			assertEquals(TestConstants.TEST_STRING,
+					new String(encrypt.decrypt(encrypt.encrypt(TestConstants.TEST_STRING, TestConstants.TEST_KEY8),
+							TestConstants.TEST_KEY8)));
 		} catch (Exception e) {
 			fail();
 		}
@@ -25,7 +29,9 @@ public class TestSymmetricKeyEncrypt extends TestBase {
 	public void testRC4() {
 		SymmetricKeyEncrypt encrypt = new RC4EncryptImpl();
 		try {
-			assertEquals(TEST_STRING, new String(encrypt.decrypt(encrypt.encrypt(TEST_STRING, TEST_KEY8), TEST_KEY8)));
+			assertEquals(TestConstants.TEST_STRING,
+					new String(encrypt.decrypt(encrypt.encrypt(TestConstants.TEST_STRING, TestConstants.TEST_KEY8),
+							TestConstants.TEST_KEY8)));
 		} catch (Exception e) {
 			fail();
 		}

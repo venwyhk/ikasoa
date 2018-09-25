@@ -33,7 +33,7 @@ public interface Factory {
 	 *            Thrift处理器
 	 * @return ThriftServer Thrift服务器
 	 */
-	public ThriftServer getThriftServer(String serverName, int serverPort, TProcessor processor);
+	ThriftServer getThriftServer(final String serverName, final int serverPort, final TProcessor processor);
 
 	/**
 	 * 获取NIO的ThriftServer对象
@@ -46,7 +46,7 @@ public interface Factory {
 	 *            Thrift处理器
 	 * @return ThriftServer Thrift服务器
 	 */
-	public ThriftServer getNonblockingThriftServer(String serverName, int serverPort, TProcessor processor);
+	ThriftServer getNonblockingThriftServer(final String serverName, final int serverPort, final TProcessor processor);
 
 	/**
 	 * 获取默认的ThriftServer对象
@@ -59,7 +59,7 @@ public interface Factory {
 	 *            通用服务
 	 * @return ThriftServer Thrift服务器
 	 */
-	public ThriftServer getThriftServer(String serverName, int serverPort, Service service);
+	ThriftServer getThriftServer(final String serverName, final int serverPort, final Service service);
 
 	/**
 	 * 获取NIO的ThriftServer对象
@@ -72,7 +72,7 @@ public interface Factory {
 	 *            通用服务
 	 * @return ThriftServer Thrift服务器
 	 */
-	public ThriftServer getNonblockingThriftServer(String serverName, int serverPort, Service service);
+	ThriftServer getNonblockingThriftServer(final String serverName, final int serverPort, final Service service);
 
 	/**
 	 * 获取默认的ThriftServer对象
@@ -83,7 +83,7 @@ public interface Factory {
 	 *            通用服务
 	 * @return ThriftServer Thrift服务器
 	 */
-	public ThriftServer getThriftServer(int serverPort, Service service);
+	ThriftServer getThriftServer(final int serverPort, final Service service);
 
 	/**
 	 * 获取NIO的ThriftServer对象
@@ -94,7 +94,7 @@ public interface Factory {
 	 *            通用服务
 	 * @return ThriftServer Thrift服务器
 	 */
-	public ThriftServer getNonblockingThriftServer(int serverPort, Service service);
+	ThriftServer getNonblockingThriftServer(final int serverPort, final Service service);
 
 	/**
 	 * 获取默认的ThriftServer对象
@@ -107,7 +107,7 @@ public interface Factory {
 	 *            Thrift服务器集合
 	 * @return ThriftServer Thrift服务器
 	 */
-	public ThriftServer getThriftServer(String serverName, int serverPort, Map<String, Service> serviceMap);
+	ThriftServer getThriftServer(final String serverName, final int serverPort, final Map<String, Service> serviceMap);
 
 	/**
 	 * 获取NIO的ThriftServer对象
@@ -118,7 +118,7 @@ public interface Factory {
 	 *            Thrift服务器集合
 	 * @return ThriftServer Thrift服务器
 	 */
-	public ThriftServer getNonblockingThriftServer(int serverPort, Map<String, Service> serviceMap);
+	ThriftServer getNonblockingThriftServer(final int serverPort, final Map<String, Service> serviceMap);
 
 	/**
 	 * 获取默认的ThriftServer对象
@@ -129,7 +129,7 @@ public interface Factory {
 	 *            Thrift服务器集合
 	 * @return ThriftServer Thrift服务器
 	 */
-	public ThriftServer getThriftServer(int serverPort, Map<String, Service> serviceMap);
+	ThriftServer getThriftServer(final int serverPort, final Map<String, Service> serviceMap);
 
 	/**
 	 * 获取NIO的ThriftServer对象
@@ -142,7 +142,8 @@ public interface Factory {
 	 *            Thrift服务器集合
 	 * @return ThriftServer Thrift服务器
 	 */
-	public ThriftServer getNonblockingThriftServer(String serverName, int serverPort, Map<String, Service> serviceMap);
+	ThriftServer getNonblockingThriftServer(final String serverName, final int serverPort,
+			final Map<String, Service> serviceMap);
 
 	/**
 	 * 获取默认的ThriftClient对象
@@ -153,7 +154,7 @@ public interface Factory {
 	 *            服务器端口
 	 * @return ThriftClient Thrift客户端
 	 */
-	public ThriftClient getThriftClient(String serverHost, int serverPort);
+	ThriftClient getThriftClient(final String serverHost, final int serverPort);
 
 	/**
 	 * 获取带负载均衡的ThriftClient对象
@@ -162,7 +163,7 @@ public interface Factory {
 	 *            服务器信息列表
 	 * @return ThriftClient Thrift客户端
 	 */
-	public ThriftClient getThriftClient(List<ServerInfo> serverInfoList);
+	ThriftClient getThriftClient(final List<ServerInfo> serverInfoList);
 
 	/**
 	 * 获取带负载均衡的ThriftClient对象
@@ -173,7 +174,7 @@ public interface Factory {
 	 *            负载均衡实现类
 	 * @return ThriftClient Thrift客户端
 	 */
-	public ThriftClient getThriftClient(List<ServerInfo> serverInfoList, LoadBalance loadBalance);
+	ThriftClient getThriftClient(final List<ServerInfo> serverInfoList, final LoadBalance loadBalance);
 
 	/**
 	 * 获取带负载均衡的ThriftClient对象
@@ -186,7 +187,8 @@ public interface Factory {
 	 *            负载均衡实现参数
 	 * @return ThriftClient Thrift客户端
 	 */
-	public ThriftClient getThriftClient(List<ServerInfo> serverInfoList, LoadBalance loadBalance, String param);
+	ThriftClient getThriftClient(final List<ServerInfo> serverInfoList, final LoadBalance loadBalance,
+			final String param);
 
 	/**
 	 * 获取客户端Service对象
@@ -199,7 +201,7 @@ public interface Factory {
 	 * @throws IkasoaException
 	 *             异常
 	 */
-	public Service getService(ThriftClient thriftClient) throws IkasoaException;
+	Service getService(final ThriftClient thriftClient) throws IkasoaException;
 
 	/**
 	 * 获取客户端异步Service对象
@@ -212,7 +214,7 @@ public interface Factory {
 	 * @throws IkasoaException
 	 *             异常
 	 */
-	public AsyncService getAsyncService(TNonblockingTransport transport) throws IkasoaException;
+	AsyncService getAsyncService(final TNonblockingTransport transport) throws IkasoaException;
 
 	/**
 	 * 获取客户端Service对象
@@ -225,7 +227,7 @@ public interface Factory {
 	 * @throws IkasoaException
 	 *             异常
 	 */
-	public Service getService(ThriftClient thriftClient, String serviceName) throws IkasoaException;
+	Service getService(final ThriftClient thriftClient, final String serviceName) throws IkasoaException;
 
 	/**
 	 * 获取客户端异步Service对象
@@ -238,6 +240,7 @@ public interface Factory {
 	 * @throws IkasoaException
 	 *             异常
 	 */
-	public AsyncService getAsyncService(TNonblockingTransport transport, String serviceName) throws IkasoaException;
+	AsyncService getAsyncService(final TNonblockingTransport transport, final String serviceName)
+			throws IkasoaException;
 
 }
