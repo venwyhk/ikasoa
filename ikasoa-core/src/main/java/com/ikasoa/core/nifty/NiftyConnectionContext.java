@@ -1,7 +1,6 @@
 package com.ikasoa.core.nifty;
 
 import com.ikasoa.core.nifty.ssl.SslSession;
-import com.google.common.base.Preconditions;
 
 import java.net.SocketAddress;
 import java.util.Collections;
@@ -34,20 +33,24 @@ public class NiftyConnectionContext implements ConnectionContext {
 
 	@Override
 	public Object getAttribute(String attributeName) {
-		Preconditions.checkNotNull(attributeName);
+		if (attributeName == null)
+			throw new NullPointerException();
 		return attributes.get(attributeName);
 	}
 
 	@Override
 	public Object setAttribute(String attributeName, Object value) {
-		Preconditions.checkNotNull(attributeName);
-		Preconditions.checkNotNull(value);
+		if (attributeName == null)
+			throw new NullPointerException();
+		if (value == null)
+			throw new NullPointerException();
 		return attributes.put(attributeName, value);
 	}
 
 	@Override
 	public Object removeAttribute(String attributeName) {
-		Preconditions.checkNotNull(attributeName);
+		if (attributeName == null)
+			throw new NullPointerException();
 		return attributes.remove(attributeName);
 	}
 

@@ -1,13 +1,11 @@
 package com.ikasoa.core.nifty;
 
-import com.google.common.collect.Maps;
-
 import org.apache.thrift.protocol.TProtocol;
-import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 public class NiftyRequestContext implements RequestContext {
@@ -15,7 +13,7 @@ public class NiftyRequestContext implements RequestContext {
 	private final TProtocol inputProtocol;
 	private final TProtocol outputProtocol;
 	private final TNiftyTransport niftyTransport;
-	private final ConcurrentMap<String, Object> data = Maps.newConcurrentMap();
+	private final ConcurrentMap<String, Object> data = new ConcurrentHashMap<>();
 
 	@Override
 	public TProtocol getInputProtocol() {
@@ -38,19 +36,22 @@ public class NiftyRequestContext implements RequestContext {
 
 	@Override
 	public void setContextData(String key, Object val) {
-		checkNotNull(key, "context data key is null");
+		if (key == null)
+			throw new NullPointerException(String.valueOf("context data key is null"));
 		data.put(key, val);
 	}
 
 	@Override
 	public Object getContextData(String key) {
-		checkNotNull(key, "context data key is null");
+		if (key == null)
+			throw new NullPointerException(String.valueOf("context data key is null"));
 		return data.get(key);
 	}
 
 	@Override
 	public void clearContextData(String key) {
-		checkNotNull(key, "context data key is null");
+		if (key == null)
+			throw new NullPointerException(String.valueOf("context data key is null"));
 		data.remove(key);
 	}
 

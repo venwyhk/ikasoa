@@ -41,8 +41,6 @@ import org.jboss.netty.util.ExternalResourceReleasable;
 import org.jboss.netty.util.HashedWheelTimer;
 import org.jboss.netty.util.ThreadNameDeterminer;
 
-import javax.inject.Inject;
-
 import java.net.InetSocketAddress;
 import java.util.HashMap;
 import java.util.concurrent.CountDownLatch;
@@ -86,7 +84,6 @@ public class NettyServerImpl implements NettyServer, ExternalResourceReleasable 
 				new DefaultChannelGroup());
 	}
 
-	@Inject
 	public NettyServerImpl(final NiftyServerConfiguration server, final NettyServerConfiguration nettyServerConfig,
 			final ChannelGroup allChannels) {
 		this.server = server;

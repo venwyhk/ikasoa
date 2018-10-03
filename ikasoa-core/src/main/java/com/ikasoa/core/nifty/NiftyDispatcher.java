@@ -32,8 +32,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
-import static com.google.common.base.Preconditions.checkState;
-
 /**
  * Dispatch TNiftyTransport to the TProcessor and write output back.
  *
@@ -94,8 +92,10 @@ public class NiftyDispatcher extends SimpleChannelUpstreamHandler {
 			// This is not the first request. Verify that the ordering requirement on this
 			// message
 			// is consistent with the requirement on the channel itself.
-			checkState(messageRequiresOrderedResponses == DispatcherContext.isResponseOrderingRequired(ctx),
-					"Every message on a single channel must specify the same requirement for response ordering");
+			if (messageRequiresOrderedResponses != DispatcherContext.isResponseOrderingRequired(ctx)) {
+				throw new IllegalStateException(String.valueOf(
+						"Every message on a single channel must specify the same requirement for response ordering"));
+			}
 		}
 	}
 
