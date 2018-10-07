@@ -25,7 +25,7 @@ Maven
     <dependency>
         <groupId>com.ikasoa</groupId>
         <artifactId>ikasoa-rpc</artifactId>
-        <version>0.3.3-BETA</version>
+        <version>0.3.4-SNAPSHOT</version>
     </dependency>
     ......
 ```
@@ -33,7 +33,7 @@ Maven
 Gradle
 
 ```
-    compile group: 'com.ikasoa', name: 'ikasoa-rpc', version: '0.3.3-BETA'
+    compile group: 'com.ikasoa', name: 'ikasoa-rpc', version: '0.3.4-SNAPSHOT'
 ```
 
 
@@ -48,7 +48,7 @@ Maven
     <dependency>
         <groupId>com.ikasoa</groupId>
         <artifactId>ikasoa-core</artifactId>
-        <version>0.5.4</version>
+        <version>0.6-SNAPSHOT</version>
     </dependency>
     ......
 ```
@@ -56,7 +56,7 @@ Maven
 Gradle
 
 ```
-    compile group: 'com.ikasoa', name: 'ikasoa-core', version: '0.5.4'
+    compile group: 'com.ikasoa', name: 'ikasoa-core', version: '0.6-SNAPSHOT'
 ```
 
 ## HelloWorld ##
