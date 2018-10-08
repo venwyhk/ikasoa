@@ -55,5 +55,4 @@ public class IkasoaServerService extends AbstractGetService<Object[], Object> {
 			return e.getTargetException();
 		}
 	}
-
 }
