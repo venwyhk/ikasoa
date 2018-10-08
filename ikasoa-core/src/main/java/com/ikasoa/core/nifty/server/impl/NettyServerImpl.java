@@ -7,7 +7,6 @@ import com.ikasoa.core.nifty.IdleDisconnectHandler;
 import com.ikasoa.core.nifty.NiftyDispatcher;
 import com.ikasoa.core.nifty.NiftyExceptionLogger;
 import com.ikasoa.core.nifty.NiftyIODispatcher;
-import com.ikasoa.core.nifty.NiftyMetrics;
 import com.ikasoa.core.nifty.NiftySecurityHandlers;
 import com.ikasoa.core.nifty.handler.impl.ThriftFrameCodeHandlerImpl;
 import com.ikasoa.core.nifty.server.NettyServer;
@@ -72,7 +71,6 @@ public class NettyServerImpl implements NettyServer, ExternalResourceReleasable 
 	private Channel serverChannel;
 	private final NiftyServerConfiguration server;
 	private final NettyServerConfiguration nettyServerConfig;
-	private final ChannelStatistics channelStatistics;
 
 	private AtomicReference<SslServerConfiguration> sslConfiguration = new AtomicReference<>();
 
@@ -90,11 +88,6 @@ public class NettyServerImpl implements NettyServer, ExternalResourceReleasable 
 		this.nettyServerConfig = nettyServerConfig;
 		this.requestedPort = server.getServerPort();
 		this.allChannels = allChannels;
-		// connectionLimiter must be instantiated exactly once (and thus outside the
-		// pipeline factory)
-		final ConnectionLimiter connectionLimiter = new ConnectionLimiter(server.getMaxConnections());
-
-		this.channelStatistics = new ChannelStatistics(allChannels);
 
 		this.sslConfiguration.set(this.server.getSslConfiguration());
 
@@ -106,8 +99,8 @@ public class NettyServerImpl implements NettyServer, ExternalResourceReleasable 
 				NiftySecurityHandlers securityHandlers = server.getSecurityFactory().getSecurityHandlers(server,
 						nettyServerConfig);
 				cp.addLast("connectionContext", new ConnectionContextHandler());
-				cp.addLast("connectionLimiter", connectionLimiter);
-				cp.addLast(ChannelStatistics.NAME, channelStatistics);
+				cp.addLast("connectionLimiter", new ConnectionLimiter(server.getMaxConnections()));
+				cp.addLast(ChannelStatistics.NAME, new ChannelStatistics(allChannels));
 				cp.addLast("encryptionHandler", securityHandlers.getEncryptionHandler());
 				cp.addLast("ioDispatcher", new NiftyIODispatcher());
 				cp.addLast("frameCodec",
@@ -233,10 +226,6 @@ public class NettyServerImpl implements NettyServer, ExternalResourceReleasable 
 				log.error("BUG in ConnectionLimiter");
 			super.channelClosed(ctx, e);
 		}
-	}
-
-	public NiftyMetrics getMetrics() {
-		return channelStatistics;
 	}
 
 	/**

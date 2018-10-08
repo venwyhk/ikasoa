@@ -15,7 +15,8 @@ import java.util.concurrent.atomic.AtomicLong;
  * Counters for number of channels open, generic traffic stats and maybe cleanup
  * logic here.
  */
-public class ChannelStatistics extends SimpleChannelHandler implements NiftyMetrics {
+public class ChannelStatistics extends SimpleChannelHandler {
+
 	private final AtomicInteger channelCount = new AtomicInteger(0);
 	private final AtomicLong bytesRead = new AtomicLong(0);
 	private final AtomicLong bytesWritten = new AtomicLong(0);
@@ -51,12 +52,9 @@ public class ChannelStatistics extends SimpleChannelHandler implements NiftyMetr
 
 		if (e instanceof UpstreamMessageEvent) {
 			UpstreamMessageEvent ume = (UpstreamMessageEvent) e;
-			if (ume.getMessage() instanceof ChannelBuffer) {
-				ChannelBuffer cb = (ChannelBuffer) ume.getMessage();
-				int readableBytes = cb.readableBytes();
+			if (ume.getMessage() instanceof ChannelBuffer)
 				// compute stats here, bytes read from remote
-				bytesRead.getAndAdd(readableBytes);
-			}
+				bytesRead.getAndAdd(((ChannelBuffer) ume.getMessage()).readableBytes());
 		}
 
 		ctx.sendUpstream(e);
@@ -65,12 +63,8 @@ public class ChannelStatistics extends SimpleChannelHandler implements NiftyMetr
 	public void handleDownstream(ChannelHandlerContext ctx, ChannelEvent e) throws Exception {
 		if (e instanceof DownstreamMessageEvent) {
 			DownstreamMessageEvent dme = (DownstreamMessageEvent) e;
-			if (dme.getMessage() instanceof ChannelBuffer) {
-				ChannelBuffer cb = (ChannelBuffer) dme.getMessage();
-				int readableBytes = cb.readableBytes();
-				// compute stats here, bytes written to remote
-				bytesWritten.getAndAdd(readableBytes);
-			}
+			if (dme.getMessage() instanceof ChannelBuffer)
+				bytesWritten.getAndAdd(((ChannelBuffer) dme.getMessage()).readableBytes());
 		}
 		ctx.sendDownstream(e);
 	}
