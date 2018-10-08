@@ -27,12 +27,11 @@ public class IkasoaFactoryFactory {
 	private Configurator configurator;
 
 	public IkasoaFactory getIkasoaDefaultFactory() {
-		return Optional.ofNullable(configurator).map(c -> new DefaultIkasoaFactory(c))
-				.orElse(new DefaultIkasoaFactory());
+		return Optional.ofNullable(configurator).map(DefaultIkasoaFactory::new).orElse(new DefaultIkasoaFactory());
 	}
 
 	public IkasoaFactory getIkasoaNettyFactory() {
-		return Optional.ofNullable(configurator).map(c -> new NettyIkasoaFactory(c)).orElse(new NettyIkasoaFactory());
+		return Optional.ofNullable(configurator).map(NettyIkasoaFactory::new).orElse(new NettyIkasoaFactory());
 	}
 
 	public IkasoaFactory getIkasoaServletFactory() {

@@ -48,14 +48,11 @@ public class IkasoaServerService extends AbstractGetService<Object[], Object> {
 		method.setAccessible(Boolean.TRUE);
 		try {
 			return method.invoke(classObj, args);
-		} catch (IllegalAccessException e) {
-			throw new RpcException("'GET' reflect exception !", e);
-		} catch (IllegalArgumentException e) {
+		} catch (IllegalAccessException | IllegalArgumentException e) {
 			throw new RpcException("'GET' reflect exception !", e);
 		} catch (InvocationTargetException e) {
 			log.debug(e.getTargetException().toString());
 			return e.getTargetException();
 		}
 	}
-
 }
