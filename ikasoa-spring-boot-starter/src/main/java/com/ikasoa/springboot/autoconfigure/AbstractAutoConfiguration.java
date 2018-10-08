@@ -20,7 +20,7 @@ import lombok.extern.slf4j.Slf4j;
 @Configuration
 @Slf4j
 public abstract class AbstractAutoConfiguration {
-	
+
 	@Value("${spring.application.name}")
 	protected String name;
 
@@ -38,7 +38,7 @@ public abstract class AbstractAutoConfiguration {
 
 	@Value("${ikasoa.configurator:com.ikasoa.rpc.Configurator}")
 	protected String configurator;
-	
+
 	@Value("${ikasoa.server.zkserver:}")
 	protected String zkServerString;
 
@@ -48,7 +48,7 @@ public abstract class AbstractAutoConfiguration {
 	protected IkasoaFactoryFactory getIkasoaFactoryFactory() {
 		return new IkasoaFactoryFactory(getConfigurator());
 	}
-	
+
 	protected IkasoaFactoryFactory getIkasoaFactoryFactory(Configurator configurator) {
 		return new IkasoaFactoryFactory(configurator);
 	}
@@ -56,11 +56,7 @@ public abstract class AbstractAutoConfiguration {
 	protected Configurator getConfigurator() {
 		try {
 			return (Configurator) Class.forName(configurator).newInstance();
-		} catch (ClassNotFoundException e) {
-			log.warn(e.getMessage());
-		} catch (InstantiationException e) {
-			log.warn(e.getMessage());
-		} catch (IllegalAccessException e) {
+		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
 			log.warn(e.getMessage());
 		}
 		return null;
