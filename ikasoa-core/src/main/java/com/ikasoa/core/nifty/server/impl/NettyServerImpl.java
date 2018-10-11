@@ -5,7 +5,6 @@ import com.ikasoa.core.nifty.ChannelStatistics;
 import com.ikasoa.core.nifty.ConnectionContextHandler;
 import com.ikasoa.core.nifty.IdleDisconnectHandler;
 import com.ikasoa.core.nifty.NiftyDispatcher;
-import com.ikasoa.core.nifty.NiftyExceptionLogger;
 import com.ikasoa.core.nifty.NiftyIODispatcher;
 import com.ikasoa.core.nifty.NiftySecurityHandlers;
 import com.ikasoa.core.nifty.handler.impl.ThriftFrameCodeHandlerImpl;
@@ -35,6 +34,7 @@ import org.jboss.netty.channel.group.DefaultChannelGroup;
 import org.jboss.netty.channel.socket.nio.NioServerBossPool;
 import org.jboss.netty.channel.socket.nio.NioServerSocketChannelFactory;
 import org.jboss.netty.channel.socket.nio.NioWorkerPool;
+import org.jboss.netty.handler.logging.LoggingHandler;
 import org.jboss.netty.handler.timeout.IdleStateHandler;
 import org.jboss.netty.util.ExternalResourceReleasable;
 import org.jboss.netty.util.HashedWheelTimer;
@@ -115,7 +115,7 @@ public class NettyServerImpl implements NettyServer, ExternalResourceReleasable 
 
 				cp.addLast("authHandler", securityHandlers.getAuthenticationHandler());
 				cp.addLast("dispatcher", new NiftyDispatcher(server, nettyServerConfig.getTimer()));
-				cp.addLast("exceptionLogger", new NiftyExceptionLogger());
+				cp.addLast("exceptionLogger", new LoggingHandler());
 
 				SslServerConfiguration serverConfiguration = sslConfiguration.get();
 				if (serverConfiguration != null)
