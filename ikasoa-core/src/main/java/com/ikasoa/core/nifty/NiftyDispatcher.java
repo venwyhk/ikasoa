@@ -181,10 +181,6 @@ public class NiftyDispatcher extends SimpleChannelUpstreamHandler {
 							}, timeRemaining, TimeUnit.MILLISECONDS));
 						}
 
-						RequestContexts.setCurrentContext(
-								new NiftyRequestContext(ConnectionContexts.getContext(ctx.getChannel()), inProtocol,
-										outProtocol, messageTransport));
-
 						if (processorFactory.getProcessor(messageTransport).process(inProtocol, outProtocol)
 								&& ctx.getChannel().isConnected() && responseSent.compareAndSet(false, true))
 							writeResponse(ctx, message.getMessageFactory().create(messageTransport.getOutputBuffer()),
@@ -192,13 +188,6 @@ public class NiftyDispatcher extends SimpleChannelUpstreamHandler {
 
 					} catch (TException e) {
 						onDispatchException(ctx, e);
-					} finally {
-						// RequestContext does NOT stay set while we are waiting for the process
-						// future to complete. This is by design because we'll might move on to the
-						// next request using this thread before this one is completed. If you need
-						// the context throughout an asynchronous handler, you need to read and store
-						// it before returning a future.
-						RequestContexts.clearCurrentContext();
 					}
 				}
 			});

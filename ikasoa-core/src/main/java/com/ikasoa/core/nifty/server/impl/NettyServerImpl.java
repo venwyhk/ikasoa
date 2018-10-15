@@ -1,41 +1,25 @@
 package com.ikasoa.core.nifty.server.impl;
 
 import com.ikasoa.core.IkasoaException;
-import com.ikasoa.core.nifty.ChannelStatistics;
-import com.ikasoa.core.nifty.ConnectionContextHandler;
-import com.ikasoa.core.nifty.IdleDisconnectHandler;
-import com.ikasoa.core.nifty.NiftyDispatcher;
-import com.ikasoa.core.nifty.NiftyIODispatcher;
-import com.ikasoa.core.nifty.NiftySecurityHandlers;
-import com.ikasoa.core.nifty.handler.impl.ThriftFrameCodeHandlerImpl;
+import com.ikasoa.core.nifty.server.NiftyChannelPipelineFactory;
 import com.ikasoa.core.nifty.server.NettyServer;
 import com.ikasoa.core.nifty.server.NettyServerConfiguration;
 import com.ikasoa.core.nifty.server.NiftyServerConfiguration;
-import com.ikasoa.core.nifty.ssl.SslPlaintextHandler;
-import com.ikasoa.core.nifty.ssl.SslServerConfiguration;
 
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
-import org.apache.thrift.protocol.TProtocolFactory;
 import org.jboss.netty.bootstrap.ServerBootstrap;
 import org.jboss.netty.channel.Channel;
 import org.jboss.netty.channel.ChannelFuture;
 import org.jboss.netty.channel.ChannelFutureListener;
-import org.jboss.netty.channel.ChannelHandlerContext;
-import org.jboss.netty.channel.ChannelPipeline;
 import org.jboss.netty.channel.ChannelPipelineFactory;
-import org.jboss.netty.channel.ChannelStateEvent;
-import org.jboss.netty.channel.Channels;
 import org.jboss.netty.channel.ServerChannelFactory;
-import org.jboss.netty.channel.SimpleChannelUpstreamHandler;
 import org.jboss.netty.channel.group.ChannelGroup;
 import org.jboss.netty.channel.group.DefaultChannelGroup;
 import org.jboss.netty.channel.socket.nio.NioServerBossPool;
 import org.jboss.netty.channel.socket.nio.NioServerSocketChannelFactory;
 import org.jboss.netty.channel.socket.nio.NioWorkerPool;
-import org.jboss.netty.handler.logging.LoggingHandler;
-import org.jboss.netty.handler.timeout.IdleStateHandler;
 import org.jboss.netty.util.ExternalResourceReleasable;
 import org.jboss.netty.util.HashedWheelTimer;
 import org.jboss.netty.util.ThreadNameDeterminer;
@@ -46,19 +30,11 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicReference;
 
-/**
- * A core channel the decode framed Thrift message, dispatches to the TProcessor
- * given and then encode message back to Thrift frame.
- */
 @Slf4j
 public class NettyServerImpl implements NettyServer, ExternalResourceReleasable {
 
 	private static final int DEFAULT_WORKER_THREAD_COUNT = 2;
-	private static final int NO_WRITER_IDLE_TIMEOUT = 0;
-	private static final int NO_ALL_IDLE_TIMEOUT = 0;
 
 	private final int requestedPort;
 	private int actualPort;
@@ -71,8 +47,6 @@ public class NettyServerImpl implements NettyServer, ExternalResourceReleasable 
 	private Channel serverChannel;
 	private final NiftyServerConfiguration server;
 	private final NettyServerConfiguration nettyServerConfig;
-
-	private AtomicReference<SslServerConfiguration> sslConfiguration = new AtomicReference<>();
 
 	public NettyServerImpl(final NiftyServerConfiguration server) {
 		this(server,
@@ -88,44 +62,7 @@ public class NettyServerImpl implements NettyServer, ExternalResourceReleasable 
 		this.nettyServerConfig = nettyServerConfig;
 		this.requestedPort = server.getServerPort();
 		this.allChannels = allChannels;
-
-		this.sslConfiguration.set(this.server.getSslConfiguration());
-
-		this.pipelineFactory = new ChannelPipelineFactory() {
-			@Override
-			public ChannelPipeline getPipeline() throws Exception {
-				ChannelPipeline cp = Channels.pipeline();
-				TProtocolFactory inputProtocolFactory = server.getProtocolFactory();
-				NiftySecurityHandlers securityHandlers = server.getSecurityFactory().getSecurityHandlers(server,
-						nettyServerConfig);
-				cp.addLast("connectionContext", new ConnectionContextHandler());
-				cp.addLast("connectionLimiter", new ConnectionLimiter(server.getMaxConnections()));
-				cp.addLast(ChannelStatistics.NAME, new ChannelStatistics(allChannels));
-				cp.addLast("encryptionHandler", securityHandlers.getEncryptionHandler());
-				cp.addLast("ioDispatcher", new NiftyIODispatcher());
-				cp.addLast("frameCodec",
-						new ThriftFrameCodeHandlerImpl(server.getMaxFrameSize(), inputProtocolFactory));
-				if (server.getClientIdleTimeout() > 0) {
-					// Add handlers to detect idle client connections and disconnect them
-					cp.addLast("idleTimeoutHandler",
-							new IdleStateHandler(nettyServerConfig.getTimer(), server.getClientIdleTimeout(),
-									NO_WRITER_IDLE_TIMEOUT, NO_ALL_IDLE_TIMEOUT, TimeUnit.MILLISECONDS));
-					cp.addLast("idleDisconnectHandler", new IdleDisconnectHandler());
-				}
-
-				cp.addLast("authHandler", securityHandlers.getAuthenticationHandler());
-				cp.addLast("dispatcher", new NiftyDispatcher(server, nettyServerConfig.getTimer()));
-				cp.addLast("exceptionLogger", new LoggingHandler());
-
-				SslServerConfiguration serverConfiguration = sslConfiguration.get();
-				if (serverConfiguration != null)
-					if (serverConfiguration.allowPlaintext)
-						cp.addFirst("ssl_plaintext", new SslPlaintextHandler(serverConfiguration, "ssl"));
-					else
-						cp.addFirst("ssl", serverConfiguration.createHandler());
-				return cp;
-			}
-		};
+		this.pipelineFactory = new NiftyChannelPipelineFactory(server);
 	}
 
 	@Override
@@ -154,8 +91,6 @@ public class NettyServerImpl implements NettyServer, ExternalResourceReleasable 
 		if (actualPort == 0 || (actualPort != requestedPort && requestedPort != 0))
 			throw new IkasoaException("Server initialize failed !");
 		log.info("started transport {}:{}", server.getName(), actualPort);
-		if (server.getTransportAttachObserver() != null)
-			server.getTransportAttachObserver().attachTransport(this);
 	}
 
 	@Override
@@ -185,8 +120,6 @@ public class NettyServerImpl implements NettyServer, ExternalResourceReleasable 
 			shutdownExecutor(bossExecutor, "bossExecutor");
 		if (ioWorkerExecutor != null)
 			shutdownExecutor(ioWorkerExecutor, "workerExecutor");
-		if (server.getTransportAttachObserver() != null)
-			server.getTransportAttachObserver().detachTransport();
 	}
 
 	public Channel getServerChannel() {
@@ -200,67 +133,6 @@ public class NettyServerImpl implements NettyServer, ExternalResourceReleasable 
 	@Override
 	public void releaseExternalResources() {
 		bootstrap.releaseExternalResources();
-	}
-
-	private static class ConnectionLimiter extends SimpleChannelUpstreamHandler {
-		private final int maxConnections;
-		private final AtomicInteger numConnections;
-
-		public ConnectionLimiter(int maxConnections) {
-			this.maxConnections = maxConnections;
-			this.numConnections = new AtomicInteger(0);
-		}
-
-		@Override
-		public void channelOpen(ChannelHandlerContext ctx, ChannelStateEvent e) throws Exception {
-			if (maxConnections > 0 && numConnections.incrementAndGet() > maxConnections) {
-				ctx.getChannel().close();
-				log.info("Accepted connection above limit ({}). Dropping.", maxConnections);
-			}
-			super.channelOpen(ctx, e);
-		}
-
-		@Override
-		public void channelClosed(ChannelHandlerContext ctx, ChannelStateEvent e) throws Exception {
-			if (maxConnections > 0 && numConnections.decrementAndGet() < 0)
-				log.error("BUG in ConnectionLimiter");
-			super.channelClosed(ctx, e);
-		}
-	}
-
-	/**
-	 * Returns the current {@link SslServerConfiguration}.
-	 *
-	 * @return the configuration.
-	 */
-	public SslServerConfiguration getSSLConfiguration() {
-		return sslConfiguration.get();
-	}
-
-	/**
-	 * Atomically replaces the current {@link SslServerConfiguration} with the
-	 * provided one.
-	 *
-	 * @param sslServerConfiguration
-	 *            the new configuration.
-	 */
-	public void updateSSLConfiguration(SslServerConfiguration sslServerConfiguration) {
-		sslConfiguration.set(sslServerConfiguration);
-	}
-
-	/**
-	 * Atomically replaces the current {@link SslServerConfiguration} with
-	 * {@code updated} if and only if the current configuration is {@code ==} to
-	 * {@code expected}.
-	 *
-	 * @param expected
-	 *            the expected current configuration.
-	 * @param updated
-	 *            the new configuration.
-	 * @return true if the update succeeded, or false otherwise.
-	 */
-	public boolean compareAndSetSSLConfiguration(SslServerConfiguration expected, SslServerConfiguration updated) {
-		return sslConfiguration.compareAndSet(expected, updated);
 	}
 
 	private void shutdownExecutor(ExecutorService executorService, final String name) {

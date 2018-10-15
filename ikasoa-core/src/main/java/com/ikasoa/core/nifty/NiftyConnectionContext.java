@@ -1,7 +1,5 @@
 package com.ikasoa.core.nifty;
 
-import com.ikasoa.core.nifty.ssl.SslSession;
-
 import java.net.SocketAddress;
 import java.util.Collections;
 import java.util.Iterator;
@@ -10,21 +8,11 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class NiftyConnectionContext implements ConnectionContext {
 	private SocketAddress remoteAddress;
-	private SslSession sslSession;
 	private Map<String, Object> attributes = new ConcurrentHashMap<>();
 
 	@Override
 	public SocketAddress getRemoteAddress() {
 		return remoteAddress;
-	}
-
-	@Override
-	public SslSession getSslSession() {
-		return sslSession;
-	}
-
-	public void setSslSession(SslSession sslSession) {
-		this.sslSession = sslSession;
 	}
 
 	public void setRemoteAddress(SocketAddress remoteAddress) {
