@@ -24,7 +24,6 @@ public class StringUtilTest extends TestCase {
 		assertTrue(StringUtil.andIsEmpty(null, "", ""));
 		assertFalse(StringUtil.andIsEmpty(null, " "));
 		assertFalse(StringUtil.andIsEmpty("", " "));
-		assertFalse(StringUtil.andIsEmpty(" "));
 		assertFalse(StringUtil.andIsEmpty(" ", "a"));
 	}
 
@@ -33,7 +32,6 @@ public class StringUtilTest extends TestCase {
 		assertTrue(StringUtil.orIsEmpty(null, ""));
 		assertTrue(StringUtil.orIsEmpty(null, " "));
 		assertTrue(StringUtil.orIsEmpty("", " "));
-		assertFalse(StringUtil.orIsEmpty(" "));
 		assertFalse(StringUtil.orIsEmpty(" ", "a"));
 		assertTrue(StringUtil.orIsEmpty(null, " ", "a"));
 	}
@@ -50,6 +48,23 @@ public class StringUtilTest extends TestCase {
 		assertTrue(StringUtil.isBlank(null));
 		assertTrue(StringUtil.isBlank(""));
 		assertTrue(StringUtil.isBlank(" "));
+	}
+	
+	@Test
+	public void testAndIsBlank() {
+		assertTrue(StringUtil.andIsBlank(null, ""));
+		assertTrue(StringUtil.andIsBlank(null, "", ""));
+		assertTrue(StringUtil.andIsBlank(null, " "));
+		assertTrue(StringUtil.andIsBlank("", " "));
+		assertFalse(StringUtil.andIsBlank(" ", "a"));
+	}
+
+	@Test
+	public void testOrIsBlank() {
+		assertTrue(StringUtil.orIsBlank(null, ""));
+		assertTrue(StringUtil.orIsBlank("", " "));
+		assertFalse(StringUtil.orIsBlank("a", "b"));
+		assertTrue(StringUtil.orIsBlank(null, "a"));
 	}
 
 	@Test

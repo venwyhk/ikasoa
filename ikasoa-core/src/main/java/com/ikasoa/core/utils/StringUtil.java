@@ -29,10 +29,6 @@ public class StringUtil {
 		return Arrays.asList(strs).stream().filter(StringUtil::isEmpty).count() > 0;
 	}
 
-	public static boolean andIsEmpty(String str1, String str2) {
-		return isEmpty(str1) && isEmpty(str2);
-	}
-
 	public static boolean isNotEmpty(String str) {
 		return !isEmpty(str);
 	}
@@ -47,13 +43,21 @@ public class StringUtil {
 		return Boolean.TRUE;
 	}
 
+	public static boolean andIsBlank(String... strs) {
+		return Arrays.asList(strs).stream().filter(StringUtil::isNotBlank).count() == 0;
+	}
+
+	public static boolean orIsBlank(String... strs) {
+		return Arrays.asList(strs).stream().filter(StringUtil::isBlank).count() > 0;
+	}
+
 	public static boolean isNotBlank(String str) {
 		return !isBlank(str);
 	}
 
 	public static boolean equals(String str1, String str2) {
-		return isEmpty(str1) && isEmpty(str2) ? Boolean.TRUE
-				: isNotEmpty(str1) && isNotEmpty(str2) ? str1.equals(str2) : Boolean.FALSE;
+		return str1 == null && str2 == null ? Boolean.TRUE
+				: str1 != null && str2 != null ? str1.equals(str2) : Boolean.FALSE;
 	}
 
 	public static byte[] strToBytes(String str) {
