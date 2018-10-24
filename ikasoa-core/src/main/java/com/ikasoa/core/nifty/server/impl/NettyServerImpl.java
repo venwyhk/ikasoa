@@ -90,14 +90,14 @@ public class NettyServerImpl implements NettyServer, ExternalResourceReleasable 
 		actualPort = actualSocket.getPort();
 		if (actualPort == 0 || (actualPort != requestedPort && requestedPort != 0))
 			throw new IkasoaException("Server initialize failed !");
-		log.info("started transport {}:{}", server.getName(), actualPort);
+		log.info("started transport {}:{} .", server.getName(), actualPort);
 	}
 
 	@Override
 	@SneakyThrows
 	public void stop() {
 		if (serverChannel != null) {
-			log.info("stopping transport {}:{}", server.getName(), actualPort);
+			log.info("stopping transport {}:{} .", server.getName(), actualPort);
 			// first stop accepting
 			final CountDownLatch latch = new CountDownLatch(1);
 			serverChannel.close().addListener(new ChannelFutureListener() {
@@ -137,13 +137,13 @@ public class NettyServerImpl implements NettyServer, ExternalResourceReleasable 
 
 	private void shutdownExecutor(ExecutorService executorService, final String name) {
 		try {
-			log.debug("Waiting for {} to shutdown", name);
+			log.debug("Waiting for {} to shutdown .", name);
 			while (executorService != null && !executorService.isTerminated()) {
 				executorService.awaitTermination(10, TimeUnit.SECONDS);
-				log.debug("{} did not shutdown properly", name);
+				log.debug("{} did not shutdown properly .", name);
 			}
 		} catch (InterruptedException e) {
-			log.warn("Interrupted while waiting for {} to shutdown", name);
+			log.warn("Interrupted while waiting for {} to shutdown .", name);
 			executorService.shutdownNow();
 			Thread.currentThread().interrupt();
 		}

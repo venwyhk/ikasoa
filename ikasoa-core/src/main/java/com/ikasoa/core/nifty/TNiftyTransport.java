@@ -105,7 +105,7 @@ public class TNiftyTransport extends TTransport {
 	@Override
 	public int readAll(byte[] bytes, int offset, int length) throws TTransportException {
 		if (read(bytes, offset, length) < length) {
-			throw new TTransportException("Buffer doesn't have enough bytes to read");
+			throw new TTransportException("Buffer doesn't have enough bytes to read .");
 		}
 		return length;
 	}

@@ -86,8 +86,8 @@ public class NiftyDispatcher extends SimpleChannelUpstreamHandler {
 			// message
 			// is consistent with the requirement on the channel itself.
 			if (messageRequiresOrderedResponses != DispatcherContext.isResponseOrderingRequired(ctx))
-				throw new IllegalStateException(String.valueOf(
-						"Every message on a single channel must specify the same requirement for response ordering"));
+				throw new IllegalStateException(
+						"Every message on a single channel must specify the same requirement for response ordering .");
 		}
 	}
 
@@ -137,7 +137,7 @@ public class NiftyDispatcher extends SimpleChannelUpstreamHandler {
 										TApplicationException.INTERNAL_ERROR,
 										"Task stayed on the queue for " + timeElapsed
 												+ " milliseconds, exceeding configured queue timeout of "
-												+ queueTimeoutMillis + " milliseconds.");
+												+ queueTimeoutMillis + " milliseconds .");
 								sendTApplicationException(taskTimeoutException, ctx, message, requestSequenceId,
 										messageTransport, inProtocol, outProtocol);
 								return;
@@ -148,7 +148,7 @@ public class NiftyDispatcher extends SimpleChannelUpstreamHandler {
 										TApplicationException.INTERNAL_ERROR,
 										"Task stayed on the queue for " + timeElapsed
 												+ " milliseconds, exceeding configured task timeout of "
-												+ taskTimeoutMillis + " milliseconds.");
+												+ taskTimeoutMillis + " milliseconds .");
 								sendTApplicationException(taskTimeoutException, ctx, message, requestSequenceId,
 										messageTransport, inProtocol, outProtocol);
 								return;
@@ -166,7 +166,7 @@ public class NiftyDispatcher extends SimpleChannelUpstreamHandler {
 									if (responseSent.compareAndSet(false, true)) {
 										TApplicationException ex = new TApplicationException(
 												TApplicationException.INTERNAL_ERROR,
-												"Task timed out while executing.");
+												"Task timed out while executing .");
 										// Create a temporary transport to send the exception
 										ChannelBuffer duplicateBuffer = message.getBuffer().duplicate();
 										duplicateBuffer.resetReaderIndex();
@@ -193,7 +193,7 @@ public class NiftyDispatcher extends SimpleChannelUpstreamHandler {
 			});
 		} catch (RejectedExecutionException ex) {
 			TApplicationException x = new TApplicationException(TApplicationException.INTERNAL_ERROR,
-					"Server overloaded");
+					"Server overloaded .");
 			sendTApplicationException(x, ctx, message, requestSequenceId, messageTransport, inProtocol, outProtocol);
 		}
 	}
@@ -334,6 +334,7 @@ public class NiftyDispatcher extends SimpleChannelUpstreamHandler {
 		}
 
 		private static DispatcherContext getDispatcherContext(ChannelHandlerContext ctx) {
+			
 			DispatcherContext dispatcherContext;
 			Object attachment = ctx.getAttachment();
 
@@ -345,7 +346,7 @@ public class NiftyDispatcher extends SimpleChannelUpstreamHandler {
 				dispatcherContext = (DispatcherContext) attachment;
 			} else {
 				throw new IllegalStateException(
-						"NiftyDispatcher handler context should be of type NiftyDispatcher.DispatcherContext");
+						"NiftyDispatcher handler context should be of type NiftyDispatcher.DispatcherContext .");
 			}
 
 			return dispatcherContext;

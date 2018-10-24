@@ -1,5 +1,7 @@
 package com.ikasoa.core.utils;
 
+import java.util.Arrays;
+
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 
@@ -17,6 +19,18 @@ public class StringUtil {
 
 	public static boolean isEmpty(String str) {
 		return str == null || str.length() == 0;
+	}
+
+	public static boolean andIsEmpty(String... strs) {
+		return Arrays.asList(strs).stream().filter(StringUtil::isNotEmpty).count() == 0;
+	}
+
+	public static boolean orIsEmpty(String... strs) {
+		return Arrays.asList(strs).stream().filter(StringUtil::isEmpty).count() > 0;
+	}
+
+	public static boolean andIsEmpty(String str1, String str2) {
+		return isEmpty(str1) && isEmpty(str2);
 	}
 
 	public static boolean isNotEmpty(String str) {

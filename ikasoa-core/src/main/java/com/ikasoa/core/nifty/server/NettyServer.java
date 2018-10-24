@@ -9,5 +9,4 @@ import com.ikasoa.core.Server;
  * @version 0.6
  */
 public interface NettyServer extends Server {
-
 }

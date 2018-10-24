@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 public interface RequestContext {
+
 	TProtocol getOutputProtocol();
 
 	TProtocol getInputProtocol();

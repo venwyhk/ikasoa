@@ -17,6 +17,26 @@ public class StringUtilTest extends TestCase {
 		assertTrue(StringUtil.isEmpty(""));
 		assertFalse(StringUtil.isEmpty(" "));
 	}
+	
+	@Test
+	public void testAndIsEmpty() {
+		assertTrue(StringUtil.andIsEmpty(null, ""));
+		assertTrue(StringUtil.andIsEmpty(null, "", ""));
+		assertFalse(StringUtil.andIsEmpty(null, " "));
+		assertFalse(StringUtil.andIsEmpty("", " "));
+		assertFalse(StringUtil.andIsEmpty(" "));
+		assertFalse(StringUtil.andIsEmpty(" ", "a"));
+	}
+
+	@Test
+	public void testOrIsEmpty() {
+		assertTrue(StringUtil.orIsEmpty(null, ""));
+		assertTrue(StringUtil.orIsEmpty(null, " "));
+		assertTrue(StringUtil.orIsEmpty("", " "));
+		assertFalse(StringUtil.orIsEmpty(" "));
+		assertFalse(StringUtil.orIsEmpty(" ", "a"));
+		assertTrue(StringUtil.orIsEmpty(null, " ", "a"));
+	}
 
 	@Test
 	public void testIsNotEmpty() {

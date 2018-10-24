@@ -8,6 +8,7 @@ import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.DESKeySpec;
 
 import com.ikasoa.core.security.SymmetricKeyEncrypt;
+import com.ikasoa.core.utils.StringUtil;
 
 import lombok.NoArgsConstructor;
 
@@ -38,6 +39,8 @@ public class DESEncryptImpl implements SymmetricKeyEncrypt {
 	 */
 	@Override
 	public String encrypt(String data, String key) throws Exception {
+		if (StringUtil.orIsEmpty(data, key))
+			return null;
 		return byte2hex(encrypt(data.getBytes(), key.getBytes()));
 	}
 
@@ -54,6 +57,8 @@ public class DESEncryptImpl implements SymmetricKeyEncrypt {
 	 */
 	@Override
 	public String decrypt(String data, String key) throws Exception {
+		if (StringUtil.orIsEmpty(data, key))
+			return null;
 		return new String(decrypt(hex2byte(data.getBytes()), key.getBytes()));
 	}
 

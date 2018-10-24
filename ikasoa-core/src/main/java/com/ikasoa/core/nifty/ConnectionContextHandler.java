@@ -10,6 +10,8 @@ import org.jboss.netty.channel.ChannelHandlerContext;
 import org.jboss.netty.channel.ChannelStateEvent;
 import org.jboss.netty.channel.SimpleChannelUpstreamHandler;
 
+import com.ikasoa.core.utils.StringUtil;
+
 public class ConnectionContextHandler extends SimpleChannelUpstreamHandler {
 
 	@Override
@@ -36,23 +38,21 @@ public class ConnectionContextHandler extends SimpleChannelUpstreamHandler {
 
 		@Override
 		public Object getAttribute(String attributeName) {
-			if (attributeName == null)
+			if (StringUtil.isEmpty(attributeName))
 				throw new NullPointerException();
 			return attributes.get(attributeName);
 		}
 
 		@Override
 		public Object setAttribute(String attributeName, Object value) {
-			if (attributeName == null)
-				throw new NullPointerException();
-			if (value == null)
+			if (StringUtil.isEmpty(attributeName) || value == null)
 				throw new NullPointerException();
 			return attributes.put(attributeName, value);
 		}
 
 		@Override
 		public Object removeAttribute(String attributeName) {
-			if (attributeName == null)
+			if (StringUtil.isEmpty(attributeName))
 				throw new NullPointerException();
 			return attributes.remove(attributeName);
 		}
