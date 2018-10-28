@@ -31,6 +31,12 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * Netty服务器实现
+ * 
+ * @author <a href="mailto:larry7696@gmail.com">Larry</a>
+ * @version 0.6
+ */
 @Slf4j
 public class NettyServerImpl implements NettyServer, ExternalResourceReleasable {
 

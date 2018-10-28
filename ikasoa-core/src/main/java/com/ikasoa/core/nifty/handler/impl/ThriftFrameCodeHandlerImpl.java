@@ -8,6 +8,12 @@ import org.jboss.netty.handler.codec.oneone.OneToOneEncoder;
 
 import com.ikasoa.core.nifty.handler.ThriftFrameCodeHandler;
 
+/**
+ * ThriftFrameCodeHandlerImpl
+ * 
+ * @author <a href="mailto:larry7696@gmail.com">Larry</a>
+ * @version 0.6
+ */
 public class ThriftFrameCodeHandlerImpl implements ThriftFrameCodeHandler {
 	private final FrameDecoder decoder;
 	private final OneToOneEncoder encoder;

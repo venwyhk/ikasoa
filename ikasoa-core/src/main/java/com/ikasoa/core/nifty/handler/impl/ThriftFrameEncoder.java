@@ -10,6 +10,12 @@ import org.jboss.netty.handler.codec.oneone.OneToOneEncoder;
 
 import com.ikasoa.core.nifty.ThriftMessage;
 
+/**
+ * ThriftFrameEncoder
+ * 
+ * @author <a href="mailto:larry7696@gmail.com">Larry</a>
+ * @version 0.6
+ */
 public class ThriftFrameEncoder extends OneToOneEncoder {
 
 	private final long maxFrameSize;

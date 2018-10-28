@@ -17,6 +17,12 @@ import com.ikasoa.core.nifty.TNiftyTransport;
 import com.ikasoa.core.nifty.ThriftMessage;
 import com.ikasoa.core.nifty.ThriftTransportType;
 
+/**
+ * ThriftFrameDecoder
+ * 
+ * @author <a href="mailto:larry7696@gmail.com">Larry</a>
+ * @version 0.6
+ */
 public class ThriftFrameDecoder extends FrameDecoder {
 
 	public static final int MESSAGE_FRAME_SIZE = 4;

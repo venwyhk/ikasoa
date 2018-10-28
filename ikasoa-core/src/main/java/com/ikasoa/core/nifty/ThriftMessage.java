@@ -2,6 +2,12 @@ package com.ikasoa.core.nifty;
 
 import org.jboss.netty.buffer.ChannelBuffer;
 
+/**
+ * ThriftMessage
+ * 
+ * @author <a href="mailto:larry7696@gmail.com">Larry</a>
+ * @version 0.6
+ */
 public class ThriftMessage {
 	private final ChannelBuffer buffer;
 	private final ThriftTransportType transportType;

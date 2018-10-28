@@ -11,7 +11,10 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * Wraps incoming channel buffer into TTransport and provides a output buffer.
+ * 将传入的信道buffer封装到<code>TTransport</code>中，并提供输出buffer
+ * 
+ * @author <a href="mailto:larry7696@gmail.com">Larry</a>
+ * @version 0.6
  */
 public class TNiftyTransport extends TTransport {
 

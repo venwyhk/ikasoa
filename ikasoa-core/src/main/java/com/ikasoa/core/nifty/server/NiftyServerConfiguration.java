@@ -12,13 +12,19 @@ import org.apache.thrift.protocol.TBinaryProtocol;
 import org.apache.thrift.protocol.TProtocolFactory;
 import org.jboss.netty.channel.ChannelPipelineFactory;
 
+/**
+ * Nifty服务器配置
+ * 
+ * @author <a href="mailto:larry7696@gmail.com">Larry</a>
+ * @version 0.6
+ */
 @Data
 public class NiftyServerConfiguration {
 
 	private ChannelPipelineFactory channelPipelineFactory;
 
 	private String name = "NiftyServer";
-	private int serverPort = 8080;
+	private int serverPort = 8080; // 默认端口
 	private final int maxFrameSize = 64 * 1024 * 1024;
 	private final int queuedResponseLimit = 16;
 	private TProcessorFactory processorFactory;
