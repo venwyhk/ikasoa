@@ -30,13 +30,10 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
- * Dispatch TNiftyTransport to the TProcessor and write output back.
- *
- * Note that all current async thrift clients are capable of sending multiple
- * requests at once but not capable of handling out-of-order responses to those
- * requests, so this dispatcher sends the requests in order. (Eventually this
- * will be conditional on a flag in the thrift message header for future async
- * clients that can handle out-of-order responses).
+ * NiftyDispatcher
+ * 
+ * @author <a href="mailto:larry7696@gmail.com">Larry</a>
+ * @version 0.6
  */
 public class NiftyDispatcher extends SimpleChannelUpstreamHandler {
 	private final TProcessorFactory processorFactory;
@@ -76,125 +73,85 @@ public class NiftyDispatcher extends SimpleChannelUpstreamHandler {
 	private void checkResponseOrderingRequirements(ChannelHandlerContext ctx, ThriftMessage message) {
 		boolean messageRequiresOrderedResponses = message.isOrderedResponsesRequired();
 
-		if (!DispatcherContext.isResponseOrderingRequirementInitialized(ctx)) {
-			// This is the first request. This message will decide whether all responses on
-			// the
-			// channel must be strictly ordered, or whether out-of-order is allowed.
+		if (!DispatcherContext.isResponseOrderingRequirementInitialized(ctx))
+			// 第一个请求
 			DispatcherContext.setResponseOrderingRequired(ctx, messageRequiresOrderedResponses);
-		} else {
-			// This is not the first request. Verify that the ordering requirement on this
-			// message
-			// is consistent with the requirement on the channel itself.
-			if (messageRequiresOrderedResponses != DispatcherContext.isResponseOrderingRequired(ctx))
-				throw new IllegalStateException(
-						"Every message on a single channel must specify the same requirement for response ordering .");
-		}
+		else if (messageRequiresOrderedResponses != DispatcherContext.isResponseOrderingRequired(ctx))
+			throw new IllegalStateException(
+					"Every message on a single channel must specify the same requirement for response ordering .");
 	}
 
 	private void processRequest(final ChannelHandlerContext ctx, final ThriftMessage message,
 			final TNiftyTransport messageTransport, final TProtocol inProtocol, final TProtocol outProtocol) {
-		// Remember the ordering of requests as they arrive, used to enforce an order on
-		// the
-		// responses.
 		final int requestSequenceId = dispatcherSequenceId.incrementAndGet();
 
-		if (DispatcherContext.isResponseOrderingRequired(ctx)) {
+		if (DispatcherContext.isResponseOrderingRequired(ctx))
 			synchronized (responseMap) {
-				// Limit the number of pending responses (responses which finished out of order,
-				// and are
-				// waiting for previous requests to be finished so they can be written in
-				// order), by
-				// blocking further channel reads. Due to the way Netty frame decoders work,
-				// this is more
-				// of an estimate than a hard limit. Netty may continue to decode and process
-				// several
-				// more requests that were in the latest read, even while further reads on the
-				// channel
-				// have been blocked.
 				if (requestSequenceId > lastResponseWrittenId.get() + queuedResponseLimit
-						&& !DispatcherContext.isChannelReadBlocked(ctx)) {
+						&& !DispatcherContext.isChannelReadBlocked(ctx))
 					DispatcherContext.blockChannelReads(ctx);
-				}
 			}
-		}
 
 		try {
-			executor.execute(new Runnable() {
-				@Override
-				public void run() {
-					final AtomicBoolean responseSent = new AtomicBoolean(false);
-					// Use AtomicReference as a generic holder class to be able to mark it final
-					// and pass into inner classes. Since we only use .get() and .set(), we don't
-					// actually do any atomic operations.
-					final AtomicReference<Timeout> expireTimeout = new AtomicReference<>(null);
-
-					try {
-						long timeRemaining = 0;
-						long timeElapsed = System.currentTimeMillis() - message.getProcessStartTimeMillis();
-						if (queueTimeoutMillis > 0) {
-							if (timeElapsed >= queueTimeoutMillis) {
-								TApplicationException taskTimeoutException = new TApplicationException(
-										TApplicationException.INTERNAL_ERROR,
-										"Task stayed on the queue for " + timeElapsed
-												+ " milliseconds, exceeding configured queue timeout of "
-												+ queueTimeoutMillis + " milliseconds .");
-								sendTApplicationException(taskTimeoutException, ctx, message, requestSequenceId,
-										messageTransport, inProtocol, outProtocol);
-								return;
-							}
-						} else if (taskTimeoutMillis > 0) {
+			executor.execute(() -> {
+				final AtomicBoolean responseSent = new AtomicBoolean(false);
+				final AtomicReference<Timeout> expireTimeout = new AtomicReference<>(null);
+				try {
+					long timeRemaining = 0;
+					long timeElapsed = System.currentTimeMillis() - message.getProcessStartTimeMillis();
+					if (queueTimeoutMillis > 0)
+						if (timeElapsed >= queueTimeoutMillis) {
+							sendTApplicationException(
+									new TApplicationException(TApplicationException.INTERNAL_ERROR,
+											"Task stayed on the queue for " + timeElapsed
+													+ " milliseconds, exceeding configured queue timeout of "
+													+ queueTimeoutMillis + " milliseconds ."),
+									ctx, message, requestSequenceId, messageTransport, inProtocol, outProtocol);
+							return;
+						} else if (taskTimeoutMillis > 0)
 							if (timeElapsed >= taskTimeoutMillis) {
-								TApplicationException taskTimeoutException = new TApplicationException(
-										TApplicationException.INTERNAL_ERROR,
-										"Task stayed on the queue for " + timeElapsed
-												+ " milliseconds, exceeding configured task timeout of "
-												+ taskTimeoutMillis + " milliseconds .");
-								sendTApplicationException(taskTimeoutException, ctx, message, requestSequenceId,
-										messageTransport, inProtocol, outProtocol);
+								sendTApplicationException(
+										new TApplicationException(TApplicationException.INTERNAL_ERROR,
+												"Task stayed on the queue for " + timeElapsed
+														+ " milliseconds, exceeding configured task timeout of "
+														+ taskTimeoutMillis + " milliseconds ."),
+										ctx, message, requestSequenceId, messageTransport, inProtocol, outProtocol);
 								return;
-							} else {
+							} else
 								timeRemaining = taskTimeoutMillis - timeElapsed;
-							}
-						}
 
-						if (timeRemaining > 0) {
-							expireTimeout.set(taskTimeoutTimer.newTimeout(new TimerTask() {
-								@Override
-								public void run(Timeout timeout) throws Exception {
-									// The immediateFuture returned by processors isn't cancellable, cancel() and
-									// isCanceled() always return false. Use a flag to detect task expiration.
-									if (responseSent.compareAndSet(false, true)) {
-										TApplicationException ex = new TApplicationException(
-												TApplicationException.INTERNAL_ERROR,
-												"Task timed out while executing .");
-										// Create a temporary transport to send the exception
-										ChannelBuffer duplicateBuffer = message.getBuffer().duplicate();
-										duplicateBuffer.resetReaderIndex();
-										TNiftyTransport temporaryTransport = new TNiftyTransport(ctx.getChannel(),
-												duplicateBuffer, message.getTransportType());
+					if (timeRemaining > 0)
+						expireTimeout.set(taskTimeoutTimer.newTimeout(new TimerTask() {
+							@Override
+							public void run(Timeout timeout) throws Exception {
+								if (responseSent.compareAndSet(false, true)) {
+									ChannelBuffer duplicateBuffer = message.getBuffer().duplicate();
+									duplicateBuffer.resetReaderIndex();
+									TNiftyTransport temporaryTransport = new TNiftyTransport(ctx.getChannel(),
+											duplicateBuffer, message.getTransportType());
 
-										TProtocol protocol = protocolFactory.getProtocol(messageTransport);
-										sendTApplicationException(ex, ctx, message, requestSequenceId,
-												temporaryTransport, protocol, protocol);
-									}
+									TProtocol protocol = protocolFactory.getProtocol(messageTransport);
+									sendTApplicationException(
+											new TApplicationException(TApplicationException.INTERNAL_ERROR,
+													"Task timed out while executing ."),
+											ctx, message, requestSequenceId, temporaryTransport, protocol, protocol);
 								}
-							}, timeRemaining, TimeUnit.MILLISECONDS));
-						}
+							}
+						}, timeRemaining, TimeUnit.MILLISECONDS));
 
-						if (processorFactory.getProcessor(messageTransport).process(inProtocol, outProtocol)
-								&& ctx.getChannel().isConnected() && responseSent.compareAndSet(false, true))
-							writeResponse(ctx, message.getMessageFactory().create(messageTransport.getOutputBuffer()),
-									requestSequenceId, DispatcherContext.isResponseOrderingRequired(ctx));
+					if (processorFactory.getProcessor(messageTransport).process(inProtocol, outProtocol)
+							&& ctx.getChannel().isConnected() && responseSent.compareAndSet(false, true))
+						writeResponse(ctx, message.getMessageFactory().create(messageTransport.getOutputBuffer()),
+								requestSequenceId, DispatcherContext.isResponseOrderingRequired(ctx));
 
-					} catch (TException e) {
-						onDispatchException(ctx, e);
-					}
+				} catch (TException e) {
+					onDispatchException(ctx, e);
 				}
 			});
 		} catch (RejectedExecutionException ex) {
-			TApplicationException x = new TApplicationException(TApplicationException.INTERNAL_ERROR,
-					"Server overloaded .");
-			sendTApplicationException(x, ctx, message, requestSequenceId, messageTransport, inProtocol, outProtocol);
+			sendTApplicationException(
+					new TApplicationException(TApplicationException.INTERNAL_ERROR, "Server overloaded ."), ctx,
+					message, requestSequenceId, messageTransport, inProtocol, outProtocol);
 		}
 	}
 
@@ -224,28 +181,21 @@ public class NiftyDispatcher extends SimpleChannelUpstreamHandler {
 
 	private void writeResponse(ChannelHandlerContext ctx, ThriftMessage response, int responseSequenceId,
 			boolean isOrderedResponsesRequired) {
-		if (isOrderedResponsesRequired) {
+		if (isOrderedResponsesRequired)
 			writeResponseInOrder(ctx, response, responseSequenceId);
-		} else {
-			// No ordering required, just write the response immediately
+		else {
 			Channels.write(ctx.getChannel(), response);
 			lastResponseWrittenId.incrementAndGet();
 		}
 	}
 
 	private void writeResponseInOrder(ChannelHandlerContext ctx, ThriftMessage response, int responseSequenceId) {
-		// Ensure responses to requests are written in the same order the requests
-		// were received.
 		synchronized (responseMap) {
 			int currentResponseId = lastResponseWrittenId.get() + 1;
-			if (responseSequenceId != currentResponseId) {
-				// This response is NOT next in line of ordered responses, save it to
-				// be sent later, after responses to all earlier requests have been
-				// sent.
+			if (responseSequenceId != currentResponseId)
 				responseMap.put(responseSequenceId, response);
-			} else {
-				// This response was next in line, write this response now, and see if
-				// there are others next in line that should be sent now as well.
+			else {
+				// 写入下一行的response.
 				do {
 					Channels.write(ctx.getChannel(), response);
 					lastResponseWrittenId.incrementAndGet();
@@ -253,40 +203,34 @@ public class NiftyDispatcher extends SimpleChannelUpstreamHandler {
 					response = responseMap.remove(currentResponseId);
 				} while (null != response);
 
-				// Now that we've written some responses, check if reads should be unblocked
-				if (DispatcherContext.isChannelReadBlocked(ctx)) {
-					int lastRequestSequenceId = dispatcherSequenceId.get();
-					if (lastRequestSequenceId <= lastResponseWrittenId.get() + queuedResponseLimit) {
-						DispatcherContext.unblockChannelReads(ctx);
-					}
-				}
+				if (DispatcherContext.isChannelReadBlocked(ctx)
+						&& dispatcherSequenceId.get() <= lastResponseWrittenId.get() + queuedResponseLimit)
+					DispatcherContext.unblockChannelReads(ctx);
 			}
 		}
 	}
 
 	@Override
 	public void exceptionCaught(ChannelHandlerContext ctx, ExceptionEvent e) throws Exception {
-		// Any out of band exception are caught here and we tear down the socket
+		// 捕获外部异常,并关闭通道
 		closeChannel(ctx);
-
-		// Send for logging
+		// 写日志
 		ctx.sendUpstream(e);
 	}
 
 	private void closeChannel(ChannelHandlerContext ctx) {
-		if (ctx.getChannel().isOpen()) {
+		if (ctx.getChannel().isOpen())
 			ctx.getChannel().close();
-		}
 	}
 
 	@Override
 	public void channelOpen(ChannelHandlerContext ctx, ChannelStateEvent e) throws Exception {
-		// Reads always start out unblocked
 		DispatcherContext.unblockChannelReads(ctx);
 		super.channelOpen(ctx, e);
 	}
 
 	private static class DispatcherContext {
+
 		private ReadBlockedState readBlockedState = ReadBlockedState.NOT_BLOCKED;
 		private boolean responseOrderingRequired = false;
 		private boolean responseOrderingRequirementInitialized = false;
@@ -296,25 +240,11 @@ public class NiftyDispatcher extends SimpleChannelUpstreamHandler {
 		}
 
 		public static void blockChannelReads(ChannelHandlerContext ctx) {
-			// Remember that reads are blocked (there is no Channel.getReadable())
 			getDispatcherContext(ctx).readBlockedState = ReadBlockedState.BLOCKED;
-
-			// NOTE: this shuts down reads, but isn't a 100% guarantee we won't get any more
-			// messages.
-			// It sets up the channel so that the polling loop will not report any new read
-			// events
-			// and netty won't read any more data from the socket, but any messages already
-			// fully read
-			// from the socket before this ran may still be decoded and arrive at this
-			// handler. Thus
-			// the limit on queued messages before we block reads is more of a guidance than
-			// a hard
-			// limit.
 			ctx.getChannel().setReadable(false);
 		}
 
 		public static void unblockChannelReads(ChannelHandlerContext ctx) {
-			// Remember that reads are unblocked (there is no Channel.getReadable())
 			getDispatcherContext(ctx).readBlockedState = ReadBlockedState.NOT_BLOCKED;
 			ctx.getChannel().setReadable(true);
 		}
@@ -334,21 +264,17 @@ public class NiftyDispatcher extends SimpleChannelUpstreamHandler {
 		}
 
 		private static DispatcherContext getDispatcherContext(ChannelHandlerContext ctx) {
-			
 			DispatcherContext dispatcherContext;
 			Object attachment = ctx.getAttachment();
-
 			if (attachment == null) {
-				// No context was added yet, add one
+				// 如果没有上下文就创建一个
 				dispatcherContext = new DispatcherContext();
 				ctx.setAttachment(dispatcherContext);
-			} else if (attachment instanceof DispatcherContext) {
+			} else if (attachment instanceof DispatcherContext)
 				dispatcherContext = (DispatcherContext) attachment;
-			} else {
+			else
 				throw new IllegalStateException(
 						"NiftyDispatcher handler context should be of type NiftyDispatcher.DispatcherContext .");
-			}
-
 			return dispatcherContext;
 		}
 
