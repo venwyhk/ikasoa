@@ -4,7 +4,6 @@ import com.ikasoa.core.IkasoaException;
 import com.ikasoa.core.nifty.NiftyDispatcher;
 import com.ikasoa.core.nifty.handler.impl.ThriftFrameCodeHandlerImpl;
 import com.ikasoa.core.nifty.server.NettyServer;
-import com.ikasoa.core.nifty.server.NettyServerConfiguration;
 import com.ikasoa.core.nifty.server.NiftyServerConfiguration;
 
 import lombok.AllArgsConstructor;
@@ -14,8 +13,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.thrift.protocol.TProtocolFactory;
 import org.jboss.netty.bootstrap.ServerBootstrap;
 import org.jboss.netty.channel.Channel;
-import org.jboss.netty.channel.ChannelFuture;
-import org.jboss.netty.channel.ChannelFutureListener;
 import org.jboss.netty.channel.ChannelPipeline;
 import org.jboss.netty.channel.ChannelPipelineFactory;
 import org.jboss.netty.channel.Channels;
@@ -52,39 +49,28 @@ public class NettyServerImpl implements NettyServer, ExternalResourceReleasable 
 	private final ChannelPipelineFactory pipelineFactory;
 	private ServerBootstrap bootstrap;
 	private final ChannelGroup allChannels;
-	private ExecutorService bossExecutor;
-	private ExecutorService ioWorkerExecutor;
+	private ExecutorService bossExecutorService = Executors.newSingleThreadExecutor();
+	private ExecutorService workerExecutorService = Executors.newFixedThreadPool(DEFAULT_WORKER_THREAD_COUNT);
 	private ServerChannelFactory channelFactory;
 	private Channel serverChannel;
-	private final NiftyServerConfiguration server;
-	private final NettyServerConfiguration nettyServerConfig;
+	private final NiftyServerConfiguration serverConfiguration;
 
-	public NettyServerImpl(final NiftyServerConfiguration server) {
-		this(server,
-				new NettyServerConfiguration(new HashMap<String, Object>(), new HashedWheelTimer(),
-						Executors.newSingleThreadExecutor(), 1,
-						Executors.newFixedThreadPool(DEFAULT_WORKER_THREAD_COUNT), DEFAULT_WORKER_THREAD_COUNT),
-				new DefaultChannelGroup());
+	public NettyServerImpl(final NiftyServerConfiguration serverConfiguration) {
+		this(serverConfiguration, new DefaultChannelGroup());
 	}
 
-	public NettyServerImpl(final NiftyServerConfiguration server, final NettyServerConfiguration nettyServerConfig,
-			final ChannelGroup allChannels) {
-		this.server = server;
-		this.nettyServerConfig = nettyServerConfig;
-		this.requestedPort = server.getServerPort();
+	public NettyServerImpl(final NiftyServerConfiguration serverConfiguration, final ChannelGroup allChannels) {
+		this.serverConfiguration = serverConfiguration;
+		this.requestedPort = serverConfiguration.getServerPort();
 		this.allChannels = allChannels;
-		this.pipelineFactory = new NiftyChannelPipelineFactory(server);
+		this.pipelineFactory = new NiftyChannelPipelineFactory(serverConfiguration);
 	}
 
 	@Override
 	public void run() {
-		bossExecutor = nettyServerConfig.getBossExecutor();
-		ioWorkerExecutor = nettyServerConfig.getWorkerExecutor();
 		channelFactory = new NioServerSocketChannelFactory(
-				new NioServerBossPool(bossExecutor, nettyServerConfig.getBossThreadCount(),
-						ThreadNameDeterminer.CURRENT),
-				new NioWorkerPool(ioWorkerExecutor, nettyServerConfig.getWorkerThreadCount(),
-						ThreadNameDeterminer.CURRENT));
+				new NioServerBossPool(bossExecutorService, 1, ThreadNameDeterminer.CURRENT),
+				new NioWorkerPool(workerExecutorService, DEFAULT_WORKER_THREAD_COUNT, ThreadNameDeterminer.CURRENT));
 		try {
 			start(channelFactory);
 		} catch (IkasoaException e) {
@@ -94,43 +80,37 @@ public class NettyServerImpl implements NettyServer, ExternalResourceReleasable 
 
 	public void start(ServerChannelFactory serverChannelFactory) throws IkasoaException {
 		bootstrap = new ServerBootstrap(serverChannelFactory);
-		bootstrap.setOptions(nettyServerConfig.getBootstrapOptions());
+		bootstrap.setOptions(new HashMap<String, Object>());
 		bootstrap.setPipelineFactory(pipelineFactory);
 		serverChannel = bootstrap.bind(new InetSocketAddress(requestedPort));
 		InetSocketAddress actualSocket = (InetSocketAddress) serverChannel.getLocalAddress();
 		actualPort = actualSocket.getPort();
 		if (actualPort == 0 || (actualPort != requestedPort && requestedPort != 0))
 			throw new IkasoaException("Server initialize failed !");
-		log.info("started transport {}:{} .", server.getName(), actualPort);
+		log.info("started transport {}:{} .", serverConfiguration.getName(), actualPort);
 	}
 
 	@Override
 	@SneakyThrows
 	public void stop() {
 		if (serverChannel != null) {
-			log.info("stopping transport {}:{} .", server.getName(), actualPort);
+			log.info("stopping transport {}:{} .", serverConfiguration.getName(), actualPort);
 			// first stop accepting
 			final CountDownLatch latch = new CountDownLatch(1);
-			serverChannel.close().addListener(new ChannelFutureListener() {
-				@Override
-				public void operationComplete(ChannelFuture future) throws Exception {
-					latch.countDown();
-				}
-			});
+			serverChannel.close().addListener(future -> latch.countDown());
 			latch.await();
 			serverChannel = null;
 		}
-
 		if (channelFactory != null) {
 			channelFactory.releaseExternalResources();
 			channelFactory.shutdown();
 		}
 		if (allChannels != null)
 			allChannels.close();
-		if (bossExecutor != null)
-			shutdownExecutor(bossExecutor, "bossExecutor");
-		if (ioWorkerExecutor != null)
-			shutdownExecutor(ioWorkerExecutor, "workerExecutor");
+		if (bossExecutorService != null)
+			shutdownExecutor(bossExecutorService, "bossExecutorService");
+		if (workerExecutorService != null)
+			shutdownExecutor(workerExecutorService, "workerExecutorService");
 	}
 
 	public Channel getServerChannel() {
@@ -143,7 +123,8 @@ public class NettyServerImpl implements NettyServer, ExternalResourceReleasable 
 
 	@Override
 	public void releaseExternalResources() {
-		bootstrap.releaseExternalResources();
+		if (bootstrap != null)
+			bootstrap.releaseExternalResources();
 	}
 
 	private void shutdownExecutor(ExecutorService executorService, final String name) {

@@ -14,7 +14,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
-import com.ikasoa.core.nifty.server.NettyServerConfiguration;
 import com.ikasoa.core.nifty.server.NiftyServerConfiguration;
 import com.ikasoa.core.nifty.server.impl.NettyServerImpl;
 
@@ -30,7 +29,7 @@ public class NettyIkasoaFactory extends DefaultIkasoaFactory {
 
 	@Getter
 	@Setter
-	private NettyServerConfiguration nettyServerConfig;
+	private NiftyServerConfiguration niftyServerConfiguration;
 
 	@Getter
 	@Setter
@@ -40,13 +39,13 @@ public class NettyIkasoaFactory extends DefaultIkasoaFactory {
 		super(configurator);
 	}
 
-	public NettyIkasoaFactory(NettyServerConfiguration nettyServerConfig) {
-		this.nettyServerConfig = nettyServerConfig;
+	public NettyIkasoaFactory(NiftyServerConfiguration niftyServerConfiguration) {
+		this.niftyServerConfiguration = niftyServerConfiguration;
 		this.channelGroup = new DefaultChannelGroup();
 	}
 
-	public NettyIkasoaFactory(NettyServerConfiguration nettyServerConfig, ChannelGroup channelGroup) {
-		this.nettyServerConfig = nettyServerConfig;
+	public NettyIkasoaFactory(NiftyServerConfiguration niftyServerConfiguration, ChannelGroup channelGroup) {
+		this.niftyServerConfiguration = niftyServerConfiguration;
 		this.channelGroup = channelGroup == null ? new DefaultChannelGroup() : channelGroup;
 	}
 
@@ -73,9 +72,11 @@ public class NettyIkasoaFactory extends DefaultIkasoaFactory {
 		@Override
 		public void start() throws IkasoaException {
 			if (server == null) {
-				NiftyServerConfiguration niftyServer = new NiftyServerConfiguration("NiftyServer", getServerPort(), getProcessor());
-				server = nettyServerConfig == null ? new NettyServerImpl(niftyServer)
-						: new NettyServerImpl(niftyServer, nettyServerConfig, channelGroup);
+				if (niftyServerConfiguration == null)
+					niftyServerConfiguration = new NiftyServerConfiguration("NiftyServer", getServerPort(),
+							getProcessor());
+				server = channelGroup == null ? new NettyServerImpl(niftyServerConfiguration)
+						: new NettyServerImpl(niftyServerConfiguration, channelGroup);
 			}
 			server.run();
 			log.debug("Server start .");
