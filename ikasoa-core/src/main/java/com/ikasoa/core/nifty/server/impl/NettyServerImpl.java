@@ -162,7 +162,7 @@ public class NettyServerImpl implements NettyServer, ExternalResourceReleasable 
 	}
 
 	@AllArgsConstructor
-	public class NiftyChannelPipelineFactory implements ChannelPipelineFactory {
+	private class NiftyChannelPipelineFactory implements ChannelPipelineFactory {
 
 		private NiftyServerConfiguration configuration;
 
