@@ -1,19 +1,24 @@
 package com.ikasoa.core.nifty.server.impl;
 
 import com.ikasoa.core.IkasoaException;
-import com.ikasoa.core.nifty.server.NiftyChannelPipelineFactory;
+import com.ikasoa.core.nifty.NiftyDispatcher;
+import com.ikasoa.core.nifty.handler.impl.ThriftFrameCodeHandlerImpl;
 import com.ikasoa.core.nifty.server.NettyServer;
 import com.ikasoa.core.nifty.server.NettyServerConfiguration;
 import com.ikasoa.core.nifty.server.NiftyServerConfiguration;
 
+import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
+import org.apache.thrift.protocol.TProtocolFactory;
 import org.jboss.netty.bootstrap.ServerBootstrap;
 import org.jboss.netty.channel.Channel;
 import org.jboss.netty.channel.ChannelFuture;
 import org.jboss.netty.channel.ChannelFutureListener;
+import org.jboss.netty.channel.ChannelPipeline;
 import org.jboss.netty.channel.ChannelPipelineFactory;
+import org.jboss.netty.channel.Channels;
 import org.jboss.netty.channel.ServerChannelFactory;
 import org.jboss.netty.channel.group.ChannelGroup;
 import org.jboss.netty.channel.group.DefaultChannelGroup;
@@ -152,6 +157,23 @@ public class NettyServerImpl implements NettyServer, ExternalResourceReleasable 
 			log.warn("Interrupted while waiting for {} to shutdown .", name);
 			executorService.shutdownNow();
 			Thread.currentThread().interrupt();
+		}
+
+	}
+
+	@AllArgsConstructor
+	public class NiftyChannelPipelineFactory implements ChannelPipelineFactory {
+
+		private NiftyServerConfiguration configuration;
+
+		@Override
+		public ChannelPipeline getPipeline() throws Exception {
+			ChannelPipeline cp = Channels.pipeline();
+			TProtocolFactory inputProtocolFactory = configuration.getProtocolFactory();
+			cp.addLast("frameCodec",
+					new ThriftFrameCodeHandlerImpl(configuration.getMaxFrameSize(), inputProtocolFactory));
+			cp.addLast("dispatcher", new NiftyDispatcher(configuration, new HashedWheelTimer()));
+			return cp;
 		}
 
 	}
