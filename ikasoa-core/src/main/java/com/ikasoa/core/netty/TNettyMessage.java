@@ -8,15 +8,15 @@ import org.jboss.netty.buffer.ChannelBuffer;
  * @author <a href="mailto:larry7696@gmail.com">Larry</a>
  * @version 0.6
  */
-public class ThriftMessage {
+public class TNettyMessage {
 
 	private final ChannelBuffer buffer;
 
-	private final ThriftTransportType transportType;
+	private final TNettyTransportType transportType;
 
 	private long processStartTimeMillis;
 
-	public ThriftMessage(ChannelBuffer buffer, ThriftTransportType transportType) {
+	public TNettyMessage(ChannelBuffer buffer, TNettyTransportType transportType) {
 		this.buffer = buffer;
 		this.transportType = transportType;
 	}
@@ -25,15 +25,15 @@ public class ThriftMessage {
 		return buffer;
 	}
 
-	public ThriftTransportType getTransportType() {
+	public TNettyTransportType getTransportType() {
 		return transportType;
 	}
 
 	public Factory getMessageFactory() {
 		return new Factory() {
 			@Override
-			public ThriftMessage create(ChannelBuffer messageBuffer) {
-				return new ThriftMessage(messageBuffer, getTransportType());
+			public TNettyMessage create(ChannelBuffer messageBuffer) {
+				return new TNettyMessage(messageBuffer, getTransportType());
 			}
 		};
 	}
@@ -51,6 +51,6 @@ public class ThriftMessage {
 	}
 
 	public static interface Factory {
-		public ThriftMessage create(ChannelBuffer messageBuffer);
+		public TNettyMessage create(ChannelBuffer messageBuffer);
 	}
 }

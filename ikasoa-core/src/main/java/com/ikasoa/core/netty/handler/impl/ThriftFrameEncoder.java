@@ -8,7 +8,7 @@ import org.jboss.netty.channel.Channels;
 import org.jboss.netty.handler.codec.frame.TooLongFrameException;
 import org.jboss.netty.handler.codec.oneone.OneToOneEncoder;
 
-import com.ikasoa.core.netty.ThriftMessage;
+import com.ikasoa.core.netty.TNettyMessage;
 
 /**
  * ThriftFrameEncoder
@@ -27,10 +27,10 @@ public class ThriftFrameEncoder extends OneToOneEncoder {
 	@Override
 	protected Object encode(ChannelHandlerContext ctx, Channel channel, Object msg) throws Exception {
 		
-		if (!(msg instanceof ThriftMessage))
+		if (!(msg instanceof TNettyMessage))
 			return msg;
 
-		ThriftMessage message = (ThriftMessage) msg;
+		TNettyMessage message = (TNettyMessage) msg;
 
 		int frameSize = message.getBuffer().readableBytes();
 

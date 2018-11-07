@@ -25,7 +25,7 @@ public class TNettyTransport extends TTransport {
 	private final ChannelBuffer inputBuffer;
 
 	@Getter
-	private final ThriftTransportType thriftTransportType;
+	private final TNettyTransportType tNettyTransportType;
 
 	@Getter
 	@Setter
@@ -47,10 +47,10 @@ public class TNettyTransport extends TTransport {
 	@Setter
 	private TApplicationException tApplicationException;
 
-	public TNettyTransport(Channel channel, ChannelBuffer inputBuffer, ThriftTransportType thriftTransportType) {
+	public TNettyTransport(Channel channel, ChannelBuffer inputBuffer, TNettyTransportType tNettyTransportType) {
 		this.channel = channel;
 		this.inputBuffer = inputBuffer;
-		this.thriftTransportType = thriftTransportType;
+		this.tNettyTransportType = tNettyTransportType;
 		this.outputBuffer = ChannelBuffers.dynamicBuffer(DEFAULT_OUTPUT_BUFFER_SIZE);
 		this.initialReaderIndex = inputBuffer.readerIndex();
 
@@ -71,7 +71,7 @@ public class TNettyTransport extends TTransport {
 		}
 	}
 
-	public TNettyTransport(Channel channel, ThriftMessage message) {
+	public TNettyTransport(Channel channel, TNettyMessage message) {
 		this(channel, message.getBuffer(), message.getTransportType());
 	}
 

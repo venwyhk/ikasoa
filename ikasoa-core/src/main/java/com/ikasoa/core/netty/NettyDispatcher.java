@@ -37,13 +37,14 @@ import java.util.concurrent.atomic.AtomicReference;
  * @version 0.6
  */
 public class NettyDispatcher extends SimpleChannelUpstreamHandler {
+
 	private final TProcessorFactory processorFactory;
 	private final Executor executor = Executors.newSingleThreadExecutor();
 	private final long taskTimeoutMillis;
 	private final Timer taskTimeoutTimer;
 	private final long queueTimeoutMillis;
 	private final int queuedResponseLimit;
-	private final Map<Integer, ThriftMessage> responseMap = new HashMap<>();
+	private final Map<Integer, TNettyMessage> responseMap = new HashMap<>();
 	private final AtomicInteger dispatcherSequenceId = new AtomicInteger(0);
 	private final AtomicInteger lastResponseWrittenId = new AtomicInteger(0);
 	private final TProtocolFactory protocolFactory;
@@ -59,19 +60,18 @@ public class NettyDispatcher extends SimpleChannelUpstreamHandler {
 
 	@Override
 	public void messageReceived(ChannelHandlerContext ctx, MessageEvent e) throws Exception {
-		if (e.getMessage() instanceof ThriftMessage) {
-			ThriftMessage message = (ThriftMessage) e.getMessage();
+		if (e.getMessage() instanceof TNettyMessage) {
+			TNettyMessage message = (TNettyMessage) e.getMessage();
 			message.setProcessStartTimeMillis(System.currentTimeMillis());
 			checkResponseOrderingRequirements(ctx, message);
 			TNettyTransport messageTransport = new TNettyTransport(ctx.getChannel(), message);
 			TProtocol protocol = protocolFactory.getProtocol(messageTransport);
 			processRequest(ctx, message, messageTransport, protocol, protocol);
-		} else {
+		} else
 			ctx.sendUpstream(e);
-		}
 	}
 
-	private void checkResponseOrderingRequirements(ChannelHandlerContext ctx, ThriftMessage message) {
+	private void checkResponseOrderingRequirements(ChannelHandlerContext ctx, TNettyMessage message) {
 		boolean messageRequiresOrderedResponses = message.isOrderedResponsesRequired();
 
 		if (!DispatcherContext.isResponseOrderingRequirementInitialized(ctx))
@@ -82,8 +82,9 @@ public class NettyDispatcher extends SimpleChannelUpstreamHandler {
 					"Every message on a single channel must specify the same requirement for response ordering .");
 	}
 
-	private void processRequest(final ChannelHandlerContext ctx, final ThriftMessage message,
+	private void processRequest(final ChannelHandlerContext ctx, final TNettyMessage message,
 			final TNettyTransport messageTransport, final TProtocol inProtocol, final TProtocol outProtocol) {
+
 		final int requestSequenceId = dispatcherSequenceId.incrementAndGet();
 
 		if (DispatcherContext.isResponseOrderingRequired(ctx))
@@ -130,7 +131,6 @@ public class NettyDispatcher extends SimpleChannelUpstreamHandler {
 									duplicateBuffer.resetReaderIndex();
 									TNettyTransport temporaryTransport = new TNettyTransport(ctx.getChannel(),
 											duplicateBuffer, message.getTransportType());
-
 									TProtocol protocol = protocolFactory.getProtocol(messageTransport);
 									sendTApplicationException(
 											new TApplicationException(TApplicationException.INTERNAL_ERROR,
@@ -156,7 +156,7 @@ public class NettyDispatcher extends SimpleChannelUpstreamHandler {
 		}
 	}
 
-	private void sendTApplicationException(TApplicationException x, ChannelHandlerContext ctx, ThriftMessage request,
+	private void sendTApplicationException(TApplicationException x, ChannelHandlerContext ctx, TNettyMessage request,
 			int responseSequenceId, TNettyTransport requestTransport, TProtocol inProtocol, TProtocol outProtocol) {
 		if (ctx.getChannel().isConnected()) {
 			try {
@@ -166,9 +166,8 @@ public class NettyDispatcher extends SimpleChannelUpstreamHandler {
 				outProtocol.writeMessageEnd();
 				requestTransport.setTApplicationException(x);
 				outProtocol.getTransport().flush();
-
-				ThriftMessage response = request.getMessageFactory().create(requestTransport.getOutputBuffer());
-				writeResponse(ctx, response, responseSequenceId, DispatcherContext.isResponseOrderingRequired(ctx));
+				writeResponse(ctx, request.getMessageFactory().create(requestTransport.getOutputBuffer()),
+						responseSequenceId, DispatcherContext.isResponseOrderingRequired(ctx));
 			} catch (TException ex) {
 				onDispatchException(ctx, ex);
 			}
@@ -180,7 +179,7 @@ public class NettyDispatcher extends SimpleChannelUpstreamHandler {
 		closeChannel(ctx);
 	}
 
-	private void writeResponse(ChannelHandlerContext ctx, ThriftMessage response, int responseSequenceId,
+	private void writeResponse(ChannelHandlerContext ctx, TNettyMessage response, int responseSequenceId,
 			boolean isOrderedResponsesRequired) {
 		if (isOrderedResponsesRequired)
 			writeResponseInOrder(ctx, response, responseSequenceId);
@@ -190,7 +189,7 @@ public class NettyDispatcher extends SimpleChannelUpstreamHandler {
 		}
 	}
 
-	private void writeResponseInOrder(ChannelHandlerContext ctx, ThriftMessage response, int responseSequenceId) {
+	private void writeResponseInOrder(ChannelHandlerContext ctx, TNettyMessage response, int responseSequenceId) {
 		synchronized (responseMap) {
 			int currentResponseId = lastResponseWrittenId.get() + 1;
 			if (responseSequenceId != currentResponseId)

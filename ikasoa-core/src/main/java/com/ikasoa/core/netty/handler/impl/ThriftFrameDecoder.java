@@ -14,8 +14,8 @@ import org.jboss.netty.handler.codec.frame.FrameDecoder;
 import org.jboss.netty.handler.codec.frame.TooLongFrameException;
 
 import com.ikasoa.core.netty.TNettyTransport;
-import com.ikasoa.core.netty.ThriftMessage;
-import com.ikasoa.core.netty.ThriftTransportType;
+import com.ikasoa.core.netty.TNettyTransportType;
+import com.ikasoa.core.netty.TNettyMessage;
 
 /**
  * ThriftFrameDecoder
@@ -35,7 +35,7 @@ public class ThriftFrameDecoder extends FrameDecoder {
 	}
 
 	@Override
-	protected ThriftMessage decode(ChannelHandlerContext ctx, Channel channel, ChannelBuffer buffer) throws Exception {
+	protected TNettyMessage decode(ChannelHandlerContext ctx, Channel channel, ChannelBuffer buffer) throws Exception {
 		if (!buffer.readable())
 			return null;
 
@@ -49,7 +49,7 @@ public class ThriftFrameDecoder extends FrameDecoder {
 			// A non-zero MSB for the first byte of the message implies the message starts
 			// with a
 			// protocol id (and thus it is unframed).
-			return new ThriftMessage(messageBuffer, ThriftTransportType.UNFRAMED);
+			return new TNettyMessage(messageBuffer, TNettyTransportType.UNFRAMED);
 		} else if (buffer.readableBytes() < MESSAGE_FRAME_SIZE)
 			// Expecting a framed message, but not enough bytes available to read the frame
 			// size
@@ -61,7 +61,7 @@ public class ThriftFrameDecoder extends FrameDecoder {
 				return null;
 
 			// Messages with a zero MSB in the first byte are framed messages
-			return new ThriftMessage(messageBuffer, ThriftTransportType.FRAMED);
+			return new TNettyMessage(messageBuffer, TNettyTransportType.FRAMED);
 		}
 	}
 
@@ -107,7 +107,7 @@ public class ThriftFrameDecoder extends FrameDecoder {
 		int messageStartReaderIndex = buffer.readerIndex();
 
 		try {
-			TNettyTransport decodeAttemptTransport = new TNettyTransport(channel, buffer, ThriftTransportType.UNFRAMED);
+			TNettyTransport decodeAttemptTransport = new TNettyTransport(channel, buffer, TNettyTransportType.UNFRAMED);
 			int initialReadBytes = decodeAttemptTransport.getReadByteCount();
 			TProtocol inputProtocol = inputProtocolFactory.getProtocol(decodeAttemptTransport);
 
