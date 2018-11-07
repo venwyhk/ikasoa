@@ -35,7 +35,7 @@ public class DefaultThriftServerImpl extends AbstractThriftServerImpl {
 	 *            服务传输类型
 	 */
 	protected void initServer(TServerTransport serverTransport) {
-		ThriftServerConfiguration configuration = getThriftServerConfiguration();
+		ThriftServerConfiguration configuration = getServerConfiguration();
 		// 默认使用TThreadPoolServer方式启动Thrift服务器,对每个连接都会单独建立一个线程.
 		TThreadPoolServer.Args args = new TThreadPoolServer.Args(serverTransport)
 				.transportFactory(configuration.getTransportFactory())

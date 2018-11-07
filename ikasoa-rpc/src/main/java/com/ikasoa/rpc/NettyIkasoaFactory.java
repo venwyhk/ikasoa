@@ -5,6 +5,9 @@ import org.apache.thrift.transport.TServerTransport;
 import org.jboss.netty.channel.group.ChannelGroup;
 import org.jboss.netty.channel.group.DefaultChannelGroup;
 import com.ikasoa.core.IkasoaException;
+import com.ikasoa.core.netty.server.NettyServer;
+import com.ikasoa.core.netty.server.NettyServerConfiguration;
+import com.ikasoa.core.netty.server.impl.DefaultNettyServerImpl;
 import com.ikasoa.core.thrift.server.ThriftServer;
 import com.ikasoa.core.thrift.server.ThriftServerConfiguration;
 import com.ikasoa.core.thrift.server.impl.AbstractThriftServerImpl;
@@ -13,9 +16,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
-
-import com.ikasoa.core.nifty.server.NiftyServerConfiguration;
-import com.ikasoa.core.nifty.server.impl.NettyServerImpl;
 
 /**
  * IKASOA服务工厂(Netty实现)
@@ -29,7 +29,7 @@ public class NettyIkasoaFactory extends DefaultIkasoaFactory {
 
 	@Getter
 	@Setter
-	private NiftyServerConfiguration niftyServerConfiguration;
+	private NettyServerConfiguration configuration;
 
 	@Getter
 	@Setter
@@ -39,55 +39,52 @@ public class NettyIkasoaFactory extends DefaultIkasoaFactory {
 		super(configurator);
 	}
 
-	public NettyIkasoaFactory(NiftyServerConfiguration niftyServerConfiguration) {
-		this.niftyServerConfiguration = niftyServerConfiguration;
+	public NettyIkasoaFactory(NettyServerConfiguration configuration) {
+		this.configuration = configuration;
 		this.channelGroup = new DefaultChannelGroup();
 	}
 
-	public NettyIkasoaFactory(NiftyServerConfiguration niftyServerConfiguration, ChannelGroup channelGroup) {
-		this.niftyServerConfiguration = niftyServerConfiguration;
+	public NettyIkasoaFactory(NettyServerConfiguration configuration, ChannelGroup channelGroup) {
+		this.configuration = configuration;
 		this.channelGroup = channelGroup == null ? new DefaultChannelGroup() : channelGroup;
 	}
 
 	@Override
 	public ThriftServer getThriftServer(String serverName, int serverPort, TProcessor processor) {
-		return new NiftyThriftServerImpl("NiftyServer-" + serverPort, serverPort, processor);
+		return new NettyServerImpl("NettyServer-" + serverPort, serverPort, processor);
 	}
 
-	private class NiftyThriftServerImpl extends AbstractThriftServerImpl {
+	private class NettyServerImpl extends AbstractThriftServerImpl {
 
-		private NettyServerImpl server;
+		private NettyServer server;
 
-		public NiftyThriftServerImpl(String serverName, int serverPort, TProcessor processor) {
+		public NettyServerImpl(String serverName, int serverPort, TProcessor processor) {
 			setServerName(serverName);
 			setServerPort(serverPort);
 			setConfiguration(new ThriftServerConfiguration());
 			setProcessor(processor);
+			server = new DefaultNettyServerImpl(getServerName(), getServerPort(), configuration, getProcessor(),
+					channelGroup);
 		}
 
 		@Override
 		protected void initServer(TServerTransport serverTransport) {
+			// Do nothing
 		}
 
 		@Override
 		public void start() throws IkasoaException {
-			if (server == null) {
-				if (niftyServerConfiguration == null)
-					niftyServerConfiguration = new NiftyServerConfiguration("NiftyServer", getServerPort(),
-							getProcessor());
-				server = channelGroup == null ? new NettyServerImpl(niftyServerConfiguration)
-						: new NettyServerImpl(niftyServerConfiguration, channelGroup);
-			}
 			server.run();
-			log.debug("Server start .");
+			log.info("Starting server ... (name : {} , port : {})", getServerName(), getServerPort());
 		}
 
 		@Override
 		public void stop() {
-			if (server != null)
+			if (server != null && server.isServing()) {
 				server.stop();
-			else
-				log.warn("Server is not start , Can't to execute stop !");
+				log.info("Stoping server ... (name: {})", getServerName());
+			} else
+				log.debug("Server not run . (name: {})", getServerName());
 		}
 	}
 }

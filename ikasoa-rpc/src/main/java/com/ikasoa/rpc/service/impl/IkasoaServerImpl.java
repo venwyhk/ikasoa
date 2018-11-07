@@ -6,8 +6,9 @@ import java.util.Set;
 import org.apache.thrift.TProcessor;
 import org.apache.thrift.transport.TServerTransport;
 import org.apache.thrift.transport.TTransportException;
+
+import com.ikasoa.core.thrift.server.ServerConfiguration;
 import com.ikasoa.core.thrift.server.ThriftServer;
-import com.ikasoa.core.thrift.server.ThriftServerConfiguration;
 import com.ikasoa.core.thrift.service.Service;
 import com.ikasoa.rpc.IkasoaServer;
 
@@ -72,8 +73,8 @@ public class IkasoaServerImpl implements IkasoaServer {
 	}
 
 	@Override
-	public ThriftServerConfiguration getThriftServerConfiguration() {
-		return thriftServer.getThriftServerConfiguration();
+	public ServerConfiguration getServerConfiguration() {
+		return thriftServer.getServerConfiguration();
 	}
 
 	@Override

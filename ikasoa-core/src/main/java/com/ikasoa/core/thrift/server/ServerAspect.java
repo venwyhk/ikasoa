@@ -24,7 +24,7 @@ public interface ServerAspect {
 	 * @param server
 	 *            服务器对象
 	 */
-	void beforeStart(final String serverName, final int serverPort, ThriftServerConfiguration configuration,
+	void beforeStart(final String serverName, final int serverPort, ServerConfiguration configuration,
 			TProcessor processor, ThriftServer server);
 
 	/**
@@ -41,7 +41,7 @@ public interface ServerAspect {
 	 * @param server
 	 *            服务器对象
 	 */
-	void afterStart(final String serverName, final int serverPort, ThriftServerConfiguration configuration,
+	void afterStart(final String serverName, final int serverPort, ServerConfiguration configuration,
 			TProcessor processor, ThriftServer server);
 
 	/**
@@ -58,7 +58,7 @@ public interface ServerAspect {
 	 * @param server
 	 *            服务器对象
 	 */
-	void beforeStop(final String serverName, final int serverPort, ThriftServerConfiguration configuration,
+	void beforeStop(final String serverName, final int serverPort, ServerConfiguration configuration,
 			TProcessor processor, ThriftServer server);
 
 	/**
@@ -75,7 +75,7 @@ public interface ServerAspect {
 	 * @param server
 	 *            服务器对象
 	 */
-	void afterStop(final String serverName, final int serverPort, ThriftServerConfiguration configuration,
+	void afterStop(final String serverName, final int serverPort, ServerConfiguration configuration,
 			TProcessor processor, ThriftServer server);
 
 }

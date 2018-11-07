@@ -50,7 +50,7 @@ public class ServerTest extends TestCase {
 				new ThriftSimpleService.Processor<Iface>(new ThriftSimpleServiceImpl()));
 		assertEquals(defaultThriftServer.getServerName(), serverName);
 		assertEquals(defaultThriftServer.getServerPort(), serverPort);
-		assertEquals(defaultThriftServer.getThriftServerConfiguration(), configuration);
+		assertEquals(defaultThriftServer.getServerConfiguration(), configuration);
 		defaultThriftServer.run();
 		try (ThriftClient thriftClient = factory.getThriftClient(TestConstants.LOCAL_HOST, serverPort);
 				TTransport transport = thriftClient.getTransport()) {
@@ -72,7 +72,7 @@ public class ServerTest extends TestCase {
 				new ThriftSimpleService.Processor<Iface>(new ThriftSimpleServiceImpl()));
 		assertEquals(nioThriftServer.getServerName(), serverName);
 		assertEquals(nioThriftServer.getServerPort(), serverPort);
-		assertEquals(nioThriftServer.getThriftServerConfiguration(), configuration);
+		assertEquals(nioThriftServer.getServerConfiguration(), configuration);
 		nioThriftServer.run();
 		try (ThriftClient thriftClient = factory.getThriftClient(TestConstants.LOCAL_HOST, serverPort);
 				TTransport transport = thriftClient.getTransport()) {
@@ -95,7 +95,7 @@ public class ServerTest extends TestCase {
 				new ThriftSimpleService.Processor<Iface>(new ThriftSimpleServiceImpl()));
 		assertEquals(simpleThriftServer.getServerName(), serverName);
 		assertEquals(simpleThriftServer.getServerPort(), serverPort);
-		assertEquals(simpleThriftServer.getThriftServerConfiguration(), configuration);
+		assertEquals(simpleThriftServer.getServerConfiguration(), configuration);
 		simpleThriftServer.run();
 		try (ThriftClient thriftClient = factory.getThriftClient(TestConstants.LOCAL_HOST, serverPort);
 				TTransport transport = thriftClient.getTransport()) {
@@ -151,7 +151,7 @@ public class ServerTest extends TestCase {
 				processor);
 		assertEquals(defaultThriftServer.getServerName(), serverName);
 		assertEquals(defaultThriftServer.getServerPort(), serverPort);
-		assertEquals(defaultThriftServer.getThriftServerConfiguration(), configuration);
+		assertEquals(defaultThriftServer.getServerConfiguration(), configuration);
 		defaultThriftServer.run();
 		try (ThriftClient thriftClient = factory.getThriftClient(TestConstants.LOCAL_HOST, serverPort);
 				TTransport transport = thriftClient.getTransport()) {
@@ -263,7 +263,7 @@ public class ServerTest extends TestCase {
 	public void testServletThriftServerImpl() {
 		ThriftServer servletThriftServer = new ServletThriftServerImpl(serverName, configuration, null);
 		assertEquals(servletThriftServer.getServerName(), serverName);
-		assertEquals(servletThriftServer.getThriftServerConfiguration(), configuration);
+		assertEquals(servletThriftServer.getServerConfiguration(), configuration);
 	}
 
 	@Test
@@ -299,7 +299,7 @@ public class ServerTest extends TestCase {
 
 		@Test
 		@Override
-		public void beforeStart(String serverName, int serverPort, ThriftServerConfiguration configuration,
+		public void beforeStart(String serverName, int serverPort, ServerConfiguration configuration,
 				TProcessor processor, ThriftServer server) {
 			assertEquals(ServerTest.serverName, serverName);
 			assertEquals(ServerUtil.getNewPort("testServerAspect"), serverPort);
@@ -309,7 +309,7 @@ public class ServerTest extends TestCase {
 		@SneakyThrows
 		@Test
 		@Override
-		public void afterStart(String serverName, int serverPort, ThriftServerConfiguration configuration,
+		public void afterStart(String serverName, int serverPort, ServerConfiguration configuration,
 				TProcessor processor, ThriftServer server) {
 			assertEquals(ServerTest.serverName, serverName);
 			assertEquals(ServerUtil.getNewPort("testServerAspect"), serverPort);
@@ -319,7 +319,7 @@ public class ServerTest extends TestCase {
 
 		@Test
 		@Override
-		public void beforeStop(String serverName, int serverPort, ThriftServerConfiguration configuration,
+		public void beforeStop(String serverName, int serverPort, ServerConfiguration configuration,
 				TProcessor processor, ThriftServer server) {
 			assertEquals(ServerTest.serverName, serverName);
 			assertEquals(ServerUtil.getNewPort("testServerAspect"), serverPort);
@@ -329,7 +329,7 @@ public class ServerTest extends TestCase {
 		@SneakyThrows
 		@Test
 		@Override
-		public void afterStop(String serverName, int serverPort, ThriftServerConfiguration configuration,
+		public void afterStop(String serverName, int serverPort, ServerConfiguration configuration,
 				TProcessor processor, ThriftServer server) {
 			assertEquals(ServerTest.serverName, serverName);
 			assertEquals(ServerUtil.getNewPort("testServerAspect"), serverPort);

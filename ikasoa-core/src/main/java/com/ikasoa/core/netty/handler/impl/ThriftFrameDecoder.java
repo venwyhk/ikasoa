@@ -1,4 +1,4 @@
-package com.ikasoa.core.nifty.handler.impl;
+package com.ikasoa.core.netty.handler.impl;
 
 import org.apache.thrift.TException;
 import org.apache.thrift.protocol.TProtocol;
@@ -13,9 +13,9 @@ import org.jboss.netty.channel.Channels;
 import org.jboss.netty.handler.codec.frame.FrameDecoder;
 import org.jboss.netty.handler.codec.frame.TooLongFrameException;
 
-import com.ikasoa.core.nifty.TNiftyTransport;
-import com.ikasoa.core.nifty.ThriftMessage;
-import com.ikasoa.core.nifty.ThriftTransportType;
+import com.ikasoa.core.netty.TNettyTransport;
+import com.ikasoa.core.netty.ThriftMessage;
+import com.ikasoa.core.netty.ThriftTransportType;
 
 /**
  * ThriftFrameDecoder
@@ -107,7 +107,7 @@ public class ThriftFrameDecoder extends FrameDecoder {
 		int messageStartReaderIndex = buffer.readerIndex();
 
 		try {
-			TNiftyTransport decodeAttemptTransport = new TNiftyTransport(channel, buffer, ThriftTransportType.UNFRAMED);
+			TNettyTransport decodeAttemptTransport = new TNettyTransport(channel, buffer, ThriftTransportType.UNFRAMED);
 			int initialReadBytes = decodeAttemptTransport.getReadByteCount();
 			TProtocol inputProtocol = inputProtocolFactory.getProtocol(decodeAttemptTransport);
 

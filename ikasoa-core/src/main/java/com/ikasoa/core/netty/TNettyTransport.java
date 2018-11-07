@@ -1,4 +1,4 @@
-package com.ikasoa.core.nifty;
+package com.ikasoa.core.netty;
 
 import org.apache.thrift.TApplicationException;
 import org.apache.thrift.transport.TTransport;
@@ -16,7 +16,7 @@ import lombok.Setter;
  * @author <a href="mailto:larry7696@gmail.com">Larry</a>
  * @version 0.6
  */
-public class TNiftyTransport extends TTransport {
+public class TNettyTransport extends TTransport {
 
 	private static final int DEFAULT_OUTPUT_BUFFER_SIZE = 1024;
 
@@ -47,7 +47,7 @@ public class TNiftyTransport extends TTransport {
 	@Setter
 	private TApplicationException tApplicationException;
 
-	public TNiftyTransport(Channel channel, ChannelBuffer inputBuffer, ThriftTransportType thriftTransportType) {
+	public TNettyTransport(Channel channel, ChannelBuffer inputBuffer, ThriftTransportType thriftTransportType) {
 		this.channel = channel;
 		this.inputBuffer = inputBuffer;
 		this.thriftTransportType = thriftTransportType;
@@ -71,7 +71,7 @@ public class TNiftyTransport extends TTransport {
 		}
 	}
 
-	public TNiftyTransport(Channel channel, ThriftMessage message) {
+	public TNettyTransport(Channel channel, ThriftMessage message) {
 		this(channel, message.getBuffer(), message.getTransportType());
 	}
 
@@ -120,9 +120,7 @@ public class TNiftyTransport extends TTransport {
 
 	@Override
 	public void flush() throws TTransportException {
-		// Flush is a no-op: NiftyDispatcher will write the response to the Channel, in
-		// order to
-		// guarantee ordering of responses when required.
+		// Do nothing
 	}
 
 	@Override

@@ -1,4 +1,4 @@
-package com.ikasoa.core.nifty.handler;
+package com.ikasoa.core.netty.handler;
 
 import org.jboss.netty.channel.ChannelDownstreamHandler;
 import org.jboss.netty.channel.ChannelUpstreamHandler;

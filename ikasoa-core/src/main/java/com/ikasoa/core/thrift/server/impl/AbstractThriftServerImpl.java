@@ -82,7 +82,7 @@ public abstract class AbstractThriftServerImpl implements ThriftServer {
 		if (executorService == null)
 			executorService = Executors.newSingleThreadExecutor();
 		if (!isServing()) {
-			beforeStart(getThriftServerConfiguration().getServerAspect());
+			beforeStart(getServerConfiguration().getServerAspect());
 			executorService.execute(() -> {
 				try {
 					start();
@@ -91,7 +91,7 @@ public abstract class AbstractThriftServerImpl implements ThriftServer {
 				}
 			});
 			Runtime.getRuntime().addShutdownHook(new Thread(() -> stop()));
-			afterStart(getThriftServerConfiguration().getServerAspect());
+			afterStart(getServerConfiguration().getServerAspect());
 		}
 	}
 
@@ -132,7 +132,7 @@ public abstract class AbstractThriftServerImpl implements ThriftServer {
 	@Override
 	public void stop() {
 		if (server != null && server.isServing()) {
-			beforeStop(getThriftServerConfiguration().getServerAspect());
+			beforeStop(getServerConfiguration().getServerAspect());
 			server.stop();
 			if (executorService != null && !executorService.isShutdown()) {
 				executorService.shutdown();
@@ -149,29 +149,9 @@ public abstract class AbstractThriftServerImpl implements ThriftServer {
 			serverSocket = null;
 			executorService = null;
 			log.info("Stoping server ... (name: {})", serverName);
-			afterStop(getThriftServerConfiguration().getServerAspect());
+			afterStop(getServerConfiguration().getServerAspect());
 		} else
 			log.debug("Server not run . (name: {})", serverName);
-	}
-
-	private void beforeStart(ServerAspect serverAspect) {
-		Optional.ofNullable(serverAspect)
-				.ifPresent(sAspect -> sAspect.beforeStart(serverName, serverPort, configuration, processor, this));
-	}
-
-	private void afterStart(ServerAspect serverAspect) {
-		Optional.ofNullable(serverAspect)
-				.ifPresent(sAspect -> sAspect.afterStart(serverName, serverPort, configuration, processor, this));
-	}
-
-	private void beforeStop(ServerAspect serverAspect) {
-		Optional.ofNullable(serverAspect)
-				.ifPresent(sAspect -> sAspect.beforeStop(serverName, serverPort, configuration, processor, this));
-	}
-
-	private void afterStop(ServerAspect serverAspect) {
-		Optional.ofNullable(serverAspect)
-				.ifPresent(sAspect -> sAspect.afterStop(serverName, serverPort, configuration, processor, this));
 	}
 
 	@Override
@@ -180,10 +160,30 @@ public abstract class AbstractThriftServerImpl implements ThriftServer {
 	}
 
 	@Override
-	public ThriftServerConfiguration getThriftServerConfiguration() {
+	public ThriftServerConfiguration getServerConfiguration() {
 		if (configuration == null)
 			throw new RuntimeException("'configuration' is null !");
 		return configuration;
+	}
+
+	private void beforeStart(ServerAspect serverAspect) {
+		Optional.ofNullable(serverAspect).ifPresent(sAspect -> sAspect.beforeStart(getServerName(), getServerPort(),
+				getServerConfiguration(), getProcessor(), this));
+	}
+
+	private void afterStart(ServerAspect serverAspect) {
+		Optional.ofNullable(serverAspect).ifPresent(sAspect -> sAspect.afterStart(getServerName(), getServerPort(),
+				getServerConfiguration(), getProcessor(), this));
+	}
+
+	private void beforeStop(ServerAspect serverAspect) {
+		Optional.ofNullable(serverAspect).ifPresent(sAspect -> sAspect.beforeStop(getServerName(), getServerPort(),
+				getServerConfiguration(), getProcessor(), this));
+	}
+
+	private void afterStop(ServerAspect serverAspect) {
+		Optional.ofNullable(serverAspect).ifPresent(sAspect -> sAspect.afterStop(getServerName(), getServerPort(),
+				getServerConfiguration(), getProcessor(), this));
 	}
 
 }

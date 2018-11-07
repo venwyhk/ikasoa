@@ -1,4 +1,4 @@
-package com.ikasoa.core.nifty;
+package com.ikasoa.core.netty;
 
 /**
  * ThriftTransportType

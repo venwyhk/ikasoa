@@ -1,4 +1,4 @@
-package com.ikasoa.core.nifty.handler.impl;
+package com.ikasoa.core.netty.handler.impl;
 
 import org.apache.thrift.protocol.TProtocolFactory;
 import org.jboss.netty.channel.ChannelEvent;
@@ -6,7 +6,7 @@ import org.jboss.netty.channel.ChannelHandlerContext;
 import org.jboss.netty.handler.codec.frame.FrameDecoder;
 import org.jboss.netty.handler.codec.oneone.OneToOneEncoder;
 
-import com.ikasoa.core.nifty.handler.ThriftFrameCodeHandler;
+import com.ikasoa.core.netty.handler.ThriftFrameCodeHandler;
 
 /**
  * ThriftFrameCodeHandlerImpl
@@ -15,6 +15,7 @@ import com.ikasoa.core.nifty.handler.ThriftFrameCodeHandler;
  * @version 0.6
  */
 public class ThriftFrameCodeHandlerImpl implements ThriftFrameCodeHandler {
+	
 	private final FrameDecoder decoder;
 	private final OneToOneEncoder encoder;
 

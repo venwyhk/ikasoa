@@ -1,6 +1,5 @@
-package com.ikasoa.core.nifty;
+package com.ikasoa.core.netty;
 
-import com.ikasoa.core.nifty.server.NiftyServerConfiguration;
 import org.apache.thrift.TApplicationException;
 import org.apache.thrift.TException;
 import org.apache.thrift.TProcessorFactory;
@@ -19,6 +18,8 @@ import org.jboss.netty.util.Timeout;
 import org.jboss.netty.util.Timer;
 import org.jboss.netty.util.TimerTask;
 
+import com.ikasoa.core.netty.server.NettyServerConfiguration;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Executor;
@@ -30,12 +31,12 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
- * NiftyDispatcher
+ * NettyDispatcher
  * 
  * @author <a href="mailto:larry7696@gmail.com">Larry</a>
  * @version 0.6
  */
-public class NiftyDispatcher extends SimpleChannelUpstreamHandler {
+public class NettyDispatcher extends SimpleChannelUpstreamHandler {
 	private final TProcessorFactory processorFactory;
 	private final Executor executor = Executors.newSingleThreadExecutor();
 	private final long taskTimeoutMillis;
@@ -47,7 +48,7 @@ public class NiftyDispatcher extends SimpleChannelUpstreamHandler {
 	private final AtomicInteger lastResponseWrittenId = new AtomicInteger(0);
 	private final TProtocolFactory protocolFactory;
 
-	public NiftyDispatcher(NiftyServerConfiguration configuration, Timer timer) {
+	public NettyDispatcher(NettyServerConfiguration configuration, Timer timer) {
 		this.processorFactory = configuration.getProcessorFactory();
 		this.protocolFactory = configuration.getProtocolFactory();
 		this.queuedResponseLimit = configuration.getQueuedResponseLimit();
@@ -62,7 +63,7 @@ public class NiftyDispatcher extends SimpleChannelUpstreamHandler {
 			ThriftMessage message = (ThriftMessage) e.getMessage();
 			message.setProcessStartTimeMillis(System.currentTimeMillis());
 			checkResponseOrderingRequirements(ctx, message);
-			TNiftyTransport messageTransport = new TNiftyTransport(ctx.getChannel(), message);
+			TNettyTransport messageTransport = new TNettyTransport(ctx.getChannel(), message);
 			TProtocol protocol = protocolFactory.getProtocol(messageTransport);
 			processRequest(ctx, message, messageTransport, protocol, protocol);
 		} else {
@@ -82,7 +83,7 @@ public class NiftyDispatcher extends SimpleChannelUpstreamHandler {
 	}
 
 	private void processRequest(final ChannelHandlerContext ctx, final ThriftMessage message,
-			final TNiftyTransport messageTransport, final TProtocol inProtocol, final TProtocol outProtocol) {
+			final TNettyTransport messageTransport, final TProtocol inProtocol, final TProtocol outProtocol) {
 		final int requestSequenceId = dispatcherSequenceId.incrementAndGet();
 
 		if (DispatcherContext.isResponseOrderingRequired(ctx))
@@ -127,7 +128,7 @@ public class NiftyDispatcher extends SimpleChannelUpstreamHandler {
 								if (responseSent.compareAndSet(false, true)) {
 									ChannelBuffer duplicateBuffer = message.getBuffer().duplicate();
 									duplicateBuffer.resetReaderIndex();
-									TNiftyTransport temporaryTransport = new TNiftyTransport(ctx.getChannel(),
+									TNettyTransport temporaryTransport = new TNettyTransport(ctx.getChannel(),
 											duplicateBuffer, message.getTransportType());
 
 									TProtocol protocol = protocolFactory.getProtocol(messageTransport);
@@ -156,7 +157,7 @@ public class NiftyDispatcher extends SimpleChannelUpstreamHandler {
 	}
 
 	private void sendTApplicationException(TApplicationException x, ChannelHandlerContext ctx, ThriftMessage request,
-			int responseSequenceId, TNiftyTransport requestTransport, TProtocol inProtocol, TProtocol outProtocol) {
+			int responseSequenceId, TNettyTransport requestTransport, TProtocol inProtocol, TProtocol outProtocol) {
 		if (ctx.getChannel().isConnected()) {
 			try {
 				TMessage message = inProtocol.readMessageBegin();
@@ -274,7 +275,7 @@ public class NiftyDispatcher extends SimpleChannelUpstreamHandler {
 				dispatcherContext = (DispatcherContext) attachment;
 			else
 				throw new IllegalStateException(
-						"NiftyDispatcher handler context should be of type NiftyDispatcher.DispatcherContext .");
+						"NettyDispatcher handler context should be of type NettyDispatcher.DispatcherContext .");
 			return dispatcherContext;
 		}
 

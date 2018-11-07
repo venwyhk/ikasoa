@@ -28,7 +28,7 @@ public class SimpleThriftServerImpl extends AbstractThriftServerImpl {
 	}
 
 	protected void initServer(TServerTransport serverTransport) {
-		ThriftServerConfiguration configuration = getThriftServerConfiguration();
+		ThriftServerConfiguration configuration = getServerConfiguration();
 		server = new TSimpleServer(configuration.getServerArgsAspect().tServerArgsAspect(
 				new TServer.Args(serverTransport).transportFactory(configuration.getTransportFactory())
 						.protocolFactory(configuration.getProtocolFactory()).processor(getProcessor())));

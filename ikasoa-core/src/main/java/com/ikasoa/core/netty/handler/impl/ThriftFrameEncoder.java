@@ -1,4 +1,4 @@
-package com.ikasoa.core.nifty.handler.impl;
+package com.ikasoa.core.netty.handler.impl;
 
 import org.jboss.netty.buffer.ChannelBuffer;
 import org.jboss.netty.buffer.ChannelBuffers;
@@ -8,7 +8,7 @@ import org.jboss.netty.channel.Channels;
 import org.jboss.netty.handler.codec.frame.TooLongFrameException;
 import org.jboss.netty.handler.codec.oneone.OneToOneEncoder;
 
-import com.ikasoa.core.nifty.ThriftMessage;
+import com.ikasoa.core.netty.ThriftMessage;
 
 /**
  * ThriftFrameEncoder

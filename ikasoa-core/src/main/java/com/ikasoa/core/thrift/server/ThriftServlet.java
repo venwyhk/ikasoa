@@ -29,7 +29,7 @@ public class ThriftServlet extends TServlet {
 	 *            ThriftServer对象(这里一般用<i>ServletThriftServerImpl</i>实现)
 	 */
 	public ThriftServlet(ThriftServer server) {
-		super(server.getProcessor(), server.getThriftServerConfiguration().getProtocolFactory());
+		super(server.getProcessor(), server.getServerConfiguration().getProtocolFactory());
 		serverName = server.getServerName();
 	}
 
