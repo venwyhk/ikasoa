@@ -25,7 +25,7 @@ public class NonblockingThriftServerImpl extends AbstractThriftServerImpl {
 			TProcessor processor) {
 		setServerName(serverName);
 		setServerPort(serverPort);
-		configuration.setTransportFactory(new TFramedTransport.Factory());
+		configuration.setTransportFactory(new TFramedTransport.Factory()); // 如果提供非阻塞服务,则必须为TFramedTransport.Factory().
 		setConfiguration(configuration);
 		setProcessor(processor);
 	}

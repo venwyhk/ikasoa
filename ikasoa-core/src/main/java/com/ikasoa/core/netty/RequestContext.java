@@ -24,5 +24,5 @@ public interface RequestContext {
 	void clearContextData(String key);
 
 	Iterator<Map.Entry<String, Object>> contextDataIterator();
-	
+
 }

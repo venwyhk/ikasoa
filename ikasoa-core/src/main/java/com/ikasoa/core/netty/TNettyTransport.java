@@ -62,11 +62,6 @@ public class TNettyTransport extends TTransport {
 			buffer = inputBuffer.array();
 			initialBufferPosition = bufferPosition = inputBuffer.arrayOffset() + inputBuffer.readerIndex();
 			bufferEnd = bufferPosition + inputBuffer.readableBytes();
-			// Without this, reading from a !in.hasArray() buffer will advance the
-			// readerIndex
-			// of the buffer, while reading from a in.hasArray() buffer will not advance the
-			// readerIndex, and this has led to subtle bugs. This should help to identify
-			// those problems by making things more consistent.
 			inputBuffer.readerIndex(inputBuffer.readerIndex() + inputBuffer.readableBytes());
 		}
 	}
@@ -94,14 +89,14 @@ public class TNettyTransport extends TTransport {
 	@Override
 	public int read(byte[] bytes, int offset, int length) throws TTransportException {
 		if (getBytesRemainingInBuffer() >= 0) {
-			int _read = Math.min(getBytesRemainingInBuffer(), length);
-			System.arraycopy(getBuffer(), getBufferPosition(), bytes, offset, _read);
-			consumeBuffer(_read);
-			return _read;
+			int read = Math.min(getBytesRemainingInBuffer(), length);
+			System.arraycopy(getBuffer(), getBufferPosition(), bytes, offset, read);
+			consumeBuffer(read);
+			return read;
 		} else {
-			int _read = Math.min(inputBuffer.readableBytes(), length);
-			inputBuffer.readBytes(bytes, offset, _read);
-			return _read;
+			int read = Math.min(inputBuffer.readableBytes(), length);
+			inputBuffer.readBytes(bytes, offset, read);
+			return read;
 		}
 	}
 

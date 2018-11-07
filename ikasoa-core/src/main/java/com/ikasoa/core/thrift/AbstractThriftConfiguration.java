@@ -23,8 +23,6 @@ public abstract class AbstractThriftConfiguration {
 
 	/**
 	 * Thrift传输类型工厂
-	 * <p>
-	 * 如果提供非阻塞服务,则必须为<code>new TFramedTransport.Factory()</code>.
 	 */
 	private TTransportFactory transportFactory = new TFramedTransport.Factory();
 

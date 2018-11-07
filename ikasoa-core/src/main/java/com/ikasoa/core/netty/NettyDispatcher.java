@@ -73,7 +73,6 @@ public class NettyDispatcher extends SimpleChannelUpstreamHandler {
 
 	private void checkResponseOrderingRequirements(ChannelHandlerContext ctx, TNettyMessage message) {
 		boolean messageRequiresOrderedResponses = message.isOrderedResponsesRequired();
-
 		if (!DispatcherContext.isResponseOrderingRequirementInitialized(ctx))
 			// 第一个请求
 			DispatcherContext.setResponseOrderingRequired(ctx, messageRequiresOrderedResponses);
@@ -281,5 +280,7 @@ public class NettyDispatcher extends SimpleChannelUpstreamHandler {
 		private enum ReadBlockedState {
 			NOT_BLOCKED, BLOCKED,
 		}
+
 	}
+
 }

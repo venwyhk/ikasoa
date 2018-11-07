@@ -1,9 +1,7 @@
 package com.ikasoa.core.thrift.server.impl;
 
-import java.util.Optional;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 
 import org.apache.thrift.TProcessor;
 import org.apache.thrift.server.TServer;
@@ -11,7 +9,6 @@ import org.apache.thrift.transport.TServerSocket;
 import org.apache.thrift.transport.TServerTransport;
 import org.apache.thrift.transport.TTransportException;
 import com.ikasoa.core.IkasoaException;
-import com.ikasoa.core.thrift.server.ServerAspect;
 import com.ikasoa.core.thrift.server.ThriftServer;
 import com.ikasoa.core.thrift.server.ThriftServerConfiguration;
 import com.ikasoa.core.utils.ServerUtil;
@@ -121,7 +118,7 @@ public abstract class AbstractThriftServerImpl implements ThriftServer {
 				return;
 			}
 			server.serve();
-			log.info("Starting server ... (name : {} , port : {})", serverName, serverPort);
+			log.info("Startup server ... (name : {} , port : {})", getServerName(), getServerPort());
 		} else
 			log.warn("Startup server failed !");
 	}
@@ -133,25 +130,14 @@ public abstract class AbstractThriftServerImpl implements ThriftServer {
 	public void stop() {
 		if (server != null && server.isServing()) {
 			beforeStop(getServerConfiguration().getServerAspect());
+			log.info("stopping server ... (name: {})", getServerName());
 			server.stop();
-			if (executorService != null && !executorService.isShutdown()) {
-				executorService.shutdown();
-				try {
-					while (executorService != null && !executorService.isTerminated())
-						executorService.awaitTermination(10, TimeUnit.SECONDS);
-				} catch (InterruptedException e) {
-					log.debug("Server thread shutdown exception !");
-					executorService.shutdownNow();
-					Thread.currentThread().interrupt();
-				}
-			}
+			shutdownExecutor(executorService);
 			server = null;
 			serverSocket = null;
-			executorService = null;
-			log.info("Stoping server ... (name: {})", serverName);
 			afterStop(getServerConfiguration().getServerAspect());
 		} else
-			log.debug("Server not run . (name: {})", serverName);
+			log.debug("Server not run . (name: {})", getServerName());
 	}
 
 	@Override
@@ -164,26 +150,6 @@ public abstract class AbstractThriftServerImpl implements ThriftServer {
 		if (configuration == null)
 			throw new RuntimeException("'configuration' is null !");
 		return configuration;
-	}
-
-	private void beforeStart(ServerAspect serverAspect) {
-		Optional.ofNullable(serverAspect).ifPresent(sAspect -> sAspect.beforeStart(getServerName(), getServerPort(),
-				getServerConfiguration(), getProcessor(), this));
-	}
-
-	private void afterStart(ServerAspect serverAspect) {
-		Optional.ofNullable(serverAspect).ifPresent(sAspect -> sAspect.afterStart(getServerName(), getServerPort(),
-				getServerConfiguration(), getProcessor(), this));
-	}
-
-	private void beforeStop(ServerAspect serverAspect) {
-		Optional.ofNullable(serverAspect).ifPresent(sAspect -> sAspect.beforeStop(getServerName(), getServerPort(),
-				getServerConfiguration(), getProcessor(), this));
-	}
-
-	private void afterStop(ServerAspect serverAspect) {
-		Optional.ofNullable(serverAspect).ifPresent(sAspect -> sAspect.afterStop(getServerName(), getServerPort(),
-				getServerConfiguration(), getProcessor(), this));
 	}
 
 }

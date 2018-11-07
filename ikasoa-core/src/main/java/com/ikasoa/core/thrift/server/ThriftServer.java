@@ -1,5 +1,9 @@
 package com.ikasoa.core.thrift.server;
 
+import java.util.Optional;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.TimeUnit;
+
 import org.apache.thrift.TProcessor;
 import org.apache.thrift.transport.TServerTransport;
 import org.apache.thrift.transport.TTransportException;
@@ -39,5 +43,45 @@ public interface ThriftServer extends Server {
 	 * @return TProcessor Thrift处理器
 	 */
 	TProcessor getProcessor();
+
+	/**
+	 * 停止线程池
+	 * 
+	 * @param executorService
+	 *            线程池
+	 */
+	default void shutdownExecutor(ExecutorService executorService) {
+		if (executorService != null && !executorService.isShutdown()) {
+			executorService.shutdown();
+			try {
+				while (executorService != null && !executorService.isTerminated())
+					executorService.awaitTermination(10, TimeUnit.SECONDS);
+			} catch (InterruptedException e) {
+				executorService.shutdownNow();
+				Thread.currentThread().interrupt();
+			}
+		}
+		executorService = null;
+	}
+
+	default void beforeStart(ServerAspect serverAspect) {
+		Optional.ofNullable(serverAspect).ifPresent(sAspect -> sAspect.beforeStart(getServerName(), getServerPort(),
+				getServerConfiguration(), getProcessor(), this));
+	}
+
+	default void afterStart(ServerAspect serverAspect) {
+		Optional.ofNullable(serverAspect).ifPresent(sAspect -> sAspect.afterStart(getServerName(), getServerPort(),
+				getServerConfiguration(), getProcessor(), this));
+	}
+
+	default void beforeStop(ServerAspect serverAspect) {
+		Optional.ofNullable(serverAspect).ifPresent(sAspect -> sAspect.beforeStop(getServerName(), getServerPort(),
+				getServerConfiguration(), getProcessor(), this));
+	}
+
+	default void afterStop(ServerAspect serverAspect) {
+		Optional.ofNullable(serverAspect).ifPresent(sAspect -> sAspect.afterStop(getServerName(), getServerPort(),
+				getServerConfiguration(), getProcessor(), this));
+	}
 
 }

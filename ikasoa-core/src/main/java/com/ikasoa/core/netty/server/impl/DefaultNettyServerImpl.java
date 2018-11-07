@@ -6,6 +6,7 @@ import com.ikasoa.core.netty.handler.impl.ThriftFrameCodeHandlerImpl;
 import com.ikasoa.core.netty.server.NettyServer;
 import com.ikasoa.core.netty.server.NettyServerConfiguration;
 import com.ikasoa.core.thrift.server.ServerConfiguration;
+import com.ikasoa.core.utils.ServerUtil;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -26,7 +27,6 @@ import org.jboss.netty.channel.group.DefaultChannelGroup;
 import org.jboss.netty.channel.socket.nio.NioServerBossPool;
 import org.jboss.netty.channel.socket.nio.NioServerSocketChannelFactory;
 import org.jboss.netty.channel.socket.nio.NioWorkerPool;
-import org.jboss.netty.util.ExternalResourceReleasable;
 import org.jboss.netty.util.HashedWheelTimer;
 import org.jboss.netty.util.ThreadNameDeterminer;
 
@@ -35,7 +35,6 @@ import java.util.HashMap;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Netty服务器默认实现
@@ -44,7 +43,7 @@ import java.util.concurrent.TimeUnit;
  * @version 0.6
  */
 @Slf4j
-public class DefaultNettyServerImpl implements NettyServer, ExternalResourceReleasable {
+public class DefaultNettyServerImpl implements NettyServer {
 
 	private ExecutorService bossExecutorService = Executors.newSingleThreadExecutor();
 
@@ -77,7 +76,7 @@ public class DefaultNettyServerImpl implements NettyServer, ExternalResourceRele
 	@Setter
 	private ServerChannelFactory channelFactory;
 
-	private Channel serverChannel;
+	protected Channel serverChannel;
 
 	public DefaultNettyServerImpl(String serverName, int serverPort, NettyServerConfiguration configuration,
 			TProcessor processor) {
@@ -86,91 +85,87 @@ public class DefaultNettyServerImpl implements NettyServer, ExternalResourceRele
 
 	public DefaultNettyServerImpl(String serverName, int serverPort, NettyServerConfiguration configuration,
 			TProcessor processor, final ChannelGroup allChannels) {
-		setProcessor(processor);
-		setConfiguration(configuration == null ? new NettyServerConfiguration(new TProcessorFactory(getProcessor()))
-				: configuration);
 		setServerName(serverName);
 		requestedPort = serverPort;
-		workerExecutorService = this.configuration.getExecutorService() == null ? Executors.newFixedThreadPool(2)
-				: this.configuration.getExecutorService();
-		workerCount = this.configuration.getWorkerCount();
+		setConfiguration(
+				configuration == null ? new NettyServerConfiguration(new TProcessorFactory(processor)) : configuration);
+		setProcessor(processor);
 		this.allChannels = allChannels;
 	}
 
 	@Override
 	public void run() {
-		try {
-			channelFactory = new NioServerSocketChannelFactory(
-					new NioServerBossPool(bossExecutorService, 1, ThreadNameDeterminer.CURRENT),
-					new NioWorkerPool(workerExecutorService, workerCount, ThreadNameDeterminer.CURRENT));
-			bootstrap = new ServerBootstrap(channelFactory);
-			bootstrap.setOptions(new HashMap<String, Object>());
-			bootstrap.setPipelineFactory(() -> {
-				ChannelPipeline cp = Channels.pipeline();
-				cp.addLast("frameCodec", new ThriftFrameCodeHandlerImpl(configuration.getMaxFrameSize(),
-						getServerConfiguration().getProtocolFactory()));
-				cp.addLast("dispatcher", new NettyDispatcher(configuration, new HashedWheelTimer()));
-				return cp;
-			});
-			serverChannel = bootstrap.bind(new InetSocketAddress(requestedPort));
-			actualPort = ((InetSocketAddress) serverChannel.getLocalAddress()).getPort();
-			if (actualPort == 0 || (actualPort != requestedPort && requestedPort != 0))
-				throw new IkasoaException("Server initialize failed !");
-			log.info("started transport {}:{} .", getServerName(), actualPort);
-		} catch (IkasoaException e) {
-			throw new RuntimeException(e);
-		}
+		if (!isServing()) {
+			if (channelFactory == null) {
+				if (workerExecutorService == null)
+					workerExecutorService = getServerConfiguration().getExecutorService() == null
+							? Executors.newFixedThreadPool(2)
+							: getServerConfiguration().getExecutorService();
+				if (workerCount <= 0)
+					workerCount = configuration.getWorkerCount();
+				channelFactory = new NioServerSocketChannelFactory(
+						new NioServerBossPool(bossExecutorService, 1, ThreadNameDeterminer.CURRENT),
+						new NioWorkerPool(workerExecutorService, workerCount, ThreadNameDeterminer.CURRENT));
+			}
+			if (getBootstrap() == null) {
+				bootstrap = new ServerBootstrap(channelFactory);
+				bootstrap.setOptions(new HashMap<String, Object>());
+				bootstrap.setPipelineFactory(() -> {
+					ChannelPipeline cp = Channels.pipeline();
+					cp.addLast("frameCodec", new ThriftFrameCodeHandlerImpl(configuration.getMaxFrameSize(),
+							getServerConfiguration().getProtocolFactory()));
+					cp.addLast("dispatcher", new NettyDispatcher(configuration, new HashedWheelTimer()));
+					return cp;
+				});
+			}
+			try {
+				// 不允许使用1024以内的端口.
+				if (!ServerUtil.isSocketPort(requestedPort))
+					throw new IkasoaException(
+							"Server initialize failed ! Port range must is 1025 ~ 65535 . Your port is : "
+									+ requestedPort + " .");
+				beforeStart(getServerConfiguration().getServerAspect());
+				log.info("Startup server ... (name : {} , port : {})", getServerName(), actualPort);
+				serverChannel = getBootstrap().bind(new InetSocketAddress(requestedPort));
+				actualPort = ((InetSocketAddress) serverChannel.getLocalAddress()).getPort();
+				if (actualPort == 0 || (actualPort != requestedPort && requestedPort != 0))
+					throw new IkasoaException("Startup server failed !");
+				afterStart(getServerConfiguration().getServerAspect());
+			} catch (IkasoaException e) {
+				throw new RuntimeException(e);
+			}
+		} else
+			log.info("Server already run .");
 	}
 
 	@Override
 	@SneakyThrows
 	public void stop() {
-		if (serverChannel != null) {
-			log.info("stopping transport {}:{} .", getServerName(), actualPort);
+		if (isServing()) {
+			beforeStop(getServerConfiguration().getServerAspect());
+			log.info("stopping server ... (name: {})", getServerName());
 			final CountDownLatch latch = new CountDownLatch(1);
 			serverChannel.close().addListener(future -> latch.countDown());
 			latch.await();
 			serverChannel = null;
-		}
-		if (channelFactory != null) {
-			channelFactory.releaseExternalResources();
-			channelFactory.shutdown();
-		}
-		if (allChannels != null)
-			allChannels.close();
-		if (bossExecutorService != null)
-			shutdownExecutor(bossExecutorService, "bossExecutorService");
-		if (workerExecutorService != null)
-			shutdownExecutor(workerExecutorService, "workerExecutorService");
-	}
-
-	private void shutdownExecutor(ExecutorService executorService, final String name) {
-		try {
-			log.debug("Waiting for {} to shutdown .", name);
-			while (executorService != null && !executorService.isTerminated()) {
-				executorService.awaitTermination(10, TimeUnit.SECONDS);
-				log.debug("{} did not shutdown properly .", name);
+			if (channelFactory != null) {
+				channelFactory.releaseExternalResources();
+				channelFactory.shutdown();
 			}
-		} catch (InterruptedException e) {
-			log.warn("Interrupted while waiting for {} to shutdown .", name);
-			executorService.shutdownNow();
-			Thread.currentThread().interrupt();
-		}
-	}
-
-	public Channel getServerChannel() {
-		return serverChannel;
+			if (allChannels != null)
+				allChannels.close();
+			if (bossExecutorService != null)
+				shutdownExecutor(bossExecutorService);
+			if (workerExecutorService != null)
+				shutdownExecutor(workerExecutorService);
+			afterStop(getServerConfiguration().getServerAspect());
+		} else
+			log.debug("Server not run . (name: {})", getServerName());
 	}
 
 	@Override
 	public int getServerPort() {
 		return actualPort != 0 ? actualPort : requestedPort;
-	}
-
-	@Override
-	public void releaseExternalResources() {
-		if (bootstrap != null)
-			bootstrap.releaseExternalResources();
 	}
 
 	@Override
@@ -187,7 +182,14 @@ public class DefaultNettyServerImpl implements NettyServer, ExternalResourceRele
 
 	@Override
 	public TServerTransport getTransport() throws TTransportException {
+		log.debug("This function not run .");
 		return null;
+	}
+
+	@Override
+	public void releaseExternalResources() {
+		if (getBootstrap() != null)
+			getBootstrap().releaseExternalResources();
 	}
 
 }

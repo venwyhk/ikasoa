@@ -7,5 +7,7 @@ package com.ikasoa.core.netty;
  * @version 0.6
  */
 public enum TNettyTransportType {
+
 	UNFRAMED, FRAMED, HTTP, HEADER
+
 }

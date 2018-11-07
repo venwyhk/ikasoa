@@ -13,11 +13,11 @@ package com.ikasoa.core.thrift;
  */
 public enum ErrorCodeEnum {
 
-	PARAMETER_ERROR(100), DATA_ERROR(200), EXECUTE_ERROR(300), OTHER_ERROR(400);
+	PARAMETER_ERROR((short) 100), DATA_ERROR((short) 200), EXECUTE_ERROR((short) 300), OTHER_ERROR((short) 400);
 
-	private final int code;
+	private final short code;
 
-	ErrorCodeEnum(int code) {
+	ErrorCodeEnum(short code) {
 		this.code = code;
 	}
 
@@ -25,10 +25,10 @@ public enum ErrorCodeEnum {
 		return code;
 	}
 
-	public static ErrorCodeEnum fromCode(int code) {
+	public static ErrorCodeEnum fromCode(short code) {
 		for (ErrorCodeEnum c : ErrorCodeEnum.values())
 			if (c.code == code)
 				return c;
-		throw new IllegalArgumentException("Error Code : " + code + " isn't valid !");
+		throw new IllegalArgumentException(String.format("Error Code (%d) isn't valid !", code));
 	}
 }
