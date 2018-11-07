@@ -9,12 +9,4 @@ import com.ikasoa.core.thrift.server.ThriftServer;
  * @version 0.6
  */
 public interface NettyServer extends ThriftServer {
-
-//	/**
-//	 * 获取Netty服务配置
-//	 * 
-//	 * @return NettyServerConfiguration 服务配置
-//	 */
-//	NettyServerConfiguration getNettyServerConfiguration();
-
 }
