@@ -8,12 +8,15 @@ import java.util.Enumeration;
 
 import com.ikasoa.core.utils.StringUtil;
 
+import lombok.experimental.UtilityClass;
+
 /**
  * 本地地址工具类
  * 
  * @author <a href="mailto:larry7696@gmail.com">Larry</a>
  * @version 0.1
  */
+@UtilityClass
 public class LocalUtil {
 
 	public static String getLocalIP() throws UnknownHostException, SocketException {
