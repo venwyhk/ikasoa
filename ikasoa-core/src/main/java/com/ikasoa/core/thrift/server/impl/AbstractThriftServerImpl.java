@@ -103,8 +103,9 @@ public abstract class AbstractThriftServerImpl implements ThriftServer {
 			log.debug("Server configuration : {}", configuration);
 			// 不允许使用1024以内的端口.
 			if (!ServerUtil.isSocketPort(serverPort))
-				throw new IkasoaException("Server initialize failed ! Port range must is 1025 ~ 65535 . Your port is : "
-						+ serverPort + " .");
+				throw new IkasoaException(String.format(
+						"Server initialize failed ! Port range must is 1025 ~ 65535 . Your port is : %d .",
+						serverPort));
 			try {
 				initServer(getTransport());
 			} catch (TTransportException e) {

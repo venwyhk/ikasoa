@@ -30,16 +30,18 @@ public class LoadBalanceTest extends TestCase {
 		List<ServerInfo> serverInfoList = new ArrayList<>();
 		for (int i = 1; i <= testSize; i++)
 			serverInfoList.add(new ServerInfo(new StringBuilder("192.168.1.").append(i).toString(),
-					ServerUtil.getNewPort("testPollingLoadBalanceImpl_" + i)));
+					ServerUtil.getNewPort(String.format("testPollingLoadBalanceImpl_%d", i))));
 		LoadBalance loadBalance = new PollingLoadBalanceImpl(serverInfoList);
 		for (int j = 1; j <= testSize; j++) {
 			ServerInfo serverInfo = loadBalance.getServerInfo();
 			assertNotNull(serverInfo);
 			assertEquals(serverInfo.getHost(), new StringBuilder("192.168.1.").append(j).toString());
-			assertEquals(serverInfo.getPort(), ServerUtil.getNewPort("testPollingLoadBalanceImpl_" + j));
+			assertEquals(serverInfo.getPort(),
+					ServerUtil.getNewPort(String.format("testPollingLoadBalanceImpl_%d", j)));
 			serverInfo = loadBalance.getServerInfo();
 			assertEquals(serverInfo.getHost(), new StringBuilder("192.168.1.").append(j).toString());
-			assertEquals(serverInfo.getPort(), ServerUtil.getNewPort("testPollingLoadBalanceImpl_" + j));
+			assertEquals(serverInfo.getPort(),
+					ServerUtil.getNewPort(String.format("testPollingLoadBalanceImpl_%d", j)));
 			next(loadBalance);
 		}
 		// 测试新增服务器地址

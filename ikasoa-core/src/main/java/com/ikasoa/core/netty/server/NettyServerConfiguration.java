@@ -13,14 +13,16 @@ import com.ikasoa.core.thrift.server.ServerConfiguration;
  * @author <a href="mailto:larry7696@gmail.com">Larry</a>
  * @version 0.6
  */
-@Getter
-@Setter
 public class NettyServerConfiguration extends ServerConfiguration {
 
+	@Getter
+	@Setter
 	private int workerCount = 2;
 
+	@Getter
 	private final int maxFrameSize = 64 * 1024 * 1024;
 
+	@Getter
 	private final int queuedResponseLimit = 16;
 
 	public NettyServerConfiguration(TProcessorFactory processorFactory) {

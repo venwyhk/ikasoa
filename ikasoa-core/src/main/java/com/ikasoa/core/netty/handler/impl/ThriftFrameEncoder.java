@@ -18,15 +18,15 @@ import com.ikasoa.core.netty.TNettyMessage;
  */
 public class ThriftFrameEncoder extends OneToOneEncoder {
 
-	private final long maxFrameSize;
+	private final int maxFrameSize;
 
-	public ThriftFrameEncoder(long maxFrameSize) {
+	public ThriftFrameEncoder(int maxFrameSize) {
 		this.maxFrameSize = maxFrameSize;
 	}
 
 	@Override
 	protected Object encode(ChannelHandlerContext ctx, Channel channel, Object msg) throws Exception {
-		
+
 		if (!(msg instanceof TNettyMessage))
 			return msg;
 
@@ -50,11 +50,11 @@ public class ThriftFrameEncoder extends OneToOneEncoder {
 			frameSizeBuffer.writeInt(message.getBuffer().readableBytes());
 			return ChannelBuffers.wrappedBuffer(frameSizeBuffer, message.getBuffer());
 		case HEADER:
-			throw new UnsupportedOperationException("Header transport is not supported");
+			throw new UnsupportedOperationException("Header transport is not supported .");
 		case HTTP:
-			throw new UnsupportedOperationException("HTTP transport is not supported");
+			throw new UnsupportedOperationException("HTTP transport is not supported .");
 		default:
-			throw new UnsupportedOperationException("Unrecognized transport type");
+			throw new UnsupportedOperationException("Unrecognized transport type .");
 		}
 	}
 }

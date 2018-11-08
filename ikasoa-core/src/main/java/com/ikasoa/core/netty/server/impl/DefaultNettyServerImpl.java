@@ -121,9 +121,9 @@ public class DefaultNettyServerImpl implements NettyServer {
 			try {
 				// 不允许使用1024以内的端口.
 				if (!ServerUtil.isSocketPort(requestedPort))
-					throw new IkasoaException(
-							"Server initialize failed ! Port range must is 1025 ~ 65535 . Your port is : "
-									+ requestedPort + " .");
+					throw new IkasoaException(String.format(
+							"Server initialize failed ! Port range must is 1025 ~ 65535 . Your port is : %d .",
+							requestedPort));
 				beforeStart(getServerConfiguration().getServerAspect());
 				log.info("Startup server ... (name : {} , port : {})", getServerName(), actualPort);
 				serverChannel = getBootstrap().bind(new InetSocketAddress(requestedPort));

@@ -39,7 +39,7 @@ public class ThriftServlet extends TServlet {
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		PrintWriter w = response.getWriter();
-		w.write("This is a ikasoa server! (" + serverName + ")");
+		w.write(String.format("This is a ikasoa server (%s) .", serverName));
 		w.close();
 	}
 

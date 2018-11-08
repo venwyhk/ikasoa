@@ -93,7 +93,8 @@ public abstract class AbstractThriftClientImpl implements ThriftClient {
 	@Override
 	public int getServerPort() {
 		if (!ServerUtil.isSocketPort(serverPort))
-			throw new RuntimeException("'serverPort' range must is 1025 ~ 65535 . Your port is : " + serverPort + " .");
+			throw new RuntimeException(String.format(
+					"Server initialize failed ! Port range must is 1025 ~ 65535 . Your port is : %d .", serverPort));
 		return serverPort;
 	}
 
@@ -147,8 +148,8 @@ public abstract class AbstractThriftClientImpl implements ThriftClient {
 
 		@Override
 		public void process(ThriftClient client) throws IkasoaException {
-			throw new IkasoaException("Server is not available (serverHost : " + client.getServerHost()
-					+ ", serverPort : " + client.getServerPort() + ") !");
+			throw new IkasoaException(String.format("Server is not available (serverHost : %s, serverPort : %d) !",
+					client.getServerHost(), client.getServerPort()));
 		}
 
 	}

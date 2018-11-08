@@ -103,19 +103,17 @@ public class NettyDispatcher extends SimpleChannelUpstreamHandler {
 					if (queueTimeoutMillis > 0)
 						if (timeElapsed >= queueTimeoutMillis) {
 							sendTApplicationException(
-									new TApplicationException(TApplicationException.INTERNAL_ERROR,
-											"Task stayed on the queue for " + timeElapsed
-													+ " milliseconds, exceeding configured queue timeout of "
-													+ queueTimeoutMillis + " milliseconds ."),
+									new TApplicationException(TApplicationException.INTERNAL_ERROR, String.format(
+											"Task stayed on the queue for %d milliseconds, exceeding configured queue timeout of %d milliseconds .",
+											timeElapsed, queueTimeoutMillis)),
 									ctx, message, requestSequenceId, messageTransport, inProtocol, outProtocol);
 							return;
 						} else if (taskTimeoutMillis > 0)
 							if (timeElapsed >= taskTimeoutMillis) {
 								sendTApplicationException(
-										new TApplicationException(TApplicationException.INTERNAL_ERROR,
-												"Task stayed on the queue for " + timeElapsed
-														+ " milliseconds, exceeding configured task timeout of "
-														+ taskTimeoutMillis + " milliseconds ."),
+										new TApplicationException(TApplicationException.INTERNAL_ERROR, String.format(
+												"Task stayed on the queue for %d milliseconds, exceeding configured task timeout of %d milliseconds .",
+												timeElapsed, taskTimeoutMillis)),
 										ctx, message, requestSequenceId, messageTransport, inProtocol, outProtocol);
 								return;
 							} else

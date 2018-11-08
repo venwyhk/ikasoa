@@ -44,7 +44,7 @@ public class ConsistencyHashLoadBalanceImpl implements LoadBalance {
 		for (int i = 0; i < serverInfoList.size(); i++) {
 			ServerInfo serverInfo = serverInfoList.get(i);
 			for (int j = 0; j < VIRTUAL_NUM; j++)
-				nodes.put(hash(computeMd5("SHARD-" + i + "-NODE-" + j), j), serverInfo);
+				nodes.put(hash(computeMd5(String.format("SHARD-%d-NODE-%d", i, j)), j), serverInfo);
 		}
 	}
 
@@ -79,7 +79,7 @@ public class ConsistencyHashLoadBalanceImpl implements LoadBalance {
 		try {
 			keyBytes = value.getBytes("UTF-8");
 		} catch (UnsupportedEncodingException e) {
-			throw new IllegalArgumentException("Unknown string :" + value, e);
+			throw new IllegalArgumentException(String.format("Unknown string : %s .", value), e);
 		}
 		md5.update(keyBytes);
 		return md5.digest();

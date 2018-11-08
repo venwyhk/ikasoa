@@ -320,7 +320,7 @@ public class ThriftSimpleService {
 			public static _Fields findByThriftIdOrThrow(int fieldId) {
 				_Fields fields = findByThriftId(fieldId);
 				if (fields == null)
-					throw new java.lang.IllegalArgumentException("Field " + fieldId + " doesn't exist!");
+					throw new java.lang.IllegalArgumentException(String.format("Field %d doesn't exist!", fieldId));
 				return fields;
 			}
 
@@ -648,7 +648,7 @@ public class ThriftSimpleService {
 			public static _Fields findByThriftIdOrThrow(int fieldId) {
 				_Fields fields = findByThriftId(fieldId);
 				if (fields == null)
-					throw new java.lang.IllegalArgumentException("Field " + fieldId + " doesn't exist!");
+					throw new java.lang.IllegalArgumentException(String.format("Field %d doesn't exist!", fieldId));
 				return fields;
 			}
 

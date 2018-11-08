@@ -11,5 +11,4 @@ import com.ikasoa.core.thrift.server.ThriftServer;
  * @version 0.6
  */
 public interface NettyServer extends ThriftServer, ExternalResourceReleasable {
-
 }
