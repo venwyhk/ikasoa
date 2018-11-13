@@ -669,8 +669,6 @@ web.xml
 
 - 使用kryo作为序列化方式时,暂不支持自定义异常对象,如果抛出自定义异常对象,异常类型不能正确识别.
 
-- 部分单元测试需要启动Socket,执行单元测试时请确保相关端口可用.
-
 ## License ##
 
 *ikasoa is free to use under [MIT license](https://github.com/venwyhk/ikasoa/blob/master/LICENSE).*
