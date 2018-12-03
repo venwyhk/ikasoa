@@ -43,7 +43,7 @@ public class NettyDispatcher extends SimpleChannelUpstreamHandler {
 	private final long taskTimeoutMillis;
 	private final Timer taskTimeoutTimer;
 	private final long queueTimeoutMillis;
-	private final int queuedResponseLimit;
+	private final short queuedResponseLimit;
 	private final Map<Integer, TNettyMessage> responseMap = new HashMap<>();
 	private final AtomicInteger dispatcherSequenceId = new AtomicInteger(0);
 	private final AtomicInteger lastResponseWrittenId = new AtomicInteger(0);
@@ -199,7 +199,7 @@ public class NettyDispatcher extends SimpleChannelUpstreamHandler {
 					++currentResponseId;
 					response = responseMap.remove(currentResponseId);
 				} while (null != response);
-
+				
 				if (DispatcherContext.isChannelReadBlocked(ctx)
 						&& dispatcherSequenceId.get() <= lastResponseWrittenId.get() + queuedResponseLimit)
 					DispatcherContext.unblockChannelReads(ctx);

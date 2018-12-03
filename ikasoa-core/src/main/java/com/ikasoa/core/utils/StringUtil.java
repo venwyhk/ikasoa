@@ -1,9 +1,11 @@
 package com.ikasoa.core.utils;
 
+import java.math.BigInteger;
+import java.security.MessageDigest;
 import java.util.Arrays;
 
+import lombok.SneakyThrows;
 import lombok.experimental.UtilityClass;
-import lombok.extern.slf4j.Slf4j;
 
 /**
  * 字符串常用操作工具类
@@ -11,7 +13,6 @@ import lombok.extern.slf4j.Slf4j;
  * @author <a href="mailto:larry7696@gmail.com">Larry</a>
  * @version 0.2
  */
-@Slf4j
 @UtilityClass
 public class StringUtil {
 
@@ -122,14 +123,16 @@ public class StringUtil {
 		return new String(hexChars);
 	}
 
+	@SneakyThrows
 	public static int toInt(String str) {
-		if (isNotEmpty(str))
-			try {
-				return Integer.parseInt(str.trim());
-			} catch (Exception e) {
-				log.warn(e.getMessage());
-			}
-		return 0;
+		return isNotEmpty(str) ? Integer.parseInt(str.trim()) : 0;
+	}
+
+	@SneakyThrows
+	public static String toMD5(String str) {
+		MessageDigest md = MessageDigest.getInstance("MD5");
+		md.update(str.getBytes());
+		return new BigInteger(1, md.digest()).toString(16);
 	}
 
 }

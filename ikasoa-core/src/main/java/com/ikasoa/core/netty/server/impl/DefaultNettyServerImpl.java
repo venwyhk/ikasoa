@@ -125,7 +125,7 @@ public class DefaultNettyServerImpl implements NettyServer {
 							"Server initialize failed ! Port range must is 1025 ~ 65535 . Your port is : %d .",
 							requestedPort));
 				beforeStart(getServerConfiguration().getServerAspect());
-				log.info("Startup server ... (name : {} , port : {})", getServerName(), actualPort);
+				log.info("Startup server ... (name : {} , port : {})", getServerName(), requestedPort);
 				serverChannel = getBootstrap().bind(new InetSocketAddress(requestedPort));
 				actualPort = ((InetSocketAddress) serverChannel.getLocalAddress()).getPort();
 				if (actualPort == 0 || (actualPort != requestedPort && requestedPort != 0))

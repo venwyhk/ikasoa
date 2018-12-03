@@ -14,27 +14,30 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
- * Netty服务端工厂实现
+ * Netty工厂实现
  * 
  * @author <a href="mailto:larry7696@gmail.com">Larry</a>
  * @version 0.6
  */
 @NoArgsConstructor
-public class NettyServerFactory extends GeneralFactory {
+public class NettyGeneralFactory extends GeneralFactory {
 
+	/**
+	 * 服务端配置
+	 */
 	@Getter
 	@Setter
-	protected NettyServerConfiguration nettyServerConfiguration = null;
+	protected NettyServerConfiguration nettyServerConfiguration = null; // 当服务端配置为空时会使用默认配置
 
 	@Getter
 	@Setter
 	protected DefaultChannelGroup defaultChannelGroup = new DefaultChannelGroup();
 
-	public NettyServerFactory(NettyServerConfiguration nettyServerConfiguration) {
+	public NettyGeneralFactory(NettyServerConfiguration nettyServerConfiguration) {
 		this.nettyServerConfiguration = nettyServerConfiguration;
 	}
 
-	public NettyServerFactory(ThriftClientConfiguration thriftClientConfiguration) {
+	public NettyGeneralFactory(ThriftClientConfiguration thriftClientConfiguration) {
 		super.thriftClientConfiguration = thriftClientConfiguration;
 	}
 

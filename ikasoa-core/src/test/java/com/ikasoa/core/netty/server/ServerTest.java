@@ -4,7 +4,8 @@ import org.apache.thrift.transport.TTransport;
 import org.junit.Test;
 
 import com.ikasoa.core.TestConstants;
-import com.ikasoa.core.netty.NettyServerFactory;
+import com.ikasoa.core.netty.NettyGeneralFactory;
+import com.ikasoa.core.thrift.Factory;
 import com.ikasoa.core.thrift.client.ThriftClient;
 import com.ikasoa.core.thrift.server.ThriftSimpleService;
 import com.ikasoa.core.thrift.server.ThriftSimpleServiceImpl;
@@ -20,7 +21,7 @@ public class ServerTest extends TestCase {
 
 	private static String serverName = "TestNettyServer";
 
-	private static NettyServerFactory factory = new NettyServerFactory();
+	private static Factory factory = new NettyGeneralFactory();
 
 	@Test
 	public void testDefaultNettyServerImpl() {

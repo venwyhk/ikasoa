@@ -15,8 +15,9 @@ import com.ikasoa.core.netty.handler.ThriftFrameCodeHandler;
  * @version 0.6
  */
 public class ThriftFrameCodeHandlerImpl implements ThriftFrameCodeHandler {
-	
+
 	private final FrameDecoder decoder;
+
 	private final OneToOneEncoder encoder;
 
 	public ThriftFrameCodeHandlerImpl(int maxFrameSize, TProtocolFactory inputProtocolFactory) {

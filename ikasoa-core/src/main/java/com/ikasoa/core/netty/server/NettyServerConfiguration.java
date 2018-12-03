@@ -20,10 +20,10 @@ public class NettyServerConfiguration extends ServerConfiguration {
 	private int workerCount = 2;
 
 	@Getter
-	private final int maxFrameSize = 64 * 1024 * 1024;
+	private final int maxFrameSize = 0x4000000;
 
 	@Getter
-	private final int queuedResponseLimit = 16;
+	private final short queuedResponseLimit = 0x10;
 
 	public NettyServerConfiguration(TProcessorFactory processorFactory) {
 		super.processorFactory = processorFactory;

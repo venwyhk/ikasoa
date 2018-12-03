@@ -77,12 +77,11 @@ public class TNettyTransport extends TTransport {
 
 	@Override
 	public void open() throws TTransportException {
-		// no-op
+		// Do nothing
 	}
 
 	@Override
 	public void close() {
-		// no-op
 		channel.close();
 	}
 
@@ -102,9 +101,8 @@ public class TNettyTransport extends TTransport {
 
 	@Override
 	public int readAll(byte[] bytes, int offset, int length) throws TTransportException {
-		if (read(bytes, offset, length) < length) {
+		if (read(bytes, offset, length) < length)
 			throw new TTransportException("Buffer doesn't have enough bytes to read .");
-		}
 		return length;
 	}
 

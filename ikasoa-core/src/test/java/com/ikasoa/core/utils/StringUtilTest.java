@@ -104,5 +104,10 @@ public class StringUtilTest extends TestCase {
 	public void testToInt() {
 		assertEquals(StringUtil.toInt("123 "), 123);
 	}
+	
+	@Test
+	public void testToMD5() {
+		assertEquals(StringUtil.toMD5("test123"), "cc03e747a6afbbcbf8be7668acfebee5");
+	}
 
 }

@@ -19,7 +19,7 @@ import com.ikasoa.core.utils.StringUtil;
  */
 public class SecurityCompactProtocol extends TCompactProtocol {
 
-	private static final int KEY_MAX_LENGHT = 8;
+	private static final short KEY_MAX_LENGHT = 8;
 
 	private final String key;
 

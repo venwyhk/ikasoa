@@ -88,6 +88,7 @@ public class ThriftFrameDecoder extends FrameDecoder {
 			TProtocolFactory inputProtocolFactory) throws TException {
 
 		int messageLength = 0;
+
 		int messageStartReaderIndex = buffer.readerIndex();
 
 		try {
