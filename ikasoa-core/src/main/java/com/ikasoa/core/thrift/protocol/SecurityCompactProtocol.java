@@ -19,7 +19,7 @@ import com.ikasoa.core.utils.StringUtil;
  */
 public class SecurityCompactProtocol extends TCompactProtocol {
 
-	private static final int KEY_MAX_LENGHT = 8;
+	private static final short KEY_MAX_LENGHT = 8;
 
 	private final String key;
 
@@ -44,7 +44,7 @@ public class SecurityCompactProtocol extends TCompactProtocol {
 			return new SecurityCompactProtocol(trans,
 					key_.length() < KEY_MAX_LENGHT ? formatStr(key_, KEY_MAX_LENGHT) : key_, encrypt_);
 		}
-		
+
 	}
 
 	public SecurityCompactProtocol(TTransport transport, String key, SymmetricKeyEncrypt encrypt) {
@@ -86,14 +86,13 @@ public class SecurityCompactProtocol extends TCompactProtocol {
 		if (strLen == length) {
 			return str;
 		} else if (strLen < length) {
-			int temp = length - strLen;
 			String tem = "";
-			for (int i = 0; i < temp; i++)
+			for (int i = 0; i < length - strLen; i++)
 				tem = tem + " ";
 			return str + tem;
 		} else {
 			return str.substring(0, length);
 		}
 	}
-	
+
 }

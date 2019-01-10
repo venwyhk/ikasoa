@@ -29,7 +29,7 @@ public interface SocketPool {
 	 *            服务器端口
 	 * @return ThriftSocket ThriftSocket连接对象
 	 */
-	ThriftSocket buildThriftSocket(String host, int port);
+	ThriftSocket buildThriftSocket(final String host, int port);
 
 	/**
 	 * 回收ThriftSocket连接
@@ -41,7 +41,7 @@ public interface SocketPool {
 	 * @param port
 	 *            服务器端口
 	 */
-	void releaseThriftSocket(ThriftSocket thriftSocket, String host, int port);
+	void releaseThriftSocket(final ThriftSocket thriftSocket, final String host, final int port);
 
 	default void releaseThriftSocket(ThriftSocket thriftSocket) {
 		if (thriftSocket != null)

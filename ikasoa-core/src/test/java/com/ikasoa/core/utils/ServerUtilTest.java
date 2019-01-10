@@ -2,19 +2,21 @@ package com.ikasoa.core.utils;
 
 import org.junit.Test;
 
-import com.ikasoa.core.TestBase;
+import com.ikasoa.core.TestConstants;
+
+import junit.framework.TestCase;
 
 /**
  * 服务器工具单元测试
  */
-public class ServerUtilTest extends TestBase {
+public class ServerUtilTest extends TestCase {
 
 	@Test
 	public void testIsIpv4() {
 		assertTrue(ServerUtil.isIpv4("127.0.0.1"));
 		assertTrue(ServerUtil.isIpv4("192.168.1.111"));
 		assertFalse(ServerUtil.isIpv4("99999.99999.99999.00000"));
-		assertFalse(ServerUtil.isIpv4(LOCAL_HOST));
+		assertFalse(ServerUtil.isIpv4(TestConstants.LOCAL_HOST));
 		assertFalse(ServerUtil.isIpv4(" "));
 	}
 
@@ -36,14 +38,14 @@ public class ServerUtilTest extends TestBase {
 
 	@Test
 	public void testCheckHostAndPort() {
-		assertTrue(ServerUtil.checkHostAndPort(LOCAL_HOST, 8080));
+		assertTrue(ServerUtil.checkHostAndPort(TestConstants.LOCAL_HOST, 8080));
 		assertFalse(ServerUtil.checkHostAndPort("", 6666));
-		assertFalse(ServerUtil.checkHostAndPort(LOCAL_HOST, 65536));
+		assertFalse(ServerUtil.checkHostAndPort(TestConstants.LOCAL_HOST, 65536));
 	}
 
 	@Test
 	public void testBuildCacheKey() {
-		assertEquals(ServerUtil.buildCacheKey(LOCAL_HOST, 8080), LOCAL_HOST + ":8080");
+		assertEquals(ServerUtil.buildCacheKey(TestConstants.LOCAL_HOST, 8080), TestConstants.LOCAL_HOST + ":8080");
 	}
 
 }

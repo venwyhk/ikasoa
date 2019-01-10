@@ -2,18 +2,38 @@ package com.ikasoa.core.utils;
 
 import org.junit.Test;
 
-import com.ikasoa.core.TestBase;
+import com.ikasoa.core.TestConstants;
+
+import junit.framework.TestCase;
 
 /**
  * 字符串工具单元测试
  */
-public class StringUtilTest extends TestBase {
+public class StringUtilTest extends TestCase {
 
 	@Test
 	public void testIsEmpty() {
 		assertTrue(StringUtil.isEmpty(null));
 		assertTrue(StringUtil.isEmpty(""));
 		assertFalse(StringUtil.isEmpty(" "));
+	}
+	
+	@Test
+	public void testAndIsEmpty() {
+		assertTrue(StringUtil.andIsEmpty(null, ""));
+		assertTrue(StringUtil.andIsEmpty(null, "", ""));
+		assertFalse(StringUtil.andIsEmpty(null, " "));
+		assertFalse(StringUtil.andIsEmpty("", " "));
+		assertFalse(StringUtil.andIsEmpty(" ", "a"));
+	}
+
+	@Test
+	public void testOrIsEmpty() {
+		assertTrue(StringUtil.orIsEmpty(null, ""));
+		assertTrue(StringUtil.orIsEmpty(null, " "));
+		assertTrue(StringUtil.orIsEmpty("", " "));
+		assertFalse(StringUtil.orIsEmpty(" ", "a"));
+		assertTrue(StringUtil.orIsEmpty(null, " ", "a"));
 	}
 
 	@Test
@@ -28,6 +48,23 @@ public class StringUtilTest extends TestBase {
 		assertTrue(StringUtil.isBlank(null));
 		assertTrue(StringUtil.isBlank(""));
 		assertTrue(StringUtil.isBlank(" "));
+	}
+	
+	@Test
+	public void testAndIsBlank() {
+		assertTrue(StringUtil.andIsBlank(null, ""));
+		assertTrue(StringUtil.andIsBlank(null, "", ""));
+		assertTrue(StringUtil.andIsBlank(null, " "));
+		assertTrue(StringUtil.andIsBlank("", " "));
+		assertFalse(StringUtil.andIsBlank(" ", "a"));
+	}
+
+	@Test
+	public void testOrIsBlank() {
+		assertTrue(StringUtil.orIsBlank(null, ""));
+		assertTrue(StringUtil.orIsBlank("", " "));
+		assertFalse(StringUtil.orIsBlank("a", "b"));
+		assertTrue(StringUtil.orIsBlank(null, "a"));
 	}
 
 	@Test
@@ -57,7 +94,7 @@ public class StringUtilTest extends TestBase {
 
 	@Test
 	public void testStrToBytesAndBytesToStr() {
-		String str = TEST_STRING;
+		String str = TestConstants.TEST_STRING;
 		assertEquals(
 				StringUtil.hexStrToStr(StringUtil.bytesToHexStr(StringUtil.hexStrToBytes(StringUtil.strToHexStr(str)))),
 				str);
@@ -66,6 +103,11 @@ public class StringUtilTest extends TestBase {
 	@Test
 	public void testToInt() {
 		assertEquals(StringUtil.toInt("123 "), 123);
+	}
+	
+	@Test
+	public void testToMD5() {
+		assertEquals(StringUtil.toMD5("test123"), "cc03e747a6afbbcbf8be7668acfebee5");
 	}
 
 }

@@ -29,7 +29,7 @@ public class ThriftServlet extends TServlet {
 	 *            ThriftServer对象(这里一般用<i>ServletThriftServerImpl</i>实现)
 	 */
 	public ThriftServlet(ThriftServer server) {
-		super(server.getProcessor(), server.getThriftServerConfiguration().getProtocolFactory());
+		super(server.getProcessor(), server.getServerConfiguration().getProtocolFactory());
 		serverName = server.getServerName();
 	}
 
@@ -39,7 +39,7 @@ public class ThriftServlet extends TServlet {
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		PrintWriter w = response.getWriter();
-		w.write("This is a ikasoa server! (" + serverName + ")");
+		w.write(String.format("This is a ikasoa server (%s) .", serverName));
 		w.close();
 	}
 

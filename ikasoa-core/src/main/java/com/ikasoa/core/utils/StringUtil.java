@@ -1,7 +1,11 @@
 package com.ikasoa.core.utils;
 
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.util.Arrays;
+
+import lombok.SneakyThrows;
 import lombok.experimental.UtilityClass;
-import lombok.extern.slf4j.Slf4j;
 
 /**
  * 字符串常用操作工具类
@@ -9,7 +13,6 @@ import lombok.extern.slf4j.Slf4j;
  * @author <a href="mailto:larry7696@gmail.com">Larry</a>
  * @version 0.2
  */
-@Slf4j
 @UtilityClass
 public class StringUtil {
 
@@ -17,6 +20,14 @@ public class StringUtil {
 
 	public static boolean isEmpty(String str) {
 		return str == null || str.length() == 0;
+	}
+
+	public static boolean andIsEmpty(String... strs) {
+		return Arrays.asList(strs).stream().filter(StringUtil::isNotEmpty).count() == 0;
+	}
+
+	public static boolean orIsEmpty(String... strs) {
+		return Arrays.asList(strs).stream().filter(StringUtil::isEmpty).count() > 0;
 	}
 
 	public static boolean isNotEmpty(String str) {
@@ -33,13 +44,21 @@ public class StringUtil {
 		return Boolean.TRUE;
 	}
 
+	public static boolean andIsBlank(String... strs) {
+		return Arrays.asList(strs).stream().filter(StringUtil::isNotBlank).count() == 0;
+	}
+
+	public static boolean orIsBlank(String... strs) {
+		return Arrays.asList(strs).stream().filter(StringUtil::isBlank).count() > 0;
+	}
+
 	public static boolean isNotBlank(String str) {
 		return !isBlank(str);
 	}
 
 	public static boolean equals(String str1, String str2) {
-		return isEmpty(str1) && isEmpty(str2) ? Boolean.TRUE
-				: isNotEmpty(str1) && isNotEmpty(str2) ? str1.equals(str2) : Boolean.FALSE;
+		return str1 == null && str2 == null ? Boolean.TRUE
+				: str1 != null && str2 != null ? str1.equals(str2) : Boolean.FALSE;
 	}
 
 	public static byte[] strToBytes(String str) {
@@ -104,14 +123,16 @@ public class StringUtil {
 		return new String(hexChars);
 	}
 
+	@SneakyThrows
 	public static int toInt(String str) {
-		if (isNotEmpty(str))
-			try {
-				return Integer.parseInt(str.trim());
-			} catch (Exception e) {
-				log.warn(e.getMessage());
-			}
-		return 0;
+		return isNotEmpty(str) ? Integer.parseInt(str.trim()) : 0;
+	}
+
+	@SneakyThrows
+	public static String toMD5(String str) {
+		MessageDigest md = MessageDigest.getInstance("MD5");
+		md.update(str.getBytes());
+		return new BigInteger(1, md.digest()).toString(16);
 	}
 
 }

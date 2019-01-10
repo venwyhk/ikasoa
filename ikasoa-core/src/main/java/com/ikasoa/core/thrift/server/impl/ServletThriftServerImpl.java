@@ -74,7 +74,7 @@ public class ServletThriftServerImpl implements ThriftServer {
 	}
 
 	@Override
-	public ThriftServerConfiguration getThriftServerConfiguration() {
+	public ThriftServerConfiguration getServerConfiguration() {
 		if (configuration == null)
 			throw new RuntimeException("'configuration' is null !");
 		return configuration;

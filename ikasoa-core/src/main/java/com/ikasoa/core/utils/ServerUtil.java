@@ -1,7 +1,12 @@
 package com.ikasoa.core.utils;
 
+import java.net.ServerSocket;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.Pattern;
 
+import lombok.Cleanup;
+import lombok.SneakyThrows;
 import lombok.experimental.UtilityClass;
 
 /**
@@ -13,10 +18,32 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public class ServerUtil {
 
+	private static Map<String, Integer> portCacheMap = new HashMap<>();
+
 	public static boolean isIpv4(String ip) {
 		return Pattern
 				.compile("([1-9]|[1-9]\\d|1\\d{2}|2[0-4]\\d|25[0-5])(\\.(\\d|[1-9]\\d|1\\d{2}|2[0-4]\\d|25[0-5])){3}")
 				.matcher(ip).matches();
+	}
+
+	public static int getNewPort() {
+		return getNewPort(null);
+	}
+
+	@SneakyThrows
+	public static int getNewPort(String key) {
+		@Cleanup
+		ServerSocket socket = new ServerSocket(0);
+		if (StringUtil.isNotEmpty(key))
+			if (portCacheMap.containsKey(key))
+				return portCacheMap.get(key);
+			else {
+				int port = socket.getLocalPort();
+				portCacheMap.put(key, port);
+				return port;
+			}
+		else
+			return socket.getLocalPort();
 	}
 
 	public static boolean isPort(int serverPort) {

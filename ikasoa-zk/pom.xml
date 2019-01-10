@@ -116,7 +116,7 @@
         <dependency>
             <groupId>com.ikasoa</groupId>
             <artifactId>ikasoa-core</artifactId>
-            <version>0.5.3</version>
+            <version>0.5.4</version>
         </dependency>
         <dependency>
             <groupId>com.101tec</groupId>
@@ -137,7 +137,7 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.18.2</version>
+            <version>1.18.4</version>
             <scope>provided</scope>
         </dependency>
         <dependency>

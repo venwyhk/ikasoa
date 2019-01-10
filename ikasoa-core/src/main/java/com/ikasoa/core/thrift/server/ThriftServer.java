@@ -1,9 +1,14 @@
 package com.ikasoa.core.thrift.server;
 
+import java.util.Optional;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.TimeUnit;
+
 import org.apache.thrift.TProcessor;
 import org.apache.thrift.transport.TServerTransport;
 import org.apache.thrift.transport.TTransportException;
-import com.ikasoa.core.thrift.server.ThriftServerConfiguration;
+
+import com.ikasoa.core.Server;
 
 /**
  * Thrift服务器接口
@@ -11,68 +16,72 @@ import com.ikasoa.core.thrift.server.ThriftServerConfiguration;
  * @author <a href="mailto:larry7696@gmail.com">Larry</a>
  * @version 0.1
  */
-public interface ThriftServer {
+public interface ThriftServer extends Server {
 
 	/**
 	 * Thrift服务传输类型
 	 * <p>
 	 * 通常为<i>org.apache.thrift.transport.TServerSocket</i>
-	 * ,但如果采用NonblockingServer来实现Thrift服务,这里就需要用 <i>TNonblockingServerSocket</i>.
-	 * .
+	 * ,但如果采用NonblockingServer来实现Thrift服务,这里就需要用 <i>TNonblockingServerSocket</i>. .
 	 * 
 	 * @return TServerTransport 服务传输类型
 	 * @exception TTransportException
 	 *                TransportExceptions
 	 */
-	public TServerTransport getTransport() throws TTransportException;
-
-	/**
-	 * 运行Thrift服务器
-	 */
-	public void run();
-
-	/**
-	 * 停止Thrift服务器
-	 */
-	public void stop();
-
-	/**
-	 * Thrift服务器是否运行
-	 * 
-	 * @return boolean 服务器是否运行
-	 */
-	public boolean isServing();
-
-	/**
-	 * 获取Thrift服务名称
-	 * <p>
-	 * 这里的服务名称仅作为标记,方便记录和检索.在客户端依然采用<i>serverHost</i>和 <i>serverPort</i> 来定位服务.
-	 * 
-	 * @return String 服务名称
-	 */
-	public String getServerName();
-
-	/**
-	 * 获取Thrift服务器端口
-	 * <p>
-	 * 端口不能重复,且端口号需大于1024.
-	 * 
-	 * @return int 服务器端口
-	 */
-	public int getServerPort();
+	TServerTransport getTransport() throws TTransportException;
 
 	/**
 	 * 获取Thrift服务配置
 	 * 
-	 * @return ThriftServerConfiguration 服务配置
+	 * @return ServerConfiguration 服务配置
 	 */
-	public ThriftServerConfiguration getThriftServerConfiguration();
+	ServerConfiguration getServerConfiguration();
 
 	/**
 	 * 获取Thrift处理器
 	 * 
 	 * @return TProcessor Thrift处理器
 	 */
-	public TProcessor getProcessor();
+	TProcessor getProcessor();
+
+	/**
+	 * 停止线程池
+	 * 
+	 * @param executorService
+	 *            线程池
+	 */
+	default void shutdownExecutor(ExecutorService executorService) {
+		if (executorService != null && !executorService.isShutdown()) {
+			executorService.shutdown();
+			try {
+				while (executorService != null && !executorService.isTerminated())
+					executorService.awaitTermination(10, TimeUnit.SECONDS);
+			} catch (InterruptedException e) {
+				executorService.shutdownNow();
+				Thread.currentThread().interrupt();
+			}
+		}
+		executorService = null;
+	}
+
+	default void beforeStart(ServerAspect serverAspect) {
+		Optional.ofNullable(serverAspect).ifPresent(sAspect -> sAspect.beforeStart(getServerName(), getServerPort(),
+				getServerConfiguration(), getProcessor(), this));
+	}
+
+	default void afterStart(ServerAspect serverAspect) {
+		Optional.ofNullable(serverAspect).ifPresent(sAspect -> sAspect.afterStart(getServerName(), getServerPort(),
+				getServerConfiguration(), getProcessor(), this));
+	}
+
+	default void beforeStop(ServerAspect serverAspect) {
+		Optional.ofNullable(serverAspect).ifPresent(sAspect -> sAspect.beforeStop(getServerName(), getServerPort(),
+				getServerConfiguration(), getProcessor(), this));
+	}
+
+	default void afterStop(ServerAspect serverAspect) {
+		Optional.ofNullable(serverAspect).ifPresent(sAspect -> sAspect.afterStop(getServerName(), getServerPort(),
+				getServerConfiguration(), getProcessor(), this));
+	}
 
 }

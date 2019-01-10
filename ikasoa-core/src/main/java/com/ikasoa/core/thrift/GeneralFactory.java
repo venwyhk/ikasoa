@@ -55,7 +55,7 @@ public class GeneralFactory implements Factory {
 	 * 客户端配置
 	 */
 	protected ThriftClientConfiguration thriftClientConfiguration = new ThriftClientConfiguration();
-	
+
 	/**
 	 * 默认负载均衡实现
 	 */
@@ -106,7 +106,7 @@ public class GeneralFactory implements Factory {
 	 */
 	@Override
 	public ThriftServer getThriftServer(int serverPort, Service service) {
-		return getThriftServer("DefaultServer-" + serverPort, serverPort, service);
+		return getThriftServer(String.format("ThriftServer-%d", serverPort), serverPort, service);
 	}
 
 	/**
@@ -114,7 +114,7 @@ public class GeneralFactory implements Factory {
 	 */
 	@Override
 	public ThriftServer getNonblockingThriftServer(int serverPort, Service service) {
-		return getNonblockingThriftServer("DefaultNonblockingServer-" + serverPort, serverPort, service);
+		return getNonblockingThriftServer(String.format("ThriftNonblockingServer-%d", serverPort), serverPort, service);
 	}
 
 	/**
@@ -122,7 +122,7 @@ public class GeneralFactory implements Factory {
 	 */
 	@Override
 	public ThriftServer getThriftServer(int serverPort, Map<String, Service> serviceMap) {
-		return getThriftServer("DefaultServer-" + serverPort, serverPort, serviceMap);
+		return getThriftServer(String.format("ThriftServer-%d", serverPort), serverPort, serviceMap);
 	}
 
 	/**
@@ -130,7 +130,8 @@ public class GeneralFactory implements Factory {
 	 */
 	@Override
 	public ThriftServer getNonblockingThriftServer(int serverPort, Map<String, Service> serviceMap) {
-		return getNonblockingThriftServer("DefaultNonblockingServer-" + serverPort, serverPort, serviceMap);
+		return getNonblockingThriftServer(String.format("ThriftNonblockingServer-%d", serverPort), serverPort,
+				serviceMap);
 	}
 
 	/**

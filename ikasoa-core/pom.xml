@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.ikasoa</groupId>
     <artifactId>ikasoa-core</artifactId>
-    <version>0.5.4</version>
+    <version>0.6-SNAPSHOT</version>
     <packaging>jar</packaging>
     <name>Ikasoa Core</name>
     <description>ikasoa is a java distributed service framework.</description>
@@ -130,6 +130,11 @@
             <version>0.11.0</version>
         </dependency>
         <dependency>
+            <groupId>io.netty</groupId>
+            <artifactId>netty</artifactId>
+            <version>3.10.6.Final</version>
+        </dependency>
+        <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-pool2</artifactId>
             <version>2.6.0</version>
@@ -148,7 +153,7 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.18.2</version>
+            <version>1.18.4</version>
             <scope>provided</scope>
         </dependency>
         <dependency>

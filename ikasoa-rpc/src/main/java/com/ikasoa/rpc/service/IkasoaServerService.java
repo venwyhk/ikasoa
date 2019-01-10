@@ -2,6 +2,7 @@ package com.ikasoa.rpc.service;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Arrays;
 
 import com.ikasoa.rpc.RpcException;
 import com.ikasoa.rpc.handler.ProtocolHandler;
@@ -44,7 +45,7 @@ public class IkasoaServerService extends AbstractGetService<Object[], Object> {
 			args = new Object[] {};
 		}
 		log.debug("Execute class '{}' function '{}' , parameters is '{}' .", classObj.getClass().getName(),
-				method.getName(), args.toString());
+				method.getName(), Arrays.toString(args));
 		method.setAccessible(Boolean.TRUE);
 		try {
 			return method.invoke(classObj, args);

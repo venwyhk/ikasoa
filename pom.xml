@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.ikasoa</groupId>
     <artifactId>ikasoa</artifactId>
-    <version>18.0828</version>
+    <version>18.0925</version>
     <packaging>pom</packaging>
     <name>Ikasoa</name>
     <description>ikasoa is a java distributed service framework.</description>

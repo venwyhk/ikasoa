@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.ikasoa</groupId>
     <artifactId>ikasoa-rpc</artifactId>
-    <version>0.3.3-BETA</version>
+    <version>0.3.4-SNAPSHOT</version>
     <packaging>jar</packaging>
     <name>Ikasoa RPC</name>
     <description>ikasoa-rpc is a high performance RPC（Remote Procedure Call) framework.</description>
@@ -121,22 +121,12 @@
         <dependency>
             <groupId>com.ikasoa</groupId>
             <artifactId>ikasoa-core</artifactId>
-            <version>0.5.4</version>
-        </dependency>
-        <dependency>
-            <groupId>io.netty</groupId>
-            <artifactId>netty</artifactId>
-            <version>3.10.6.Final</version>
-        </dependency>
-        <dependency>
-            <groupId>com.facebook.nifty</groupId>
-            <artifactId>nifty-core</artifactId>
-            <version>0.23.0</version>
+            <version>0.6-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
-            <version>1.2.51</version>
+            <version>1.2.54</version>
         </dependency>
         <dependency>
             <groupId>com.esotericsoftware</groupId>
@@ -157,7 +147,7 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.18.2</version>
+            <version>1.18.4</version>
             <scope>provided</scope>
         </dependency>
         <dependency>

@@ -25,7 +25,7 @@ public class NonblockingThriftServerImpl extends AbstractThriftServerImpl {
 			TProcessor processor) {
 		setServerName(serverName);
 		setServerPort(serverPort);
-		configuration.setTransportFactory(new TFramedTransport.Factory());
+		configuration.setTransportFactory(new TFramedTransport.Factory()); // 如果提供非阻塞服务,则必须为TFramedTransport.Factory().
 		setConfiguration(configuration);
 		setProcessor(processor);
 	}
@@ -45,7 +45,7 @@ public class NonblockingThriftServerImpl extends AbstractThriftServerImpl {
 	 */
 	@Override
 	protected void initServer(TServerTransport serverTransport) {
-		ThriftServerConfiguration configuration = getThriftServerConfiguration();
+		ThriftServerConfiguration configuration = getServerConfiguration();
 		// 使用多线程半同步半异步方式
 		TThreadedSelectorServer.Args args = new TThreadedSelectorServer.Args((TNonblockingServerSocket) serverTransport)
 				.transportFactory(configuration.getTransportFactory())

@@ -14,20 +14,23 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.ikasoa.core.IkasoaException;
-import com.ikasoa.core.TestBase;
+import com.ikasoa.core.TestConstants;
 import com.ikasoa.core.thrift.Factory;
 import com.ikasoa.core.thrift.GeneralFactory;
 import com.ikasoa.core.thrift.server.MultiplexedProcessor;
 import com.ikasoa.core.thrift.server.ServerArgsAspect;
 import com.ikasoa.core.thrift.server.ThriftServer;
 import com.ikasoa.core.thrift.server.ThriftServerConfiguration;
+import com.ikasoa.core.utils.ServerUtil;
+
+import junit.framework.TestCase;
 
 /**
  * 异步服务单元测试
  */
-public class AysncServiceTest extends TestBase {
+public class AysncServiceTest extends TestCase {
 
-	private String testString1 = TEST_STRING;
+	private String testString1 = TestConstants.TEST_STRING;
 
 	private String testString2 = "1234567890-= ";
 
@@ -47,14 +50,15 @@ public class AysncServiceTest extends TestBase {
 
 	@Test
 	public void testAysncServiceImpl() {
-		int serverPort = getNewPort();
+		int serverPort = ServerUtil.getNewPort();
 		TProcessor p = new ServiceProcessor(new TestThriftServiceImpl1());
 		thriftServerConfiguration.setProcessorFactory(new TProcessorFactory(p));
 		Factory factory = new GeneralFactory(thriftServerConfiguration);
 		ThriftServer thriftServer = factory.getThriftServer(serverPort, new TestThriftServiceImpl1());
 		thriftServer.run();
 		try {
-			AsyncService service = factory.getAsyncService(new TNonblockingSocket(LOCAL_HOST, serverPort));
+			AsyncService service = factory
+					.getAsyncService(new TNonblockingSocket(TestConstants.LOCAL_HOST, serverPort));
 			Thread.sleep(500);
 			service.get(testString1, new TestCallback1());
 			Thread.sleep(1000);
@@ -67,7 +71,7 @@ public class AysncServiceTest extends TestBase {
 
 	@Test
 	public void testAysncMultiplexedServiceImpl() {
-		int serverPort = getNewPort();
+		int serverPort = ServerUtil.getNewPort();
 		Map<String, TProcessor> processorMap = new HashMap<>();
 		processorMap.put("testAysncService1", new ServiceProcessor(new TestThriftServiceImpl1()));
 		processorMap.put("testAysncService2", new ServiceProcessor(new TestThriftServiceImpl2()));
@@ -78,11 +82,11 @@ public class AysncServiceTest extends TestBase {
 		thriftServer.run();
 		try {
 			Thread.sleep(500);
-			AsyncService service1 = factory.getAsyncService(new TNonblockingSocket(LOCAL_HOST, serverPort),
-					"testAysncService1");
+			AsyncService service1 = factory
+					.getAsyncService(new TNonblockingSocket(TestConstants.LOCAL_HOST, serverPort), "testAysncService1");
 			service1.get(testString1, new TestCallback1());
-			AsyncService service2 = factory.getAsyncService(new TNonblockingSocket(LOCAL_HOST, serverPort),
-					"testAysncService2");
+			AsyncService service2 = factory
+					.getAsyncService(new TNonblockingSocket(TestConstants.LOCAL_HOST, serverPort), "testAysncService2");
 			service2.get(testString2, new TestCallback2());
 			Thread.sleep(1000);
 		} catch (Exception e) {

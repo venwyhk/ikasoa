@@ -10,6 +10,7 @@ import org.junit.Before;
 import org.junit.Test;
 import com.ikasoa.core.thrift.server.ServerArgsAspect;
 import com.ikasoa.core.thrift.server.ThriftServerConfiguration;
+import com.ikasoa.core.utils.ServerUtil;
 import com.ikasoa.rpc.IkasoaServer;
 import com.ikasoa.rpc.ImplWrapper;
 import com.ikasoa.rpc.NettyIkasoaFactory;
@@ -30,7 +31,7 @@ import junit.framework.TestCase;
  * @version 0.1
  */
 public class TestExampleService extends TestCase {
-	
+
 	private ThriftServerConfiguration thriftServerConfiguration = new ThriftServerConfiguration();
 
 	@Before
@@ -50,15 +51,15 @@ public class TestExampleService extends TestCase {
 	public void testDefaultService() {
 		Configurator configurator = new Configurator();
 		configurator.setThriftServerConfiguration(thriftServerConfiguration);
-		invoke(new DefaultIkasoaFactory(configurator), 9901);
+		invoke(new DefaultIkasoaFactory(configurator), ServerUtil.getNewPort());
 		// 测试NIO方式
 		configurator.setNonBlockingIO(true);
-		invoke(new DefaultIkasoaFactory(configurator), 9902);
+		invoke(new DefaultIkasoaFactory(configurator), ServerUtil.getNewPort());
 	}
 
 	@Test
 	public void testNettyService() {
-		invoke(new NettyIkasoaFactory(), 9903);
+		invoke(new NettyIkasoaFactory(), ServerUtil.getNewPort());
 	}
 
 	@Test
@@ -66,15 +67,15 @@ public class TestExampleService extends TestCase {
 		Configurator configurator = new Configurator();
 		configurator.setThriftServerConfiguration(thriftServerConfiguration);
 		configurator.setProtocolHandler(new KryoProtocolHandlerImpl<>());
-		invoke(new DefaultIkasoaFactory(configurator), 9904);
+		invoke(new DefaultIkasoaFactory(configurator), ServerUtil.getNewPort());
 		// 测试NIO方式
 		configurator.setNonBlockingIO(true);
-		invoke(new DefaultIkasoaFactory(configurator), 9905);
+		invoke(new DefaultIkasoaFactory(configurator), ServerUtil.getNewPort());
 	}
 
 	@Test
 	public void testNettyKryoService() throws ClassNotFoundException {
-		invoke(new NettyIkasoaFactory(new Configurator(new KryoProtocolHandlerImpl<>())), 9906);
+		invoke(new NettyIkasoaFactory(new Configurator(new KryoProtocolHandlerImpl<>())), ServerUtil.getNewPort());
 	}
 
 	@Test
@@ -82,31 +83,32 @@ public class TestExampleService extends TestCase {
 		Configurator configurator = new Configurator();
 		configurator.setThriftServerConfiguration(thriftServerConfiguration);
 		configurator.setProtocolHandler(new XmlProtocolHandlerImpl<>());
-		invoke(new DefaultIkasoaFactory(configurator), 9907);
+		invoke(new DefaultIkasoaFactory(configurator), ServerUtil.getNewPort());
 		// 测试NIO方式
 		configurator.setNonBlockingIO(true);
-		invoke(new DefaultIkasoaFactory(configurator), 9908);
+		invoke(new DefaultIkasoaFactory(configurator), ServerUtil.getNewPort());
 	}
 
 	@Test
 	public void testNettyXmlService() throws ClassNotFoundException {
-		invoke(new NettyIkasoaFactory(new Configurator(new XmlProtocolHandlerImpl<>())), 9909);
+		invoke(new NettyIkasoaFactory(new Configurator(new XmlProtocolHandlerImpl<>())), ServerUtil.getNewPort());
 	}
-	
+
 	@Test
 	public void testDefaultSerializableService() throws ClassNotFoundException {
 		Configurator configurator = new Configurator();
 		configurator.setThriftServerConfiguration(thriftServerConfiguration);
 		configurator.setProtocolHandler(new SerializableProtocolHandlerImpl<>());
-		invoke(new DefaultIkasoaFactory(configurator), 9910);
+		invoke(new DefaultIkasoaFactory(configurator), ServerUtil.getNewPort());
 		// 测试NIO方式
 		configurator.setNonBlockingIO(true);
-		invoke(new DefaultIkasoaFactory(configurator), 9911);
+		invoke(new DefaultIkasoaFactory(configurator), ServerUtil.getNewPort());
 	}
 
 	@Test
 	public void testNettySerializableService() throws ClassNotFoundException {
-		invoke(new NettyIkasoaFactory(new Configurator(new SerializableProtocolHandlerImpl<>())), 9912);
+		invoke(new NettyIkasoaFactory(new Configurator(new SerializableProtocolHandlerImpl<>())),
+				ServerUtil.getNewPort());
 	}
 
 	private void invoke(IkasoaFactory ikasoaFactory, int port) {
@@ -127,7 +129,8 @@ public class TestExampleService extends TestCase {
 				Thread.sleep(1000);
 
 			// 客户端获取远程接口实现
-			ExampleService es = ikasoaFactory.getInstance(ExampleService.class, new ServerInfoWrapper("localhost", port));
+			ExampleService es = ikasoaFactory.getInstance(ExampleService.class,
+					new ServerInfoWrapper("localhost", port));
 			// 实例化一个本地接口实现
 			ExampleService es2 = new ExampleServiceImpl();
 
@@ -152,9 +155,10 @@ public class TestExampleService extends TestCase {
 			} catch (Exception e) {
 				System.out.println(e);
 			}
-			
+
 			// 测试接口实现继承
-			ExampleChildService childEs = ikasoaFactory.getInstance(ExampleChildService.class, new ServerInfoWrapper("localhost", port));
+			ExampleChildService childEs = ikasoaFactory.getInstance(ExampleChildService.class,
+					new ServerInfoWrapper("localhost", port));
 			assertEquals(childEs.helloxx(), Boolean.TRUE);
 			assertEquals(childEs.helloxxx(), Boolean.FALSE);
 
@@ -170,12 +174,13 @@ public class TestExampleService extends TestCase {
 			// } catch (IOException e1) {
 			// e1.printStackTrace();
 			// }
-//			 System.out.println("下载耗时：" + (endTime - startTime) + "ms");
+			// System.out.println("下载耗时：" + (endTime - startTime) + "ms");
 
 			// 停止服务
 			ikasoaServer.stop();
 
 		} catch (Exception e) {
+e.printStackTrace();
 			fail();
 		}
 	}

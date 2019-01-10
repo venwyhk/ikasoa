@@ -2,7 +2,6 @@ package com.ikasoa.core.thrift.client.pool.impl;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.NoSuchElementException;
 
 import org.apache.commons.pool2.BasePooledObjectFactory;
 import org.apache.commons.pool2.ObjectPool;
@@ -69,8 +68,6 @@ public class CommonsPoolImpl implements SocketPool {
 		initPool(host, port);
 		try {
 			return poolMap.get(ServerUtil.buildCacheKey(host, port)).borrowObject();
-		} catch (NoSuchElementException e) {
-			log.error(e.getMessage());
 		} catch (IllegalStateException e) {
 			throw new RuntimeException(e);
 		} catch (Exception e) {

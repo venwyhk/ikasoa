@@ -3,11 +3,11 @@ package com.ikasoa.core.security.impl;
 import java.security.SecureRandom;
 
 import javax.crypto.Cipher;
-import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.DESKeySpec;
 
 import com.ikasoa.core.security.SymmetricKeyEncrypt;
+import com.ikasoa.core.utils.StringUtil;
 
 import lombok.NoArgsConstructor;
 
@@ -38,6 +38,8 @@ public class DESEncryptImpl implements SymmetricKeyEncrypt {
 	 */
 	@Override
 	public String encrypt(String data, String key) throws Exception {
+		if (StringUtil.orIsEmpty(data, key))
+			return null;
 		return byte2hex(encrypt(data.getBytes(), key.getBytes()));
 	}
 
@@ -54,6 +56,8 @@ public class DESEncryptImpl implements SymmetricKeyEncrypt {
 	 */
 	@Override
 	public String decrypt(String data, String key) throws Exception {
+		if (StringUtil.orIsEmpty(data, key))
+			return null;
 		return new String(decrypt(hex2byte(data.getBytes()), key.getBytes()));
 	}
 
@@ -69,12 +73,9 @@ public class DESEncryptImpl implements SymmetricKeyEncrypt {
 	 *             异常
 	 */
 	private byte[] encrypt(byte[] data, byte[] key) throws Exception {
-		SecureRandom sr = new SecureRandom();
-		DESKeySpec dks = new DESKeySpec(key);
-		SecretKeyFactory keyFactory = SecretKeyFactory.getInstance(ALGORITHM);
-		SecretKey securekey = keyFactory.generateSecret(dks);
 		Cipher cipher = Cipher.getInstance(ALGORITHM);
-		cipher.init(Cipher.ENCRYPT_MODE, securekey, sr);
+		cipher.init(Cipher.ENCRYPT_MODE, SecretKeyFactory.getInstance(ALGORITHM).generateSecret(new DESKeySpec(key)),
+				new SecureRandom());
 		return cipher.doFinal(data);
 	}
 
@@ -90,12 +91,9 @@ public class DESEncryptImpl implements SymmetricKeyEncrypt {
 	 *             异常
 	 */
 	private byte[] decrypt(byte[] data, byte[] key) throws Exception {
-		SecureRandom sr = new SecureRandom();
-		DESKeySpec dks = new DESKeySpec(key);
-		SecretKeyFactory keyFactory = SecretKeyFactory.getInstance(ALGORITHM);
-		SecretKey securekey = keyFactory.generateSecret(dks);
 		Cipher cipher = Cipher.getInstance(ALGORITHM);
-		cipher.init(Cipher.DECRYPT_MODE, securekey, sr);
+		cipher.init(Cipher.DECRYPT_MODE, SecretKeyFactory.getInstance(ALGORITHM).generateSecret(new DESKeySpec(key)),
+				new SecureRandom());
 		return cipher.doFinal(data);
 	}
 

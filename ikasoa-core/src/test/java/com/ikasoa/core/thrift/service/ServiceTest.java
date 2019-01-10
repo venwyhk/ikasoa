@@ -7,7 +7,7 @@ import org.apache.thrift.transport.TMemoryBuffer;
 import org.junit.Test;
 
 import com.ikasoa.core.IkasoaException;
-import com.ikasoa.core.TestBase;
+import com.ikasoa.core.TestConstants;
 import com.ikasoa.core.thrift.Factory;
 import com.ikasoa.core.thrift.GeneralFactory;
 import com.ikasoa.core.thrift.client.ThriftClient;
@@ -16,15 +16,18 @@ import com.ikasoa.core.thrift.server.ThriftServer;
 import com.ikasoa.core.thrift.server.ThriftServerConfiguration;
 import com.ikasoa.core.thrift.service.base.ArgsThriftBase;
 import com.ikasoa.core.thrift.service.base.ResultThriftBase;
+import com.ikasoa.core.utils.ServerUtil;
+
+import junit.framework.TestCase;
 
 /**
  * 通用服务单元测试
  */
-public class ServiceTest extends TestBase {
+public class ServiceTest extends TestCase {
 
 	@Test
 	public void testDefaultServiceImpl() {
-		int serverPort = getNewPort();
+		int serverPort = ServerUtil.getNewPort();
 		ThriftServerConfiguration thriftServerConfiguration = new ThriftServerConfiguration();
 		thriftServerConfiguration.setServerArgsAspect(new ServerArgsAspect() {
 			@Override
@@ -36,10 +39,10 @@ public class ServiceTest extends TestBase {
 		Factory factory = new GeneralFactory(thriftServerConfiguration);
 		ThriftServer thriftServer = factory.getThriftServer(serverPort, new TestService());
 		thriftServer.run();
-		ThriftClient thriftClient = factory.getThriftClient(LOCAL_HOST, serverPort);
+		ThriftClient thriftClient = factory.getThriftClient(TestConstants.LOCAL_HOST, serverPort);
 		try {
 			Thread.sleep(500);
-			assertEquals(factory.getService(thriftClient).get(TEST_STRING), TEST_STRING);
+			assertEquals(factory.getService(thriftClient).get(TestConstants.TEST_STRING), TestConstants.TEST_STRING);
 		} catch (Exception e) {
 			fail();
 		} finally {
@@ -50,12 +53,12 @@ public class ServiceTest extends TestBase {
 	@Test
 	public void testThriftBaseReadWrite() {
 		TBinaryProtocol protocol = new TBinaryProtocol(new TMemoryBuffer(16));
-		ArgsThriftBase args = new ArgsThriftBase(TEST_STRING);
+		ArgsThriftBase args = new ArgsThriftBase(TestConstants.TEST_STRING);
 		ResultThriftBase result = new ResultThriftBase();
 		try {
 			args.write(protocol);
 			result.read(protocol);
-			assertEquals(args.getStr(), result.getStr(), TEST_STRING);
+			assertEquals(args.getStr(), result.getStr(), TestConstants.TEST_STRING);
 		} catch (TException e) {
 			fail();
 		}

@@ -1,12 +1,10 @@
 package com.ikasoa.core.thrift.server;
 
 import java.util.Map;
-import java.util.Map.Entry;
+import java.util.Optional;
 
 import org.apache.thrift.TMultiplexedProcessor;
 import org.apache.thrift.TProcessor;
-
-import lombok.extern.slf4j.Slf4j;
 
 /**
  * Thrift嵌套服务处理器
@@ -19,14 +17,10 @@ import lombok.extern.slf4j.Slf4j;
  * @author <a href="mailto:larry7696@gmail.com">Larry</a>
  * @version 0.1
  */
-@Slf4j
 public class MultiplexedProcessor extends TMultiplexedProcessor {
 
 	public MultiplexedProcessor(Map<String, TProcessor> processorMap) {
-		if (processorMap == null)
-			log.warn("'processorMap' is null !");
-		for (Entry<String, TProcessor> e : processorMap.entrySet())
-			registerProcessor(e.getKey(), e.getValue());
+		Optional.ofNullable(processorMap).ifPresent(map -> map.forEach((k, v) -> registerProcessor(k, v)));
 	}
 
 }

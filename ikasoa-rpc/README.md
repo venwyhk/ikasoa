@@ -25,7 +25,7 @@ Maven
     <dependency>
         <groupId>com.ikasoa</groupId>
         <artifactId>ikasoa-rpc</artifactId>
-        <version>0.3.3-BETA</version>
+        <version>0.3.4-SNAPSHOT</version>
     </dependency>
     ......
 ```
@@ -33,7 +33,7 @@ Maven
 Gradle
 
 ```
-    compile group: 'com.ikasoa', name: 'ikasoa-rpc', version: '0.3.3-BETA'
+    compile group: 'com.ikasoa', name: 'ikasoa-rpc', version: '0.3.4-SNAPSHOT'
 ```
 
 
@@ -48,7 +48,7 @@ Maven
     <dependency>
         <groupId>com.ikasoa</groupId>
         <artifactId>ikasoa-core</artifactId>
-        <version>0.5.4</version>
+        <version>0.6-SNAPSHOT</version>
     </dependency>
     ......
 ```
@@ -56,7 +56,7 @@ Maven
 Gradle
 
 ```
-    compile group: 'com.ikasoa', name: 'ikasoa-core', version: '0.5.4'
+    compile group: 'com.ikasoa', name: 'ikasoa-core', version: '0.6-SNAPSHOT'
 ```
 
 ## HelloWorld ##
@@ -668,8 +668,6 @@ web.xml
 - 使用fastjson作为序列化方式时,传递的Bean对象必须要有默认构造方法(建议使用类似lombok这样的工具来处理Bean对象).
 
 - 使用kryo作为序列化方式时,暂不支持自定义异常对象,如果抛出自定义异常对象,异常类型不能正确识别.
-
-- 部分单元测试需要启动Socket,执行单元测试时请确保相关端口可用.
 
 ## License ##
 

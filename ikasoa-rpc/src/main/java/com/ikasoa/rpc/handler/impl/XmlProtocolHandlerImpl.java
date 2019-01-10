@@ -42,7 +42,7 @@ public class XmlProtocolHandlerImpl<T, R> implements ProtocolHandler<T, R> {
 	@Override
 	public String resultToStr(R result) {
 		return result instanceof Throwable ? new StringBuilder(String.valueOf(E)).append(formatXML(result)).toString()
-				: Optional.ofNullable(result).map(r -> formatXML(r)).orElse(String.valueOf(V));
+				: Optional.ofNullable(result).map(this::formatXML).orElse(String.valueOf(V));
 	}
 
 	@Override
