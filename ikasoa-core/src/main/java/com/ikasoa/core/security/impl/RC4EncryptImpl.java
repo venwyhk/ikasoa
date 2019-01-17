@@ -107,7 +107,7 @@ public class RC4EncryptImpl implements SymmetricKeyEncrypt {
 			String s4 = Integer.toHexString(ch & 0xFF);
 			if (s4.length() == 1)
 				s4 = "0" + s4;
-			str = str + s4;
+			str += s4;
 		}
 		return str; // 0x表示十六进制
 	}
