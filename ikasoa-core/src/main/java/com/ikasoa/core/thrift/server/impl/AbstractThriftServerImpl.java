@@ -5,9 +5,12 @@ import java.util.concurrent.Executors;
 
 import org.apache.thrift.TProcessor;
 import org.apache.thrift.server.TServer;
+import org.apache.thrift.transport.TSSLTransportFactory;
 import org.apache.thrift.transport.TServerSocket;
 import org.apache.thrift.transport.TServerTransport;
 import org.apache.thrift.transport.TTransportException;
+import org.apache.thrift.transport.TSSLTransportFactory.TSSLTransportParameters;
+
 import com.ikasoa.core.IkasoaException;
 import com.ikasoa.core.thrift.server.ThriftServer;
 import com.ikasoa.core.thrift.server.ThriftServerConfiguration;
@@ -66,8 +69,11 @@ public abstract class AbstractThriftServerImpl implements ThriftServer {
 	 */
 	@Override
 	public TServerTransport getTransport() throws TTransportException {
-		if (serverSocket == null)
-			serverSocket = new TServerSocket(getServerPort());
+		if (serverSocket == null) {
+			TSSLTransportParameters params = getServerConfiguration().getSslTransportParameters();
+			serverSocket = params == null ? new TServerSocket(getServerPort())
+					: TSSLTransportFactory.getServerSocket(getServerPort(), 0, null, params);
+		}
 		return serverSocket;
 	}
 

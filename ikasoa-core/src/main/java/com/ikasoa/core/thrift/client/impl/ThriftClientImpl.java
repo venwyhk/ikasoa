@@ -6,16 +6,16 @@ import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * 默认Thrift客户端实现
+ * Thrift客户端实现
  * 
  * @author <a href="mailto:larry7696@gmail.com">Larry</a>
  * @version 0.1
  */
 @NoArgsConstructor
 @Slf4j
-public class DefaultThriftClientImpl extends AbstractThriftClientImpl {
+public class ThriftClientImpl extends AbstractThriftClientImpl {
 
-	public DefaultThriftClientImpl(String serverHost, int serverPort, ThriftClientConfiguration configuration) {
+	public ThriftClientImpl(String serverHost, int serverPort, ThriftClientConfiguration configuration) {
 		setServerHost(serverHost);
 		setServerPort(serverPort);
 		if (configuration == null) {

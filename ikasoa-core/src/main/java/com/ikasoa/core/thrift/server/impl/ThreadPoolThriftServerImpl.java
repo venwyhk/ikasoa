@@ -2,21 +2,25 @@ package com.ikasoa.core.thrift.server.impl;
 
 import org.apache.thrift.TProcessor;
 import org.apache.thrift.server.TThreadPoolServer;
+import org.apache.thrift.transport.TSSLTransportFactory;
 import org.apache.thrift.transport.TServerTransport;
+import org.apache.thrift.transport.TTransportException;
+import org.apache.thrift.transport.TSSLTransportFactory.TSSLTransportParameters;
+
 import com.ikasoa.core.thrift.server.ThriftServerConfiguration;
 
 import lombok.NoArgsConstructor;
 
 /**
- * 默认Thrift服务器实现
+ * ThreadPool服务器实现
  * 
  * @author <a href="mailto:larry7696@gmail.com">Larry</a>
  * @version 0.1
  */
 @NoArgsConstructor
-public class DefaultThriftServerImpl extends AbstractThriftServerImpl {
+public class ThreadPoolThriftServerImpl extends AbstractThriftServerImpl {
 
-	public DefaultThriftServerImpl(String serverName, int serverPort, ThriftServerConfiguration configuration,
+	public ThreadPoolThriftServerImpl(String serverName, int serverPort, ThriftServerConfiguration configuration,
 			TProcessor processor) {
 		setServerName(serverName);
 		setServerPort(serverPort);
@@ -36,7 +40,7 @@ public class DefaultThriftServerImpl extends AbstractThriftServerImpl {
 	 */
 	protected void initServer(TServerTransport serverTransport) {
 		ThriftServerConfiguration configuration = getServerConfiguration();
-		// 默认使用TThreadPoolServer方式启动Thrift服务器,对每个连接都会单独建立一个线程.
+		// 使用TThreadPoolServer方式启动Thrift服务器,对每个连接都会单独建立一个线程.
 		TThreadPoolServer.Args args = new TThreadPoolServer.Args(serverTransport)
 				.transportFactory(configuration.getTransportFactory())
 				.protocolFactory(configuration.getProtocolFactory());

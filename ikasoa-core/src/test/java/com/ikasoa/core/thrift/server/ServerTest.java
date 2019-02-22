@@ -22,9 +22,9 @@ import com.ikasoa.core.thrift.client.ThriftClientConfiguration;
 import com.ikasoa.core.thrift.client.TupleThriftClientConfiguration;
 import com.ikasoa.core.thrift.protocol.DESCompactProtocolFactory;
 import com.ikasoa.core.thrift.protocol.RC4CompactProtocolFactory;
-import com.ikasoa.core.thrift.server.impl.DefaultThriftServerImpl;
 import com.ikasoa.core.thrift.server.impl.ServletThriftServerImpl;
 import com.ikasoa.core.thrift.server.impl.SimpleThriftServerImpl;
+import com.ikasoa.core.thrift.server.impl.ThreadPoolThriftServerImpl;
 import com.ikasoa.core.utils.ServerUtil;
 import com.ikasoa.core.thrift.server.ThriftSimpleService;
 import com.ikasoa.core.thrift.server.ThriftSimpleService.Iface;
@@ -147,7 +147,7 @@ public class ServerTest extends TestCase {
 		Map<String, TProcessor> processorMap = new HashMap<>();
 		processorMap.put("testServer", new ThriftSimpleService.Processor<Iface>(new ThriftSimpleServiceImpl()));
 		MultiplexedProcessor processor = new MultiplexedProcessor(processorMap);
-		ThriftServer defaultThriftServer = new DefaultThriftServerImpl(serverName, serverPort, configuration,
+		ThriftServer defaultThriftServer = new ThreadPoolThriftServerImpl(serverName, serverPort, configuration,
 				processor);
 		assertEquals(defaultThriftServer.getServerName(), serverName);
 		assertEquals(defaultThriftServer.getServerPort(), serverPort);

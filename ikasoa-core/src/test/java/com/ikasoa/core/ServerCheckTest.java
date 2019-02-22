@@ -8,8 +8,8 @@ import com.ikasoa.core.loadbalance.ServerInfo;
 import com.ikasoa.core.loadbalance.impl.PollingLoadBalanceImpl;
 import com.ikasoa.core.thrift.client.ThriftClient;
 import com.ikasoa.core.thrift.client.ThriftClientConfiguration;
-import com.ikasoa.core.thrift.client.impl.DefaultThriftClientImpl;
 import com.ikasoa.core.thrift.client.impl.LoadBalanceThriftClientImpl;
+import com.ikasoa.core.thrift.client.impl.ThriftClientImpl;
 import com.ikasoa.core.utils.ServerUtil;
 import com.ikasoa.core.utils.StringUtil;
 
@@ -27,20 +27,17 @@ public class ServerCheckTest extends TestCase {
 	@Test
 	public void testCheck() {
 		configuration.setServerCheck(new ServerCheckTestImpl());
-		try (ThriftClient defaultThriftClient1 = new DefaultThriftClientImpl("192.168.1.1", serverPort,
-				configuration)) {
+		try (ThriftClient defaultThriftClient1 = new ThriftClientImpl("192.168.1.1", serverPort, configuration)) {
 			assertNull(defaultThriftClient1.getTransport());
 		} catch (Exception e) {
 			assertFalse(StringUtil.equals("", e.getMessage()));
 		}
-		try (ThriftClient defaultThriftClient2 = new DefaultThriftClientImpl("192.168.1.2", serverPort,
-				configuration)) {
+		try (ThriftClient defaultThriftClient2 = new ThriftClientImpl("192.168.1.2", serverPort, configuration)) {
 			assertNotNull(defaultThriftClient2.getTransport());
 		} catch (Exception e) {
 			fail();
 		}
-		try (ThriftClient defaultThriftClient3 = new DefaultThriftClientImpl("192.168.1.3", serverPort,
-				configuration)) {
+		try (ThriftClient defaultThriftClient3 = new ThriftClientImpl("192.168.1.3", serverPort, configuration)) {
 			assertNull(defaultThriftClient3.getTransport());
 		} catch (Exception e) {
 			assertTrue(!StringUtil.equals("", e.getMessage()));
@@ -67,7 +64,7 @@ public class ServerCheckTest extends TestCase {
 	public void testCheckFailProcess() {
 		configuration.setServerCheck(new ServerCheckTestImpl());
 		configuration.setServerCheckFailProcessor(new ServerCheckFailProcessTestImpl());
-		try (ThriftClient defaultThriftClient = new DefaultThriftClientImpl("192.168.1.1", serverPort, configuration)) {
+		try (ThriftClient defaultThriftClient = new ThriftClientImpl("192.168.1.1", serverPort, configuration)) {
 			defaultThriftClient.getTransport();
 		} catch (Exception e) {
 			assertTrue(StringUtil.equals("exce", e.getMessage()));
