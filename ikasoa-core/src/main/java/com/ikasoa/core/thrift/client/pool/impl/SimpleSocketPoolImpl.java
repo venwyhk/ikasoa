@@ -66,7 +66,7 @@ public class SimpleSocketPoolImpl implements SocketPool {
 	 * 创建连接池
 	 * 
 	 * @param parameters
-	 *            客户端Socket参数对象
+	 *            Socket连接池参数对象
 	 */
 	public synchronized void buildThriftSocketPool(ClientSocketPoolParameters parameters) {
 		if (!ServerUtil.checkHostAndPort(parameters.getHost(), parameters.getPort()))
@@ -88,7 +88,7 @@ public class SimpleSocketPoolImpl implements SocketPool {
 	 * 从连接池中获取一个空闲的ThriftSocket连接
 	 * 
 	 * @param parameters
-	 *            客户端Socket参数对象
+	 *            Socket连接池参数对象
 	 * @throws IkasoaException
 	 */
 	@Override

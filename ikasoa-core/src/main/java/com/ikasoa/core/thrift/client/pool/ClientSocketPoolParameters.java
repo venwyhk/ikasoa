@@ -11,6 +11,12 @@ import com.ikasoa.core.utils.ServerUtil;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
+/**
+ * Socket连接池参数对象
+ * 
+ * @author <a href="mailto:larry7696@gmail.com">Larry</a>
+ * @version 0.6
+ */
 @AllArgsConstructor
 @Data
 public class ClientSocketPoolParameters {
@@ -25,7 +31,7 @@ public class ClientSocketPoolParameters {
 
 	public ThriftSocket buildClientThriftSocket() throws IkasoaException {
 		if (!ServerUtil.checkHostAndPort(host, port))
-			throw new IkasoaException("The host or port error !");
+			throw new IllegalArgumentException("The 'host' or 'port' error !");
 		try {
 			return sslTransportParameters == null ? new ThriftSocket(host, port, time)
 					: (ThriftSocket) TSSLTransportFactory.getClientSocket(host, port, time, sslTransportParameters);

@@ -20,7 +20,7 @@ public interface SocketPool {
 	 * 从连接池中获取一个空闲的ThriftSocket连接
 	 * 
 	 * @param parameters
-	 *            客户端Socket参数对象
+	 *            Socket连接池参数对象
 	 * @return ThriftSocket ThriftSocket连接对象
 	 * @throws IkasoaException
 	 */
