@@ -100,6 +100,8 @@ public class CommonsPoolImpl implements SocketPool {
 
 		@Override
 		public ThriftSocket create() throws Exception {
+			if (parameters == null)
+				throw new IkasoaException("'ClientSocketPoolParameters' is null !");
 			return parameters.buildClientThriftSocket();
 		}
 

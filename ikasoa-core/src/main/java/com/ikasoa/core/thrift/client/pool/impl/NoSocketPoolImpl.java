@@ -19,7 +19,7 @@ public class NoSocketPoolImpl implements SocketPool {
 
 	@Override
 	public ThriftSocket buildThriftSocket(ClientSocketPoolParameters parameters) {
-		return new ThriftSocket(parameters.getHost(), parameters.getPort(), parameters.getTime());
+		return new ThriftSocket(parameters.getHost(), parameters.getPort(), parameters.getTimeout());
 	}
 
 	@Override

@@ -25,7 +25,7 @@ public class ClientSocketPoolParameters {
 
 	private final int port;
 
-	private final int time;
+	private final int timeout;
 
 	private final TSSLTransportParameters sslTransportParameters;
 
@@ -33,8 +33,8 @@ public class ClientSocketPoolParameters {
 		if (!ServerUtil.checkHostAndPort(host, port))
 			throw new IllegalArgumentException("The 'host' or 'port' error !");
 		try {
-			return sslTransportParameters == null ? new ThriftSocket(host, port, time)
-					: (ThriftSocket) TSSLTransportFactory.getClientSocket(host, port, time, sslTransportParameters);
+			return sslTransportParameters == null ? new ThriftSocket(host, port, timeout)
+					: (ThriftSocket) TSSLTransportFactory.getClientSocket(host, port, timeout, sslTransportParameters);
 		} catch (TTransportException e) {
 			throw new IkasoaException(e);
 		}

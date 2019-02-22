@@ -7,6 +7,9 @@ import org.apache.thrift.ProcessFunction;
 import org.apache.thrift.TBase;
 import org.apache.thrift.TBaseProcessor;
 import org.apache.thrift.TException;
+import org.apache.thrift.protocol.TProtocol;
+import org.apache.thrift.transport.TTransportException;
+
 import com.ikasoa.core.IkasoaException;
 import com.ikasoa.core.thrift.service.base.ArgsThriftBase;
 import com.ikasoa.core.thrift.service.base.ResultThriftBase;
@@ -32,6 +35,15 @@ public class ServiceProcessor extends TBaseProcessor<Service> implements Process
 			Map<String, ProcessFunction<Service, ? extends TBase>> processMap) {
 		processMap.put(FUNCTION_NAME, new GetProcessFunction());
 		return processMap;
+	}
+
+	@Override
+	public boolean process(TProtocol in, TProtocol out) throws TException {
+		try {
+			return super.process(in, out);
+		} catch (TTransportException e) {
+			return Boolean.FALSE; // 如果连接终端就停止服务但不抛出异常
+		}
 	}
 
 	@Slf4j
