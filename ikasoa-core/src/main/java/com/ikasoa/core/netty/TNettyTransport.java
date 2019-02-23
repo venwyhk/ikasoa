@@ -18,7 +18,7 @@ import lombok.Setter;
  */
 public class TNettyTransport extends TTransport {
 
-	private static final int DEFAULT_OUTPUT_BUFFER_SIZE = 1024;
+	private static final int DEFAULT_OUTPUT_BUFFER_SIZE = 0x400;
 
 	private final Channel channel;
 

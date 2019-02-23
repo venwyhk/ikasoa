@@ -33,7 +33,7 @@ public class MultiplexedProcessor extends TMultiplexedProcessor implements Proce
 		try {
 			return super.process(in, out);
 		} catch (TTransportException e) {
-			return Boolean.FALSE; // 如果连接终端就停止服务但不抛出异常
+			return Boolean.FALSE; // 如果连接中断就停止服务但不抛出异常
 		}
 	}
 

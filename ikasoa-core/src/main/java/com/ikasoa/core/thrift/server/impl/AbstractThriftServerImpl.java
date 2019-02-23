@@ -155,7 +155,7 @@ public abstract class AbstractThriftServerImpl implements ThriftServer {
 	@Override
 	public ThriftServerConfiguration getServerConfiguration() {
 		if (configuration == null)
-			throw new RuntimeException("'configuration' is null !");
+			throw new IllegalArgumentException("'configuration' is null !");
 		return configuration;
 	}
 

@@ -29,13 +29,12 @@ public class ClientTest extends TestCase {
 	 * 客户端测试
 	 */
 	@Test
-	public void testDefaultThriftClientImpl() {
+	public void testThriftClientImpl() {
 		int serverPort = ServerUtil.getNewPort();
-		try (ThriftClient defaultThriftClient = new ThriftClientImpl(TestConstants.LOCAL_HOST, serverPort,
-				configuration)) {
-			assertEquals(defaultThriftClient.getServerHost(), TestConstants.LOCAL_HOST);
-			assertEquals(defaultThriftClient.getServerPort(), serverPort);
-			assertEquals(defaultThriftClient.getThriftClientConfiguration(), configuration);
+		try (ThriftClient thriftClient = new ThriftClientImpl(TestConstants.LOCAL_HOST, serverPort, configuration)) {
+			assertEquals(thriftClient.getServerHost(), TestConstants.LOCAL_HOST);
+			assertEquals(thriftClient.getServerPort(), serverPort);
+			assertEquals(thriftClient.getThriftClientConfiguration(), configuration);
 		} catch (Exception e) {
 			fail();
 		}
