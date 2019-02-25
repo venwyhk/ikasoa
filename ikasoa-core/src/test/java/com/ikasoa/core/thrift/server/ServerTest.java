@@ -281,8 +281,8 @@ public class ServerTest extends ServerTestCase {
 	@Test
 	public void testSSLThriftServer() {
 		int serverPort = ServerUtil.getNewPort();
-		String keystoreStr = getSslUrlFileString("/.keystore");
-		String truststoreStr = getSslUrlFileString("/.truststore");
+		String keystoreStr = getSslUrlFileString("/ssl/.keystore");
+		String truststoreStr = getSslUrlFileString("/ssl/.truststore");
 		if (StringUtil.orIsEmpty(keystoreStr, truststoreStr))
 			// 如果没有密钥就跳过测试
 			return;
