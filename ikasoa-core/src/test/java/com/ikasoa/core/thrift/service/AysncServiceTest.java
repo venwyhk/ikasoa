@@ -24,8 +24,6 @@ import com.ikasoa.core.thrift.server.ThriftServer;
 import com.ikasoa.core.thrift.server.ThriftServerConfiguration;
 import com.ikasoa.core.utils.ServerUtil;
 
-import junit.framework.TestCase;
-
 /**
  * 异步服务单元测试
  */

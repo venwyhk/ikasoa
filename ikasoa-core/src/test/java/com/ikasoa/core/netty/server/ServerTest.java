@@ -13,8 +13,6 @@ import com.ikasoa.core.thrift.server.ThriftSimpleServiceImpl;
 import com.ikasoa.core.thrift.server.ThriftSimpleService.Iface;
 import com.ikasoa.core.utils.ServerUtil;
 
-import junit.framework.TestCase;
-
 /**
  * Netty服务端单元测试
  */

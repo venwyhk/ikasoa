@@ -1,9 +1,7 @@
 package com.ikasoa.core.thrift.server;
 
-import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
 import org.apache.thrift.TException;
 import org.apache.thrift.TProcessor;

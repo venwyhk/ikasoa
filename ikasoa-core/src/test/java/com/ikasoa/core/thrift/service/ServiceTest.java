@@ -19,8 +19,6 @@ import com.ikasoa.core.thrift.service.base.ArgsThriftBase;
 import com.ikasoa.core.thrift.service.base.ResultThriftBase;
 import com.ikasoa.core.utils.ServerUtil;
 
-import junit.framework.TestCase;
-
 /**
  * 通用服务单元测试
  */
