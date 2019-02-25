@@ -4,7 +4,7 @@ import org.apache.thrift.TProcessor;
 import org.jboss.netty.channel.group.DefaultChannelGroup;
 
 import com.ikasoa.core.netty.server.NettyServerConfiguration;
-import com.ikasoa.core.netty.server.impl.DefaultNettyServerImpl;
+import com.ikasoa.core.netty.server.impl.NettyServerImpl;
 import com.ikasoa.core.thrift.GeneralFactory;
 import com.ikasoa.core.thrift.client.ThriftClientConfiguration;
 import com.ikasoa.core.thrift.server.ThriftServer;
@@ -43,7 +43,7 @@ public class NettyGeneralFactory extends GeneralFactory {
 
 	@Override
 	public ThriftServer getThriftServer(String serverName, int serverPort, TProcessor processor) {
-		return new DefaultNettyServerImpl(serverName, serverPort, nettyServerConfiguration, processor,
+		return new NettyServerImpl(serverName, serverPort, nettyServerConfiguration, processor,
 				defaultChannelGroup);
 	}
 

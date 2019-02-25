@@ -34,7 +34,8 @@ public class ClientSocketPoolParameters {
 			throw new IllegalArgumentException("Server host or port is null !");
 		try {
 			return sslTransportParameters == null ? new ThriftSocket(host, port, timeout)
-					: (ThriftSocket) TSSLTransportFactory.getClientSocket(host, port, timeout, sslTransportParameters);
+					: new ThriftSocket(TSSLTransportFactory.getClientSocket(host, port, timeout, sslTransportParameters)
+							.getSocket());
 		} catch (TTransportException e) {
 			throw new IkasoaException(e);
 		}

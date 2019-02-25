@@ -2,10 +2,7 @@ package com.ikasoa.core.thrift.server.impl;
 
 import org.apache.thrift.TProcessor;
 import org.apache.thrift.server.TThreadPoolServer;
-import org.apache.thrift.transport.TSSLTransportFactory;
 import org.apache.thrift.transport.TServerTransport;
-import org.apache.thrift.transport.TTransportException;
-import org.apache.thrift.transport.TSSLTransportFactory.TSSLTransportParameters;
 
 import com.ikasoa.core.thrift.server.ThriftServerConfiguration;
 

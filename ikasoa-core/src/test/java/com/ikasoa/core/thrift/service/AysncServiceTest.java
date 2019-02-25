@@ -14,6 +14,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.ikasoa.core.IkasoaException;
+import com.ikasoa.core.ServerTestCase;
 import com.ikasoa.core.TestConstants;
 import com.ikasoa.core.thrift.Factory;
 import com.ikasoa.core.thrift.GeneralFactory;
@@ -28,7 +29,7 @@ import junit.framework.TestCase;
 /**
  * 异步服务单元测试
  */
-public class AysncServiceTest extends TestCase {
+public class AysncServiceTest extends ServerTestCase {
 
 	private String testString1 = TestConstants.TEST_STRING;
 
@@ -56,12 +57,12 @@ public class AysncServiceTest extends TestCase {
 		Factory factory = new GeneralFactory(thriftServerConfiguration);
 		ThriftServer thriftServer = factory.getThriftServer(serverPort, new TestThriftServiceImpl1());
 		thriftServer.run();
+		waiting();
 		try {
 			AsyncService service = factory
 					.getAsyncService(new TNonblockingSocket(TestConstants.LOCAL_HOST, serverPort));
-			Thread.sleep(500);
 			service.get(testString1, new TestCallback1());
-			Thread.sleep(1000);
+			waiting();
 		} catch (Exception e) {
 			fail();
 		} finally {
@@ -80,15 +81,15 @@ public class AysncServiceTest extends TestCase {
 		Factory factory = new GeneralFactory(thriftServerConfiguration);
 		ThriftServer thriftServer = factory.getThriftServer("testAysncMultiplexedService", serverPort, p);
 		thriftServer.run();
+		waiting();
 		try {
-			Thread.sleep(500);
 			AsyncService service1 = factory
 					.getAsyncService(new TNonblockingSocket(TestConstants.LOCAL_HOST, serverPort), "testAysncService1");
 			service1.get(testString1, new TestCallback1());
 			AsyncService service2 = factory
 					.getAsyncService(new TNonblockingSocket(TestConstants.LOCAL_HOST, serverPort), "testAysncService2");
 			service2.get(testString2, new TestCallback2());
-			Thread.sleep(1000);
+			waiting();
 		} catch (Exception e) {
 			fail();
 		} finally {
