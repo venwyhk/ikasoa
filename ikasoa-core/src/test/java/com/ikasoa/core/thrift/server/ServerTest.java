@@ -27,6 +27,7 @@ import com.ikasoa.core.thrift.client.CompactThriftClientConfiguration;
 import com.ikasoa.core.thrift.client.ThriftClient;
 import com.ikasoa.core.thrift.client.ThriftClientConfiguration;
 import com.ikasoa.core.thrift.client.TupleThriftClientConfiguration;
+import com.ikasoa.core.thrift.client.pool.impl.NoSocketPoolImpl;
 import com.ikasoa.core.thrift.protocol.DESCompactProtocolFactory;
 import com.ikasoa.core.thrift.protocol.RC4CompactProtocolFactory;
 import com.ikasoa.core.thrift.server.impl.ServletThriftServerImpl;
@@ -295,6 +296,8 @@ public class ServerTest extends ServerTestCase {
 		TSSLTransportParameters sslClientTransportParameters = new TSSLTransportParameters();
 		sslClientTransportParameters.setTrustStore(truststoreStr, TestConstants.SSL_KEY_PASS, "SunX509", "JKS");
 		clientConfiguration.setSslTransportParameters(sslClientTransportParameters);
+		// 因为创建和回收连接会增加测试执行时间,所以这里不使用Socket连接池
+		clientConfiguration.setSocketPool(new NoSocketPoolImpl());
 
 		Factory factory = new GeneralFactory(serverConfiguration, clientConfiguration);
 		ThriftServer thriftServer = factory.getThriftServer(serverName, serverPort, processor);
@@ -302,7 +305,7 @@ public class ServerTest extends ServerTestCase {
 		waiting();
 		try (ThriftClient thriftClient = factory.getThriftClient(TestConstants.LOCAL_HOST, serverPort);
 				TTransport transport = thriftClient.getTransport()) {
-			// SSL方式不用open
+			// SSL方式不需要transport.open()
 			assertEquals(TestConstants.TEST_STRING,
 					new ThriftSimpleService.Client(thriftClient.getProtocol(transport)).get(TestConstants.TEST_STRING));
 		} catch (Exception e) {

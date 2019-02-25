@@ -1,5 +1,6 @@
 package com.ikasoa.core.thrift.client.pool.impl;
 
+import com.ikasoa.core.IkasoaException;
 import com.ikasoa.core.thrift.client.pool.ClientSocketPoolParameters;
 import com.ikasoa.core.thrift.client.pool.SocketPool;
 import com.ikasoa.core.thrift.client.socket.ThriftSocket;
@@ -18,8 +19,8 @@ import lombok.NoArgsConstructor;
 public class NoSocketPoolImpl implements SocketPool {
 
 	@Override
-	public ThriftSocket buildThriftSocket(ClientSocketPoolParameters parameters) {
-		return new ThriftSocket(parameters.getHost(), parameters.getPort(), parameters.getTimeout());
+	public ThriftSocket buildThriftSocket(ClientSocketPoolParameters parameters) throws IkasoaException {
+		return parameters.buildClientThriftSocket();
 	}
 
 	@Override
