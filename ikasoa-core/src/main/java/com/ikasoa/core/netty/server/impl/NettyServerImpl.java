@@ -43,7 +43,7 @@ import java.util.concurrent.Executors;
  * @version 0.6
  */
 @Slf4j
-public class DefaultNettyServerImpl implements NettyServer {
+public class NettyServerImpl implements NettyServer {
 
 	private ExecutorService bossExecutorService = Executors.newSingleThreadExecutor();
 
@@ -78,12 +78,12 @@ public class DefaultNettyServerImpl implements NettyServer {
 
 	protected Channel serverChannel;
 
-	public DefaultNettyServerImpl(String serverName, int serverPort, NettyServerConfiguration configuration,
+	public NettyServerImpl(String serverName, int serverPort, NettyServerConfiguration configuration,
 			TProcessor processor) {
 		this(serverName, serverPort, configuration, processor, new DefaultChannelGroup());
 	}
 
-	public DefaultNettyServerImpl(String serverName, int serverPort, NettyServerConfiguration configuration,
+	public NettyServerImpl(String serverName, int serverPort, NettyServerConfiguration configuration,
 			TProcessor processor, final ChannelGroup allChannels) {
 		setServerName(serverName);
 		requestedPort = serverPort;

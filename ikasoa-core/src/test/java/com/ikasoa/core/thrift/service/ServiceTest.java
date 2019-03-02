@@ -7,6 +7,7 @@ import org.apache.thrift.transport.TMemoryBuffer;
 import org.junit.Test;
 
 import com.ikasoa.core.IkasoaException;
+import com.ikasoa.core.ServerTestCase;
 import com.ikasoa.core.TestConstants;
 import com.ikasoa.core.thrift.Factory;
 import com.ikasoa.core.thrift.GeneralFactory;
@@ -18,15 +19,13 @@ import com.ikasoa.core.thrift.service.base.ArgsThriftBase;
 import com.ikasoa.core.thrift.service.base.ResultThriftBase;
 import com.ikasoa.core.utils.ServerUtil;
 
-import junit.framework.TestCase;
-
 /**
  * 通用服务单元测试
  */
-public class ServiceTest extends TestCase {
+public class ServiceTest extends ServerTestCase {
 
 	@Test
-	public void testDefaultServiceImpl() {
+	public void testServiceImpl() {
 		int serverPort = ServerUtil.getNewPort();
 		ThriftServerConfiguration thriftServerConfiguration = new ThriftServerConfiguration();
 		thriftServerConfiguration.setServerArgsAspect(new ServerArgsAspect() {
@@ -39,9 +38,8 @@ public class ServiceTest extends TestCase {
 		Factory factory = new GeneralFactory(thriftServerConfiguration);
 		ThriftServer thriftServer = factory.getThriftServer(serverPort, new TestService());
 		thriftServer.run();
-		ThriftClient thriftClient = factory.getThriftClient(TestConstants.LOCAL_HOST, serverPort);
-		try {
-			Thread.sleep(500);
+		waiting();
+		try (ThriftClient thriftClient = factory.getThriftClient(TestConstants.LOCAL_HOST, serverPort)) {
 			assertEquals(factory.getService(thriftClient).get(TestConstants.TEST_STRING), TestConstants.TEST_STRING);
 		} catch (Exception e) {
 			fail();

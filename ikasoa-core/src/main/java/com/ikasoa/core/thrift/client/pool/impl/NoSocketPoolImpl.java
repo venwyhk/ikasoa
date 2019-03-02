@@ -1,9 +1,10 @@
 package com.ikasoa.core.thrift.client.pool.impl;
 
+import com.ikasoa.core.IkasoaException;
+import com.ikasoa.core.thrift.client.pool.ClientSocketPoolParameters;
 import com.ikasoa.core.thrift.client.pool.SocketPool;
 import com.ikasoa.core.thrift.client.socket.ThriftSocket;
 
-import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
 /**
@@ -14,18 +15,12 @@ import lombok.NoArgsConstructor;
  * @author <a href="mailto:larry7696@gmail.com">Larry</a>
  * @version 0.4.4
  */
-@AllArgsConstructor
 @NoArgsConstructor
 public class NoSocketPoolImpl implements SocketPool {
 
-	/**
-	 * 连接超时时间
-	 */
-	private int time = defaultTime;
-
 	@Override
-	public ThriftSocket buildThriftSocket(String host, int port) {
-		return new ThriftSocket(host, port, time);
+	public ThriftSocket buildThriftSocket(ClientSocketPoolParameters parameters) throws IkasoaException {
+		return parameters.buildClientThriftSocket();
 	}
 
 	@Override

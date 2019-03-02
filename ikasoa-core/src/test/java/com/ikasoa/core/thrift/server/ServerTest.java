@@ -3,16 +3,21 @@ package com.ikasoa.core.thrift.server;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.thrift.TException;
 import org.apache.thrift.TProcessor;
 import org.apache.thrift.TProcessorFactory;
 import org.apache.thrift.async.AsyncMethodCallback;
 import org.apache.thrift.async.TAsyncClientManager;
 import org.apache.thrift.protocol.TCompactProtocol;
+import org.apache.thrift.protocol.TProtocol;
 import org.apache.thrift.server.TThreadPoolServer;
 import org.apache.thrift.transport.TNonblockingSocket;
 import org.apache.thrift.transport.TTransport;
+import org.apache.thrift.transport.TTransportException;
+import org.apache.thrift.transport.TSSLTransportFactory.TSSLTransportParameters;
 import org.junit.Test;
 
+import com.ikasoa.core.ServerTestCase;
 import com.ikasoa.core.TestConstants;
 import com.ikasoa.core.thrift.Factory;
 import com.ikasoa.core.thrift.GeneralFactory;
@@ -20,14 +25,17 @@ import com.ikasoa.core.thrift.client.CompactThriftClientConfiguration;
 import com.ikasoa.core.thrift.client.ThriftClient;
 import com.ikasoa.core.thrift.client.ThriftClientConfiguration;
 import com.ikasoa.core.thrift.client.TupleThriftClientConfiguration;
+import com.ikasoa.core.thrift.client.pool.impl.NoSocketPoolImpl;
 import com.ikasoa.core.thrift.protocol.DESCompactProtocolFactory;
 import com.ikasoa.core.thrift.protocol.RC4CompactProtocolFactory;
-import com.ikasoa.core.thrift.server.impl.DefaultThriftServerImpl;
 import com.ikasoa.core.thrift.server.impl.ServletThriftServerImpl;
 import com.ikasoa.core.thrift.server.impl.SimpleThriftServerImpl;
+import com.ikasoa.core.thrift.server.impl.ThreadPoolThriftServerImpl;
 import com.ikasoa.core.utils.ServerUtil;
+import com.ikasoa.core.utils.StringUtil;
 import com.ikasoa.core.thrift.server.ThriftSimpleService;
 import com.ikasoa.core.thrift.server.ThriftSimpleService.Iface;
+import com.ikasoa.core.thrift.server.ThriftSimpleService.Processor;
 
 import junit.framework.TestCase;
 import lombok.SneakyThrows;
@@ -35,7 +43,7 @@ import lombok.SneakyThrows;
 /**
  * Thrift服务端单元测试
  */
-public class ServerTest extends TestCase {
+public class ServerTest extends ServerTestCase {
 
 	private static String serverName = "TestThriftServer";
 
@@ -43,40 +51,49 @@ public class ServerTest extends TestCase {
 
 	private static Factory factory = new GeneralFactory(configuration);
 
+	private Processor<Iface> processor = new ThriftSimpleService.Processor<Iface>(new ThriftSimpleServiceImpl()) {
+		@Override
+		public boolean process(TProtocol in, TProtocol out) throws TException {
+			try {
+				return super.process(in, out);
+			} catch (TTransportException e) {
+				return Boolean.FALSE;
+			}
+		}
+	};
+
 	@Test
-	public void testDefaultThriftServerImpl() {
+	public void testThriftServerImpl() {
 		int serverPort = ServerUtil.getNewPort();
-		ThriftServer defaultThriftServer = factory.getThriftServer(serverName, serverPort,
-				new ThriftSimpleService.Processor<Iface>(new ThriftSimpleServiceImpl()));
-		assertEquals(defaultThriftServer.getServerName(), serverName);
-		assertEquals(defaultThriftServer.getServerPort(), serverPort);
-		assertEquals(defaultThriftServer.getServerConfiguration(), configuration);
-		defaultThriftServer.run();
+		ThriftServer thriftServer = factory.getThriftServer(serverName, serverPort, processor);
+		assertEquals(thriftServer.getServerName(), serverName);
+		assertEquals(thriftServer.getServerPort(), serverPort);
+		assertEquals(thriftServer.getServerConfiguration(), configuration);
+		thriftServer.run();
+		waiting();
 		try (ThriftClient thriftClient = factory.getThriftClient(TestConstants.LOCAL_HOST, serverPort);
 				TTransport transport = thriftClient.getTransport()) {
-			Thread.sleep(500);
 			transport.open();
 			assertEquals(TestConstants.TEST_STRING,
 					new ThriftSimpleService.Client(thriftClient.getProtocol(transport)).get(TestConstants.TEST_STRING));
 		} catch (Exception e) {
 			fail();
 		} finally {
-			defaultThriftServer.stop();
+			thriftServer.stop();
 		}
 	}
 
 	@Test
 	public void testNonblockingThriftServerImpl() {
 		int serverPort = ServerUtil.getNewPort();
-		ThriftServer nioThriftServer = factory.getNonblockingThriftServer(serverName, serverPort,
-				new ThriftSimpleService.Processor<Iface>(new ThriftSimpleServiceImpl()));
+		ThriftServer nioThriftServer = factory.getNonblockingThriftServer(serverName, serverPort, processor);
 		assertEquals(nioThriftServer.getServerName(), serverName);
 		assertEquals(nioThriftServer.getServerPort(), serverPort);
 		assertEquals(nioThriftServer.getServerConfiguration(), configuration);
 		nioThriftServer.run();
+		waiting();
 		try (ThriftClient thriftClient = factory.getThriftClient(TestConstants.LOCAL_HOST, serverPort);
 				TTransport transport = thriftClient.getTransport()) {
-			Thread.sleep(500);
 			transport.open();
 			assertEquals(TestConstants.TEST_STRING,
 					new ThriftSimpleService.Client(thriftClient.getProtocol(transport)).get(TestConstants.TEST_STRING));
@@ -91,15 +108,14 @@ public class ServerTest extends TestCase {
 	@Test
 	public void testSimpleThriftServerImpl() {
 		int serverPort = ServerUtil.getNewPort();
-		ThriftServer simpleThriftServer = new SimpleThriftServerImpl(serverName, serverPort, configuration,
-				new ThriftSimpleService.Processor<Iface>(new ThriftSimpleServiceImpl()));
+		ThriftServer simpleThriftServer = new SimpleThriftServerImpl(serverName, serverPort, configuration, processor);
 		assertEquals(simpleThriftServer.getServerName(), serverName);
 		assertEquals(simpleThriftServer.getServerPort(), serverPort);
 		assertEquals(simpleThriftServer.getServerConfiguration(), configuration);
 		simpleThriftServer.run();
+		waiting();
 		try (ThriftClient thriftClient = factory.getThriftClient(TestConstants.LOCAL_HOST, serverPort);
 				TTransport transport = thriftClient.getTransport()) {
-			Thread.sleep(500);
 			transport.open();
 			assertEquals(TestConstants.TEST_STRING,
 					new ThriftSimpleService.Client(thriftClient.getProtocol(transport)).get(TestConstants.TEST_STRING));
@@ -111,12 +127,11 @@ public class ServerTest extends TestCase {
 	}
 
 	@Test
-	public void testAysncDefaultThriftServerImpl() {
+	public void testAysncThriftServerImpl() {
 		int serverPort = ServerUtil.getNewPort();
-		TProcessor p = new ThriftSimpleService.Processor<Iface>(new ThriftSimpleServiceImpl());
 		ThriftServerConfiguration thriftServerConfiguration = new ThriftServerConfiguration();
 		thriftServerConfiguration.setProtocolFactory(new TCompactProtocol.Factory());
-		thriftServerConfiguration.setProcessorFactory(new TProcessorFactory(p));
+		thriftServerConfiguration.setProcessorFactory(new TProcessorFactory(processor));
 		thriftServerConfiguration.setServerArgsAspect(new ServerArgsAspect() {
 			@Override
 			public TThreadPoolServer.Args tThreadPoolServerArgsAspect(TThreadPoolServer.Args args) {
@@ -125,15 +140,15 @@ public class ServerTest extends TestCase {
 			}
 		});
 		Factory factory = new GeneralFactory(thriftServerConfiguration);
-		ThriftServer thriftServer = factory.getThriftServer(serverName, serverPort, p);
+		ThriftServer thriftServer = factory.getThriftServer(serverName, serverPort, processor);
 		thriftServer.run();
+		waiting();
 		try {
 			ThriftSimpleService.AsyncClient thriftClient = new ThriftSimpleService.AsyncClient(
 					new TCompactProtocol.Factory(), new TAsyncClientManager(),
 					new TNonblockingSocket(TestConstants.LOCAL_HOST, serverPort));
-			Thread.sleep(500);
 			thriftClient.get(TestConstants.TEST_STRING, new TestCallback());
-			Thread.sleep(1000);
+			waiting();
 		} catch (Exception e) {
 			fail();
 		} finally {
@@ -145,17 +160,16 @@ public class ServerTest extends TestCase {
 	public void testMultiplexedThriftServerImpl() {
 		int serverPort = ServerUtil.getNewPort();
 		Map<String, TProcessor> processorMap = new HashMap<>();
-		processorMap.put("testServer", new ThriftSimpleService.Processor<Iface>(new ThriftSimpleServiceImpl()));
+		processorMap.put("testServer", processor);
 		MultiplexedProcessor processor = new MultiplexedProcessor(processorMap);
-		ThriftServer defaultThriftServer = new DefaultThriftServerImpl(serverName, serverPort, configuration,
-				processor);
-		assertEquals(defaultThriftServer.getServerName(), serverName);
-		assertEquals(defaultThriftServer.getServerPort(), serverPort);
-		assertEquals(defaultThriftServer.getServerConfiguration(), configuration);
-		defaultThriftServer.run();
+		ThriftServer thriftServer = new ThreadPoolThriftServerImpl(serverName, serverPort, configuration, processor);
+		assertEquals(thriftServer.getServerName(), serverName);
+		assertEquals(thriftServer.getServerPort(), serverPort);
+		assertEquals(thriftServer.getServerConfiguration(), configuration);
+		thriftServer.run();
+		waiting();
 		try (ThriftClient thriftClient = factory.getThriftClient(TestConstants.LOCAL_HOST, serverPort);
 				TTransport transport = thriftClient.getTransport()) {
-			Thread.sleep(500);
 			transport.open();
 			assertEquals(TestConstants.TEST_STRING,
 					new ThriftSimpleService.Client(thriftClient.getProtocol(transport, "testServer"))
@@ -163,54 +177,52 @@ public class ServerTest extends TestCase {
 		} catch (Exception e) {
 			fail();
 		} finally {
-			defaultThriftServer.stop();
+			thriftServer.stop();
 		}
 	}
 
 	@Test
-	public void testCompactDefaultThriftServerImpl() {
+	public void testCompactThriftServerImpl() {
 		int serverPort = ServerUtil.getNewPort();
 		Factory factory = new GeneralFactory(new CompactThriftServerConfiguration(),
 				new CompactThriftClientConfiguration());
-		ThriftServer defaultThriftServer = factory.getThriftServer(serverName, serverPort,
-				new ThriftSimpleService.Processor<Iface>(new ThriftSimpleServiceImpl()));
-		defaultThriftServer.run();
+		ThriftServer thriftServer = factory.getThriftServer(serverName, serverPort, processor);
+		thriftServer.run();
+		waiting();
 		try (ThriftClient thriftClient = factory.getThriftClient(TestConstants.LOCAL_HOST, serverPort);
 				TTransport transport = thriftClient.getTransport()) {
-			Thread.sleep(500);
 			transport.open();
 			assertEquals(TestConstants.TEST_STRING,
 					new ThriftSimpleService.Client(thriftClient.getProtocol(transport)).get(TestConstants.TEST_STRING));
 		} catch (Exception e) {
 			fail();
 		} finally {
-			defaultThriftServer.stop();
+			thriftServer.stop();
 		}
 	}
 
 	@Test
-	public void testTupleDefaultThriftServerImpl() {
+	public void testTupleThriftServerImpl() {
 		int serverPort = ServerUtil.getNewPort();
 		Factory factory = new GeneralFactory(new TupleThriftServerConfiguration(),
 				new TupleThriftClientConfiguration());
-		ThriftServer defaultThriftServer = factory.getThriftServer(serverName, serverPort,
-				new ThriftSimpleService.Processor<Iface>(new ThriftSimpleServiceImpl()));
-		defaultThriftServer.run();
+		ThriftServer thriftServer = factory.getThriftServer(serverName, serverPort, processor);
+		thriftServer.run();
+		waiting();
 		try (ThriftClient thriftClient = factory.getThriftClient(TestConstants.LOCAL_HOST, serverPort);
 				TTransport transport = thriftClient.getTransport()) {
-			Thread.sleep(500);
 			transport.open();
 			assertEquals(TestConstants.TEST_STRING,
 					new ThriftSimpleService.Client(thriftClient.getProtocol(transport)).get(TestConstants.TEST_STRING));
 		} catch (Exception e) {
 			fail();
 		} finally {
-			defaultThriftServer.stop();
+			thriftServer.stop();
 		}
 	}
 
 	@Test
-	public void testDESCompactDefaultThriftServerImpl() {
+	public void testDESCompactThriftServerImpl() {
 		int serverPort = ServerUtil.getNewPort();
 		String key = TestConstants.TEST_KEY8;
 		ThriftServerConfiguration serverConfiguration = new ThriftServerConfiguration();
@@ -218,24 +230,23 @@ public class ServerTest extends TestCase {
 		ThriftClientConfiguration clientConfiguration = new ThriftClientConfiguration();
 		clientConfiguration.setProtocolFactory(new DESCompactProtocolFactory(key));
 		Factory factory = new GeneralFactory(serverConfiguration, clientConfiguration);
-		ThriftServer defaultThriftServer = factory.getThriftServer(serverName, serverPort,
-				new ThriftSimpleService.Processor<Iface>(new ThriftSimpleServiceImpl()));
-		defaultThriftServer.run();
+		ThriftServer thriftServer = factory.getThriftServer(serverName, serverPort, processor);
+		thriftServer.run();
+		waiting();
 		try (ThriftClient thriftClient = factory.getThriftClient(TestConstants.LOCAL_HOST, serverPort);
 				TTransport transport = thriftClient.getTransport()) {
-			Thread.sleep(500);
 			transport.open();
 			assertEquals(TestConstants.TEST_STRING,
 					new ThriftSimpleService.Client(thriftClient.getProtocol(transport)).get(TestConstants.TEST_STRING));
 		} catch (Exception e) {
 			fail();
 		} finally {
-			defaultThriftServer.stop();
+			thriftServer.stop();
 		}
 	}
 
 	@Test
-	public void testRC4CompactDefaultThriftServerImpl() {
+	public void testRC4CompactThriftServerImpl() {
 		int serverPort = ServerUtil.getNewPort();
 		String key = TestConstants.TEST_KEY; // RC4的key可以超过8位
 		ThriftServerConfiguration serverConfiguration = new ThriftServerConfiguration();
@@ -243,19 +254,18 @@ public class ServerTest extends TestCase {
 		ThriftClientConfiguration clientConfiguration = new ThriftClientConfiguration();
 		clientConfiguration.setProtocolFactory(new RC4CompactProtocolFactory(key));
 		Factory factory = new GeneralFactory(serverConfiguration, clientConfiguration);
-		ThriftServer defaultThriftServer = factory.getThriftServer(serverName, serverPort,
-				new ThriftSimpleService.Processor<Iface>(new ThriftSimpleServiceImpl()));
-		defaultThriftServer.run();
+		ThriftServer thriftServer = factory.getThriftServer(serverName, serverPort, processor);
+		thriftServer.run();
+		waiting();
 		try (ThriftClient thriftClient = factory.getThriftClient(TestConstants.LOCAL_HOST, serverPort);
 				TTransport transport = thriftClient.getTransport()) {
-			Thread.sleep(500);
 			transport.open();
 			assertEquals(TestConstants.TEST_STRING,
 					new ThriftSimpleService.Client(thriftClient.getProtocol(transport)).get(TestConstants.TEST_STRING));
 		} catch (Exception e) {
 			fail();
 		} finally {
-			defaultThriftServer.stop();
+			thriftServer.stop();
 		}
 	}
 
@@ -267,18 +277,55 @@ public class ServerTest extends TestCase {
 	}
 
 	@Test
+	public void testSSLThriftServer() {
+		int serverPort = ServerUtil.getNewPort();
+		String keystoreStr = getSslUrlFileString("/ssl/.keystore");
+		String truststoreStr = getSslUrlFileString("/ssl/.truststore");
+		if (StringUtil.orIsEmpty(keystoreStr, truststoreStr))
+			// 如果没有密钥就跳过测试
+			return;
+		// 服务端设置
+		ThriftServerConfiguration serverConfiguration = new ThriftServerConfiguration();
+		TSSLTransportParameters sslServerTransportParameters = new TSSLTransportParameters();
+		sslServerTransportParameters.setKeyStore(keystoreStr, TestConstants.SSL_KEY_PASS, null, null);
+		serverConfiguration.setSslTransportParameters(sslServerTransportParameters);
+		// 客户端设置
+		ThriftClientConfiguration clientConfiguration = new ThriftClientConfiguration();
+		TSSLTransportParameters sslClientTransportParameters = new TSSLTransportParameters();
+		sslClientTransportParameters.setTrustStore(truststoreStr, TestConstants.SSL_KEY_PASS, "SunX509", "JKS");
+		clientConfiguration.setSslTransportParameters(sslClientTransportParameters);
+		// 因为创建和回收连接会增加测试执行时间,所以这里不使用Socket连接池
+		clientConfiguration.setSocketPool(new NoSocketPoolImpl());
+
+		Factory factory = new GeneralFactory(serverConfiguration, clientConfiguration);
+		ThriftServer thriftServer = factory.getThriftServer(serverName, serverPort, processor);
+		thriftServer.run();
+		waiting();
+		try (ThriftClient thriftClient = factory.getThriftClient(TestConstants.LOCAL_HOST, serverPort);
+				TTransport transport = thriftClient.getTransport()) {
+			// SSL方式不需要transport.open()
+			assertEquals(TestConstants.TEST_STRING,
+					new ThriftSimpleService.Client(thriftClient.getProtocol(transport)).get(TestConstants.TEST_STRING));
+		} catch (Exception e) {
+			fail();
+		} finally {
+			thriftServer.stop();
+		}
+	}
+
+	@Test
 	public void testServerAspect() {
 		int serverPort = ServerUtil.getNewPort("testServerAspect");
 		ThriftServerConfiguration configuration = new ThriftServerConfiguration();
 		configuration.setServerAspect(new TestServerAspectImpl());
-		ThriftServer defaultThriftServer = new GeneralFactory(configuration).getThriftServer(serverName, serverPort,
-				new ThriftSimpleService.Processor<Iface>(new ThriftSimpleServiceImpl()));
+		ThriftServer thriftServer = new GeneralFactory(configuration).getThriftServer(serverName, serverPort,
+				processor);
 		try {
-			defaultThriftServer.run();
+			thriftServer.run();
 		} catch (Exception e) {
 			fail();
 		} finally {
-			defaultThriftServer.stop();
+			thriftServer.stop();
 		}
 	}
 
@@ -313,7 +360,7 @@ public class ServerTest extends TestCase {
 				TProcessor processor, ThriftServer server) {
 			assertEquals(ServerTest.serverName, serverName);
 			assertEquals(ServerUtil.getNewPort("testServerAspect"), serverPort);
-			Thread.sleep(500);
+			waiting();
 			assertTrue(server.isServing());
 		}
 
@@ -333,7 +380,7 @@ public class ServerTest extends TestCase {
 				TProcessor processor, ThriftServer server) {
 			assertEquals(ServerTest.serverName, serverName);
 			assertEquals(ServerUtil.getNewPort("testServerAspect"), serverPort);
-			Thread.sleep(500);
+			waiting();
 			assertFalse(server.isServing());
 		}
 

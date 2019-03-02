@@ -10,6 +10,8 @@ import org.apache.commons.pool2.impl.DefaultPooledObject;
 import org.apache.commons.pool2.impl.GenericObjectPool;
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 
+import com.ikasoa.core.IkasoaException;
+import com.ikasoa.core.thrift.client.pool.ClientSocketPoolParameters;
 import com.ikasoa.core.thrift.client.pool.SocketPool;
 import com.ikasoa.core.thrift.client.socket.ThriftSocket;
 import com.ikasoa.core.utils.ServerUtil;
@@ -33,11 +35,6 @@ public class CommonsPoolImpl implements SocketPool {
 	private byte size = defaultSize;
 
 	/**
-	 * 连接超时时间
-	 */
-	private int time = defaultTime;
-
-	/**
 	 * 连接池设置
 	 */
 	private GenericObjectPoolConfig<ThriftSocket> conf = new GenericObjectPoolConfig<>();
@@ -57,23 +54,23 @@ public class CommonsPoolImpl implements SocketPool {
 		this.conf = conf;
 	}
 
-	private void initPool(String host, int port) {
-		String key = ServerUtil.buildCacheKey(host, port);
+	private void initPool(ClientSocketPoolParameters parameters) {
+		String key = parameters.getKey();
 		if (!poolMap.containsKey(key))
-			poolMap.put(key, new GenericObjectPool<>(new ThriftSocketFactory(host, port, time), conf));
+			poolMap.put(key, new GenericObjectPool<>(new ThriftSocketFactory(parameters), conf));
 	}
 
 	@Override
-	public synchronized ThriftSocket buildThriftSocket(String host, int port) {
-		initPool(host, port);
+	public synchronized ThriftSocket buildThriftSocket(ClientSocketPoolParameters parameters) throws IkasoaException {
+		initPool(parameters);
 		try {
-			return poolMap.get(ServerUtil.buildCacheKey(host, port)).borrowObject();
+			return poolMap.get(parameters.getKey()).borrowObject();
 		} catch (IllegalStateException e) {
 			throw new RuntimeException(e);
 		} catch (Exception e) {
 			log.error(e.getMessage());
 		}
-		return new ThriftSocket(host, port);
+		return parameters.buildClientThriftSocket();
 	}
 
 	@Override
@@ -99,15 +96,13 @@ public class CommonsPoolImpl implements SocketPool {
 	@AllArgsConstructor
 	class ThriftSocketFactory extends BasePooledObjectFactory<ThriftSocket> {
 
-		private String host;
-
-		private int port;
-
-		private int time;
+		private ClientSocketPoolParameters parameters;
 
 		@Override
 		public ThriftSocket create() throws Exception {
-			return new ThriftSocket(host, port, time);
+			if (parameters == null)
+				throw new IkasoaException("'ClientSocketPoolParameters' is null !");
+			return parameters.buildClientThriftSocket();
 		}
 
 		@Override

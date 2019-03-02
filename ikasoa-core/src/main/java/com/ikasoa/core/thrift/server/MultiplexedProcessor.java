@@ -3,8 +3,13 @@ package com.ikasoa.core.thrift.server;
 import java.util.Map;
 import java.util.Optional;
 
+import org.apache.thrift.TException;
 import org.apache.thrift.TMultiplexedProcessor;
 import org.apache.thrift.TProcessor;
+import org.apache.thrift.protocol.TProtocol;
+import org.apache.thrift.transport.TTransportException;
+
+import com.ikasoa.core.thrift.service.Processor;
 
 /**
  * Thrift嵌套服务处理器
@@ -17,10 +22,19 @@ import org.apache.thrift.TProcessor;
  * @author <a href="mailto:larry7696@gmail.com">Larry</a>
  * @version 0.1
  */
-public class MultiplexedProcessor extends TMultiplexedProcessor {
+public class MultiplexedProcessor extends TMultiplexedProcessor implements Processor {
 
 	public MultiplexedProcessor(Map<String, TProcessor> processorMap) {
 		Optional.ofNullable(processorMap).ifPresent(map -> map.forEach((k, v) -> registerProcessor(k, v)));
+	}
+
+	@Override
+	public boolean process(TProtocol in, TProtocol out) throws TException {
+		try {
+			return super.process(in, out);
+		} catch (TTransportException e) {
+			return Boolean.FALSE; // 如果连接中断就停止服务但不抛出异常
+		}
 	}
 
 }

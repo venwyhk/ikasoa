@@ -16,4 +16,6 @@ public class TestConstants {
 
 	public final static String TEST_STRING = "12345678abcdefgABCDEFG~!@#$%^&*()_+";
 
+	public final static String SSL_KEY_PASS = "hello1234";
+
 }

@@ -5,6 +5,8 @@ import java.util.Hashtable;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import com.ikasoa.core.IkasoaException;
+import com.ikasoa.core.thrift.client.pool.ClientSocketPoolParameters;
 import com.ikasoa.core.thrift.client.pool.SocketPool;
 import com.ikasoa.core.thrift.client.socket.ThriftSocket;
 import com.ikasoa.core.utils.ServerUtil;
@@ -27,11 +29,6 @@ public class SimpleSocketPoolImpl implements SocketPool {
 	 */
 	private byte size = defaultSize;
 
-	/**
-	 * 连接超时时间
-	 */
-	private int time = defaultTime;
-
 	private static Map<String, SimpleSocketPoolImpl> selfMap = new HashMap<>();
 
 	/**
@@ -45,54 +42,41 @@ public class SimpleSocketPoolImpl implements SocketPool {
 		this.size = size;
 	}
 
-	public SimpleSocketPoolImpl(int time) {
-		this.time = time;
-	}
-
-	public SimpleSocketPoolImpl(byte size, int time) {
-		this.size = size;
-		this.time = time;
-	}
-
 	/**
 	 * 初始化连接池
 	 * 
-	 * @param host
-	 *            服务器地址
-	 * @param port
-	 *            服务器端口
+	 * @param parameters
+	 *            客户端Socket参数对象
 	 * @return SimpleSocketPoolImpl 连接池对象
 	 */
-	public synchronized SimpleSocketPoolImpl init(String host, int port) {
-		if (!ServerUtil.checkHostAndPort(host, port))
+	public synchronized SimpleSocketPoolImpl init(ClientSocketPoolParameters parameters) {
+		if (!ServerUtil.checkHostAndPort(parameters.getHost(), parameters.getPort()))
 			throw new IllegalArgumentException("Server host or port is null !");
 		SimpleSocketPoolImpl self = new SimpleSocketPoolImpl();
-		selfMap.put(ServerUtil.buildCacheKey(host, port), self);
+		selfMap.put(parameters.getKey(), self);
 		self.socketPool = new Hashtable<>(size);
 		self.socketStatusArray = new boolean[size];
 		// 初始化连接池
 		log.debug("Initiation pool ......");
-		buildThriftSocketPool(host, port);
+		buildThriftSocketPool(parameters);
 		return self;
 	}
 
 	/**
 	 * 创建连接池
 	 * 
-	 * @param host
-	 *            服务器地址
-	 * @param port
-	 *            服务器端口
+	 * @param parameters
+	 *            Socket连接池参数对象
 	 */
-	public synchronized void buildThriftSocketPool(String host, int port) {
-		if (!ServerUtil.checkHostAndPort(host, port))
+	public synchronized void buildThriftSocketPool(ClientSocketPoolParameters parameters) {
+		if (!ServerUtil.checkHostAndPort(parameters.getHost(), parameters.getPort()))
 			throw new IllegalArgumentException("Server host or port is null !");
-		SimpleSocketPoolImpl self = selfMap.get(ServerUtil.buildCacheKey(host, port));
+		SimpleSocketPoolImpl self = selfMap.get(parameters.getKey());
 		if (self == null)
-			self = init(host, port);
+			self = init(parameters);
 		try {
 			for (byte i = 0; i < size; i++) {
-				self.socketPool.put(new Byte(i), new ThriftSocket(host, port, time));
+				self.socketPool.put(new Byte(i), parameters.buildClientThriftSocket());
 				self.socketStatusArray[i] = Boolean.FALSE;
 			}
 		} catch (Exception e) {
@@ -102,22 +86,26 @@ public class SimpleSocketPoolImpl implements SocketPool {
 
 	/**
 	 * 从连接池中获取一个空闲的ThriftSocket连接
+	 * 
+	 * @param parameters
+	 *            Socket连接池参数对象
+	 * @throws IkasoaException
 	 */
 	@Override
-	public synchronized ThriftSocket buildThriftSocket(String host, int port) {
-		if (!ServerUtil.checkHostAndPort(host, port))
+	public synchronized ThriftSocket buildThriftSocket(ClientSocketPoolParameters parameters) throws IkasoaException {
+		if (!ServerUtil.checkHostAndPort(parameters.getHost(), parameters.getPort()))
 			throw new IllegalArgumentException("Server host or port is null !");
-		SimpleSocketPoolImpl self = selfMap.get(ServerUtil.buildCacheKey(host, port));
+		SimpleSocketPoolImpl self = selfMap.get(parameters.getKey());
 		if (self == null || self.socketStatusArray == null)
-			self = init(host, port);
+			self = init(parameters);
 		byte i = 0;
 		for (; i < size; i++)
 			if (!self.socketStatusArray[i]) {
-				ThriftSocket thriftSocket = getThriftSocket(self, i, host, port);
+				ThriftSocket thriftSocket = getThriftSocket(self, i, parameters);
 				if (!thriftSocket.isOpen()) {
 					// 如果socket未连接,则新建一个socket
 					// TODO: 用isOpen方法判断是否保持连接并不准确,所以这里有可能会额外创建一些socket
-					thriftSocket = new ThriftSocket(host, port, time);
+					thriftSocket = parameters.buildClientThriftSocket();
 					self.socketPool.put(new Byte(i), thriftSocket);
 				}
 				self.socketStatusArray[i] = Boolean.TRUE;
@@ -129,24 +117,25 @@ public class SimpleSocketPoolImpl implements SocketPool {
 				ThriftSocket thriftSocket = self.socketPool.get(i);
 				if (self.socketStatusArray[i] && (thriftSocket == null || thriftSocket.getSocket() == null
 						|| (thriftSocket.isOpen() && thriftSocket.getSocket().isClosed()))) {
-					return new ThriftSocket(host, port, time);
+					return parameters.buildClientThriftSocket();
 				}
 			}
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
 		log.warn("Not enough pooled connection ! Again retry initiation pool .");
-		init(host, port);
-		return buildThriftSocket(host, port);
+		init(parameters);
+		return buildThriftSocket(parameters);
 	}
 
-	private ThriftSocket getThriftSocket(SimpleSocketPoolImpl self, byte i, String host, int port) {
+	private ThriftSocket getThriftSocket(SimpleSocketPoolImpl self, byte i, ClientSocketPoolParameters parameters)
+			throws IkasoaException {
 		log.debug("Get socket number is {} .", i);
 		ThriftSocket thriftSocket = self.socketPool.get(new Byte(i));
 		if (thriftSocket == null || thriftSocket.getSocket() == null) {
 			log.warn("Socket is null ! Again retry initiation pool .");
-			init(host, port);
-			return buildThriftSocket(host, port);
+			init(parameters);
+			return buildThriftSocket(parameters);
 		} else
 			return thriftSocket;
 	}
@@ -168,7 +157,7 @@ public class SimpleSocketPoolImpl implements SocketPool {
 		log.debug("Release socket , host is {} and port is {} .", host, port);
 		SimpleSocketPoolImpl self = selfMap.get(ServerUtil.buildCacheKey(host, port));
 		if (self == null)
-			self = init(host, port);
+			return;
 		for (byte i = 0; i < size; i++)
 			if (self.socketPool.get(new Byte(i)) == thriftSocket) {
 				self.socketStatusArray[i] = Boolean.FALSE;

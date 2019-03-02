@@ -4,6 +4,7 @@ import org.apache.thrift.transport.TTransport;
 import org.apache.thrift.transport.TTransportFactory;
 import org.junit.Test;
 
+import com.ikasoa.core.IkasoaException;
 import com.ikasoa.core.TestConstants;
 import com.ikasoa.core.thrift.GeneralFactory;
 import com.ikasoa.core.thrift.client.ThriftClient;
@@ -24,19 +25,34 @@ public class SocketPoolTest extends TestCase {
 	@Test
 	public void testSimpleSocketPool() {
 		SocketPool pool = new SimpleSocketPoolImpl();
-		assertNotNull(pool.buildThriftSocket(TestConstants.LOCAL_HOST, ServerUtil.getNewPort()));
+		try {
+			assertNotNull(pool.buildThriftSocket(
+					new ClientSocketPoolParameters(TestConstants.LOCAL_HOST, ServerUtil.getNewPort(), 0, null)));
+		} catch (IkasoaException e) {
+			fail();
+		}
 	}
 
 	@Test
 	public void testNoSocketPool() {
 		SocketPool pool = new NoSocketPoolImpl();
-		assertNotNull(pool.buildThriftSocket(TestConstants.LOCAL_HOST, ServerUtil.getNewPort()));
+		try {
+			assertNotNull(pool.buildThriftSocket(
+					new ClientSocketPoolParameters(TestConstants.LOCAL_HOST, ServerUtil.getNewPort(), 0, null)));
+		} catch (IkasoaException e) {
+			fail();
+		}
 	}
 
 	@Test
 	public void testCommonsSocketPool() {
 		SocketPool pool = new CommonsPoolImpl();
-		assertNotNull(pool.buildThriftSocket(TestConstants.LOCAL_HOST, ServerUtil.getNewPort()));
+		try {
+			assertNotNull(pool.buildThriftSocket(
+					new ClientSocketPoolParameters(TestConstants.LOCAL_HOST, ServerUtil.getNewPort(), 0, null)));
+		} catch (IkasoaException e) {
+			fail();
+		}
 	}
 
 	@Test
@@ -92,9 +108,9 @@ public class SocketPoolTest extends TestCase {
 		}
 
 		@Override
-		public ThriftSocket buildThriftSocket(String host, int port) {
-			assertEquals(host, TestConstants.LOCAL_HOST);
-			assertEquals(port, this.port);
+		public ThriftSocket buildThriftSocket(ClientSocketPoolParameters parameters) {
+			assertEquals(parameters.getHost(), TestConstants.LOCAL_HOST);
+			assertEquals(parameters.getPort(), this.port);
 			return null;
 		}
 

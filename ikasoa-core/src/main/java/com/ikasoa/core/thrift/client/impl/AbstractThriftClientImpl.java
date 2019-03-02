@@ -10,6 +10,7 @@ import com.ikasoa.core.ServerCheck;
 import com.ikasoa.core.ServerCheckFailProcessor;
 import com.ikasoa.core.thrift.client.ThriftClient;
 import com.ikasoa.core.thrift.client.ThriftClientConfiguration;
+import com.ikasoa.core.thrift.client.pool.ClientSocketPoolParameters;
 import com.ikasoa.core.thrift.client.socket.ThriftSocket;
 import com.ikasoa.core.utils.ServerUtil;
 import com.ikasoa.core.utils.StringUtil;
@@ -65,7 +66,9 @@ public abstract class AbstractThriftClientImpl implements ThriftClient {
 	}
 
 	protected TTransport getTransport(String serverHost, int serverPort) throws IkasoaException {
-		socketThread.set(getThriftClientConfiguration().getSocketPool().buildThriftSocket(serverHost, serverPort));
+		socketThread
+				.set(getThriftClientConfiguration().getSocketPool().buildThriftSocket(new ClientSocketPoolParameters(
+						serverHost, serverPort, 0, getThriftClientConfiguration().getSslTransportParameters())));
 		return getThriftClientConfiguration().getTransportFactory().getTransport(socketThread.get());
 	}
 
@@ -127,8 +130,7 @@ public abstract class AbstractThriftClientImpl implements ThriftClient {
 			log.debug("'defaultProcessor' is null !");
 		if (serverCheckFailProcessor == null)
 			serverCheckFailProcessor = getThriftClientConfiguration().getServerCheckFailProcessor() == null
-					? defaultProcessor
-					: getThriftClientConfiguration().getServerCheckFailProcessor();
+					? defaultProcessor : getThriftClientConfiguration().getServerCheckFailProcessor();
 		return serverCheckFailProcessor;
 	}
 

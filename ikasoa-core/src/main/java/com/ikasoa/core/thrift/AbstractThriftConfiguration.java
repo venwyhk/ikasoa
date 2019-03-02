@@ -3,6 +3,7 @@ package com.ikasoa.core.thrift;
 import org.apache.thrift.protocol.TBinaryProtocol;
 import org.apache.thrift.protocol.TProtocolFactory;
 import org.apache.thrift.transport.TFramedTransport;
+import org.apache.thrift.transport.TSSLTransportFactory.TSSLTransportParameters;
 import org.apache.thrift.transport.TTransportFactory;
 
 import lombok.Data;
@@ -25,5 +26,10 @@ public abstract class AbstractThriftConfiguration {
 	 * Thrift传输类型工厂
 	 */
 	private TTransportFactory transportFactory = new TFramedTransport.Factory();
+
+	/**
+	 * SSL参数(Null表示不使用SSL)
+	 */
+	private TSSLTransportParameters sslTransportParameters = null;
 
 }

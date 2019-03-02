@@ -1,5 +1,6 @@
 package com.ikasoa.core.thrift.client.pool;
 
+import com.ikasoa.core.IkasoaException;
 import com.ikasoa.core.thrift.client.socket.ThriftSocket;
 
 /**
@@ -16,20 +17,14 @@ public interface SocketPool {
 	byte defaultSize = 0x10;
 
 	/**
-	 * 连接默认超时时间
-	 */
-	int defaultTime = 0;
-
-	/**
 	 * 从连接池中获取一个空闲的ThriftSocket连接
 	 * 
-	 * @param host
-	 *            服务器地址
-	 * @param port
-	 *            服务器端口
+	 * @param parameters
+	 *            Socket连接池参数对象
 	 * @return ThriftSocket ThriftSocket连接对象
+	 * @throws IkasoaException
 	 */
-	ThriftSocket buildThriftSocket(final String host, int port);
+	ThriftSocket buildThriftSocket(ClientSocketPoolParameters parameters) throws IkasoaException;
 
 	/**
 	 * 回收ThriftSocket连接
