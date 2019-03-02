@@ -7,7 +7,7 @@ import org.jboss.netty.channel.group.DefaultChannelGroup;
 import com.ikasoa.core.IkasoaException;
 import com.ikasoa.core.netty.server.NettyServer;
 import com.ikasoa.core.netty.server.NettyServerConfiguration;
-import com.ikasoa.core.netty.server.impl.DefaultNettyServerImpl;
+import com.ikasoa.core.netty.server.impl.NettyServerImpl;
 import com.ikasoa.core.thrift.server.ThriftServer;
 import com.ikasoa.core.thrift.server.ThriftServerConfiguration;
 import com.ikasoa.core.thrift.server.impl.AbstractThriftServerImpl;
@@ -51,20 +51,19 @@ public class NettyIkasoaFactory extends DefaultIkasoaFactory {
 
 	@Override
 	public ThriftServer getThriftServer(String serverName, int serverPort, TProcessor processor) {
-		return new NettyServerImpl("NettyServer-" + serverPort, serverPort, processor);
+		return new _NettyServerImpl("NettyServer-" + serverPort, serverPort, processor);
 	}
 
-	private class NettyServerImpl extends AbstractThriftServerImpl {
+	private class _NettyServerImpl extends AbstractThriftServerImpl {
 
 		private NettyServer server;
 
-		public NettyServerImpl(String serverName, int serverPort, TProcessor processor) {
+		public _NettyServerImpl(String serverName, int serverPort, TProcessor processor) {
 			setServerName(serverName);
 			setServerPort(serverPort);
 			setConfiguration(new ThriftServerConfiguration());
 			setProcessor(processor);
-			server = new DefaultNettyServerImpl(getServerName(), getServerPort(), configuration, getProcessor(),
-					channelGroup);
+			server = new NettyServerImpl(getServerName(), getServerPort(), configuration, getProcessor(), channelGroup);
 		}
 
 		@Override
