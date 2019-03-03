@@ -23,6 +23,7 @@ public interface SocketPool {
 	 *            Socket连接池参数对象
 	 * @return ThriftSocket ThriftSocket连接对象
 	 * @throws IkasoaException
+	 *             异常
 	 */
 	ThriftSocket buildThriftSocket(ClientSocketPoolParameters parameters) throws IkasoaException;
 

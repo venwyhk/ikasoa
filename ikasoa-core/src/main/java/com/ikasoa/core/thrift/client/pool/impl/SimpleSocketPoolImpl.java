@@ -90,6 +90,7 @@ public class SimpleSocketPoolImpl implements SocketPool {
 	 * @param parameters
 	 *            Socket连接池参数对象
 	 * @throws IkasoaException
+	 *             异常
 	 */
 	@Override
 	public synchronized ThriftSocket buildThriftSocket(ClientSocketPoolParameters parameters) throws IkasoaException {
