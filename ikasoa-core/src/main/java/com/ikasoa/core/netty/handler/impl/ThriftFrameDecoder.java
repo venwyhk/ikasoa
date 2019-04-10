@@ -38,33 +38,28 @@ public class ThriftFrameDecoder extends FrameDecoder {
 
 	@Override
 	protected TNettyMessage decode(ChannelHandlerContext ctx, Channel channel, ChannelBuffer buffer) throws Exception {
-
+		
 		if (!buffer.readable())
 			return null;
-
+		
 		short firstByte = buffer.getUnsignedByte(0);
 		if (firstByte >= 0x80) {
 			ChannelBuffer messageBuffer = tryDecodeUnframedMessage(ctx, channel, buffer, inputProtocolFactory);
-			if (messageBuffer == null)
-				return null;
-			return new TNettyMessage(messageBuffer, TNettyTransportType.UNFRAMED);
+			return messageBuffer == null ? null : new TNettyMessage(messageBuffer, TNettyTransportType.UNFRAMED);
 		} else if (buffer.readableBytes() < MESSAGE_FRAME_SIZE)
 			return null;
 		else {
 			ChannelBuffer messageBuffer = tryDecodeFramedMessage(ctx, channel, buffer, true);
-			if (messageBuffer == null)
-				return null;
-			return new TNettyMessage(messageBuffer, TNettyTransportType.FRAMED);
+			return messageBuffer == null ? null : new TNettyMessage(messageBuffer, TNettyTransportType.FRAMED);
 		}
 	}
 
 	protected ChannelBuffer tryDecodeFramedMessage(ChannelHandlerContext ctx, Channel channel, ChannelBuffer buffer,
 			boolean stripFraming) {
-
+		
 		int messageStartReaderIndex = buffer.readerIndex();
 		int messageContentsOffset = stripFraming ? messageStartReaderIndex + MESSAGE_FRAME_SIZE
 				: messageStartReaderIndex;
-
 		int messageLength = buffer.getInt(messageStartReaderIndex) + MESSAGE_FRAME_SIZE;
 		int messageContentsLength = messageStartReaderIndex + messageLength - messageContentsOffset;
 
@@ -88,7 +83,6 @@ public class ThriftFrameDecoder extends FrameDecoder {
 			TProtocolFactory inputProtocolFactory) throws TException {
 
 		int messageLength = 0;
-
 		int messageStartReaderIndex = buffer.readerIndex();
 
 		try {

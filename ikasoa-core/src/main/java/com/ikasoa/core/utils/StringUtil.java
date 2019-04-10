@@ -129,6 +129,21 @@ public class StringUtil {
 	}
 
 	@SneakyThrows
+	public static long toLong(String str) {
+		return isNotEmpty(str) ? Long.parseLong(str.trim()) : 0;
+	}
+
+	@SneakyThrows
+	public static double toDouble(String str) {
+		return isNotEmpty(str) ? Double.parseDouble(str.trim()) : 0;
+	}
+
+	@SneakyThrows
+	public static float toFloat(String str) {
+		return isNotEmpty(str) ? Float.parseFloat(str.trim()) : 0;
+	}
+
+	@SneakyThrows
 	public static String toMD5(String str) {
 		MessageDigest md = MessageDigest.getInstance("MD5");
 		md.update(str.getBytes());

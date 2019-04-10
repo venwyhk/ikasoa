@@ -53,7 +53,6 @@ public class TNettyTransport extends TTransport {
 		this.tNettyTransportType = tNettyTransportType;
 		this.outputBuffer = ChannelBuffers.dynamicBuffer(DEFAULT_OUTPUT_BUFFER_SIZE);
 		this.initialReaderIndex = inputBuffer.readerIndex();
-
 		if (!inputBuffer.hasArray()) {
 			buffer = null;
 			bufferPosition = 0;
