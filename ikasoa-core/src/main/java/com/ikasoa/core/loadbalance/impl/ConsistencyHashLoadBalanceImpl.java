@@ -62,9 +62,8 @@ public class ConsistencyHashLoadBalanceImpl implements LoadBalance {
 	}
 
 	private long hash(byte[] digest, int nTime) {
-		long rv = ((long) (digest[3 + nTime * 4] & 0xFF) << 24) | ((long) (digest[2 + nTime * 4] & 0xFF) << 16)
-				| ((long) (digest[1 + nTime * 4] & 0xFF) << 8) | (digest[0 + nTime * 4] & 0xFF);
-		return rv & 0xffffffffL;
+		return (((long) (digest[3 + nTime * 4] & 0xFF) << 24) | ((long) (digest[2 + nTime * 4] & 0xFF) << 16)
+				| ((long) (digest[1 + nTime * 4] & 0xFF) << 8) | (digest[0 + nTime * 4] & 0xFF)) & 0xffffffffL;
 	}
 
 	private byte[] computeMd5(String value) {

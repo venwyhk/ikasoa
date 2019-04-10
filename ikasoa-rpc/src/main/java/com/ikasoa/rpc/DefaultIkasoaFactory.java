@@ -70,6 +70,10 @@ public class DefaultIkasoaFactory extends GeneralFactory implements IkasoaFactor
 		return getInstance(iClass, configurator.getServerInfoWrapper());
 	}
 
+	public <T> T getInstance(Class<T> iClass, String host, int port) {
+		return getInstance(iClass, new ServerInfoWrapper(host, port));
+	}
+
 	@SuppressWarnings("unchecked")
 	public <T> T getInstance(Class<T> iClass, ServerInfoWrapper siw) {
 		if (iClass == null)
@@ -221,10 +225,10 @@ public class DefaultIkasoaFactory extends GeneralFactory implements IkasoaFactor
 			else
 				// 过滤掉无效方法
 				for (Method iMethod : iClass.getMethods())
-				if (!iMethod.isAnnotationPresent(Invalid.class) && compareMethod(iMethod, implMethod)) {
-				isValidMethod = Boolean.TRUE;
-				break;
-				}
+					if (!iMethod.isAnnotationPresent(Invalid.class) && compareMethod(iMethod, implMethod)) {
+						isValidMethod = Boolean.TRUE;
+						break;
+					}
 			if (!isValidMethod)
 				continue;
 			String sKey = getSKey(iClass, implMethod, false);
