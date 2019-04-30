@@ -120,19 +120,13 @@ public class DefaultIkasoaFactory extends GeneralFactory implements IkasoaFactor
 
 	@Override
 	public IkasoaServer getIkasoaServer(List<ImplWrapper> implWrapperList, int serverPort) throws RpcException {
-		Map<String, Service> serviceMap = new HashMap<>();
-		for (ImplWrapper implWrapper : implWrapperList)
-			serviceMap.putAll(getServiceMapByImplWrapper(implWrapper));
-		return getIkasoaServer(serverPort, serviceMap);
+		return getIkasoaServer(serverPort, getServiceMapByWrapperList(implWrapperList));
 	}
 
 	@Override
 	public IkasoaServer getIkasoaServer(String serverName, List<ImplWrapper> implWrapperList, int serverPort)
 			throws RpcException {
-		Map<String, Service> serviceMap = new HashMap<>();
-		for (ImplWrapper implWrapper : implWrapperList)
-			serviceMap.putAll(getServiceMapByImplWrapper(implWrapper));
-		return getIkasoaServer(serverName, serverPort, serviceMap);
+		return getIkasoaServer(serverName, serverPort, getServiceMapByWrapperList(implWrapperList));
 	}
 
 	@Override
@@ -192,13 +186,13 @@ public class DefaultIkasoaFactory extends GeneralFactory implements IkasoaFactor
 				: super.getThriftServer(serverName, serverPort, processor);
 	}
 
-	private Map<String, Service> getServiceMapByImplWrapper(ImplWrapper implWrapper) throws RpcException {
+	private Map<String, Service> getServiceMapByImplWrapper(ImplWrapper implWrapper) {
 		return getServiceMapByClass(new HashMap<String, Service>(), implWrapper.getImplClass(),
 				implWrapper.getImplObject(), implWrapper.getImplClass());
 	}
 
 	private Map<String, Service> getServiceMapByClass(Map<String, Service> serviceMap, Class<?> implClass,
-			Object implObject, Class<?> superClass) throws RpcException {
+			Object implObject, Class<?> superClass) {
 		if (implClass == null)
 			throw new IllegalArgumentException("Implement 'class' is not null !");
 		if (superClass == null)
@@ -209,6 +203,12 @@ public class DefaultIkasoaFactory extends GeneralFactory implements IkasoaFactor
 			buildService(serviceMap, iClass, implClass, implObject);
 		if (superClass.getSuperclass() != null && !Object.class.equals(superClass.getSuperclass()))
 			serviceMap.putAll(getServiceMapByClass(serviceMap, implClass, implObject, superClass.getSuperclass()));
+		return serviceMap;
+	}
+
+	private Map<String, Service> getServiceMapByWrapperList(List<ImplWrapper> implWrapperList) {
+		Map<String, Service> serviceMap = new HashMap<>();
+		implWrapperList.forEach(implWrapper -> serviceMap.putAll(getServiceMapByImplWrapper(implWrapper)));
 		return serviceMap;
 	}
 

@@ -115,7 +115,7 @@ public class TestExampleService extends TestCase {
 		try {
 
 			// 获取Ikasoa服务
-			List<ImplWrapper> sList = new ArrayList<>();
+			List<ImplWrapper> sList = new ArrayList<>(2);
 			sList.add(new ImplWrapper(ExampleServiceImpl.class));
 			sList.add(new ImplWrapper(ExampleChildServiceImpl.class));
 			IkasoaServer ikasoaServer = ikasoaFactory.getIkasoaServer(sList, port);

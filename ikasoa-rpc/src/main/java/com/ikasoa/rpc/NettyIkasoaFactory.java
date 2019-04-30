@@ -27,6 +27,8 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class NettyIkasoaFactory extends DefaultIkasoaFactory {
 
+	private static final String SERVER_NAME_PREFIX = "NettyServer-";
+
 	@Getter
 	@Setter
 	private NettyServerConfiguration configuration;
@@ -51,7 +53,7 @@ public class NettyIkasoaFactory extends DefaultIkasoaFactory {
 
 	@Override
 	public ThriftServer getThriftServer(String serverName, int serverPort, TProcessor processor) {
-		return new _NettyServerImpl("NettyServer-" + serverPort, serverPort, processor);
+		return new _NettyServerImpl(SERVER_NAME_PREFIX + serverPort, serverPort, processor);
 	}
 
 	private class _NettyServerImpl extends AbstractThriftServerImpl {

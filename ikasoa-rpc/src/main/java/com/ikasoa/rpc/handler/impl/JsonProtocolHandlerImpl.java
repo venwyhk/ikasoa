@@ -103,8 +103,8 @@ public class JsonProtocolHandlerImpl<T, R> implements ProtocolHandler<T, R> {
 				throw new IllegalArgumentException("'Map' must appoint type ! eg : 'Map<String, String>' .");
 			JSONObject jsonMap = JSON.parseObject(resultStr);
 			Map<Object, Object> map = new HashMap<>(jsonMap.size());
-			for (String key : jsonMap.keySet())
-				map.put(key, JSON.parseObject(jsonMap.get(key).toString(), resultData.getClassTypes(1)));
+			jsonMap.keySet().forEach(
+					key -> map.put(key, JSON.parseObject(jsonMap.get(key).toString(), resultData.getClassTypes(1))));
 			result = (R) map;
 		} else {
 			try {
