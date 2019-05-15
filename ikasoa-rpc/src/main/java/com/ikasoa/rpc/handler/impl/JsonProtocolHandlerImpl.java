@@ -66,8 +66,6 @@ public class JsonProtocolHandlerImpl<T, R> implements ProtocolHandler<T, R> {
 		for (int i = 0; i < args.length; i++)
 			if (args[i] != null)
 				argClasses[i] = args[i].getClass();
-			else
-				continue;
 		return new StringBuilder(JSON.toJSONString(argClasses)).append(CT).append(JSON.toJSONString(arg)).toString();
 	}
 

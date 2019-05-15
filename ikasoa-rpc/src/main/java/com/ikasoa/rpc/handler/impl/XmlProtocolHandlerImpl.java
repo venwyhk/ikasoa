@@ -59,9 +59,9 @@ public class XmlProtocolHandlerImpl<T, R> implements ProtocolHandler<T, R> {
 
 	@SuppressWarnings("unchecked")
 	private <E> E parserXML(String xml) {
-		XMLDecoder decoder = new XMLDecoder(new BufferedInputStream(new ByteArrayInputStream(xml.getBytes())));
-		decoder.close();
-		return (E) decoder.readObject();
+		try (XMLDecoder decoder = new XMLDecoder(new BufferedInputStream(new ByteArrayInputStream(xml.getBytes())))) {
+			return (E) decoder.readObject();
+		}
 	}
 
 	@Override

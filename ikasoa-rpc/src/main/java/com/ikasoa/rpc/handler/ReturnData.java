@@ -3,12 +3,13 @@ package com.ikasoa.rpc.handler;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.util.HashMap;
+import java.util.Deque;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import com.ikasoa.core.utils.StringUtil;
+import com.ikasoa.rpc.utils.MapUtil;
 
 import lombok.Data;
 
@@ -21,17 +22,14 @@ import lombok.Data;
 @Data
 public class ReturnData {
 
-	private final static String LIST_CLASS_NAME = "java.util.List";
-
-	private final static String SET_CLASS_NAME = "java.util.Set";
-
-	private final static String MAP_CLASS_NAME = "java.util.Map";
-
-	private final static String[][] BASE_DATA_TYPES = { { "void", null }, { "byte", Byte.class.getName() },
+	private final static String[][] BASE_DATATYPES = { { "void", null }, { "byte", Byte.class.getName() },
 			{ "short", Short.class.getName() }, { "int", Integer.class.getName() }, { "long", Long.class.getName() },
 			{ "float", Float.class.getName() }, { "double", Double.class.getName() },
 			{ "char", Character.class.getName() }, { "boolean", Boolean.class.getName() },
 			{ "long", Long.class.getName() } };
+
+	private final static Object[][] COLLECTION_DATATYPES = { { "java.util.List", List.class },
+			{ "java.util.Set", Set.class }, { "java.util.Map", Map.class }, { "java.util.Deque", Deque.class } };
 
 	/**
 	 * 返回类型名称
@@ -59,18 +57,13 @@ public class ReturnData {
 			classTypes = new Class<?>[types.length];
 			for (int i = 0; i < types.length; i++) {
 				Type type = types[i];
-				if (type.getTypeName().indexOf(LIST_CLASS_NAME) == 0) {
-					classTypes[i] = List.class;
+				String typeName = StringUtil.isNotEmpty(type.getTypeName()) ? type.getTypeName().split("<")[0] : "";
+				Map<String, Object> dataTypeMap = MapUtil.arrayToMap(COLLECTION_DATATYPES);
+				if (dataTypeMap.containsKey(typeName)) {
+					classTypes[i] = (Class<?>) dataTypeMap.get(typeName);
 					setContainerType(Boolean.TRUE);
-				} else if (type.getTypeName().indexOf(SET_CLASS_NAME) == 0) {
-					classTypes[i] = Set.class;
-					setContainerType(Boolean.TRUE);
-				} else if (type.getTypeName().indexOf(MAP_CLASS_NAME) == 0) {
-					classTypes[i] = Map.class;
-					setContainerType(Boolean.TRUE);
-				} else {
-					classTypes[i] = (Class<?>) types[i];
-				}
+				} else
+					classTypes[i] = (Class<?>) type;
 			}
 		} catch (Exception e) {
 			try {
@@ -118,20 +111,8 @@ public class ReturnData {
 	}
 
 	private String getClassNameByTypeName(String classTypeName) {
-		Map<String, String> dataTypeMap = toMap(BASE_DATA_TYPES);
+		Map<String, String> dataTypeMap = MapUtil.arrayToMap(BASE_DATATYPES);
 		return (dataTypeMap.containsKey(classTypeName)) ? dataTypeMap.get(classTypeName) : classTypeName;
-	}
-
-	public Map<String, String> toMap(String[][] array) {
-		final Map<String, String> map = new HashMap<>((int) (array.length * 1.5));
-		for (int i = 0; i < array.length; i++) {
-			final String[] entry = array[i];
-			if (entry.length < 2)
-				throw new IllegalArgumentException(
-						"Array element " + i + ", '" + entry + "', has a length less than 2");
-			map.put(entry[0], entry[1]);
-		}
-		return map;
 	}
 
 }
