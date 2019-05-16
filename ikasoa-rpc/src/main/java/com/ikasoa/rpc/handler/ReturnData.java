@@ -4,6 +4,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.Deque;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -29,7 +30,8 @@ public class ReturnData {
 			{ "long", Long.class.getName() } };
 
 	private final static Object[][] COLLECTION_DATATYPES = { { "java.util.List", List.class },
-			{ "java.util.Set", Set.class }, { "java.util.Map", Map.class }, { "java.util.Deque", Deque.class } };
+			{ "java.util.Set", Set.class }, { "java.util.Iterator", Iterator.class }, { "java.util.Map", Map.class },
+			{ "java.util.Deque", Deque.class } };
 
 	/**
 	 * 返回类型名称
