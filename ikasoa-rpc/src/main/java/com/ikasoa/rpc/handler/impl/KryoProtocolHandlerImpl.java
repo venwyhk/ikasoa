@@ -41,22 +41,24 @@ public class KryoProtocolHandlerImpl<T, R> implements ProtocolHandler<T, R> {
 	@SuppressWarnings("unchecked")
 	public String argToStr(T arg) {
 		arg = Optional.ofNullable(arg).orElse((T) new Object[0]);
-		Output output = new Output(1, 4096);
-		kryo.writeObject(output, arg);
-		byte[] bb = output.toBytes();
-		output.flush();
-		return Base64Util.encode(bb);
+		try (Output output = new Output(1, 4096)) {
+			kryo.writeObject(output, arg);
+			byte[] bb = output.toBytes();
+			output.flush();
+			return Base64Util.encode(bb);
+		}
 	}
 
 	@Override
+	@SuppressWarnings("unchecked")
 	public String resultToStr(R result) {
-		if (result == null)
-			return String.valueOf(V);
-		Output output = new Output(1, 4096);
-		kryo.writeObject(output, result);
-		byte[] bb = output.toBytes();
-		output.flush();
-		return Base64Util.encode(bb);
+		result = Optional.ofNullable(result).orElse((R) String.valueOf(V));
+		try (Output output = new Output(1, 4096)) {
+			kryo.writeObject(output, result);
+			byte[] bb = output.toBytes();
+			output.flush();
+			return Base64Util.encode(bb);
+		}
 	}
 
 	@Override
@@ -66,10 +68,10 @@ public class KryoProtocolHandlerImpl<T, R> implements ProtocolHandler<T, R> {
 			return null;
 		return resultData.isArray()
 				? (R) kryo.readObject(new Input(Base64Util.decode(str)),
-						kryo.register((new ArrayList<>()).getClass()).getType())
+						kryo.register(new ArrayList<>(0).getClass()).getType())
 				: resultData.isMap()
 						? (R) kryo.readObject(new Input(Base64Util.decode(str)),
-								kryo.register((new HashMap<>()).getClass()).getType())
+								kryo.register(new HashMap<>(0).getClass()).getType())
 						: (R) kryo.readObject(new Input(Base64Util.decode(str)),
 								kryo.register(resultData.getClassType()).getType());
 	}
