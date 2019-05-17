@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.util.Optional;
 
 import com.esotericsoftware.minlog.Log;
+import com.ikasoa.core.utils.StringUtil;
 import com.ikasoa.rpc.handler.ProtocolHandler;
 import com.ikasoa.rpc.handler.ReturnData;
 
@@ -48,7 +49,7 @@ public class XmlProtocolHandlerImpl<T, R> implements ProtocolHandler<T, R> {
 	@Override
 	@SuppressWarnings("unchecked")
 	public R strToResult(String str) {
-		return String.valueOf(V).equals(str) ? null : (R) parserXML(str);
+		return StringUtil.equals(String.valueOf(V), str) ? null : (R) parserXML(str);
 	}
 
 	@Override

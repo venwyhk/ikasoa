@@ -43,7 +43,7 @@ public class SerializableProtocolHandlerImpl<T, R> implements ProtocolHandler<T,
 	@Override
 	@SuppressWarnings("unchecked")
 	public R strToResult(String str) {
-		if (String.valueOf(V).equals(str))
+		if (StringUtil.equals(String.valueOf(V), str))
 			return null;
 		return (R) StreamUtil.bytesToObject(StringUtil.hexStrToBytes(str));
 	}

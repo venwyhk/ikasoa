@@ -220,7 +220,8 @@ public class DefaultIkasoaFactory extends GeneralFactory implements IkasoaFactor
 		for (Method implMethod : implClass.getMethods()) {
 			boolean isValidMethod = Boolean.FALSE;
 			// 对hashCode和toString两个方法做特殊处理
-			if ("hashCode".equals(implMethod.getName()) || "toString".equals(implMethod.getName()))
+			if (StringUtil.equals("hashCode", implMethod.getName())
+					|| StringUtil.equals("toString", implMethod.getName()))
 				isValidMethod = Boolean.TRUE;
 			else
 				// 过滤掉无效方法
@@ -251,11 +252,11 @@ public class DefaultIkasoaFactory extends GeneralFactory implements IkasoaFactor
 
 	// 比较两个方法是否相同
 	private boolean compareMethod(Method m1, Method m2) {
-		if (m1 != null && m2 != null && m1.getName().equals(m2.getName())
+		if (m1 != null && m2 != null && StringUtil.equals(m1.getName(), m2.getName())
 				&& m1.getParameterTypes().length == m2.getParameterTypes().length
-				&& m1.getReturnType().getName().equals(m2.getReturnType().getName())) {
+				&& StringUtil.equals(m1.getReturnType().getName(), m2.getReturnType().getName())) {
 			for (int i = 0; i < m1.getParameterTypes().length; i++)
-				if (!m1.getParameterTypes()[i].getName().equals(m2.getParameterTypes()[i].getName()))
+				if (!StringUtil.equals(m1.getParameterTypes()[i].getName(), m2.getParameterTypes()[i].getName()))
 					return Boolean.FALSE;
 			return Boolean.TRUE;
 		} else

@@ -93,11 +93,12 @@ public class ReturnData {
 	}
 
 	public boolean isArray() {
-		return List.class.getName().equals(getClassName()) || Set.class.getName().equals(getClassName());
+		return StringUtil.equals(List.class.getName(), getClassName())
+				|| StringUtil.equals(Set.class.getName(), getClassName());
 	}
 
 	public boolean isMap() {
-		return Map.class.getName().equals(getClassName());
+		return StringUtil.equals(Map.class.getName(), getClassName());
 	}
 
 	public boolean hasExcetion() {

@@ -7,6 +7,7 @@ import java.util.Optional;
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.io.Input;
 import com.esotericsoftware.kryo.io.Output;
+import com.ikasoa.core.utils.StringUtil;
 import com.ikasoa.rpc.handler.ProtocolHandler;
 import com.ikasoa.rpc.handler.ReturnData;
 import com.ikasoa.rpc.utils.Base64Util;
@@ -64,7 +65,7 @@ public class KryoProtocolHandlerImpl<T, R> implements ProtocolHandler<T, R> {
 	@Override
 	@SuppressWarnings("unchecked")
 	public R strToResult(String str) {
-		if (String.valueOf(V).equals(str))
+		if (StringUtil.equals(String.valueOf(V), str))
 			return null;
 		return resultData.isArray()
 				? (R) kryo.readObject(new Input(Base64Util.decode(str)),

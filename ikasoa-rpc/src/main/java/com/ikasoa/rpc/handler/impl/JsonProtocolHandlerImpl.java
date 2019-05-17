@@ -32,7 +32,7 @@ public class JsonProtocolHandlerImpl<T, R> implements ProtocolHandler<T, R> {
 	public T strToArg(String str) {
 		if (StringUtil.isEmpty(str))
 			throw new IllegalArgumentException("parameters string can't null !");
-		if ("[]".equals(str))
+		if (StringUtil.equals("[]", str))
 			return null;
 		String[] strs = str.split(String.valueOf(CT));
 		if (strs.length != 2)
@@ -83,7 +83,7 @@ public class JsonProtocolHandlerImpl<T, R> implements ProtocolHandler<T, R> {
 	public R strToResult(String str) {
 		if (str == null)
 			throw new IllegalArgumentException("result string is null !");
-		if (String.valueOf(ProtocolHandler.V).equals(str))
+		if (StringUtil.equals(String.valueOf(ProtocolHandler.V), str))
 			return null;
 		String[] strs = str.split(String.valueOf(CT));
 		if (strs.length != 2)
@@ -91,13 +91,15 @@ public class JsonProtocolHandlerImpl<T, R> implements ProtocolHandler<T, R> {
 		String resultStr = strs[1];
 		R result = null;
 		if (resultData.isArray()) {
-			if (!resultData.isContainerType() && (List.class.getName().equals(resultData.getClassType().getName())
-					|| Set.class.getName().equals(resultData.getClassType().getName())))
+			if (!resultData.isContainerType()
+					&& (StringUtil.equals(List.class.getName(), resultData.getClassType().getName())
+							|| StringUtil.equals(Set.class.getName(), resultData.getClassType().getName())))
 				throw new IllegalArgumentException("'List' or 'Set' must appoint type ! eg : 'List<String>' .");
 			result = (R) JSON.parseArray(resultStr, resultData.getClassType());
 		} else if (resultData.isMap()) {
-			if (!resultData.isContainerType() && (Map.class.getName().equals(resultData.getClassType().getName())
-					&& resultData.getClassTypes().length != 2))
+			if (!resultData.isContainerType()
+					&& (StringUtil.equals(Map.class.getName(), resultData.getClassType().getName())
+							&& resultData.getClassTypes().length != 2))
 				throw new IllegalArgumentException("'Map' must appoint type ! eg : 'Map<String, String>' .");
 			JSONObject jsonMap = JSON.parseObject(resultStr);
 			Map<Object, Object> map = new HashMap<>(jsonMap.size());
@@ -118,7 +120,7 @@ public class JsonProtocolHandlerImpl<T, R> implements ProtocolHandler<T, R> {
 	@Override
 	public Throwable strToThrowable(String str) {
 		String[] strs = str.split(String.valueOf(E));
-		return strs.length == 2 && "".equals(strs[0]) ? JSON.parseObject(strs[1], Throwable.class) : null;
+		return strs.length == 2 && StringUtil.equals("", strs[0]) ? JSON.parseObject(strs[1], Throwable.class) : null;
 	}
 
 	@Override
