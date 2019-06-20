@@ -36,7 +36,7 @@ public class JsonProtocolHandlerImpl<T, R> implements ProtocolHandler<T, R> {
 			return null;
 		String[] strs = str.split(String.valueOf(CT));
 		if (strs.length != 2)
-			throw new IllegalArgumentException("arg json string error : " + str);
+			throw new IllegalArgumentException(StringUtil.merge("arg json string error : ", str));
 		String argClassStr = strs[0];
 		Class<?>[] argClasses = JSON.parseObject(argClassStr, Class[].class);
 		String argStr = strs[1];
@@ -87,7 +87,7 @@ public class JsonProtocolHandlerImpl<T, R> implements ProtocolHandler<T, R> {
 			return null;
 		String[] strs = str.split(String.valueOf(CT));
 		if (strs.length != 2)
-			throw new IllegalArgumentException("result json string error : " + str);
+			throw new IllegalArgumentException(StringUtil.merge("result json string error : ", str));
 		String resultStr = strs[1];
 		R result = null;
 		if (resultData.isArray()) {

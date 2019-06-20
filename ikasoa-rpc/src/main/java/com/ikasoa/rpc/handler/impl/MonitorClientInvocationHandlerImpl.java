@@ -23,8 +23,10 @@ public class MonitorClientInvocationHandlerImpl implements ClientInvocationHandl
 	@Override
 	public ClientInvocationContext before(ClientInvocationContext context) {
 		StringBuilder sb = new StringBuilder("开始调用远程接口. ");
-		if (StringUtil.isNotEmpty(context.getServiceKey()))
-			sb.append("接口名: " + context.getServiceKey());
+		if (StringUtil.isNotEmpty(context.getServiceKey())) {
+			sb.append("接口名: ");
+			sb.append(context.getServiceKey());
+		}
 		sb.append(".");
 		log.info(sb.toString());
 		return context;
@@ -42,7 +44,7 @@ public class MonitorClientInvocationHandlerImpl implements ClientInvocationHandl
 		if (timeMap.containsKey(context.getUuid())) {
 			if (StringUtil.isNotEmpty(context.getServiceKey()))
 				sb.append(context.getUuid()).append(" ");
-				sb.append("接口名: ").append(context.getServiceKey()).append(", ");
+			sb.append("接口名: ").append(context.getServiceKey()).append(", ");
 			sb.append("耗时: ").append(System.currentTimeMillis() - timeMap.get(context.getUuid())).append("毫秒 .");
 			timeMap.remove(context.getUuid());
 		}
