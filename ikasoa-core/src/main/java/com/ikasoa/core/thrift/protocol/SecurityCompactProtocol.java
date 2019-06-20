@@ -88,8 +88,8 @@ public class SecurityCompactProtocol extends TCompactProtocol {
 		} else if (strLen < length) {
 			String tem = "";
 			for (int i = 0; i < length - strLen; i++)
-				tem = tem + " ";
-			return str + tem;
+				tem = StringUtil.merge(tem, " ");
+			return StringUtil.merge(str, tem);
 		} else {
 			return str.substring(0, length);
 		}

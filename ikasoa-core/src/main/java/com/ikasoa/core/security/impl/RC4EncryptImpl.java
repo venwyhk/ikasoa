@@ -106,7 +106,7 @@ public class RC4EncryptImpl implements SymmetricKeyEncrypt {
 			int ch = (int) s.charAt(i);
 			String s4 = Integer.toHexString(ch & 0xFF);
 			if (s4.length() == 1)
-				s4 = "0" + s4;
+				s4 = StringUtil.merge("0", s4);
 			str += s4;
 		}
 		return str; // 0x表示十六进制
@@ -121,8 +121,9 @@ public class RC4EncryptImpl implements SymmetricKeyEncrypt {
 	}
 
 	private static byte uniteBytes(byte src0, byte src1) {
-		return (byte) ((char) ((char) Byte.decode("0x" + new String(new byte[] { src0 })).byteValue() << 4)
-				^ (char) Byte.decode("0x" + new String(new byte[] { src1 })).byteValue());
+		return (byte) ((char) ((char) Byte.decode(StringUtil.merge("0x", new String(new byte[] { src0 })))
+				.byteValue() << 4)
+				^ (char) Byte.decode(StringUtil.merge("0x", new String(new byte[] { src1 }))).byteValue());
 	}
 
 	private byte[] rc4Base(byte[] input, String mKkey) {

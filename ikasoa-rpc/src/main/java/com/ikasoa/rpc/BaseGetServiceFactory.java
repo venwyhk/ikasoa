@@ -4,6 +4,7 @@ import com.ikasoa.core.thrift.GeneralFactory;
 import com.ikasoa.core.thrift.client.ThriftClient;
 import com.ikasoa.core.thrift.client.ThriftClientConfiguration;
 import com.ikasoa.core.thrift.server.ThriftServerConfiguration;
+import com.ikasoa.core.utils.StringUtil;
 import com.ikasoa.rpc.client.IkasoaClientService;
 import com.ikasoa.rpc.client.InvalidGetService;
 import com.ikasoa.rpc.handler.ClientInvocationHandler;
@@ -54,7 +55,7 @@ public class BaseGetServiceFactory<T, R> extends GeneralFactory {
 
 	public BaseGetService<T, R> getBaseGetService(ThriftClient thriftClient, String serviceKey,
 			ProtocolHandler<T, R> protocolHandler) {
-		if (thriftClient == null || serviceKey == null || protocolHandler == null)
+		if (thriftClient == null || StringUtil.isEmpty(serviceKey) || protocolHandler == null)
 			return new InvalidGetService<T, R>();
 		log.debug("Create new instance 'IkasoaClientService' . (serverHost : {}, serverPort : {}, serviceKey : {})",
 				thriftClient.getServerHost(), thriftClient.getServerPort(), serviceKey);

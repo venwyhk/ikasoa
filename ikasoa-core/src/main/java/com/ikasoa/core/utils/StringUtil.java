@@ -123,6 +123,13 @@ public class StringUtil {
 		return new String(hexChars);
 	}
 
+	public static String merge(String... strs) {
+		StringBuilder sb = new StringBuilder();
+		for (String str : strs)
+			sb.append(str);
+		return sb.toString();
+	}
+
 	@SneakyThrows
 	public static int toInt(String str) {
 		return isNotEmpty(str) ? Integer.parseInt(str.trim()) : 0;

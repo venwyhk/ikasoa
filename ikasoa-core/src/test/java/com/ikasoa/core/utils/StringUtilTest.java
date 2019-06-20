@@ -101,6 +101,15 @@ public class StringUtilTest extends TestCase {
 	}
 
 	@Test
+	public void testMerge() {
+		assertEquals(StringUtil.merge("a", "b"), "ab");
+		assertEquals(StringUtil.merge("a", "b", "c"), "abc");
+		assertEquals(StringUtil.merge("a", "b", "c", "d"), "abcd");
+		assertEquals(StringUtil.merge("a", "b", "c", "d", "e"), "abcde");
+		assertEquals(StringUtil.merge("a", "b", "c", "d", "e", "f"), "abcdef");
+	}
+
+	@Test
 	public void testToInt() {
 		assertEquals(StringUtil.toInt("123 "), 123);
 	}

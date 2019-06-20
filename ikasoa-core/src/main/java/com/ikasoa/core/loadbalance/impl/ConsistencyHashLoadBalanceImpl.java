@@ -39,7 +39,7 @@ public class ConsistencyHashLoadBalanceImpl implements LoadBalance {
 	public ConsistencyHashLoadBalanceImpl(List<ServerInfo> serverInfoList, String hash) {
 		if (StringUtil.isEmpty(hash))
 			throw new IllegalArgumentException("Constructor must exist hash parameter !");
-		hashReference = new SoftReference<String>(InetAddress.getLocalHost().getHostAddress() + hash);
+		hashReference = new SoftReference<String>(StringUtil.merge(InetAddress.getLocalHost().getHostAddress(), hash));
 		nodes = new TreeMap<>();
 		for (int i = 0; i < serverInfoList.size(); i++) {
 			ServerInfo serverInfo = serverInfoList.get(i);

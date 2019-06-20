@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.ikasoa</groupId>
     <artifactId>ikasoa-core</artifactId>
-    <version>0.6</version>
+    <version>0.6.1</version>
     <packaging>jar</packaging>
     <name>Ikasoa Core</name>
     <description>ikasoa is a java distributed service framework.</description>
@@ -44,7 +44,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.8.0</version>
+                <version>3.8.1</version>
                 <configuration>
                     <source>1.8</source>
                     <target>1.8</target>
@@ -55,7 +55,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
-                <version>3.0.1</version>
+                <version>3.1.0</version>
                 <configuration>
                     <attach>true</attach>
                 </configuration>
@@ -90,7 +90,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.22.1</version>
+                <version>2.22.2</version>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -137,7 +137,7 @@
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-pool2</artifactId>
-            <version>2.6.1</version>
+            <version>2.6.2</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
@@ -153,7 +153,7 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.18.6</version>
+            <version>1.18.8</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
