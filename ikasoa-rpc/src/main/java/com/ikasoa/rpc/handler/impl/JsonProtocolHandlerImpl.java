@@ -51,8 +51,7 @@ public class JsonProtocolHandlerImpl<T, R> implements ProtocolHandler<T, R> {
 				objs[i] = null;
 				continue;
 			}
-			objs[i] = isAppendQuotes(s) ? JSON.parseObject(new StringBuilder("\"").append(s).append("\"").toString(), c)
-					: JSON.parseObject(s, c);
+			objs[i] = isAppendQuotes(s) ? JSON.parseObject(StringUtil.merge("\"", s, "\""), c) : JSON.parseObject(s, c);
 		}
 		return (T) objs;
 	}

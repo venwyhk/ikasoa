@@ -45,7 +45,8 @@ public class ServerUtilTest extends TestCase {
 
 	@Test
 	public void testBuildCacheKey() {
-		assertEquals(ServerUtil.buildCacheKey(TestConstants.LOCAL_HOST, 8080), TestConstants.LOCAL_HOST + ":8080");
+		assertEquals(ServerUtil.buildCacheKey(TestConstants.LOCAL_HOST, 8080),
+				StringUtil.merge(TestConstants.LOCAL_HOST, ":8080"));
 	}
 
 }

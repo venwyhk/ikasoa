@@ -123,10 +123,10 @@ public class StringUtil {
 		return new String(hexChars);
 	}
 
-	public static String merge(String... strs) {
+	public static String merge(Object... objects) {
 		StringBuilder sb = new StringBuilder();
-		for (String str : strs)
-			sb.append(str);
+		for (Object object : objects)
+			sb.append(object);
 		return sb.toString();
 	}
 

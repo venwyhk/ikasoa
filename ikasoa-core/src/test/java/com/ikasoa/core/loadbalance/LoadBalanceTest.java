@@ -11,6 +11,7 @@ import com.ikasoa.core.loadbalance.impl.ConsistencyHashLoadBalanceImpl;
 import com.ikasoa.core.loadbalance.impl.PollingLoadBalanceImpl;
 import com.ikasoa.core.loadbalance.impl.RandomLoadBalanceImpl;
 import com.ikasoa.core.utils.ServerUtil;
+import com.ikasoa.core.utils.StringUtil;
 
 import junit.framework.TestCase;
 
@@ -29,17 +30,17 @@ public class LoadBalanceTest extends TestCase {
 		int testSize = 10;
 		List<ServerInfo> serverInfoList = new ArrayList<>();
 		for (int i = 1; i <= testSize; i++)
-			serverInfoList.add(new ServerInfo(new StringBuilder("192.168.1.").append(i).toString(),
+			serverInfoList.add(new ServerInfo(StringUtil.merge("192.168.1.", i),
 					ServerUtil.getNewPort(String.format("testPollingLoadBalanceImpl_%d", i))));
 		LoadBalance loadBalance = new PollingLoadBalanceImpl(serverInfoList);
 		for (int j = 1; j <= testSize; j++) {
 			ServerInfo serverInfo = loadBalance.getServerInfo();
 			assertNotNull(serverInfo);
-			assertEquals(serverInfo.getHost(), new StringBuilder("192.168.1.").append(j).toString());
+			assertEquals(serverInfo.getHost(), StringUtil.merge("192.168.1.", j));
 			assertEquals(serverInfo.getPort(),
 					ServerUtil.getNewPort(String.format("testPollingLoadBalanceImpl_%d", j)));
 			serverInfo = loadBalance.getServerInfo();
-			assertEquals(serverInfo.getHost(), new StringBuilder("192.168.1.").append(j).toString());
+			assertEquals(serverInfo.getHost(), StringUtil.merge("192.168.1.", j));
 			assertEquals(serverInfo.getPort(),
 					ServerUtil.getNewPort(String.format("testPollingLoadBalanceImpl_%d", j)));
 			next(loadBalance);

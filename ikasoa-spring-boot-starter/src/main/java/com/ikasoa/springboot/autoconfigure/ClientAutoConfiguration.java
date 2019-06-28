@@ -51,7 +51,7 @@ public class ClientAutoConfiguration extends AbstractAutoConfiguration implement
 				throw new RpcException("Port '" + eurekaAppPort + "' is error !");
 			List<ServiceInstance> instanceList = discoveryClient.getInstances(eurekaAppName);
 			if (instanceList.isEmpty())
-				throw new RpcException("Service '" + eurekaAppName + "' is empty !");
+				throw new RpcException(StringUtil.merge("Service '", eurekaAppName, "' is empty !"));
 			List<ServerInfo> serverInfoList = instanceList.stream().map(i -> new ServerInfo(i.getHost(), eurekaAppPort))
 					.collect(Collectors.toList());
 			return StringUtil.isEmpty(configurator) ? new ServiceProxy(serverInfoList)

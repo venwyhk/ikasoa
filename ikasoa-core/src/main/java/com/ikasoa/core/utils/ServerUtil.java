@@ -59,7 +59,7 @@ public class ServerUtil {
 	}
 
 	public static String buildCacheKey(String serverHost, int serverPort) {
-		return new StringBuilder(serverHost).append(":").append(serverPort).toString();
+		return StringUtil.merge(serverHost, ":", serverPort);
 	}
 
 }
