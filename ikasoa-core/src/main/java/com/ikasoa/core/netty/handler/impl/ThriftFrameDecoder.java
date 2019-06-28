@@ -87,11 +87,12 @@ public class ThriftFrameDecoder extends FrameDecoder {
 
 		try {
 			TNettyTransport decodeAttemptTransport = new TNettyTransport(channel, buffer, TNettyTransportType.UNFRAMED);
+			int initialReadBytes = decodeAttemptTransport.getReadByteCount();
 			TProtocol inputProtocol = inputProtocolFactory.getProtocol(decodeAttemptTransport);
 			inputProtocol.readMessageBegin();
 			TProtocolUtil.skip(inputProtocol, TType.STRUCT);
 			inputProtocol.readMessageEnd();
-			messageLength = decodeAttemptTransport.getReadByteCount() - decodeAttemptTransport.getReadByteCount();
+			messageLength = decodeAttemptTransport.getReadByteCount() - initialReadBytes;
 		} catch (TTransportException | IndexOutOfBoundsException e) {
 			return null;
 		} finally {
