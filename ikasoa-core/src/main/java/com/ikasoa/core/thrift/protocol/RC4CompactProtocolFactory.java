@@ -14,7 +14,7 @@ import com.ikasoa.core.security.impl.RC4EncryptImpl;
  */
 public class RC4CompactProtocolFactory extends SecurityCompactProtocol.Factory implements TProtocolFactory {
 
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 4493597272193255035L;
 
 	public RC4CompactProtocolFactory(String key) {
 		super(key, new RC4EncryptImpl());

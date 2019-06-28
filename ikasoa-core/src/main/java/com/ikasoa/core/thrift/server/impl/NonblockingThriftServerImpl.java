@@ -21,8 +21,8 @@ public class NonblockingThriftServerImpl extends AbstractThriftServerImpl {
 
 	private TNonblockingServerSocket serverSocket;
 
-	public NonblockingThriftServerImpl(String serverName, int serverPort, ThriftServerConfiguration configuration,
-			TProcessor processor) {
+	public NonblockingThriftServerImpl(final String serverName, final int serverPort,
+			final ThriftServerConfiguration configuration, TProcessor processor) {
 		setServerName(serverName);
 		setServerPort(serverPort);
 		configuration.setTransportFactory(new TFramedTransport.Factory()); // 如果提供非阻塞服务,则必须为TFramedTransport.Factory().

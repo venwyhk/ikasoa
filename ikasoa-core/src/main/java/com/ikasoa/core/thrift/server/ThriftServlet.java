@@ -18,7 +18,7 @@ import org.apache.thrift.server.TServlet;
  */
 public class ThriftServlet extends TServlet {
 
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = -7400273777722664582L;
 
 	private String serverName;
 

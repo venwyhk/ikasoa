@@ -35,11 +35,9 @@ public class AsyncServiceClientImpl extends TAsyncClient implements AsyncService
 	@Override
 	public void get(String arg, AsyncMethodCallback<String> resultHandler) throws IkasoaException {
 		checkReady();
-		CallBack methodCall;
 		try {
-			methodCall = new CallBack(arg, resultHandler, this, ___protocolFactory, ___transport);
-			super.___currentMethod = methodCall;
-			super.___manager.call(methodCall);
+			___currentMethod = new CallBack(arg, resultHandler, this, ___protocolFactory, ___transport);
+			___manager.call(___currentMethod);
 		} catch (TException e) {
 			throw new IkasoaException(e);
 		}

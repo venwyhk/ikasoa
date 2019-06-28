@@ -25,7 +25,7 @@ import lombok.NoArgsConstructor;
 public abstract class AbstractThriftBase
 		implements TBase<AbstractThriftBase, AbstractThriftBase.FieldsEnum>, Cloneable {
 
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = -7518103311477787917L;
 
 	@Getter
 	private String str;

@@ -12,7 +12,7 @@ import com.ikasoa.core.security.impl.DESEncryptImpl;
  */
 public class DESCompactProtocolFactory extends SecurityCompactProtocol.Factory implements TProtocolFactory {
 
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 3160327006165069226L;
 
 	public DESCompactProtocolFactory(String key) {
 		super(key, new DESEncryptImpl());

@@ -28,7 +28,7 @@ public class LoadBalanceThriftClientImpl extends AbstractThriftClientImpl {
 
 	private ServerCheckFailProcessor serverCheckFailProcessor = getServerCheckFailProcessor(new NextProcessImpl());
 
-	public LoadBalanceThriftClientImpl(LoadBalance loadBalance, ThriftClientConfiguration configuration) {
+	public LoadBalanceThriftClientImpl(final LoadBalance loadBalance, final ThriftClientConfiguration configuration) {
 		if (loadBalance == null)
 			throw new IllegalArgumentException("'loadBalance' is null !");
 		this.loadBalance = loadBalance;

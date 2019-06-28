@@ -27,7 +27,7 @@ public class SecurityCompactProtocol extends TCompactProtocol {
 
 	public static class Factory implements TProtocolFactory {
 
-		private static final long serialVersionUID = 1L;
+		private static final long serialVersionUID = 3451446981775690583L;
 
 		protected final String key_;
 

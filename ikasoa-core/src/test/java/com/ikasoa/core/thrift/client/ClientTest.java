@@ -11,6 +11,7 @@ import com.ikasoa.core.loadbalance.impl.PollingLoadBalanceImpl;
 import com.ikasoa.core.thrift.GeneralFactory;
 import com.ikasoa.core.thrift.client.impl.LoadBalanceThriftClientImpl;
 import com.ikasoa.core.thrift.client.impl.ThriftClientImpl;
+import com.ikasoa.core.utils.ListUtil;
 import com.ikasoa.core.utils.ServerUtil;
 
 import junit.framework.TestCase;
@@ -47,8 +48,7 @@ public class ClientTest extends TestCase {
 	public void testLoadBalanceThriftClientImpl() {
 		String serverHost1 = TestConstants.LOCAL_HOST;
 		int serverPort1 = ServerUtil.getNewPort();
-		List<ServerInfo> serverInfoList = new ArrayList<>();
-		serverInfoList.add(new ServerInfo(serverHost1, serverPort1));
+		List<ServerInfo> serverInfoList = ListUtil.newArrayList(new ServerInfo(serverHost1, serverPort1));
 		// 以下测试利用自定义负载均衡类型通过GeneralFactory获取Client对象
 		try {
 			@Cleanup

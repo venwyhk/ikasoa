@@ -17,12 +17,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ThreadPoolThriftServerImpl extends AbstractThriftServerImpl {
 
-	public ThreadPoolThriftServerImpl(String serverName, int serverPort, ThriftServerConfiguration configuration,
-			TProcessor processor) {
+	public ThreadPoolThriftServerImpl(final String serverName, final int serverPort,
+			final ThriftServerConfiguration configuration, final TProcessor processor) {
 		setServerName(serverName);
 		setServerPort(serverPort);
-		if (configuration == null)
-			configuration = new ThriftServerConfiguration();
 		setConfiguration(configuration);
 		setProcessor(processor);
 	}

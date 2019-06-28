@@ -8,7 +8,7 @@ package com.ikasoa.core;
  */
 public class IkasoaException extends Exception {
 
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1424673994480186377L;
 
 	public IkasoaException() {
 		super();

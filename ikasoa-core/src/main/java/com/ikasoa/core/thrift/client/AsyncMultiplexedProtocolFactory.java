@@ -19,7 +19,7 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class AsyncMultiplexedProtocolFactory extends TCompactProtocol.Factory implements TProtocolFactory {
 
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = -7061805270980551456L;
 
 	private String serviceName;
 

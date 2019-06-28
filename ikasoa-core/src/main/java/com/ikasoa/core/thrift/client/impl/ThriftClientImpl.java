@@ -15,7 +15,8 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class ThriftClientImpl extends AbstractThriftClientImpl {
 
-	public ThriftClientImpl(String serverHost, int serverPort, ThriftClientConfiguration configuration) {
+	public ThriftClientImpl(final String serverHost, final int serverPort,
+			final ThriftClientConfiguration configuration) {
 		setServerHost(serverHost);
 		setServerPort(serverPort);
 		if (configuration == null) {

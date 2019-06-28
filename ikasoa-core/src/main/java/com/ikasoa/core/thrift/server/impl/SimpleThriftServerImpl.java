@@ -19,8 +19,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class SimpleThriftServerImpl extends AbstractThriftServerImpl {
 
-	public SimpleThriftServerImpl(String serverName, int serverPort, ThriftServerConfiguration configuration,
-			TProcessor processor) {
+	public SimpleThriftServerImpl(final String serverName, final int serverPort,
+			final ThriftServerConfiguration configuration, TProcessor processor) {
 		setServerName(serverName);
 		setServerPort(serverPort);
 		setConfiguration(configuration);

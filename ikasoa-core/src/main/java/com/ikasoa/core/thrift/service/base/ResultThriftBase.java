@@ -10,7 +10,7 @@ import org.apache.thrift.protocol.TStruct;
  */
 public class ResultThriftBase extends AbstractThriftBase {
 
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = -1819529606643367516L;
 
 	private static final TStruct STRUCT_DESC = new TStruct("get_result");
 

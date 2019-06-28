@@ -78,13 +78,13 @@ public class NettyServerImpl implements NettyServer {
 
 	protected Channel serverChannel;
 
-	public NettyServerImpl(String serverName, int serverPort, NettyServerConfiguration configuration,
-			TProcessor processor) {
+	public NettyServerImpl(final String serverName, final int serverPort, final NettyServerConfiguration configuration,
+			final TProcessor processor) {
 		this(serverName, serverPort, configuration, processor, new DefaultChannelGroup());
 	}
 
-	public NettyServerImpl(String serverName, int serverPort, NettyServerConfiguration configuration,
-			TProcessor processor, final ChannelGroup allChannels) {
+	public NettyServerImpl(final String serverName, final int serverPort, final NettyServerConfiguration configuration,
+			final TProcessor processor, final ChannelGroup allChannels) {
 		setServerName(serverName);
 		requestedPort = serverPort;
 		setConfiguration(
@@ -99,8 +99,7 @@ public class NettyServerImpl implements NettyServer {
 			if (channelFactory == null) {
 				if (workerExecutorService == null)
 					workerExecutorService = getServerConfiguration().getExecutorService() == null
-							? Executors.newFixedThreadPool(2)
-							: getServerConfiguration().getExecutorService();
+							? Executors.newFixedThreadPool(2) : getServerConfiguration().getExecutorService();
 				if (workerCount <= 0)
 					workerCount = configuration.getWorkerCount();
 				channelFactory = new NioServerSocketChannelFactory(

@@ -50,10 +50,8 @@ public class ConsistencyHashLoadBalanceImpl implements LoadBalance {
 
 	@Override
 	public ServerInfo getServerInfo() {
-		Long key = hash(computeMd5(hashReference.get()), 0);
-		SortedMap<Long, ServerInfo> tailMap = nodes.tailMap(key);
-		key = tailMap.isEmpty() ? nodes.firstKey() : tailMap.firstKey();
-		return nodes.get(key);
+		SortedMap<Long, ServerInfo> tailMap = nodes.tailMap(hash(computeMd5(hashReference.get()), 0));
+		return nodes.get(tailMap.isEmpty() ? nodes.firstKey() : tailMap.firstKey());
 	}
 
 	@Override

@@ -8,7 +8,7 @@ import lombok.SneakyThrows;
 import lombok.experimental.UtilityClass;
 
 /**
- * 字符串常用操作工具类
+ * 字符串工具类
  * 
  * @author <a href="mailto:larry7696@gmail.com">Larry</a>
  * @version 0.2

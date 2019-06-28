@@ -10,6 +10,7 @@ import com.ikasoa.core.thrift.client.ThriftClient;
 import com.ikasoa.core.thrift.client.ThriftClientConfiguration;
 import com.ikasoa.core.thrift.client.impl.LoadBalanceThriftClientImpl;
 import com.ikasoa.core.thrift.client.impl.ThriftClientImpl;
+import com.ikasoa.core.utils.ListUtil;
 import com.ikasoa.core.utils.ServerUtil;
 import com.ikasoa.core.utils.StringUtil;
 
@@ -47,10 +48,8 @@ public class ServerCheckTest extends TestCase {
 	@Test
 	public void testLoadBalanceCheck() {
 		configuration.setServerCheck(new ServerCheckTestImpl());
-		List<ServerInfo> serverInfoList = new ArrayList<>();
-		serverInfoList.add(new ServerInfo("192.168.1.1", serverPort));
-		serverInfoList.add(new ServerInfo("192.168.1.2", serverPort));
-		serverInfoList.add(new ServerInfo("192.168.1.3", serverPort));
+		List<ServerInfo> serverInfoList = ListUtil.newArrayList(new ServerInfo("192.168.1.1", serverPort),
+				new ServerInfo("192.168.1.2", serverPort), new ServerInfo("192.168.1.3", serverPort));
 		try (ThriftClient loadBalanceThriftClient = new LoadBalanceThriftClientImpl(
 				new PollingLoadBalanceImpl(serverInfoList), configuration)) {
 			loadBalanceThriftClient.getTransport();

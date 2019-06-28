@@ -38,8 +38,8 @@ public class BeanUtil {
 		Field[] fields = sourceClz.getDeclaredFields();
 		if (fields.length == 0)
 			fields = sourceClz.getSuperclass().getDeclaredFields();
-		for (short i = 0; i < fields.length; i++) {
-			String fieldName = fields[i].getName();
+		for (Field field : fields) {
+			String fieldName = field.getName();
 			Field targetField = null;
 			try {
 				targetField = targetClz.getDeclaredField(fieldName);
@@ -50,7 +50,7 @@ public class BeanUtil {
 					throw new IkasoaException(e1);
 				}
 			}
-			if (fields[i].getType() == targetField.getType()) {
+			if (field.getType() == targetField.getType()) {
 				String getMethodName = StringUtil.merge("get", fieldName.substring(0, 1).toUpperCase(),
 						fieldName.substring(1));
 				String setMethodName = StringUtil.merge("set", fieldName.substring(0, 1).toUpperCase(),
@@ -63,9 +63,9 @@ public class BeanUtil {
 						getMethod = sourceClz.getSuperclass().getDeclaredMethod(getMethodName, new Class[] {});
 					}
 					try {
-						setMethod = targetClz.getDeclaredMethod(setMethodName, fields[i].getType());
+						setMethod = targetClz.getDeclaredMethod(setMethodName, field.getType());
 					} catch (NoSuchMethodException e) {
-						setMethod = targetClz.getSuperclass().getDeclaredMethod(setMethodName, fields[i].getType());
+						setMethod = targetClz.getSuperclass().getDeclaredMethod(setMethodName, field.getType());
 					}
 					setMethod.invoke(target, getMethod.invoke(source, new Object[] {}));
 				} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {

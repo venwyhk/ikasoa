@@ -38,10 +38,10 @@ public class ThriftFrameDecoder extends FrameDecoder {
 
 	@Override
 	protected TNettyMessage decode(ChannelHandlerContext ctx, Channel channel, ChannelBuffer buffer) throws Exception {
-		
+
 		if (!buffer.readable())
 			return null;
-		
+
 		short firstByte = buffer.getUnsignedByte(0);
 		if (firstByte >= 0x80) {
 			ChannelBuffer messageBuffer = tryDecodeUnframedMessage(ctx, channel, buffer, inputProtocolFactory);
@@ -56,7 +56,7 @@ public class ThriftFrameDecoder extends FrameDecoder {
 
 	protected ChannelBuffer tryDecodeFramedMessage(ChannelHandlerContext ctx, Channel channel, ChannelBuffer buffer,
 			boolean stripFraming) {
-		
+
 		int messageStartReaderIndex = buffer.readerIndex();
 		int messageContentsOffset = stripFraming ? messageStartReaderIndex + MESSAGE_FRAME_SIZE
 				: messageStartReaderIndex;
@@ -87,14 +87,11 @@ public class ThriftFrameDecoder extends FrameDecoder {
 
 		try {
 			TNettyTransport decodeAttemptTransport = new TNettyTransport(channel, buffer, TNettyTransportType.UNFRAMED);
-			int initialReadBytes = decodeAttemptTransport.getReadByteCount();
 			TProtocol inputProtocol = inputProtocolFactory.getProtocol(decodeAttemptTransport);
-
 			inputProtocol.readMessageBegin();
 			TProtocolUtil.skip(inputProtocol, TType.STRUCT);
 			inputProtocol.readMessageEnd();
-
-			messageLength = decodeAttemptTransport.getReadByteCount() - initialReadBytes;
+			messageLength = decodeAttemptTransport.getReadByteCount() - decodeAttemptTransport.getReadByteCount();
 		} catch (TTransportException | IndexOutOfBoundsException e) {
 			return null;
 		} finally {

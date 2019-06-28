@@ -41,7 +41,8 @@ public class ServletThriftServerImpl implements ThriftServer {
 	@Setter
 	private TProcessor processor;
 
-	public ServletThriftServerImpl(String serverName, ThriftServerConfiguration configuration, TProcessor processor) {
+	public ServletThriftServerImpl(final String serverName, final ThriftServerConfiguration configuration,
+			final TProcessor processor) {
 		setServerName(serverName);
 		setConfiguration(configuration);
 		setProcessor(processor);

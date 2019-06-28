@@ -27,7 +27,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public abstract class AbstractThriftClientImpl implements ThriftClient {
 
-	protected ThreadLocal<ThriftSocket> socketThread = new ThreadLocal<>();
+	protected final ThreadLocal<ThriftSocket> socketThread = new ThreadLocal<>();
 
 	/**
 	 * 需连接的Thrift服务地址
