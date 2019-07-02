@@ -1,4 +1,4 @@
-package com.ikasoa.rpc.utils;
+package com.ikasoa.core.utils;
 
 import org.junit.Test;
 

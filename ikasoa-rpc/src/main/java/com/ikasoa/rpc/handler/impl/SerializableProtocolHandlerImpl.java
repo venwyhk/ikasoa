@@ -1,9 +1,9 @@
 package com.ikasoa.rpc.handler.impl;
 
+import com.ikasoa.core.utils.StreamUtil;
 import com.ikasoa.core.utils.StringUtil;
 import com.ikasoa.rpc.handler.ProtocolHandler;
 import com.ikasoa.rpc.handler.ReturnData;
-import com.ikasoa.rpc.utils.StreamUtil;
 
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;

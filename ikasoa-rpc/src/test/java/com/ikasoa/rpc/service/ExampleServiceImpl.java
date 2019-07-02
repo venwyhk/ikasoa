@@ -9,7 +9,7 @@ import java.util.Map;
 
 import com.ikasoa.core.utils.ListUtil;
 import com.ikasoa.core.utils.MapUtil;
-import com.ikasoa.rpc.utils.StreamUtil;
+import com.ikasoa.core.utils.StreamUtil;
 
 public class ExampleServiceImpl implements ExampleService {
 
