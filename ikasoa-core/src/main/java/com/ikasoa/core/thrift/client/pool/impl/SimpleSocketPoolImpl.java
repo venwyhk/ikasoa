@@ -1,6 +1,5 @@
 package com.ikasoa.core.thrift.client.pool.impl;
 
-import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -9,6 +8,7 @@ import com.ikasoa.core.IkasoaException;
 import com.ikasoa.core.thrift.client.pool.ClientSocketPoolParameters;
 import com.ikasoa.core.thrift.client.pool.SocketPool;
 import com.ikasoa.core.thrift.client.socket.ThriftSocket;
+import com.ikasoa.core.utils.MapUtil;
 import com.ikasoa.core.utils.ServerUtil;
 
 import lombok.NoArgsConstructor;
@@ -29,7 +29,7 @@ public class SimpleSocketPoolImpl implements SocketPool {
 	 */
 	private byte size = defaultSize;
 
-	private static Map<String, SimpleSocketPoolImpl> selfMap = new HashMap<>();
+	private static Map<String, SimpleSocketPoolImpl> selfMap = MapUtil.newHashMap();
 
 	/**
 	 * 是否空闲 (true: 不空闲, false: 空闲)

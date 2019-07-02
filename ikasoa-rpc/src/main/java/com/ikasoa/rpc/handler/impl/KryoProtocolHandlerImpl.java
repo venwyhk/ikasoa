@@ -1,12 +1,12 @@
 package com.ikasoa.rpc.handler.impl;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Optional;
 
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.io.Input;
 import com.esotericsoftware.kryo.io.Output;
+import com.ikasoa.core.utils.ListUtil;
+import com.ikasoa.core.utils.MapUtil;
 import com.ikasoa.core.utils.StringUtil;
 import com.ikasoa.rpc.handler.ProtocolHandler;
 import com.ikasoa.rpc.handler.ReturnData;
@@ -69,10 +69,10 @@ public class KryoProtocolHandlerImpl<T, R> implements ProtocolHandler<T, R> {
 			return null;
 		return resultData.isArray()
 				? (R) kryo.readObject(new Input(Base64Util.decode(str)),
-						kryo.register(new ArrayList<>(0).getClass()).getType())
+						kryo.register(ListUtil.getArrayListClass()).getType())
 				: resultData.isMap()
 						? (R) kryo.readObject(new Input(Base64Util.decode(str)),
-								kryo.register(new HashMap<>(0).getClass()).getType())
+								kryo.register(MapUtil.getHashMapClass()).getType())
 						: (R) kryo.readObject(new Input(Base64Util.decode(str)),
 								kryo.register(resultData.getClassType()).getType());
 	}

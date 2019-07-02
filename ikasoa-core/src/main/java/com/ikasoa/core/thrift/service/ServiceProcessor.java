@@ -1,6 +1,5 @@
 package com.ikasoa.core.thrift.service;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.thrift.ProcessFunction;
@@ -13,6 +12,7 @@ import org.apache.thrift.transport.TTransportException;
 import com.ikasoa.core.IkasoaException;
 import com.ikasoa.core.thrift.service.base.ArgsThriftBase;
 import com.ikasoa.core.thrift.service.base.ResultThriftBase;
+import com.ikasoa.core.utils.MapUtil;
 
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -25,9 +25,8 @@ import lombok.extern.slf4j.Slf4j;
  */
 public class ServiceProcessor extends TBaseProcessor<Service> implements Processor {
 
-	@SuppressWarnings("rawtypes")
 	public ServiceProcessor(Service service) {
-		super(service, getProcessMap(new HashMap<String, ProcessFunction<Service, ? extends TBase>>()));
+		super(service, getProcessMap(MapUtil.newHashMap()));
 	}
 
 	@SuppressWarnings("rawtypes")

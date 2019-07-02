@@ -21,7 +21,6 @@ import org.jboss.netty.util.TimerTask;
 import com.ikasoa.core.netty.server.NettyServerConfiguration;
 import com.ikasoa.core.utils.MapUtil;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;

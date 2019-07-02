@@ -1,11 +1,11 @@
 package com.ikasoa.rpc;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import com.ikasoa.core.loadbalance.LoadBalance;
 import com.ikasoa.core.loadbalance.ServerInfo;
+import com.ikasoa.core.utils.ListUtil;
 
 import lombok.Data;
 
@@ -21,7 +21,7 @@ public class ServerInfoWrapper {
 	/**
 	 * 服务信息列表 如果列表长度大于1,则会通过默认负载均衡策略进行调用
 	 */
-	private List<ServerInfo> serverInfoList = new ArrayList<>();
+	private List<ServerInfo> serverInfoList = ListUtil.newArrayList();
 
 	/**
 	 * 负载均衡实现类

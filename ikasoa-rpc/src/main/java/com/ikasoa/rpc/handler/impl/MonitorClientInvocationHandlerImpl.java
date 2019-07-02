@@ -1,8 +1,8 @@
 package com.ikasoa.rpc.handler.impl;
 
-import java.util.HashMap;
 import java.util.Map;
 
+import com.ikasoa.core.utils.MapUtil;
 import com.ikasoa.core.utils.StringUtil;
 import com.ikasoa.rpc.handler.ClientInvocationContext;
 import com.ikasoa.rpc.handler.ClientInvocationHandler;
@@ -18,7 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class MonitorClientInvocationHandlerImpl implements ClientInvocationHandler {
 
-	private Map<String, Long> timeMap = new HashMap<>();
+	private Map<String, Long> timeMap = MapUtil.newHashMap();
 
 	@Override
 	public ClientInvocationContext before(ClientInvocationContext context) {

@@ -9,8 +9,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.ikasoa.core.utils.MapUtil;
 import com.ikasoa.core.utils.StringUtil;
-import com.ikasoa.rpc.utils.MapUtil;
 
 import lombok.Data;
 

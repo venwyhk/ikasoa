@@ -17,6 +17,7 @@ import com.ikasoa.core.thrift.client.ThriftClientConfiguration;
 import com.ikasoa.core.thrift.server.ThriftServer;
 import com.ikasoa.core.thrift.server.ThriftServerConfiguration;
 import com.ikasoa.core.thrift.service.Service;
+import com.ikasoa.core.utils.MapUtil;
 import com.ikasoa.core.utils.StringUtil;
 import com.ikasoa.rpc.annotation.IkasoaService;
 import com.ikasoa.rpc.annotation.Invalid;
@@ -187,8 +188,8 @@ public class DefaultIkasoaFactory extends GeneralFactory implements IkasoaFactor
 	}
 
 	private Map<String, Service> getServiceMapByImplWrapper(ImplWrapper implWrapper) {
-		return getServiceMapByClass(new HashMap<String, Service>(), implWrapper.getImplClass(),
-				implWrapper.getImplObject(), implWrapper.getImplClass());
+		return getServiceMapByClass(MapUtil.newHashMap(), implWrapper.getImplClass(), implWrapper.getImplObject(),
+				implWrapper.getImplClass());
 	}
 
 	private Map<String, Service> getServiceMapByClass(Map<String, Service> serviceMap, Class<?> implClass,
@@ -207,7 +208,7 @@ public class DefaultIkasoaFactory extends GeneralFactory implements IkasoaFactor
 	}
 
 	private Map<String, Service> getServiceMapByWrapperList(List<ImplWrapper> implWrapperList) {
-		Map<String, Service> serviceMap = new HashMap<>();
+		Map<String, Service> serviceMap = MapUtil.newHashMap();
 		implWrapperList.forEach(implWrapper -> serviceMap.putAll(getServiceMapByImplWrapper(implWrapper)));
 		return serviceMap;
 	}

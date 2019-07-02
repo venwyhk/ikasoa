@@ -1,7 +1,6 @@
 package com.ikasoa.core.thrift;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -30,6 +29,7 @@ import com.ikasoa.core.thrift.service.Service;
 import com.ikasoa.core.thrift.service.ServiceProcessor;
 import com.ikasoa.core.thrift.service.impl.AsyncServiceClientImpl;
 import com.ikasoa.core.thrift.service.impl.ServiceClientImpl;
+import com.ikasoa.core.utils.MapUtil;
 import com.ikasoa.core.utils.StringUtil;
 
 import lombok.AllArgsConstructor;
@@ -232,7 +232,7 @@ public class GeneralFactory implements Factory {
 	private MultiplexedProcessor buildMultiplexedProcessor(Map<String, Service> serviceMap) {
 		if (serviceMap == null)
 			throw new IllegalArgumentException("'serviceMap' is null !");
-		Map<String, TProcessor> processorMap = new HashMap<>(serviceMap.size());
+		Map<String, TProcessor> processorMap = MapUtil.newHashMap(serviceMap.size());
 		for (Entry<String, Service> e : serviceMap.entrySet())
 			processorMap.put(e.getKey(), new ServiceProcessor(serviceMap.get(e.getKey())));
 		return new MultiplexedProcessor(processorMap);

@@ -3,12 +3,12 @@ package com.ikasoa.rpc.service;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.ikasoa.core.utils.ListUtil;
+import com.ikasoa.core.utils.MapUtil;
 import com.ikasoa.rpc.utils.StreamUtil;
 
 public class ExampleServiceImpl implements ExampleService {
@@ -23,7 +23,7 @@ public class ExampleServiceImpl implements ExampleService {
 
 	@Override
 	public List<ExampleVO> getVOList() {
-		List<ExampleVO> evoList = new ArrayList<>();
+		List<ExampleVO> evoList = ListUtil.newArrayList();
 		ExampleVO evo = new ExampleVO();
 		evo.setId(1);
 		evo.setString("alibaba88alibaba88");
@@ -92,8 +92,8 @@ public class ExampleServiceImpl implements ExampleService {
 
 	@Override
 	public List<Map<String, Object>> testContainerType() {
-		List<Map<String, Object>> list = new ArrayList<>();
-		Map<String, Object> map = new HashMap<>();
+		List<Map<String, Object>> list = ListUtil.newArrayList();
+		Map<String, Object> map = MapUtil.newHashMap();
 		map.put("key", "value");
 		list.add(map);
 		return list;
@@ -101,8 +101,8 @@ public class ExampleServiceImpl implements ExampleService {
 
 	@Override
 	public List<List<String>> testContainerType2() {
-		List<List<String>> list = new ArrayList<>();
-		List<String> l = new ArrayList<>();
+		List<List<String>> list = ListUtil.newArrayList();
+		List<String> l = ListUtil.newArrayList();
 		l.add("oooo");
 		list.add(l);
 		return list;

@@ -1,6 +1,5 @@
 package com.ikasoa.core.thrift.client.pool.impl;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.pool2.BasePooledObjectFactory;
@@ -14,6 +13,7 @@ import com.ikasoa.core.IkasoaException;
 import com.ikasoa.core.thrift.client.pool.ClientSocketPoolParameters;
 import com.ikasoa.core.thrift.client.pool.SocketPool;
 import com.ikasoa.core.thrift.client.socket.ThriftSocket;
+import com.ikasoa.core.utils.MapUtil;
 import com.ikasoa.core.utils.ServerUtil;
 
 import lombok.AllArgsConstructor;
@@ -39,7 +39,7 @@ public class CommonsPoolImpl implements SocketPool {
 	 */
 	private GenericObjectPoolConfig<ThriftSocket> conf = new GenericObjectPoolConfig<>();
 
-	private static Map<String, ObjectPool<ThriftSocket>> poolMap = new HashMap<>();
+	private static Map<String, ObjectPool<ThriftSocket>> poolMap = MapUtil.newHashMap();
 
 	public CommonsPoolImpl() {
 		conf.setMaxTotal(size);

@@ -1,6 +1,5 @@
 package com.ikasoa.rpc.handler.impl;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -8,6 +7,7 @@ import java.util.Set;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.ikasoa.core.utils.MapUtil;
 import com.ikasoa.core.utils.StringUtil;
 import com.ikasoa.rpc.handler.ProtocolHandler;
 import com.ikasoa.rpc.handler.ReturnData;
@@ -101,7 +101,7 @@ public class JsonProtocolHandlerImpl<T, R> implements ProtocolHandler<T, R> {
 							&& resultData.getClassTypes().length != 2))
 				throw new IllegalArgumentException("'Map' must appoint type ! eg : 'Map<String, String>' .");
 			JSONObject jsonMap = JSON.parseObject(resultStr);
-			Map<Object, Object> map = new HashMap<>(jsonMap.size());
+			Map<Object, Object> map = MapUtil.newHashMap(jsonMap.size());
 			jsonMap.keySet().forEach(
 					key -> map.put(key, JSON.parseObject(jsonMap.get(key).toString(), resultData.getClassTypes(1))));
 			result = (R) map;

@@ -1,7 +1,5 @@
 package com.ikasoa.rpc.service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -10,6 +8,8 @@ import org.junit.Before;
 import org.junit.Test;
 import com.ikasoa.core.thrift.server.ServerArgsAspect;
 import com.ikasoa.core.thrift.server.ThriftServerConfiguration;
+import com.ikasoa.core.utils.ListUtil;
+import com.ikasoa.core.utils.MapUtil;
 import com.ikasoa.core.utils.ServerUtil;
 import com.ikasoa.rpc.IkasoaServer;
 import com.ikasoa.rpc.ImplWrapper;
@@ -115,7 +115,7 @@ public class TestExampleService extends TestCase {
 		try {
 
 			// 获取Ikasoa服务
-			List<ImplWrapper> sList = new ArrayList<>(2);
+			List<ImplWrapper> sList = ListUtil.newArrayList(2);
 			sList.add(new ImplWrapper(ExampleServiceImpl.class));
 			sList.add(new ImplWrapper(ExampleChildServiceImpl.class));
 			IkasoaServer ikasoaServer = ikasoaFactory.getIkasoaServer(sList, port);
@@ -144,7 +144,7 @@ public class TestExampleService extends TestCase {
 			assertEquals(es.getDouble(123), es2.getDouble(123));
 			assertEquals(es.testByStrings("sulei")[0], es2.testByStrings("sulei")[0]);
 			assertEquals(es.testByInts(new Integer[] { 1, 2, 2 }), es2.testByInts(new Integer[] { 1, 2, 2 }));
-			Map<String, ExampleVO> map = new HashMap<>();
+			Map<String, ExampleVO> map = MapUtil.newHashMap();
 			map.put("sl", new ExampleVO(1, "slslsl"));
 			assertEquals(es.getMap(0, map).get("sl").getString(), es2.getMap(0, map).get("sl").getString());
 			es.tVoid();

@@ -1,6 +1,5 @@
 package com.ikasoa.core.thrift.service;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.thrift.TProcessor;

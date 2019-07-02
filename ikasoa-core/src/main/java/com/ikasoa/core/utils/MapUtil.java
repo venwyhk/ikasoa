@@ -28,6 +28,11 @@ public class MapUtil {
 		return new HashMap<>(m);
 	}
 
+	@SuppressWarnings("rawtypes")
+	public static Class<? extends Map> getHashMapClass() {
+		return newHashMap(0).getClass();
+	}
+
 	public static <K, V> Map<K, V> newLinkedHashMap() {
 		return new LinkedHashMap<>();
 	}
@@ -40,6 +45,11 @@ public class MapUtil {
 		return new LinkedHashMap<>(m);
 	}
 
+	@SuppressWarnings("rawtypes")
+	public static Class<? extends Map> getLinkedHashMapClass() {
+		return newLinkedHashMap(0).getClass();
+	}
+
 	public static <K, V> Map<K, V> newIdentityHashMap() {
 		return new IdentityHashMap<>();
 	}
@@ -50,6 +60,11 @@ public class MapUtil {
 
 	public static <K, V> Map<K, V> newIdentityHashMap(Map<? extends K, ? extends V> m) {
 		return new IdentityHashMap<>(m);
+	}
+
+	@SuppressWarnings("rawtypes")
+	public static Class<? extends Map> getIdentityHashMapClass() {
+		return newIdentityHashMap(0).getClass();
 	}
 
 	public static Map<String, String> arrayToMap(String[][] array) {

@@ -1,6 +1,5 @@
 package com.ikasoa.core.thrift.server;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.thrift.TException;

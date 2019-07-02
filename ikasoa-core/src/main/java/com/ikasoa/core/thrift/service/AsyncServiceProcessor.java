@@ -1,6 +1,5 @@
 package com.ikasoa.core.thrift.service;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.thrift.AsyncProcessFunction;
@@ -15,6 +14,7 @@ import org.apache.thrift.server.AbstractNonblockingServer.AsyncFrameBuffer;
 import com.ikasoa.core.IkasoaException;
 import com.ikasoa.core.thrift.service.base.ArgsThriftBase;
 import com.ikasoa.core.thrift.service.base.ResultThriftBase;
+import com.ikasoa.core.utils.MapUtil;
 
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -27,9 +27,8 @@ import lombok.extern.slf4j.Slf4j;
  */
 public class AsyncServiceProcessor extends TBaseAsyncProcessor<AsyncService> implements Processor {
 
-	@SuppressWarnings("rawtypes")
 	public AsyncServiceProcessor(AsyncService service) {
-		super(service, getProcessMap(new HashMap<String, AsyncProcessFunction<AsyncService, ? extends TBase, ?>>()));
+		super(service, getProcessMap(MapUtil.newHashMap()));
 	}
 
 	@SuppressWarnings("rawtypes")
