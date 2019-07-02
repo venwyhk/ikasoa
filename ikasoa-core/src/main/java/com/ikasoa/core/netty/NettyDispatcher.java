@@ -19,6 +19,7 @@ import org.jboss.netty.util.Timer;
 import org.jboss.netty.util.TimerTask;
 
 import com.ikasoa.core.netty.server.NettyServerConfiguration;
+import com.ikasoa.core.utils.MapUtil;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -44,7 +45,7 @@ public class NettyDispatcher extends SimpleChannelUpstreamHandler {
 	private final Timer taskTimeoutTimer;
 	private final long queueTimeoutMillis;
 	private final short queuedResponseLimit;
-	private final Map<Integer, TNettyMessage> responseMap = new HashMap<>();
+	private final Map<Integer, TNettyMessage> responseMap = MapUtil.newHashMap();
 	private final AtomicInteger dispatcherSequenceId = new AtomicInteger(0);
 	private final AtomicInteger lastResponseWrittenId = new AtomicInteger(0);
 	private final TProtocolFactory protocolFactory;

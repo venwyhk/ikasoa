@@ -31,6 +31,7 @@ import com.ikasoa.core.thrift.protocol.RC4CompactProtocolFactory;
 import com.ikasoa.core.thrift.server.impl.ServletThriftServerImpl;
 import com.ikasoa.core.thrift.server.impl.SimpleThriftServerImpl;
 import com.ikasoa.core.thrift.server.impl.ThreadPoolThriftServerImpl;
+import com.ikasoa.core.utils.MapUtil;
 import com.ikasoa.core.utils.ServerUtil;
 import com.ikasoa.core.utils.StringUtil;
 import com.ikasoa.core.thrift.server.ThriftSimpleService;
@@ -159,7 +160,7 @@ public class ServerTest extends ServerTestCase {
 	@Test
 	public void testMultiplexedThriftServerImpl() {
 		int serverPort = ServerUtil.getNewPort();
-		Map<String, TProcessor> processorMap = new HashMap<>();
+		Map<String, TProcessor> processorMap = MapUtil.newHashMap();
 		processorMap.put("testServer", processor);
 		MultiplexedProcessor processor = new MultiplexedProcessor(processorMap);
 		ThriftServer thriftServer = new ThreadPoolThriftServerImpl(serverName, serverPort, configuration, processor);

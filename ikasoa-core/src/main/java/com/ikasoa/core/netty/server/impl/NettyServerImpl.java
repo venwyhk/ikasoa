@@ -6,6 +6,7 @@ import com.ikasoa.core.netty.handler.impl.ThriftFrameCodeHandlerImpl;
 import com.ikasoa.core.netty.server.NettyServer;
 import com.ikasoa.core.netty.server.NettyServerConfiguration;
 import com.ikasoa.core.thrift.server.ServerConfiguration;
+import com.ikasoa.core.utils.MapUtil;
 import com.ikasoa.core.utils.ServerUtil;
 
 import lombok.Getter;
@@ -108,7 +109,7 @@ public class NettyServerImpl implements NettyServer {
 			}
 			if (getBootstrap() == null) {
 				bootstrap = new ServerBootstrap(channelFactory);
-				bootstrap.setOptions(new HashMap<String, Object>());
+				bootstrap.setOptions(MapUtil.newHashMap());
 				bootstrap.setPipelineFactory(() -> {
 					ChannelPipeline cp = Channels.pipeline();
 					cp.addLast("frameCodec", new ThriftFrameCodeHandlerImpl(configuration.getMaxFrameSize(),

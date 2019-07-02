@@ -18,7 +18,7 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public class ServerUtil {
 
-	private static Map<String, Integer> portCacheMap = new HashMap<>();
+	private static Map<String, Integer> portCacheMap = MapUtil.newHashMap();
 
 	public static boolean isIpv4(String ip) {
 		return Pattern

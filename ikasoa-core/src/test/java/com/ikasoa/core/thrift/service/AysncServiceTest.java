@@ -22,6 +22,7 @@ import com.ikasoa.core.thrift.server.MultiplexedProcessor;
 import com.ikasoa.core.thrift.server.ServerArgsAspect;
 import com.ikasoa.core.thrift.server.ThriftServer;
 import com.ikasoa.core.thrift.server.ThriftServerConfiguration;
+import com.ikasoa.core.utils.MapUtil;
 import com.ikasoa.core.utils.ServerUtil;
 
 /**
@@ -71,7 +72,7 @@ public class AysncServiceTest extends ServerTestCase {
 	@Test
 	public void testAysncMultiplexedServiceImpl() {
 		int serverPort = ServerUtil.getNewPort();
-		Map<String, TProcessor> processorMap = new HashMap<>();
+		Map<String, TProcessor> processorMap = MapUtil.newHashMap();
 		processorMap.put("testAysncService1", new ServiceProcessor(new TestThriftServiceImpl1()));
 		processorMap.put("testAysncService2", new ServiceProcessor(new TestThriftServiceImpl2()));
 		MultiplexedProcessor p = new MultiplexedProcessor(processorMap);
