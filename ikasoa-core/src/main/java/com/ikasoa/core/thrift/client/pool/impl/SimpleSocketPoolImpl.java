@@ -54,7 +54,7 @@ public class SimpleSocketPoolImpl implements SocketPool {
 			throw new IllegalArgumentException("Server host or port is null !");
 		SimpleSocketPoolImpl self = new SimpleSocketPoolImpl();
 		selfMap.put(parameters.getKey(), self);
-		self.socketPool = new Hashtable<>(size);
+		self.socketPool = MapUtil.newHashtable(size);
 		self.socketStatusArray = new boolean[size];
 		// 初始化连接池
 		log.debug("Initiation pool ......");

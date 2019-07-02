@@ -12,6 +12,7 @@ import java.util.TreeMap;
 import com.ikasoa.core.IkasoaException;
 import com.ikasoa.core.loadbalance.LoadBalance;
 import com.ikasoa.core.loadbalance.ServerInfo;
+import com.ikasoa.core.utils.MapUtil;
 import com.ikasoa.core.utils.StringUtil;
 
 import lombok.NoArgsConstructor;
@@ -40,7 +41,7 @@ public class ConsistencyHashLoadBalanceImpl implements LoadBalance {
 		if (StringUtil.isEmpty(hash))
 			throw new IllegalArgumentException("Constructor must exist hash parameter !");
 		hashReference = new SoftReference<String>(StringUtil.merge(InetAddress.getLocalHost().getHostAddress(), hash));
-		nodes = new TreeMap<>();
+		nodes = MapUtil.newTreeMap();
 		for (int i = 0; i < serverInfoList.size(); i++) {
 			ServerInfo serverInfo = serverInfoList.get(i);
 			for (int j = 0; j < VIRTUAL_NUM; j++)

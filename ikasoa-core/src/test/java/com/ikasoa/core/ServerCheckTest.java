@@ -47,7 +47,7 @@ public class ServerCheckTest extends TestCase {
 	@Test
 	public void testLoadBalanceCheck() {
 		configuration.setServerCheck(new ServerCheckTestImpl());
-		List<ServerInfo> serverInfoList = ListUtil.newArrayList(new ServerInfo("192.168.1.1", serverPort),
+		List<ServerInfo> serverInfoList = ListUtil.buildArrayList(new ServerInfo("192.168.1.1", serverPort),
 				new ServerInfo("192.168.1.2", serverPort), new ServerInfo("192.168.1.3", serverPort));
 		try (ThriftClient loadBalanceThriftClient = new LoadBalanceThriftClientImpl(
 				new PollingLoadBalanceImpl(serverInfoList), configuration)) {

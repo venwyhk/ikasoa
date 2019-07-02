@@ -31,7 +31,7 @@ public class ListUtil {
 	}
 
 	@SafeVarargs
-	public static <E> List<E> newArrayList(E... values) {
+	public static <E> List<E> buildArrayList(E... values) {
 		return new ArrayList<>(Arrays.asList(values));
 	}
 
@@ -49,13 +49,13 @@ public class ListUtil {
 	}
 
 	@SafeVarargs
-	public static <E> List<E> newLinkedList(E... values) {
+	public static <E> List<E> buildLinkedList(E... values) {
 		return new LinkedList<>(Arrays.asList(values));
 	}
 
 	@SuppressWarnings("rawtypes")
 	public static Class<? extends List> getLinkedListClass() {
-		return newLinkedList(0).getClass();
+		return newLinkedList().getClass();
 	}
 
 	public static boolean isEmpty(List<?> list) {

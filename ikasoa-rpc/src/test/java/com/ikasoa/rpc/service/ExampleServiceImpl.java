@@ -92,20 +92,12 @@ public class ExampleServiceImpl implements ExampleService {
 
 	@Override
 	public List<Map<String, Object>> testContainerType() {
-		List<Map<String, Object>> list = ListUtil.newArrayList();
-		Map<String, Object> map = MapUtil.newHashMap();
-		map.put("key", "value");
-		list.add(map);
-		return list;
+		return ListUtil.buildArrayList(MapUtil.buildHashMap("key", "value"));
 	}
 
 	@Override
 	public List<List<String>> testContainerType2() {
-		List<List<String>> list = ListUtil.newArrayList();
-		List<String> l = ListUtil.newArrayList();
-		l.add("oooo");
-		list.add(l);
-		return list;
+		return ListUtil.buildArrayList(ListUtil.buildArrayList("oooo"));
 	}
 
 	@Override

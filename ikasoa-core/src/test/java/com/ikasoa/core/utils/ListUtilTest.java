@@ -19,7 +19,7 @@ public class ListUtilTest extends TestCase {
 		assertEquals(list2.size(), 0);
 		list2.add("1");
 		assertEquals(list2.size(), 1);
-		List<String> list3 = ListUtil.newArrayList("1", "2");
+		List<String> list3 = ListUtil.buildArrayList("1", "2");
 		assertEquals(list3.size(), 2);
 	}
 
@@ -29,7 +29,7 @@ public class ListUtilTest extends TestCase {
 		assertEquals(list1.size(), 0);
 		list1.add("1");
 		assertEquals(list1.size(), 1);
-		List<String> list2 = ListUtil.newLinkedList("1", "2");
+		List<String> list2 = ListUtil.buildLinkedList("1", "2");
 		assertEquals(list2.size(), 2);
 	}
 

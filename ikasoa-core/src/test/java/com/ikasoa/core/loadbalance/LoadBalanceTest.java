@@ -59,7 +59,7 @@ public class LoadBalanceTest extends TestCase {
 	 */
 	@Test
 	public void testWeightPollingLoadBalanceImpl() {
-		List<ServerInfo> serverInfoList = ListUtil.newArrayList(
+		List<ServerInfo> serverInfoList = ListUtil.buildArrayList(
 				new ServerInfo("192.168.1.1", ServerUtil.getNewPort("testWeightPollingLoadBalanceImpl_1"), 1),
 				new ServerInfo("192.168.1.2", ServerUtil.getNewPort("testWeightPollingLoadBalanceImpl_2"), 0),
 				new ServerInfo("192.168.1.3", ServerUtil.getNewPort("testWeightPollingLoadBalanceImpl_3"), 1));
@@ -96,7 +96,8 @@ public class LoadBalanceTest extends TestCase {
 	 */
 	@Test
 	public void testRandomLoadBalanceImpl() {
-		List<ServerInfo> serverInfoList = ListUtil.newArrayList(new ServerInfo("192.168.1.1", ServerUtil.getNewPort()),
+		List<ServerInfo> serverInfoList = ListUtil.buildArrayList(
+				new ServerInfo("192.168.1.1", ServerUtil.getNewPort()),
 				new ServerInfo("192.168.1.2", ServerUtil.getNewPort()),
 				new ServerInfo("192.168.1.3", ServerUtil.getNewPort()));
 		LoadBalance loadBalance = new RandomLoadBalanceImpl(serverInfoList);
@@ -114,7 +115,8 @@ public class LoadBalanceTest extends TestCase {
 	 */
 	@Test
 	public void testConsistencyHashLoadBalanceImpl() {
-		List<ServerInfo> serverInfoList = ListUtil.newArrayList(new ServerInfo("192.168.1.1", ServerUtil.getNewPort()),
+		List<ServerInfo> serverInfoList = ListUtil.buildArrayList(
+				new ServerInfo("192.168.1.1", ServerUtil.getNewPort()),
 				new ServerInfo("192.168.1.2", ServerUtil.getNewPort()),
 				new ServerInfo("192.168.1.3", ServerUtil.getNewPort()),
 				new ServerInfo("192.168.1.4", ServerUtil.getNewPort()),

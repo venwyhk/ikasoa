@@ -22,6 +22,11 @@ public class MapUtilTest extends TestCase {
 	}
 
 	@Test
+	public void testBuildHashMap() {
+		testBuildMap(MapUtil.buildHashMap("a", 1, "b", 2));
+	}
+
+	@Test
 	public void testNewLinkedHashMap() {
 		Map<String, Object> map1 = MapUtil.newLinkedHashMap();
 		assertEquals(map1.size(), 0);
@@ -32,6 +37,11 @@ public class MapUtilTest extends TestCase {
 	}
 
 	@Test
+	public void testBuildLinkedHashMap() {
+		testBuildMap(MapUtil.buildLinkedHashMap("a", 1, "b", 2));
+	}
+
+	@Test
 	public void testNewIdentityHashMap() {
 		Map<String, Object> map1 = MapUtil.newIdentityHashMap();
 		assertEquals(map1.size(), 0);
@@ -39,6 +49,39 @@ public class MapUtilTest extends TestCase {
 		assertEquals(map2.size(), 0);
 		map2.put("a", 1);
 		assertEquals(map2.size(), 1);
+	}
+
+	@Test
+	public void testBuildIdentityHashMap() {
+		testBuildMap(MapUtil.buildIdentityHashMap("a", 1, "b", 2));
+	}
+
+	@Test
+	public void testNewTreeMap() {
+		Map<String, Object> map = MapUtil.newTreeMap();
+		assertEquals(map.size(), 0);
+		map.put("a", 1);
+		assertEquals(map.size(), 1);
+	}
+
+	@Test
+	public void testBuildTreeMap() {
+		testBuildMap(MapUtil.buildTreeMap("a", 1, "b", 2));
+	}
+
+	@Test
+	public void testNewHashtable() {
+		Map<String, Object> map1 = MapUtil.newHashtable();
+		assertEquals(map1.size(), 0);
+		Map<String, Object> map2 = MapUtil.newHashtable(1);
+		assertEquals(map2.size(), 0);
+		map2.put("a", 1);
+		assertEquals(map2.size(), 1);
+	}
+
+	@Test
+	public void testBuildHashtable() {
+		testBuildMap(MapUtil.buildHashtable("a", 1, "b", 2));
 	}
 
 	@Test
@@ -53,6 +96,12 @@ public class MapUtilTest extends TestCase {
 		assertEquals(map2.size(), 2);
 		assertEquals(map2.get("a"), 1);
 		assertEquals(map2.get("b"), 2);
+	}
+
+	private void testBuildMap(Map<Object, Object> map) {
+		assertEquals(map.size(), 2);
+		assertEquals(map.get("a"), 1);
+		assertEquals(map.get("b"), 2);
 	}
 
 }
