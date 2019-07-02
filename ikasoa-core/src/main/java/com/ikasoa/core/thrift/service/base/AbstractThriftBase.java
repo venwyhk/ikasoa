@@ -76,7 +76,7 @@ public abstract class AbstractThriftBase
 			throw new TApplicationException("Service scheme must be 'org.apache.thrift.scheme.StandardScheme' !");
 		TField schemeField;
 		iprot.readStructBegin();
-		while (Boolean.TRUE) {
+		while (true) {
 			schemeField = iprot.readFieldBegin();
 			if (schemeField.type == TType.STOP)
 				break;

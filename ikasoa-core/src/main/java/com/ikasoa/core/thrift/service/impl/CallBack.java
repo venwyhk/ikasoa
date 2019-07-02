@@ -27,7 +27,7 @@ public class CallBack extends TAsyncMethodCall<String> {
 
 	public CallBack(String arg, AsyncMethodCallback<String> resultHandler, TAsyncClient client,
 			TProtocolFactory protocolFactory, TNonblockingTransport transport) throws TException {
-		super(client, protocolFactory, transport, resultHandler, Boolean.FALSE);
+		super(client, protocolFactory, transport, resultHandler, false);
 		this.arg = arg;
 	}
 

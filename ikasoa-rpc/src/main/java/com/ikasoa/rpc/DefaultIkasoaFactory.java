@@ -219,16 +219,16 @@ public class DefaultIkasoaFactory extends GeneralFactory implements IkasoaFactor
 			implObject = implClass.newInstance();
 		ProtocolHandlerFactory<Object[], Object> protocolHandlerFactory = new ProtocolHandlerFactory<>();
 		for (Method implMethod : implClass.getMethods()) {
-			boolean isValidMethod = Boolean.FALSE;
+			boolean isValidMethod = false;
 			// 对hashCode和toString两个方法做特殊处理
 			if (StringUtil.equals("hashCode", implMethod.getName())
 					|| StringUtil.equals("toString", implMethod.getName()))
-				isValidMethod = Boolean.TRUE;
+				isValidMethod = true;
 			else
 				// 过滤掉无效方法
 				for (Method iMethod : iClass.getMethods())
 					if (!iMethod.isAnnotationPresent(Invalid.class) && compareMethod(iMethod, implMethod)) {
-						isValidMethod = Boolean.TRUE;
+						isValidMethod = true;
 						break;
 					}
 			if (!isValidMethod)
@@ -258,10 +258,10 @@ public class DefaultIkasoaFactory extends GeneralFactory implements IkasoaFactor
 				&& StringUtil.equals(m1.getReturnType().getName(), m2.getReturnType().getName())) {
 			for (int i = 0; i < m1.getParameterTypes().length; i++)
 				if (!StringUtil.equals(m1.getParameterTypes()[i].getName(), m2.getParameterTypes()[i].getName()))
-					return Boolean.FALSE;
-			return Boolean.TRUE;
+					return false;
+			return true;
 		} else
-			return Boolean.FALSE;
+			return false;
 	}
 
 	private String getSKey(Class<?> iClass, Method method, boolean isCheckValid) {

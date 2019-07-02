@@ -37,11 +37,11 @@ public class StringUtil {
 	public static boolean isBlank(String str) {
 		int strLen;
 		if (str == null || (strLen = str.length()) == 0)
-			return Boolean.TRUE;
+			return true;
 		for (int i = 0; i < strLen; i++)
 			if (!Character.isWhitespace(str.charAt(i)))
-				return Boolean.FALSE;
-		return Boolean.TRUE;
+				return false;
+		return true;
 	}
 
 	public static boolean andIsBlank(String... strs) {
@@ -57,8 +57,7 @@ public class StringUtil {
 	}
 
 	public static boolean equals(String str1, String str2) {
-		return str1 == null && str2 == null ? Boolean.TRUE
-				: str1 != null && str2 != null ? str1.equals(str2) : Boolean.FALSE;
+		return str1 == null && str2 == null ? true : str1 != null && str2 != null ? str1.equals(str2) : false;
 	}
 
 	public static byte[] strToBytes(String str) {

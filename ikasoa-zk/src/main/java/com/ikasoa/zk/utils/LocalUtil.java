@@ -24,10 +24,10 @@ public class LocalUtil {
 	}
 
 	private static boolean isWindowsOS() {
-		boolean isWindowsOS = Boolean.FALSE;
+		boolean isWindowsOS = false;
 		String osName = System.getProperty("os.name");
 		if (StringUtil.isNotEmpty(osName) && osName.toLowerCase().indexOf("windows") > -1)
-			isWindowsOS = Boolean.TRUE;
+			isWindowsOS = true;
 		return isWindowsOS;
 	}
 

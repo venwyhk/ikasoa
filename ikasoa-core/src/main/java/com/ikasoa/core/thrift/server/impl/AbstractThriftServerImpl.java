@@ -149,7 +149,7 @@ public abstract class AbstractThriftServerImpl implements ThriftServer {
 
 	@Override
 	public boolean isServing() {
-		return server == null ? Boolean.FALSE : server.isServing();
+		return server == null ? false : server.isServing();
 	}
 
 	@Override

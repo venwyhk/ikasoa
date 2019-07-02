@@ -57,7 +57,7 @@ public class ServerTest extends ServerTestCase {
 			try {
 				return super.process(in, out);
 			} catch (TTransportException e) {
-				return Boolean.FALSE;
+				return false;
 			}
 		}
 	};

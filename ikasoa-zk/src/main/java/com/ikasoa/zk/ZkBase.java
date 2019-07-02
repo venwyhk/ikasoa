@@ -109,8 +109,8 @@ public class ZkBase {
 		for (String n : nodeList)
 			if (n.contains(new StringBuilder(serverName).append("-").append(serverHost).append("-").append(serverPort)
 					.toString()))
-				return Boolean.TRUE;
-		return Boolean.FALSE;
+				return true;
+		return false;
 	}
 
 	public List<String> getChildren() {

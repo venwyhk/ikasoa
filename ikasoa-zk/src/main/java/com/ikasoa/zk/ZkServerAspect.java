@@ -50,7 +50,7 @@ public class ZkServerAspect implements ServerAspect {
 	/**
 	 * 是否使用本地IP地址.如果服务部署在docker容器中,将此参数设置为true可获取宿主机IP.
 	 */
-	private boolean isLocalIp = Boolean.FALSE;
+	private boolean isLocalIp = false;
 
 	private String sNodeStr;
 

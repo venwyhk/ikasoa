@@ -159,8 +159,8 @@ public class TestExampleService extends TestCase {
 			// 测试接口实现继承
 			ExampleChildService childEs = ikasoaFactory.getInstance(ExampleChildService.class,
 					new ServerInfoWrapper("localhost", port));
-			assertEquals(childEs.helloxx(), Boolean.TRUE);
-			assertEquals(childEs.helloxxx(), Boolean.FALSE);
+			assertTrue(childEs.helloxx());
+			assertFalse(childEs.helloxxx());
 
 			// 测试文件下载
 			// long startTime = System.currentTimeMillis();

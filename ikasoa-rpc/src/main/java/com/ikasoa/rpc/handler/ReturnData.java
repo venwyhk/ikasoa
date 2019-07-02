@@ -48,7 +48,7 @@ public class ReturnData {
 	 */
 	private Class<?>[] excetionClassTypes;
 
-	private boolean isContainerType = Boolean.FALSE;
+	private boolean isContainerType = false;
 
 	public ReturnData(Method method) {
 		className = getClassNameByTypeName(method.getReturnType().getName());
@@ -63,7 +63,7 @@ public class ReturnData {
 				Map<String, Object> dataTypeMap = MapUtil.arrayToMap(COLLECTION_DATATYPES);
 				if (dataTypeMap.containsKey(typeName)) {
 					classTypes[i] = (Class<?>) dataTypeMap.get(typeName);
-					setContainerType(Boolean.TRUE);
+					setContainerType(true);
 				} else
 					classTypes[i] = (Class<?>) type;
 			}

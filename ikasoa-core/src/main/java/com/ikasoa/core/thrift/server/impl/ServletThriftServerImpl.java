@@ -65,7 +65,7 @@ public class ServletThriftServerImpl implements ThriftServer {
 
 	@Override
 	public boolean isServing() {
-		return Boolean.TRUE;
+		return true;
 	}
 
 	@Override

@@ -77,7 +77,7 @@ public class SimpleSocketPoolImpl implements SocketPool {
 		try {
 			for (byte i = 0; i < size; i++) {
 				self.socketPool.put(new Byte(i), parameters.buildClientThriftSocket());
-				self.socketStatusArray[i] = Boolean.FALSE;
+				self.socketStatusArray[i] = false;
 			}
 		} catch (Exception e) {
 			throw new RuntimeException(e);
@@ -109,7 +109,7 @@ public class SimpleSocketPoolImpl implements SocketPool {
 					thriftSocket = parameters.buildClientThriftSocket();
 					self.socketPool.put(new Byte(i), thriftSocket);
 				}
-				self.socketStatusArray[i] = Boolean.TRUE;
+				self.socketStatusArray[i] = true;
 				return thriftSocket;
 			}
 		// 如果连接不够用,就初始化连接池.
@@ -161,7 +161,7 @@ public class SimpleSocketPoolImpl implements SocketPool {
 			return;
 		for (byte i = 0; i < size; i++)
 			if (self.socketPool.get(new Byte(i)) == thriftSocket) {
-				self.socketStatusArray[i] = Boolean.FALSE;
+				self.socketStatusArray[i] = false;
 				return;
 			}
 		// 如果socket不在池中,就直接关闭
@@ -184,7 +184,7 @@ public class SimpleSocketPoolImpl implements SocketPool {
 				socket = self.socketPool.get(new Byte(i));
 				try {
 					socket.close();
-					self.socketStatusArray[i] = Boolean.FALSE;
+					self.socketStatusArray[i] = false;
 				} catch (Exception e) {
 					log.error(e.getMessage());
 				}

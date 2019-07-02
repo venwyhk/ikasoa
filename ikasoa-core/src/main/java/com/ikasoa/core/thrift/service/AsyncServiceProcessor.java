@@ -84,7 +84,7 @@ public class AsyncServiceProcessor extends TBaseAsyncProcessor<AsyncService> imp
 		}
 
 		protected boolean isOneway() {
-			return Boolean.FALSE;
+			return false;
 		}
 
 		@SneakyThrows(IkasoaException.class)

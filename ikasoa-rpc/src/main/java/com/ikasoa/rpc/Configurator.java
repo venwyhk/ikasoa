@@ -46,7 +46,7 @@ public class Configurator {
 	/**
 	 * 是否使用阻塞式IO
 	 */
-	private boolean isNonBlockingIO = Boolean.FALSE;
+	private boolean isNonBlockingIO = false;
 
 	public Configurator(ServerInfoWrapper serverInfoWrapper) {
 		this.serverInfoWrapper = serverInfoWrapper;
