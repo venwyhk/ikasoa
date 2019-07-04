@@ -35,10 +35,9 @@ public class StringUtil {
 	}
 
 	public static boolean isBlank(String str) {
-		int strLen;
-		if (str == null || (strLen = str.length()) == 0)
+		if (isEmpty(str))
 			return true;
-		for (int i = 0; i < strLen; i++)
+		for (int i = 0; i < str.length(); i++)
 			if (!Character.isWhitespace(str.charAt(i)))
 				return false;
 		return true;
@@ -72,9 +71,9 @@ public class StringUtil {
 		if (isEmpty(str))
 			return null;
 		char[] chars = HEX_16.toCharArray();
-		StringBuilder sb = new StringBuilder();
 		byte[] bytes = str.getBytes();
 		int bit;
+		StringBuilder sb = new StringBuilder();
 		for (byte b : bytes) {
 			bit = (b & 0x0f0) >> 4;
 			sb.append(chars[bit]);
