@@ -3,6 +3,7 @@ package com.ikasoa.core.utils;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import lombok.experimental.UtilityClass;
@@ -35,6 +36,10 @@ public class SetUtil {
 	@SafeVarargs
 	public static <E> Set<E> newHashSet(E... values) {
 		return new HashSet<>(Arrays.asList(values));
+	}
+
+	public static boolean isEmpty(Set<?> set) {
+		return set == null || set.isEmpty();
 	}
 
 }

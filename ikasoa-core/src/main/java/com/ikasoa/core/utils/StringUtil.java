@@ -72,13 +72,13 @@ public class StringUtil {
 		if (isEmpty(str))
 			return null;
 		char[] chars = HEX_16.toCharArray();
-		StringBuilder sb = new StringBuilder("");
+		StringBuilder sb = new StringBuilder();
 		byte[] bytes = str.getBytes();
 		int bit;
-		for (int i = 0; i < bytes.length; i++) {
-			bit = (bytes[i] & 0x0f0) >> 4;
+		for (byte b : bytes) {
+			bit = (b & 0x0f0) >> 4;
 			sb.append(chars[bit]);
-			bit = bytes[i] & 0x0f;
+			bit = b & 0x0f;
 			sb.append(chars[bit]);
 		}
 		return sb.toString().trim();
