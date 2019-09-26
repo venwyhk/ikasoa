@@ -14,6 +14,7 @@ import com.ikasoa.core.thrift.client.pool.ClientSocketPoolParameters;
 import com.ikasoa.core.thrift.client.pool.SocketPool;
 import com.ikasoa.core.thrift.client.socket.ThriftSocket;
 import com.ikasoa.core.utils.MapUtil;
+import com.ikasoa.core.utils.ObjectUtil;
 import com.ikasoa.core.utils.ServerUtil;
 
 import lombok.AllArgsConstructor;
@@ -76,16 +77,16 @@ public class CommonsPoolImpl implements SocketPool {
 	@Override
 	@SneakyThrows
 	public synchronized void releaseThriftSocket(ThriftSocket thriftSocket, String host, int port) {
-		if (thriftSocket == null)
+		if (ObjectUtil.isNull(thriftSocket))
 			return;
 		ObjectPool<ThriftSocket> pool = poolMap.get(ServerUtil.buildCacheKey(host, port));
-		if (pool != null)
+		if (ObjectUtil.isNotNull(pool))
 			pool.returnObject(thriftSocket);
 	}
 
 	@Override
 	public synchronized void releaseAllThriftSocket() {
-		if (poolMap == null || poolMap.isEmpty()) {
+		if (MapUtil.isEmpty(poolMap)) {
 			log.debug("Release unsuccessful .");
 			return;
 		}
@@ -100,7 +101,7 @@ public class CommonsPoolImpl implements SocketPool {
 
 		@Override
 		public ThriftSocket create() throws Exception {
-			if (parameters == null)
+			if (ObjectUtil.isNull(parameters))
 				throw new IkasoaException("'ClientSocketPoolParameters' is null !");
 			return parameters.buildClientThriftSocket();
 		}

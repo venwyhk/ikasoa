@@ -14,6 +14,7 @@ import org.apache.thrift.transport.TSSLTransportFactory.TSSLTransportParameters;
 import com.ikasoa.core.IkasoaException;
 import com.ikasoa.core.thrift.server.ThriftServer;
 import com.ikasoa.core.thrift.server.ThriftServerConfiguration;
+import com.ikasoa.core.utils.ObjectUtil;
 import com.ikasoa.core.utils.ServerUtil;
 
 import lombok.Getter;
@@ -69,9 +70,9 @@ public abstract class AbstractThriftServerImpl implements ThriftServer {
 	 */
 	@Override
 	public TServerTransport getTransport() throws TTransportException {
-		if (serverSocket == null) {
+		if (ObjectUtil.isNull(serverSocket)) {
 			TSSLTransportParameters params = getServerConfiguration().getSslTransportParameters();
-			serverSocket = params == null ? new TServerSocket(getServerPort())
+			serverSocket = ObjectUtil.isNull(params) ? new TServerSocket(getServerPort())
 					: TSSLTransportFactory.getServerSocket(getServerPort(), 0, null, params);
 		}
 		return serverSocket;
@@ -82,7 +83,7 @@ public abstract class AbstractThriftServerImpl implements ThriftServer {
 	 */
 	@Override
 	public void run() {
-		if (executorService == null)
+		if (ObjectUtil.isNull(executorService))
 			executorService = Executors.newSingleThreadExecutor();
 		if (!isServing()) {
 			beforeStart(getServerConfiguration().getServerAspect());
@@ -105,7 +106,7 @@ public abstract class AbstractThriftServerImpl implements ThriftServer {
 	 *                异常
 	 */
 	public void start() throws IkasoaException {
-		if (server == null) {
+		if (ObjectUtil.isNull(server)) {
 			log.debug("Server configuration : {}", configuration);
 			// 不允许使用1024以内的端口.
 			if (!ServerUtil.isSocketPort(serverPort))
@@ -119,7 +120,7 @@ public abstract class AbstractThriftServerImpl implements ThriftServer {
 			}
 		}
 		// 如果服务没有启动,则自动启动服务.
-		if (server != null) {
+		if (ObjectUtil.isNotNull(server)) {
 			if (server.isServing()) {
 				log.info("Server already run .");
 				return;
@@ -135,7 +136,7 @@ public abstract class AbstractThriftServerImpl implements ThriftServer {
 	 */
 	@Override
 	public void stop() {
-		if (server != null && server.isServing()) {
+		if (ObjectUtil.isNotNull(server) && server.isServing()) {
 			beforeStop(getServerConfiguration().getServerAspect());
 			log.info("stopping server ... (name: {})", getServerName());
 			server.stop();
@@ -149,12 +150,12 @@ public abstract class AbstractThriftServerImpl implements ThriftServer {
 
 	@Override
 	public boolean isServing() {
-		return server == null ? false : server.isServing();
+		return ObjectUtil.isNull(server) ? false : server.isServing();
 	}
 
 	@Override
 	public ThriftServerConfiguration getServerConfiguration() {
-		if (configuration == null)
+		if (ObjectUtil.isNull(configuration))
 			throw new IllegalArgumentException("'configuration' is null !");
 		return configuration;
 	}

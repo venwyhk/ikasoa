@@ -9,6 +9,7 @@ import org.apache.thrift.transport.TServerTransport;
 import org.apache.thrift.transport.TTransportException;
 
 import com.ikasoa.core.Server;
+import com.ikasoa.core.utils.ObjectUtil;
 
 /**
  * Thrift服务器接口
@@ -22,7 +23,8 @@ public interface ThriftServer extends Server {
 	 * Thrift服务传输类型
 	 * <p>
 	 * 通常为<i>org.apache.thrift.transport.TServerSocket</i>
-	 * ,但如果采用NonblockingServer来实现Thrift服务,这里就需要用 <i>TNonblockingServerSocket</i>. .
+	 * ,但如果采用NonblockingServer来实现Thrift服务,这里就需要用
+	 * <i>TNonblockingServerSocket</i>. .
 	 * 
 	 * @return TServerTransport 服务传输类型
 	 * @exception TTransportException
@@ -51,10 +53,10 @@ public interface ThriftServer extends Server {
 	 *            线程池
 	 */
 	default void shutdownExecutor(ExecutorService executorService) {
-		if (executorService != null && !executorService.isShutdown()) {
+		if (ObjectUtil.isNotNull(executorService) && !executorService.isShutdown()) {
 			executorService.shutdown();
 			try {
-				while (executorService != null && !executorService.isTerminated())
+				while (ObjectUtil.isNotNull(executorService) && !executorService.isTerminated())
 					executorService.awaitTermination(10, TimeUnit.SECONDS);
 			} catch (InterruptedException e) {
 				executorService.shutdownNow();

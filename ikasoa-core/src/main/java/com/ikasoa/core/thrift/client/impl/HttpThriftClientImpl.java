@@ -4,6 +4,7 @@ import org.apache.thrift.transport.THttpClient;
 import org.apache.thrift.transport.TTransport;
 
 import com.ikasoa.core.thrift.client.ThriftClientConfiguration;
+import com.ikasoa.core.utils.ObjectUtil;
 
 import lombok.NoArgsConstructor;
 import lombok.SneakyThrows;
@@ -21,7 +22,7 @@ public class HttpThriftClientImpl extends AbstractThriftClientImpl {
 
 	public HttpThriftClientImpl(String serverHost, ThriftClientConfiguration configuration) {
 		setServerHost(serverHost);
-		if (configuration == null) {
+		if (ObjectUtil.isNull(configuration)) {
 			log.debug("Thrift client configuration is null .");
 			setConfiguration(new ThriftClientConfiguration());
 		} else

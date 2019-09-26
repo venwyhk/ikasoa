@@ -7,6 +7,7 @@ import com.ikasoa.core.netty.server.NettyServer;
 import com.ikasoa.core.netty.server.NettyServerConfiguration;
 import com.ikasoa.core.thrift.server.ServerConfiguration;
 import com.ikasoa.core.utils.MapUtil;
+import com.ikasoa.core.utils.ObjectUtil;
 import com.ikasoa.core.utils.ServerUtil;
 
 import lombok.Getter;
@@ -87,8 +88,8 @@ public class NettyServerImpl implements NettyServer {
 			final TProcessor processor, final ChannelGroup allChannels) {
 		setServerName(serverName);
 		requestedPort = serverPort;
-		setConfiguration(
-				configuration == null ? new NettyServerConfiguration(new TProcessorFactory(processor)) : configuration);
+		setConfiguration(ObjectUtil.isNull(configuration)
+				? new NettyServerConfiguration(new TProcessorFactory(processor)) : configuration);
 		setProcessor(processor);
 		this.allChannels = allChannels;
 	}
@@ -96,9 +97,9 @@ public class NettyServerImpl implements NettyServer {
 	@Override
 	public void run() {
 		if (!isServing()) {
-			if (channelFactory == null) {
-				if (workerExecutorService == null)
-					workerExecutorService = getServerConfiguration().getExecutorService() == null
+			if (ObjectUtil.isNull(channelFactory)) {
+				if (ObjectUtil.isNull(workerExecutorService))
+					workerExecutorService = ObjectUtil.isNull(getServerConfiguration().getExecutorService())
 							? Executors.newFixedThreadPool(2) : getServerConfiguration().getExecutorService();
 				if (workerCount <= 0)
 					workerCount = configuration.getWorkerCount();
@@ -106,7 +107,7 @@ public class NettyServerImpl implements NettyServer {
 						new NioServerBossPool(bossExecutorService, 1, ThreadNameDeterminer.CURRENT),
 						new NioWorkerPool(workerExecutorService, workerCount, ThreadNameDeterminer.CURRENT));
 			}
-			if (getBootstrap() == null) {
+			if (ObjectUtil.isNull(getBootstrap())) {
 				bootstrap = new ServerBootstrap(channelFactory);
 				bootstrap.setOptions(MapUtil.newHashMap());
 				bootstrap.setPipelineFactory(() -> {
@@ -147,15 +148,15 @@ public class NettyServerImpl implements NettyServer {
 			serverChannel.close().addListener(future -> latch.countDown());
 			latch.await();
 			serverChannel = null;
-			if (channelFactory != null) {
+			if (ObjectUtil.isNotNull(channelFactory)) {
 				channelFactory.releaseExternalResources();
 				channelFactory.shutdown();
 			}
-			if (allChannels != null)
+			if (ObjectUtil.isNotNull(allChannels))
 				allChannels.close();
-			if (bossExecutorService != null)
+			if (ObjectUtil.isNotNull(bossExecutorService))
 				shutdownExecutor(bossExecutorService);
-			if (workerExecutorService != null)
+			if (ObjectUtil.isNotNull(workerExecutorService))
 				shutdownExecutor(workerExecutorService);
 			afterStop(getServerConfiguration().getServerAspect());
 		} else
@@ -169,12 +170,12 @@ public class NettyServerImpl implements NettyServer {
 
 	@Override
 	public boolean isServing() {
-		return serverChannel != null && serverChannel.isOpen();
+		return ObjectUtil.isNotNull(serverChannel) && serverChannel.isOpen();
 	}
 
 	@Override
 	public ServerConfiguration getServerConfiguration() {
-		if (configuration == null)
+		if (ObjectUtil.isNull(configuration))
 			throw new RuntimeException("'configuration' is null !");
 		return configuration;
 	}
@@ -187,7 +188,7 @@ public class NettyServerImpl implements NettyServer {
 
 	@Override
 	public void releaseExternalResources() {
-		if (getBootstrap() != null)
+		if (ObjectUtil.isNotNull(getBootstrap()))
 			getBootstrap().releaseExternalResources();
 	}
 

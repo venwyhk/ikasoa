@@ -2,6 +2,7 @@ package com.ikasoa.core.thrift.client.pool;
 
 import com.ikasoa.core.IkasoaException;
 import com.ikasoa.core.thrift.client.socket.ThriftSocket;
+import com.ikasoa.core.utils.ObjectUtil;
 
 /**
  * Socket连接池
@@ -40,8 +41,9 @@ public interface SocketPool {
 	void releaseThriftSocket(final ThriftSocket thriftSocket, final String host, final int port);
 
 	default void releaseThriftSocket(ThriftSocket thriftSocket) {
-		if (thriftSocket != null)
-			if (thriftSocket.getSocket() != null && thriftSocket.getSocket().getInetAddress() != null)
+		if (ObjectUtil.isNotNull(thriftSocket))
+			if (ObjectUtil.isNotNull(thriftSocket.getSocket())
+					&& ObjectUtil.isNotNull(thriftSocket.getSocket().getInetAddress()))
 				releaseThriftSocket(thriftSocket, thriftSocket.getSocket().getInetAddress().getHostName(),
 						thriftSocket.getSocket().getPort());
 			else

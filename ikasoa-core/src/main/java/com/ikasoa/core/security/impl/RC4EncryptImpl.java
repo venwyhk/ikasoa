@@ -1,6 +1,7 @@
 package com.ikasoa.core.security.impl;
 
 import com.ikasoa.core.security.SymmetricKeyEncrypt;
+import com.ikasoa.core.utils.ObjectUtil;
 import com.ikasoa.core.utils.StringUtil;
 
 import lombok.NoArgsConstructor;
@@ -71,7 +72,7 @@ public class RC4EncryptImpl implements SymmetricKeyEncrypt {
 	 * @return 返回解密后的数据
 	 */
 	public String decrypt(byte[] data, String key) {
-		if (data == null || StringUtil.isEmpty(key))
+		if (ObjectUtil.isNull(data) || StringUtil.isEmpty(key))
 			return null;
 		return asString(rc4Base(data, key));
 	}
@@ -88,7 +89,7 @@ public class RC4EncryptImpl implements SymmetricKeyEncrypt {
 		for (int i = 0; i < 256; i++)
 			state[i] = (byte) i;
 		int index1 = 0, index2 = 0;
-		if (bKey == null || bKey.length == 0)
+		if (ObjectUtil.isNull(bKey) || bKey.length == 0)
 			return null;
 		for (int i = 0; i < 256; i++) {
 			index2 = ((bKey[index1] & 0xff) + (state[i] & 0xff) + index2) & 0xff;

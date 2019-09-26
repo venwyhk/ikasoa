@@ -5,6 +5,8 @@ import java.util.List;
 import com.ikasoa.core.IkasoaException;
 import com.ikasoa.core.loadbalance.LoadBalance;
 import com.ikasoa.core.loadbalance.ServerInfo;
+import com.ikasoa.core.utils.ListUtil;
+import com.ikasoa.core.utils.ObjectUtil;
 import com.ikasoa.core.utils.StringUtil;
 
 import lombok.NoArgsConstructor;
@@ -44,7 +46,7 @@ public class PollingLoadBalanceImpl implements LoadBalance {
 	}
 
 	private void init(List<ServerInfo> serverInfoList) {
-		if (serverInfoList == null || serverInfoList.isEmpty())
+		if (ListUtil.isEmpty(serverInfoList))
 			throw new IllegalArgumentException("'serverInfoList' is null !");
 		this.serverInfoList = serverInfoList;
 		try {
@@ -56,7 +58,7 @@ public class PollingLoadBalanceImpl implements LoadBalance {
 
 	@Override
 	public ServerInfo getServerInfo() {
-		if (serverInfo == null)
+		if (ObjectUtil.isNull(serverInfo))
 			log.error("'serverInfo' is null !");
 		return serverInfo;
 	}
@@ -67,7 +69,8 @@ public class PollingLoadBalanceImpl implements LoadBalance {
 		if (size == 0)
 			throw new IkasoaException("Get server host failed !");
 		ServerInfo serverInfo = serverInfoList.get(i);
-		if (serverInfo == null || StringUtil.isEmpty(serverInfo.getHost()) || serverInfo.getWeightNumber() < 0)
+		if (ObjectUtil.isNull(serverInfo) || StringUtil.isEmpty(serverInfo.getHost())
+				|| serverInfo.getWeightNumber() < 0)
 			throw new IkasoaException("serverInfo error !");
 		this.serverInfo = serverInfo;
 		int weightNumber = serverInfo.getWeightNumber();

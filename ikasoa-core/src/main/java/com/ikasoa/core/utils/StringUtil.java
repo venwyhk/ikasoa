@@ -19,7 +19,7 @@ public class StringUtil {
 	private final static String HEX_16 = "0123456789ABCDEF";
 
 	public static boolean isEmpty(String str) {
-		return str == null || str.length() == 0;
+		return ObjectUtil.isNull(str) || str.length() == 0;
 	}
 
 	public static boolean andIsEmpty(String... strs) {
@@ -56,7 +56,7 @@ public class StringUtil {
 	}
 
 	public static boolean equals(String str1, String str2) {
-		return str1 == null && str2 == null ? true : str1 != null && str2 != null ? str1.equals(str2) : false;
+		return ObjectUtil.andIsNull(str1, str2) ? true : !ObjectUtil.orIsNull(str1, str2) ? str1.equals(str2) : false;
 	}
 
 	public static byte[] strToBytes(String str) {
@@ -98,7 +98,7 @@ public class StringUtil {
 	}
 
 	public static byte[] hexStrToBytes(String hexStr) {
-		if (hexStr == null)
+		if (ObjectUtil.isNull(hexStr))
 			return null;
 		if (hexStr.length() == 0)
 			return new byte[0];
@@ -109,7 +109,7 @@ public class StringUtil {
 	}
 
 	public static String bytesToHexStr(byte[] bytes) {
-		if (bytes == null)
+		if (ObjectUtil.isNull(bytes))
 			return null;
 		char[] hexArray = HEX_16.toCharArray();
 		char[] hexChars = new char[bytes.length * 2];

@@ -1,6 +1,7 @@
 package com.ikasoa.core.thrift.client.impl;
 
 import com.ikasoa.core.thrift.client.ThriftClientConfiguration;
+import com.ikasoa.core.utils.ObjectUtil;
 
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,7 +20,7 @@ public class ThriftClientImpl extends AbstractThriftClientImpl {
 			final ThriftClientConfiguration configuration) {
 		setServerHost(serverHost);
 		setServerPort(serverPort);
-		if (configuration == null) {
+		if (ObjectUtil.isNull(configuration)) {
 			log.debug("Thrift client configuration is null .");
 			setConfiguration(new ThriftClientConfiguration());
 		} else

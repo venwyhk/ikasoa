@@ -50,7 +50,7 @@ public class BeanUtil {
 					throw new IkasoaException(e1);
 				}
 			}
-			if (field.getType() == targetField.getType()) {
+			if (ObjectUtil.same(field.getType(), targetField.getType())) {
 				String getMethodName = StringUtil.merge("get", fieldName.substring(0, 1).toUpperCase(),
 						fieldName.substring(1));
 				String setMethodName = StringUtil.merge("set", fieldName.substring(0, 1).toUpperCase(),

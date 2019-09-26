@@ -15,6 +15,7 @@ import org.jboss.netty.handler.codec.frame.TooLongFrameException;
 
 import com.ikasoa.core.netty.TNettyTransport;
 import com.ikasoa.core.netty.TNettyTransportType;
+import com.ikasoa.core.utils.ObjectUtil;
 import com.ikasoa.core.netty.TNettyMessage;
 
 /**
@@ -45,12 +46,14 @@ public class ThriftFrameDecoder extends FrameDecoder {
 		short firstByte = buffer.getUnsignedByte(0);
 		if (firstByte >= 0x80) {
 			ChannelBuffer messageBuffer = tryDecodeUnframedMessage(ctx, channel, buffer, inputProtocolFactory);
-			return messageBuffer == null ? null : new TNettyMessage(messageBuffer, TNettyTransportType.UNFRAMED);
+			return ObjectUtil.isNull(messageBuffer) ? null
+					: new TNettyMessage(messageBuffer, TNettyTransportType.UNFRAMED);
 		} else if (buffer.readableBytes() < MESSAGE_FRAME_SIZE)
 			return null;
 		else {
 			ChannelBuffer messageBuffer = tryDecodeFramedMessage(ctx, channel, buffer, true);
-			return messageBuffer == null ? null : new TNettyMessage(messageBuffer, TNettyTransportType.FRAMED);
+			return ObjectUtil.isNull(messageBuffer) ? null
+					: new TNettyMessage(messageBuffer, TNettyTransportType.FRAMED);
 		}
 	}
 

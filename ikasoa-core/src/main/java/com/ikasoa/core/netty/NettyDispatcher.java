@@ -20,6 +20,7 @@ import org.jboss.netty.util.TimerTask;
 
 import com.ikasoa.core.netty.server.NettyServerConfiguration;
 import com.ikasoa.core.utils.MapUtil;
+import com.ikasoa.core.utils.ObjectUtil;
 
 import java.util.Map;
 import java.util.concurrent.Executor;
@@ -234,7 +235,7 @@ public class NettyDispatcher extends SimpleChannelUpstreamHandler {
 		private boolean responseOrderingRequirementInitialized = false;
 
 		public static boolean isChannelReadBlocked(ChannelHandlerContext ctx) {
-			return getDispatcherContext(ctx).readBlockedState == ReadBlockedState.BLOCKED;
+			return ObjectUtil.same(getDispatcherContext(ctx).readBlockedState, ReadBlockedState.BLOCKED);
 		}
 
 		public static void blockChannelReads(ChannelHandlerContext ctx) {
@@ -266,7 +267,7 @@ public class NettyDispatcher extends SimpleChannelUpstreamHandler {
 			DispatcherContext dispatcherContext;
 			Object attachment = ctx.getAttachment();
 
-			if (attachment == null) {
+			if (ObjectUtil.isNull(attachment)) {
 				// 如果没有上下文就创建一个
 				dispatcherContext = new DispatcherContext();
 				ctx.setAttachment(dispatcherContext);

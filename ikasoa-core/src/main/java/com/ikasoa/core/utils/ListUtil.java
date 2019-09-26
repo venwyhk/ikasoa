@@ -59,7 +59,7 @@ public class ListUtil {
 	}
 
 	public static boolean isEmpty(List<?> list) {
-		return list == null || list.isEmpty();
+		return ObjectUtil.isNull(list) || list.isEmpty();
 	}
 
 }

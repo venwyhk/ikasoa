@@ -4,6 +4,7 @@ import com.ikasoa.core.IkasoaException;
 import com.ikasoa.core.thrift.client.pool.ClientSocketPoolParameters;
 import com.ikasoa.core.thrift.client.pool.SocketPool;
 import com.ikasoa.core.thrift.client.socket.ThriftSocket;
+import com.ikasoa.core.utils.ObjectUtil;
 
 import lombok.NoArgsConstructor;
 
@@ -25,7 +26,7 @@ public class NoSocketPoolImpl implements SocketPool {
 
 	@Override
 	public void releaseThriftSocket(ThriftSocket thriftSocket, String host, int port) {
-		if (thriftSocket != null)
+		if (ObjectUtil.isNotNull(thriftSocket))
 			thriftSocket.close();
 	}
 

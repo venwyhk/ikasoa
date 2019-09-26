@@ -6,6 +6,8 @@ import java.util.Random;
 import com.ikasoa.core.IkasoaException;
 import com.ikasoa.core.loadbalance.LoadBalance;
 import com.ikasoa.core.loadbalance.ServerInfo;
+import com.ikasoa.core.utils.ListUtil;
+import com.ikasoa.core.utils.ObjectUtil;
 
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -39,7 +41,7 @@ public class RandomLoadBalanceImpl implements LoadBalance {
 	}
 
 	private void init(List<ServerInfo> serverInfoList) {
-		if (serverInfoList == null || serverInfoList.isEmpty())
+		if (ListUtil.isEmpty(serverInfoList))
 			throw new IllegalArgumentException("'serverInfoList' is null !");
 		this.serverInfoList = serverInfoList;
 		try {
@@ -51,7 +53,7 @@ public class RandomLoadBalanceImpl implements LoadBalance {
 
 	@Override
 	public ServerInfo getServerInfo() {
-		if (serverInfo == null)
+		if (ObjectUtil.isNull(serverInfo))
 			log.error("'serverInfo' is null !");
 		return serverInfo;
 	}

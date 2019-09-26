@@ -38,7 +38,7 @@ public class SetUtil {
 	}
 
 	public static boolean isEmpty(Set<?> set) {
-		return set == null || set.isEmpty();
+		return ObjectUtil.isNull(set) || set.isEmpty();
 	}
 
 }

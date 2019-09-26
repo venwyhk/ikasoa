@@ -10,6 +10,7 @@ import org.apache.thrift.protocol.TProtocol;
 import org.apache.thrift.protocol.TStruct;
 import org.apache.thrift.protocol.TType;
 
+import com.ikasoa.core.utils.ObjectUtil;
 import com.ikasoa.core.utils.StringUtil;
 
 import lombok.Getter;
@@ -78,9 +79,9 @@ public abstract class AbstractThriftBase
 		iprot.readStructBegin();
 		while (true) {
 			schemeField = iprot.readFieldBegin();
-			if (schemeField.type == TType.STOP)
+			if (ObjectUtil.same(schemeField.type, TType.STOP))
 				break;
-			if (schemeField.type == TType.STRING)
+			if (ObjectUtil.same(schemeField.type, TType.STRING))
 				str = iprot.readString();
 			else
 				throw new TApplicationException("field type must be 'String' !");
@@ -97,7 +98,7 @@ public abstract class AbstractThriftBase
 		if (!"org.apache.thrift.scheme.StandardScheme".equals(oprot.getScheme().getName()))
 			throw new TApplicationException("Service scheme must be 'org.apache.thrift.scheme.StandardScheme' !");
 		oprot.writeStructBegin(getTStruct());
-		if (str != null) {
+		if (ObjectUtil.isNotNull(str)) {
 			oprot.writeFieldBegin(new TField("value", TType.STRING, (short) 0));
 			oprot.writeString(str);
 			oprot.writeFieldEnd();

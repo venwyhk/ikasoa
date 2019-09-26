@@ -9,6 +9,7 @@ import com.ikasoa.core.thrift.client.pool.ClientSocketPoolParameters;
 import com.ikasoa.core.thrift.client.pool.SocketPool;
 import com.ikasoa.core.thrift.client.socket.ThriftSocket;
 import com.ikasoa.core.utils.MapUtil;
+import com.ikasoa.core.utils.ObjectUtil;
 import com.ikasoa.core.utils.ServerUtil;
 
 import lombok.NoArgsConstructor;
@@ -72,7 +73,7 @@ public class SimpleSocketPoolImpl implements SocketPool {
 		if (!ServerUtil.checkHostAndPort(parameters.getHost(), parameters.getPort()))
 			throw new IllegalArgumentException("Server host or port is null !");
 		SimpleSocketPoolImpl self = selfMap.get(parameters.getKey());
-		if (self == null)
+		if (ObjectUtil.isNull(self))
 			self = init(parameters);
 		try {
 			for (byte i = 0; i < size; i++) {
@@ -97,7 +98,7 @@ public class SimpleSocketPoolImpl implements SocketPool {
 		if (!ServerUtil.checkHostAndPort(parameters.getHost(), parameters.getPort()))
 			throw new IllegalArgumentException("Server host or port is null !");
 		SimpleSocketPoolImpl self = selfMap.get(parameters.getKey());
-		if (self == null || self.socketStatusArray == null)
+		if (ObjectUtil.isNull(self) || ObjectUtil.isNull(self.socketStatusArray))
 			self = init(parameters);
 		byte i = 0;
 		for (; i < size; i++)
@@ -116,8 +117,9 @@ public class SimpleSocketPoolImpl implements SocketPool {
 		try {
 			for (i = 0; i < size; i++) {
 				ThriftSocket thriftSocket = self.socketPool.get(i);
-				if (self.socketStatusArray[i] && (thriftSocket == null || thriftSocket.getSocket() == null
-						|| (thriftSocket.isOpen() && thriftSocket.getSocket().isClosed()))) {
+				if (self.socketStatusArray[i]
+						&& (ObjectUtil.isNull(thriftSocket) || ObjectUtil.isNull(thriftSocket.getSocket())
+								|| (thriftSocket.isOpen() && thriftSocket.getSocket().isClosed()))) {
 					return parameters.buildClientThriftSocket();
 				}
 			}
@@ -133,7 +135,7 @@ public class SimpleSocketPoolImpl implements SocketPool {
 			throws IkasoaException {
 		log.debug("Get socket number is {} .", i);
 		ThriftSocket thriftSocket = self.socketPool.get(new Byte(i));
-		if (thriftSocket == null || thriftSocket.getSocket() == null) {
+		if (ObjectUtil.isNull(thriftSocket) || ObjectUtil.isNull(thriftSocket.getSocket())) {
 			log.warn("Socket is null ! Again retry initiation pool .");
 			init(parameters);
 			return buildThriftSocket(parameters);
@@ -146,8 +148,8 @@ public class SimpleSocketPoolImpl implements SocketPool {
 	 */
 	@Override
 	public synchronized void releaseThriftSocket(ThriftSocket thriftSocket, String host, int port) {
-		if (thriftSocket == null || thriftSocket.getSocket() == null
-				|| thriftSocket.getSocket().getInetAddress() == null) {
+		if (ObjectUtil.isNull(thriftSocket) || ObjectUtil.isNull(thriftSocket.getSocket())
+				|| ObjectUtil.isNull(thriftSocket.getSocket().getInetAddress())) {
 			log.debug("Release unsuccessful .");
 			return;
 		}
@@ -157,10 +159,10 @@ public class SimpleSocketPoolImpl implements SocketPool {
 		}
 		log.debug("Release socket , host is {} and port is {} .", host, port);
 		SimpleSocketPoolImpl self = selfMap.get(ServerUtil.buildCacheKey(host, port));
-		if (self == null)
+		if (ObjectUtil.isNull(self))
 			return;
 		for (byte i = 0; i < size; i++)
-			if (self.socketPool.get(new Byte(i)) == thriftSocket) {
+			if (ObjectUtil.same(self.socketPool.get(new Byte(i)), thriftSocket)) {
 				self.socketStatusArray[i] = false;
 				return;
 			}
@@ -175,7 +177,7 @@ public class SimpleSocketPoolImpl implements SocketPool {
 	 */
 	@Override
 	public synchronized void releaseAllThriftSocket() {
-		if (selfMap == null || selfMap.isEmpty())
+		if (MapUtil.isEmpty(selfMap))
 			return;
 		ThriftSocket socket;
 		for (Entry<String, SimpleSocketPoolImpl> entry : selfMap.entrySet()) {

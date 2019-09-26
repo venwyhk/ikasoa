@@ -8,6 +8,7 @@ import com.ikasoa.core.loadbalance.LoadBalance;
 import com.ikasoa.core.loadbalance.ServerInfo;
 import com.ikasoa.core.thrift.client.ThriftClient;
 import com.ikasoa.core.thrift.client.ThriftClientConfiguration;
+import com.ikasoa.core.utils.ObjectUtil;
 
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,11 +30,11 @@ public class LoadBalanceThriftClientImpl extends AbstractThriftClientImpl {
 	private ServerCheckFailProcessor serverCheckFailProcessor = getServerCheckFailProcessor(new NextProcessImpl());
 
 	public LoadBalanceThriftClientImpl(final LoadBalance loadBalance, final ThriftClientConfiguration configuration) {
-		if (loadBalance == null)
+		if (ObjectUtil.isNull(loadBalance))
 			throw new IllegalArgumentException("'loadBalance' is null !");
 		this.loadBalance = loadBalance;
 		updateServerInfo();
-		if (configuration == null) {
+		if (ObjectUtil.isNull(configuration)) {
 			log.debug("Thrift client configuration is null .");
 			setConfiguration(new ThriftClientConfiguration());
 		} else
@@ -53,7 +54,7 @@ public class LoadBalanceThriftClientImpl extends AbstractThriftClientImpl {
 		ServerCheck serverCheck = getServerCheck();
 		// 如果有配置检测实现,则在建立连接前尝试检测服务器,如果服务器不可用则尝试切换到另一台服务器,切换规则取决于负载均衡实现.
 		// 需要注意,如果列表中的服务器全都不可用,则会无限循环下去,直到有可用的服务为止.
-		if (serverCheck != null && !serverCheck.check(getServerHost(), getServerPort())) {
+		if (ObjectUtil.isNotNull(serverCheck) && !serverCheck.check(getServerHost(), getServerPort())) {
 			serverCheckFailProcessor.process(this);
 			return getTransport();
 		}
@@ -69,7 +70,7 @@ public class LoadBalanceThriftClientImpl extends AbstractThriftClientImpl {
 	 */
 	private void updateServerInfo() {
 		ServerInfo serverInfo = loadBalance.getServerInfo();
-		if (serverInfo == null)
+		if (ObjectUtil.isNull(serverInfo))
 			throw new RuntimeException("'serverInfo' is null !");
 		setServerHost(serverInfo.getHost());
 		setServerPort(serverInfo.getPort());

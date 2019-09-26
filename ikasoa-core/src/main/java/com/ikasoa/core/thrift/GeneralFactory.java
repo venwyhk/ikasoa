@@ -30,6 +30,7 @@ import com.ikasoa.core.thrift.service.ServiceProcessor;
 import com.ikasoa.core.thrift.service.impl.AsyncServiceClientImpl;
 import com.ikasoa.core.thrift.service.impl.ServiceClientImpl;
 import com.ikasoa.core.utils.MapUtil;
+import com.ikasoa.core.utils.ObjectUtil;
 import com.ikasoa.core.utils.StringUtil;
 
 import lombok.AllArgsConstructor;
@@ -206,7 +207,7 @@ public class GeneralFactory implements Factory {
 	 */
 	@Override
 	public Service getService(ThriftClient thriftClient, String serviceName) throws IkasoaException {
-		if (thriftClient == null)
+		if (ObjectUtil.isNull(thriftClient))
 			throw new IllegalArgumentException("'thriftClient' is null !");
 		return StringUtil.isEmpty(serviceName)
 				? new ServiceClientImpl(thriftClient.getProtocol(thriftClient.getTransport()))
@@ -218,7 +219,7 @@ public class GeneralFactory implements Factory {
 	 */
 	@Override
 	public AsyncService getAsyncService(TNonblockingTransport transport, String serviceName) throws IkasoaException {
-		if (transport == null)
+		if (ObjectUtil.isNull(transport))
 			throw new IllegalArgumentException("'transport' is null !");
 		try {
 			return StringUtil.isEmpty(serviceName)
@@ -230,7 +231,7 @@ public class GeneralFactory implements Factory {
 	}
 
 	private MultiplexedProcessor buildMultiplexedProcessor(Map<String, Service> serviceMap) {
-		if (serviceMap == null)
+		if (ObjectUtil.isNull(serviceMap))
 			throw new IllegalArgumentException("'serviceMap' is null !");
 		Map<String, TProcessor> processorMap = MapUtil.newHashMap(serviceMap.size());
 		for (Entry<String, Service> e : serviceMap.entrySet())

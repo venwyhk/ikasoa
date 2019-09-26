@@ -5,6 +5,7 @@ import org.apache.thrift.server.TThreadPoolServer;
 import org.apache.thrift.transport.TServerTransport;
 
 import com.ikasoa.core.thrift.server.ThriftServerConfiguration;
+import com.ikasoa.core.utils.ObjectUtil;
 
 import lombok.NoArgsConstructor;
 
@@ -40,11 +41,11 @@ public class ThreadPoolThriftServerImpl extends AbstractThriftServerImpl {
 				.transportFactory(configuration.getTransportFactory())
 				.protocolFactory(configuration.getProtocolFactory());
 		// 如果不设置ExecutorService,则默认使用ThreadPoolExecutor实现.
-		if (configuration.getExecutorService() != null)
+		if (ObjectUtil.isNotNull(configuration.getExecutorService()))
 			args.executorService(configuration.getExecutorService());
 		server = new TThreadPoolServer(
 				configuration.getServerArgsAspect().tThreadPoolServerArgsAspect(args).processor(getProcessor()));
-		if (configuration.getServerEventHandler() != null)
+		if (ObjectUtil.isNotNull(configuration.getServerEventHandler()))
 			server.setServerEventHandler(configuration.getServerEventHandler());
 	}
 

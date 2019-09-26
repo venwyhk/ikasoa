@@ -166,7 +166,7 @@ public class MapUtil {
 	}
 
 	public static boolean isEmpty(Map<?, ?> map) {
-		return map == null || map.isEmpty();
+		return ObjectUtil.isNull(map) || map.isEmpty();
 	}
 
 	@SuppressWarnings("unchecked")

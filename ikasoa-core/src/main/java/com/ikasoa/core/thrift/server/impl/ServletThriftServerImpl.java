@@ -5,6 +5,7 @@ import org.apache.thrift.transport.TServerTransport;
 import org.apache.thrift.transport.TTransportException;
 import com.ikasoa.core.thrift.server.ThriftServer;
 import com.ikasoa.core.thrift.server.ThriftServerConfiguration;
+import com.ikasoa.core.utils.ObjectUtil;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -76,7 +77,7 @@ public class ServletThriftServerImpl implements ThriftServer {
 
 	@Override
 	public ThriftServerConfiguration getServerConfiguration() {
-		if (configuration == null)
+		if (ObjectUtil.isNull(configuration))
 			throw new RuntimeException("'configuration' is null !");
 		return configuration;
 	}

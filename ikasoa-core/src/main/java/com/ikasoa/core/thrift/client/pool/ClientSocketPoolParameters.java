@@ -6,6 +6,7 @@ import org.apache.thrift.transport.TTransportException;
 
 import com.ikasoa.core.IkasoaException;
 import com.ikasoa.core.thrift.client.socket.ThriftSocket;
+import com.ikasoa.core.utils.ObjectUtil;
 import com.ikasoa.core.utils.ServerUtil;
 
 import lombok.AllArgsConstructor;
@@ -33,7 +34,7 @@ public class ClientSocketPoolParameters {
 		if (!ServerUtil.checkHostAndPort(host, port))
 			throw new IllegalArgumentException("Server host or port is null !");
 		try {
-			return sslTransportParameters == null ? new ThriftSocket(host, port, timeout)
+			return ObjectUtil.isNull(sslTransportParameters) ? new ThriftSocket(host, port, timeout)
 					: new ThriftSocket(TSSLTransportFactory.getClientSocket(host, port, timeout, sslTransportParameters)
 							.getSocket());
 		} catch (TTransportException e) {

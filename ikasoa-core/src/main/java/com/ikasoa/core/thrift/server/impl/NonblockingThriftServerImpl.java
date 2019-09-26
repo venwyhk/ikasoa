@@ -7,6 +7,7 @@ import org.apache.thrift.transport.TNonblockingServerSocket;
 import org.apache.thrift.transport.TServerTransport;
 import org.apache.thrift.transport.TTransportException;
 import com.ikasoa.core.thrift.server.ThriftServerConfiguration;
+import com.ikasoa.core.utils.ObjectUtil;
 
 import lombok.NoArgsConstructor;
 
@@ -32,7 +33,7 @@ public class NonblockingThriftServerImpl extends AbstractThriftServerImpl {
 
 	@Override
 	public TServerTransport getTransport() throws TTransportException {
-		if (serverSocket == null)
+		if (ObjectUtil.isNull(serverSocket))
 			serverSocket = new TNonblockingServerSocket(getServerPort());
 		return serverSocket;
 	}
@@ -50,11 +51,11 @@ public class NonblockingThriftServerImpl extends AbstractThriftServerImpl {
 		TThreadedSelectorServer.Args args = new TThreadedSelectorServer.Args((TNonblockingServerSocket) serverTransport)
 				.transportFactory(configuration.getTransportFactory())
 				.protocolFactory(configuration.getProtocolFactory());
-		if (configuration.getExecutorService() != null)
+		if (ObjectUtil.isNotNull(configuration.getExecutorService()))
 			args.executorService(configuration.getExecutorService());
 		server = new TThreadedSelectorServer(
 				configuration.getServerArgsAspect().tThreadedSelectorServerArgsAspect(args).processor(getProcessor()));
-		if (configuration.getServerEventHandler() != null)
+		if (ObjectUtil.isNotNull(configuration.getServerEventHandler()))
 			server.setServerEventHandler(configuration.getServerEventHandler());
 	}
 

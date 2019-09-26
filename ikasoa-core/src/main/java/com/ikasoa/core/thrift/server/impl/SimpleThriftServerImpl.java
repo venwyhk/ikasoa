@@ -5,6 +5,7 @@ import org.apache.thrift.server.TServer;
 import org.apache.thrift.server.TSimpleServer;
 import org.apache.thrift.transport.TServerTransport;
 import com.ikasoa.core.thrift.server.ThriftServerConfiguration;
+import com.ikasoa.core.utils.ObjectUtil;
 
 import lombok.NoArgsConstructor;
 
@@ -32,7 +33,7 @@ public class SimpleThriftServerImpl extends AbstractThriftServerImpl {
 		server = new TSimpleServer(configuration.getServerArgsAspect().tServerArgsAspect(
 				new TServer.Args(serverTransport).transportFactory(configuration.getTransportFactory())
 						.protocolFactory(configuration.getProtocolFactory()).processor(getProcessor())));
-		if (configuration.getServerEventHandler() != null)
+		if (ObjectUtil.isNotNull(configuration.getServerEventHandler()))
 			server.setServerEventHandler(configuration.getServerEventHandler());
 	}
 
