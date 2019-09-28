@@ -18,7 +18,7 @@ public class ObjectUtil {
 	}
 
 	public static boolean isNotNull(Object obj) {
-		return !isNull(obj);
+		return obj != null;
 	}
 
 	public static boolean andIsNull(Object... objects) {
