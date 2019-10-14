@@ -1,5 +1,6 @@
 package com.ikasoa.rpc.handler;
 
+import com.ikasoa.core.utils.ObjectUtil;
 import com.ikasoa.rpc.handler.impl.JsonProtocolHandlerImpl;
 
 import lombok.SneakyThrows;
@@ -26,7 +27,7 @@ public class ProtocolHandlerFactory<T, R> {
 	public ProtocolHandler<T, R> getProtocolHandler(ReturnData resultData, ProtocolHandler<?, ?> protocolHandler) {
 		Class[] paramTypes = { ReturnData.class };
 		Object[] params = { resultData };
-		return protocolHandler == null
+		return ObjectUtil.isNull(protocolHandler)
 				? (ProtocolHandler<T, R>) DEFAULT_PROTOCOL_HANDLER.getClass().getConstructor(paramTypes)
 						.newInstance(params)
 				: (ProtocolHandler<T, R>) protocolHandler.getClass().getConstructor(paramTypes).newInstance(params);

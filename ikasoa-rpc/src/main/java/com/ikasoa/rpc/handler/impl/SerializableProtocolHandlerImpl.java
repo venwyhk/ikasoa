@@ -1,5 +1,6 @@
 package com.ikasoa.rpc.handler.impl;
 
+import com.ikasoa.core.utils.ObjectUtil;
 import com.ikasoa.core.utils.StreamUtil;
 import com.ikasoa.core.utils.StringUtil;
 import com.ikasoa.rpc.handler.ProtocolHandler;
@@ -35,7 +36,7 @@ public class SerializableProtocolHandlerImpl<T, R> implements ProtocolHandler<T,
 
 	@Override
 	public String resultToStr(R result) {
-		if (result == null)
+		if (ObjectUtil.isNull(result))
 			return String.valueOf(V);
 		return StringUtil.bytesToHexStr(StreamUtil.objectToBytes(result));
 	}

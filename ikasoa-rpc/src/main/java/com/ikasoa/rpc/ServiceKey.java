@@ -4,6 +4,7 @@ import java.lang.reflect.Method;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.annotation.JSONField;
+import com.ikasoa.core.utils.ObjectUtil;
 
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
@@ -60,7 +61,7 @@ public class ServiceKey {
 	}
 
 	private void buildMethod(Method method) {
-		if (method != null) {
+		if (ObjectUtil.isNotNull(method)) {
 			this.methodName = method.getName();
 			this.returnType = method.getReturnType();
 			this.parameterTypes = method.getParameterTypes();

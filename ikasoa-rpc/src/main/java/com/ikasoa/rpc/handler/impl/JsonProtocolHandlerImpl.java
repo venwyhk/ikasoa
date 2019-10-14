@@ -8,6 +8,7 @@ import java.util.Set;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.ikasoa.core.utils.MapUtil;
+import com.ikasoa.core.utils.ObjectUtil;
 import com.ikasoa.core.utils.StringUtil;
 import com.ikasoa.rpc.handler.ProtocolHandler;
 import com.ikasoa.rpc.handler.ReturnData;
@@ -47,7 +48,7 @@ public class JsonProtocolHandlerImpl<T, R> implements ProtocolHandler<T, R> {
 		for (int i = 0; i < argClasses.length; i++) {
 			String s = argStrs[i];
 			Class<?> c = argClasses[i];
-			if (StringUtil.isEmpty(s) || c == null) {
+			if (StringUtil.isEmpty(s) || ObjectUtil.isNull(c)) {
 				objs[i] = null;
 				continue;
 			}
@@ -58,12 +59,12 @@ public class JsonProtocolHandlerImpl<T, R> implements ProtocolHandler<T, R> {
 
 	@Override
 	public String argToStr(T arg) {
-		if (arg == null)
+		if (ObjectUtil.isNull(arg))
 			return "[]";
 		Object[] args = (Object[]) arg;
 		Class<?>[] argClasses = new Class<?>[args.length];
 		for (int i = 0; i < args.length; i++)
-			if (args[i] != null)
+			if (ObjectUtil.isNotNull(args[i]))
 				argClasses[i] = args[i].getClass();
 		return new StringBuilder(JSON.toJSONString(argClasses)).append(CT).append(JSON.toJSONString(arg)).toString();
 	}
@@ -80,7 +81,7 @@ public class JsonProtocolHandlerImpl<T, R> implements ProtocolHandler<T, R> {
 	@Override
 	@SuppressWarnings("unchecked")
 	public R strToResult(String str) {
-		if (str == null)
+		if (ObjectUtil.isNull(str))
 			throw new IllegalArgumentException("result string is null !");
 		if (StringUtil.equals(String.valueOf(ProtocolHandler.V), str))
 			return null;

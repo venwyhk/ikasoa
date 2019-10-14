@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.Set;
 
 import com.ikasoa.core.utils.MapUtil;
+import com.ikasoa.core.utils.ObjectUtil;
 import com.ikasoa.core.utils.StringUtil;
 
 import lombok.Data;
@@ -102,7 +103,7 @@ public class ReturnData {
 	}
 
 	public boolean hasExcetion() {
-		return getExcetionClassTypes() != null && getExcetionClassTypes().length > 0;
+		return ObjectUtil.isNotNull(getExcetionClassTypes()) && getExcetionClassTypes().length > 0;
 	}
 
 	public Class<?> getClassType() {
@@ -110,7 +111,7 @@ public class ReturnData {
 	}
 
 	public Class<?> getClassTypes(int k) {
-		return getClassTypes() != null && getClassTypes().length > k ? getClassTypes()[k] : Object.class;
+		return ObjectUtil.isNotNull(getClassTypes()) && getClassTypes().length > k ? getClassTypes()[k] : Object.class;
 	}
 
 	private String getClassNameByTypeName(String classTypeName) {

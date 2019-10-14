@@ -1,6 +1,7 @@
 package com.ikasoa.rpc.service;
 
 import com.ikasoa.core.thrift.service.Service;
+import com.ikasoa.core.utils.ObjectUtil;
 import com.ikasoa.core.utils.StringUtil;
 import com.ikasoa.rpc.handler.ProtocolHandler;
 
@@ -22,7 +23,7 @@ public abstract class AbstractGetService<T, R> implements Service, BaseGetServic
 	@Override
 	@SneakyThrows
 	public String get(String argStr) throws RpcException {
-		if (protocolHandler == null)
+		if (ObjectUtil.isNull(protocolHandler))
 			throw new RpcException("'protocolHandler' is null !");
 		if (StringUtil.isEmpty(argStr))
 			throw new RpcException("'argStr' is null !");

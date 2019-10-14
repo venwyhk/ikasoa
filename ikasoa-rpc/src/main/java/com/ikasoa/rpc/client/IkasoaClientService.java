@@ -4,6 +4,7 @@ import java.util.UUID;
 
 import com.ikasoa.core.thrift.Factory;
 import com.ikasoa.core.thrift.client.ThriftClient;
+import com.ikasoa.core.utils.ObjectUtil;
 import com.ikasoa.rpc.BaseGetService;
 import com.ikasoa.rpc.RpcException;
 import com.ikasoa.rpc.handler.ClientInvocationContext;
@@ -52,7 +53,7 @@ public class IkasoaClientService<T, R> implements BaseGetService<T, R> {
 	@Override
 	public R get(T arg) throws Throwable {
 		ClientInvocationContext context = null;
-		if (invocationHandler != null) {
+		if (ObjectUtil.isNotNull(invocationHandler)) {
 			context = new ClientInvocationContext(UUID.randomUUID().toString());
 			context.setServerHost(thriftClient.getServerHost());
 			context.setServerPort(thriftClient.getServerPort());
@@ -61,7 +62,7 @@ public class IkasoaClientService<T, R> implements BaseGetService<T, R> {
 			context = invocationHandler.before(context);
 		}
 		// 参数转换
-		if (protocolHandler == null)
+		if (ObjectUtil.isNull(protocolHandler))
 			throw new RpcException("'protocolHandler' is null !");
 		String argStr = null;
 		try {
@@ -69,7 +70,7 @@ public class IkasoaClientService<T, R> implements BaseGetService<T, R> {
 		} catch (Exception e) {
 			throw new RpcException("Execute 'argToStr' function exception !", e);
 		}
-		if (context != null && invocationHandler != null) {
+		if (!ObjectUtil.orIsNull(context, invocationHandler)) {
 			context.setArgStr(argStr);
 			argStr = invocationHandler.invoke(context).getArgStr();
 		}
@@ -82,7 +83,7 @@ public class IkasoaClientService<T, R> implements BaseGetService<T, R> {
 		} finally {
 			thriftClient.close();
 		}
-		if (context != null && invocationHandler != null)
+		if (!ObjectUtil.orIsNull(context, invocationHandler))
 			context.setResultStr(resultStr);
 		// 返回值转换
 		Throwable throwable = null;
@@ -92,8 +93,8 @@ public class IkasoaClientService<T, R> implements BaseGetService<T, R> {
 			throw new RpcException("Execute 'strToThrowable' function exception !", e);
 		}
 		// 判断是否为异常返回,如果是就抛出异常
-		if (throwable != null) {
-			if (invocationHandler != null) {
+		if (ObjectUtil.isNotNull(throwable)) {
+			if (ObjectUtil.isNotNull(invocationHandler)) {
 				invocationHandler.exception(context, throwable);
 				context = null;
 			}
@@ -102,7 +103,7 @@ public class IkasoaClientService<T, R> implements BaseGetService<T, R> {
 		// 不是异常返回就返回正常值
 		try {
 			R result = protocolHandler.strToResult(resultStr);
-			if (context != null && invocationHandler != null) {
+			if (!ObjectUtil.orIsNull(context, invocationHandler)) {
 				context.setResultObject(result);
 				invocationHandler.after(context);
 				context = null;

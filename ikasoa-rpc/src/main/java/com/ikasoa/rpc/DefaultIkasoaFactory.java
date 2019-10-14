@@ -17,6 +17,7 @@ import com.ikasoa.core.thrift.server.ThriftServer;
 import com.ikasoa.core.thrift.server.ThriftServerConfiguration;
 import com.ikasoa.core.thrift.service.Service;
 import com.ikasoa.core.utils.MapUtil;
+import com.ikasoa.core.utils.ObjectUtil;
 import com.ikasoa.core.utils.StringUtil;
 import com.ikasoa.rpc.annotation.IkasoaService;
 import com.ikasoa.rpc.annotation.Invalid;
@@ -52,17 +53,17 @@ public class DefaultIkasoaFactory extends GeneralFactory implements IkasoaFactor
 	}
 
 	public DefaultIkasoaFactory(Configurator configurator) {
-		if (configurator != null) {
+		if (ObjectUtil.isNotNull(configurator)) {
 			this.configurator = configurator;
-			if (configurator.getThriftServerConfiguration() != null)
+			if (ObjectUtil.isNotNull(configurator.getThriftServerConfiguration()))
 				thriftServerConfiguration = configurator.getThriftServerConfiguration();
-			if (configurator.getThriftClientConfiguration() != null)
+			if (ObjectUtil.isNotNull(configurator.getThriftClientConfiguration()))
 				thriftClientConfiguration = configurator.getThriftClientConfiguration();
 		}
 	}
 
 	public DefaultIkasoaFactory(ServerInfoWrapper siw) {
-		if (siw != null && !siw.isNotNull())
+		if (ObjectUtil.isNotNull(siw) && !siw.isNotNull())
 			configurator = new Configurator(siw);
 	}
 
@@ -76,9 +77,9 @@ public class DefaultIkasoaFactory extends GeneralFactory implements IkasoaFactor
 
 	@SuppressWarnings("unchecked")
 	public <T> T getInstance(Class<T> iClass, ServerInfoWrapper siw) {
-		if (iClass == null)
+		if (ObjectUtil.isNull(iClass))
 			throw new IllegalArgumentException();
-		if (siw == null || !siw.isNotNull())
+		if (ObjectUtil.isNull(siw) || !siw.isNotNull())
 			throw new IllegalArgumentException("'serverInfoWrapper' is exist !");
 		return (T) Proxy
 				.newProxyInstance(iClass.getClassLoader(),
@@ -88,7 +89,7 @@ public class DefaultIkasoaFactory extends GeneralFactory implements IkasoaFactor
 								args) -> getBaseGetServiceFactory()
 										.getBaseGetService(
 												siw.isCluster()
-														? siw.getLoadBalance() == null
+														? ObjectUtil.isNull(siw.getLoadBalance())
 																? getThriftClient(siw.getServerInfoList())
 																: getThriftClient(siw.getServerInfoList(),
 																		siw.getLoadBalance(), siw.getParam())
@@ -193,15 +194,15 @@ public class DefaultIkasoaFactory extends GeneralFactory implements IkasoaFactor
 
 	private Map<String, Service> getServiceMapByClass(Map<String, Service> serviceMap, Class<?> implClass,
 			Object implObject, Class<?> superClass) {
-		if (implClass == null)
+		if (ObjectUtil.isNull(implClass))
 			throw new IllegalArgumentException("Implement 'class' is not null !");
-		if (superClass == null)
+		if (ObjectUtil.isNull(superClass))
 			throw new IllegalArgumentException("Implement 'superClass' is not null !");
 		if (implClass.getInterfaces().length == 0)
 			log.warn("Class ({}) is not this interface implement class , Will ignore .", implClass.getName());
 		for (Class<?> iClass : superClass.getInterfaces())
 			buildService(serviceMap, iClass, implClass, implObject);
-		if (superClass.getSuperclass() != null && !Object.class.equals(superClass.getSuperclass()))
+		if (ObjectUtil.isNotNull(superClass.getSuperclass()) && !Object.class.equals(superClass.getSuperclass()))
 			serviceMap.putAll(getServiceMapByClass(serviceMap, implClass, implObject, superClass.getSuperclass()));
 		return serviceMap;
 	}
@@ -214,7 +215,7 @@ public class DefaultIkasoaFactory extends GeneralFactory implements IkasoaFactor
 
 	@SneakyThrows
 	private void buildService(Map<String, Service> serviceMap, Class<?> iClass, Class<?> implClass, Object implObject) {
-		if (implObject == null)
+		if (ObjectUtil.isNull(implObject))
 			implObject = implClass.newInstance();
 		ProtocolHandlerFactory<Object[], Object> protocolHandlerFactory = new ProtocolHandlerFactory<>();
 		for (Method implMethod : implClass.getMethods()) {
@@ -252,7 +253,7 @@ public class DefaultIkasoaFactory extends GeneralFactory implements IkasoaFactor
 
 	// 比较两个方法是否相同
 	private boolean compareMethod(Method m1, Method m2) {
-		if (m1 != null && m2 != null && StringUtil.equals(m1.getName(), m2.getName())
+		if (!ObjectUtil.orIsNull(m1, m2) && StringUtil.equals(m1.getName(), m2.getName())
 				&& m1.getParameterTypes().length == m2.getParameterTypes().length
 				&& StringUtil.equals(m1.getReturnType().getName(), m2.getReturnType().getName())) {
 			for (int i = 0; i < m1.getParameterTypes().length; i++)
@@ -264,7 +265,7 @@ public class DefaultIkasoaFactory extends GeneralFactory implements IkasoaFactor
 	}
 
 	private String getSKey(Class<?> iClass, Method method, boolean isCheckValid) {
-		if (isCheckValid && (iClass == null || method == null || method.isAnnotationPresent(Invalid.class)))
+		if (isCheckValid && (ObjectUtil.orIsNull(iClass, method) || method.isAnnotationPresent(Invalid.class)))
 			return null;
 		return Optional.ofNullable(iClass.getAnnotation(IkasoaService.class))
 				.map(s -> new ServiceKey(s.name(), method).toString())

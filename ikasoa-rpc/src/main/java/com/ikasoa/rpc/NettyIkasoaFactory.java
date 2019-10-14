@@ -11,6 +11,7 @@ import com.ikasoa.core.netty.server.impl.NettyServerImpl;
 import com.ikasoa.core.thrift.server.ThriftServer;
 import com.ikasoa.core.thrift.server.ThriftServerConfiguration;
 import com.ikasoa.core.thrift.server.impl.AbstractThriftServerImpl;
+import com.ikasoa.core.utils.ObjectUtil;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -48,7 +49,7 @@ public class NettyIkasoaFactory extends DefaultIkasoaFactory {
 
 	public NettyIkasoaFactory(NettyServerConfiguration configuration, ChannelGroup channelGroup) {
 		this.configuration = configuration;
-		this.channelGroup = channelGroup == null ? new DefaultChannelGroup() : channelGroup;
+		this.channelGroup = ObjectUtil.isNull(channelGroup) ? new DefaultChannelGroup() : channelGroup;
 	}
 
 	@Override
@@ -81,7 +82,7 @@ public class NettyIkasoaFactory extends DefaultIkasoaFactory {
 
 		@Override
 		public void stop() {
-			if (server != null && server.isServing()) {
+			if (ObjectUtil.isNotNull(server) && server.isServing()) {
 				server.stop();
 				log.info("Stoping server ... (name: {})", getServerName());
 			} else
