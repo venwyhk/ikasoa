@@ -10,6 +10,7 @@ import org.I0Itec.zkclient.ZkClient;
 import org.apache.zookeeper.Watcher.Event.KeeperState;
 
 import com.ikasoa.core.loadbalance.ServerInfo;
+import com.ikasoa.core.utils.ListUtil;
 import com.ikasoa.core.utils.StringUtil;
 
 import lombok.Getter;
@@ -92,7 +93,7 @@ public class ZkBase {
 	}
 
 	public List<ServerInfo> getServerInfoList() {
-		List<ServerInfo> serverInfoList = new ArrayList<>();
+		List<ServerInfo> serverInfoList = ListUtil.newArrayList();
 		List<String> nList = zkClient.getChildren(zkNode);
 		for (String n : nList) {
 			ZkServerNode zksn = (ZkServerNode) zkClient
@@ -104,11 +105,10 @@ public class ZkBase {
 	}
 
 	public boolean isExistNode(String serverName, String serverHost, int serverPort) {
-		if (nodeList == null || nodeList.isEmpty())
+		if (ListUtil.isEmpty(nodeList))
 			nodeList = getChildren();
 		for (String n : nodeList)
-			if (n.contains(new StringBuilder(serverName).append("-").append(serverHost).append("-").append(serverPort)
-					.toString()))
+			if (n.contains(StringUtil.merge(serverName, "-", serverHost, "-", serverPort)))
 				return true;
 		return false;
 	}

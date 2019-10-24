@@ -6,6 +6,7 @@ import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.util.Enumeration;
 
+import com.ikasoa.core.utils.ObjectUtil;
 import com.ikasoa.core.utils.StringUtil;
 
 import lombok.experimental.UtilityClass;
@@ -39,7 +40,7 @@ public class LocalUtil {
 		String ip = "";
 		for (Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces(); en.hasMoreElements();) {
 			NetworkInterface intf = en.nextElement();
-			if (intf == null)
+			if (ObjectUtil.isNull(intf))
 				continue;
 			String name = intf.getName();
 			if (StringUtil.isNotEmpty(name) && !name.contains("docker") && !name.contains("lo"))

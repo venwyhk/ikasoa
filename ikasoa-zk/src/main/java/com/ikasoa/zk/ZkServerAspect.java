@@ -15,8 +15,9 @@ import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 import com.ikasoa.core.thrift.server.ServerAspect;
+import com.ikasoa.core.thrift.server.ServerConfiguration;
 import com.ikasoa.core.thrift.server.ThriftServer;
-import com.ikasoa.core.thrift.server.ThriftServerConfiguration;
+import com.ikasoa.core.utils.ObjectUtil;
 import com.ikasoa.core.utils.ServerUtil;
 import com.ikasoa.core.utils.StringUtil;
 
@@ -75,38 +76,36 @@ public class ZkServerAspect implements ServerAspect {
 	}
 
 	@Override
-	public void beforeStart(String serverName, int serverPort, ThriftServerConfiguration configuration,
-			TProcessor processor, ThriftServer server) {
+	public void beforeStart(String serverName, int serverPort, ServerConfiguration configuration, TProcessor processor,
+			ThriftServer server) {
+		// Do nothing
 	}
 
 	@Override
-	public void afterStart(String serverName, int serverPort, ThriftServerConfiguration configuration,
-			TProcessor processor, ThriftServer server) {
+	public void afterStart(String serverName, int serverPort, ServerConfiguration configuration, TProcessor processor,
+			ThriftServer server) {
 		ZkClient zkClient = zkBase.getZkClient();
 		String zkNode = zkBase.getZkNode();
 		if (!zkClient.exists(zkNode))
-			zkClient.createPersistent(zkNode,
-					new StringBuilder(ZkBase.ZK_ROOT_NODE).append(DEFAULT_NODE_NAME).toString());
+			zkClient.createPersistent(zkNode, StringUtil.merge(ZkBase.ZK_ROOT_NODE, DEFAULT_NODE_NAME));
 		try {
 			String serverHost = StringUtil.isNotEmpty(host) ? host
 					: isLocalIp ? LocalUtil.getLocalIP() : InetAddress.getLocalHost().getHostAddress();
 			if (ServerUtil.isPort(port))
 				serverPort = port;
-			StringBuilder sNodeSB = new StringBuilder(zkNode);
-			if (!ZkBase.ZK_ROOT_NODE.equals(zkNode))
-				sNodeSB.append(ZkBase.ZK_ROOT_NODE);
-			sNodeStr = sNodeSB.append(serverName).append("-").append(serverHost).append("-").append(serverPort)
-					.append(" ").toString();
+			if (!StringUtil.equals(ZkBase.ZK_ROOT_NODE, zkNode))
+				zkNode = StringUtil.merge(zkNode, ZkBase.ZK_ROOT_NODE);
+			sNodeStr = StringUtil.merge(zkNode, serverName, "-", serverHost, "-", serverPort, " ");
 			if (zkBase.isExistNode(serverName, serverHost, serverPort))
 				throw new RuntimeException("Server already register ! (name: " + serverName + " , host : " + serverHost
 						+ " , port : " + serverPort + ")");
 			ZkServerNode zkSNObj = new ZkServerNode(serverName, serverHost, serverPort);
-			if (configuration != null) {
-				if (configuration.getTransportFactory() != null)
+			if (ObjectUtil.isNotNull(configuration)) {
+				if (ObjectUtil.isNotNull(configuration.getTransportFactory()))
 					zkSNObj.setTransportFactoryClassName(configuration.getTransportFactory().getClass().getName());
-				if (configuration.getProtocolFactory() != null)
+				if (ObjectUtil.isNotNull(configuration.getProtocolFactory()))
 					zkSNObj.setTransportFactoryClassName(configuration.getProtocolFactory().getClass().getName());
-				if (configuration.getProcessorFactory() != null)
+				if (ObjectUtil.isNotNull(configuration.getProcessorFactory()))
 					zkSNObj.setTransportFactoryClassName(configuration.getProcessorFactory().getClass().getName());
 			}
 			Optional.ofNullable(processor).ifPresent(p -> zkSNObj.setProcessorClassName(p.getClass().getName()));
@@ -117,17 +116,18 @@ public class ZkServerAspect implements ServerAspect {
 		} catch (SocketException e) {
 			throw new RuntimeException(e);
 		}
+
 	}
 
 	@Override
-	public void beforeStop(String serverName, int serverPort, ThriftServerConfiguration configuration,
-			TProcessor processor, ThriftServer server) {
+	public void beforeStop(String serverName, int serverPort, ServerConfiguration configuration, TProcessor processor,
+			ThriftServer server) {
 		// Do nothing
 	}
 
 	@Override
-	public void afterStop(String serverName, int serverPort, ThriftServerConfiguration configuration,
-			TProcessor processor, ThriftServer server) {
+	public void afterStop(String serverName, int serverPort, ServerConfiguration configuration, TProcessor processor,
+			ThriftServer server) {
 		if (StringUtil.isNotEmpty(sNodeStr)) {
 			log.debug("Delete server node : {}", sNodeStr);
 			zkBase.getZkClient().delete(sNodeStr);
