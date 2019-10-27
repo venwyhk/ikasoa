@@ -25,7 +25,7 @@ Maven
     <dependency>
         <groupId>com.ikasoa</groupId>
         <artifactId>ikasoa-rpc</artifactId>
-        <version>0.3.4-SNAPSHOT</version>
+        <version>0.3.3-BETA2</version>
     </dependency>
     ......
 ```
@@ -48,7 +48,7 @@ Maven
     <dependency>
         <groupId>com.ikasoa</groupId>
         <artifactId>ikasoa-core</artifactId>
-        <version>0.6-SNAPSHOT</version>
+        <version>0.6.2</version>
     </dependency>
     ......
 ```
