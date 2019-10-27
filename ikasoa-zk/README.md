@@ -27,7 +27,7 @@ pom.xml
     <dependency>
         <groupId>com.ikasoa</groupId>
         <artifactId>ikasoa-zk</artifactId>
-        <version>0.1</version>
+        <version>0.1.1-BETA</version>
     </dependency>
     ......
 ```
@@ -35,7 +35,7 @@ pom.xml
 Gradle
 
 ```
-    compile group: 'com.ikasoa', name: 'ikasoa-zk', version: '0.1'
+    compile group: 'com.ikasoa', name: 'ikasoa-zk', version: '0.1.1-BETA'
 ```
 
 ## 使用示例 ##

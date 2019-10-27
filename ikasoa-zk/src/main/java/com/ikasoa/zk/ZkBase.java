@@ -1,6 +1,5 @@
 package com.ikasoa.zk;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.I0Itec.zkclient.IZkChildListener;
@@ -64,7 +63,7 @@ public class ZkBase {
 
 			@Override
 			public void handleNewSession() throws Exception {
-				log.debug("handleNewSession");
+				log.debug("Implementing 'handleNewSession' .");
 				nodeList = getChildren();
 			}
 
@@ -75,7 +74,7 @@ public class ZkBase {
 
 			@Override
 			public void handleStateChanged(KeeperState state) throws Exception {
-				log.debug("handleStateChanged (state : {})", state);
+				log.debug("Implementing 'handleStateChanged (state : {})' .", state);
 			}
 
 		});
@@ -84,7 +83,8 @@ public class ZkBase {
 
 			@Override
 			public void handleChildChange(String parentPath, List<String> currentChildList) throws Exception {
-				log.debug("handleChildChange (parentPath : {}, currentChildList : {})", parentPath, currentChildList);
+				log.debug("Implementing 'handleChildChange (parentPath : {}, currentChildList : {})' .", parentPath,
+						currentChildList);
 				nodeList = currentChildList;
 			}
 
@@ -96,8 +96,7 @@ public class ZkBase {
 		List<ServerInfo> serverInfoList = ListUtil.newArrayList();
 		List<String> nList = zkClient.getChildren(zkNode);
 		for (String n : nList) {
-			ZkServerNode zksn = (ZkServerNode) zkClient
-					.readData(new StringBuilder(zkNode).append("/").append(n).toString());
+			ZkServerNode zksn = (ZkServerNode) zkClient.readData(StringUtil.merge(zkNode, "/", n));
 			serverInfoList.add(new ServerInfo(zksn.getServerHost(), zksn.getServerPort()));
 		}
 		log.debug("ServerInfoList is : {}", serverInfoList);
