@@ -24,11 +24,11 @@ public class LocalUtil {
 		return isWindowsOS() ? InetAddress.getLocalHost().getHostAddress() : getLinuxLocalIp();
 	}
 
-	private static boolean isWindowsOS() {
-		boolean isWindowsOS = false;
+	private static Boolean isWindowsOS() {
+		Boolean isWindowsOS = Boolean.FALSE;
 		String osName = System.getProperty("os.name");
 		if (StringUtil.isNotEmpty(osName) && osName.toLowerCase().indexOf("windows") > -1)
-			isWindowsOS = true;
+			isWindowsOS = Boolean.TRUE;
 		return isWindowsOS;
 	}
 

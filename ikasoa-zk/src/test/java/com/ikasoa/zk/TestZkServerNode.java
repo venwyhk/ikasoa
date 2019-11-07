@@ -10,14 +10,14 @@ public class TestZkServerNode extends TestCase {
 	public void test() {
 		String _serverName = "serverName";
 		String _serverHost = "serverHost";
-		int _serverPort = 9981;
+		Integer _serverPort = 9981;
 		ZkServerNode node = new ZkServerNode(_serverName, _serverHost, _serverPort);
 		assertEquals(_serverName, node.getServerName());
 		assertEquals(_serverHost, node.getServerHost());
 		assertEquals(_serverPort, node.getServerPort());
 		String serverName = "serverName";
 		String serverHost = "serverHost";
-		int serverPort = 9982;
+		Integer serverPort = 9982;
 		String transportFactoryClassName = "transportFactoryClassName";
 		String protocolFactoryClassName = "protocolFactoryClassName";
 		String processorFactoryClassName = "processorFactoryClassName";
