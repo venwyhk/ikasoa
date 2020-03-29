@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.ikasoa</groupId>
     <artifactId>ikasoa-core</artifactId>
-    <version>0.6.2</version>
+    <version>0.6.3</version>
     <packaging>jar</packaging>
     <name>Ikasoa Core</name>
     <description>ikasoa is a java distributed service framework.</description>
@@ -55,7 +55,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
-                <version>3.1.0</version>
+                <version>3.2.1</version>
                 <configuration>
                     <attach>true</attach>
                 </configuration>
@@ -71,7 +71,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
-                <version>3.1.1</version>
+                <version>3.2.0</version>
                 <configuration>
                     <aggregate>true</aggregate>
                     <charset>UTF-8</charset>
@@ -137,29 +137,29 @@
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-pool2</artifactId>
-            <version>2.7.0</version>
+            <version>2.8.0</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
-            <version>1.7.28</version>
+            <version>1.7.30</version>
         </dependency>
         <dependency>  
             <groupId>org.slf4j</groupId>  
             <artifactId>slf4j-simple</artifactId>  
-            <version>1.7.28</version>
+            <version>1.7.30</version>
             <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.18.10</version>
+            <version>1.18.12</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.12</version>
+            <version>4.13</version>
             <scope>test</scope>
         </dependency>
     </dependencies>

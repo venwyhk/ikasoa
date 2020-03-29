@@ -12,8 +12,6 @@
 
 ## 目录说明 ##
 
-- example : *示例代码*
-
 - ikasoa-core : *基础核心包*
 
 - [ikasoa-rpc](https://github.com/venwyhk/ikasoa/blob/master/ikasoa-rpc/README.md) : *实现RPC功能的代码*
