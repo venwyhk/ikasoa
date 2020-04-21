@@ -11,8 +11,17 @@ public class NumberUtilTest extends TestCase {
 
 	@Test
 	public void testGetRandomInt() {
-		int bound = 10;
-		assertTrue(NumberUtil.getRandomInt(bound) < bound);
+		int min = 10;
+		int max = 100;
+		int num = NumberUtil.getRandomInt(min, max);
+		assertTrue(num > min);
+		assertTrue(num < max);
+	}
+	
+	@Test
+	public void testGetRandomLong() {
+		long bound = 1234567890L;
+		assertTrue(NumberUtil.getRandomLong(bound) < bound);
 	}
 
 	@Test
@@ -30,7 +39,6 @@ public class NumberUtilTest extends TestCase {
 	@Test
 	public void testGetDouble() {
 		double d = 12.345;
-		System.out.print(NumberUtil.getDouble(d, 2));
 		assertEquals(NumberUtil.getDouble(d, 2), 12.35);
 	}
 

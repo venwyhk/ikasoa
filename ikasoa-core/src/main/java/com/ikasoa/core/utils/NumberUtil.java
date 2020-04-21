@@ -13,8 +13,17 @@ public class NumberUtil {
 
 	private final static int ROUNDING_MODE = BigDecimal.ROUND_HALF_UP;
 
-	public static int getRandomInt(int bound) {
-		return new Random().nextInt(bound);
+	public static int getRandomInt(int min, int max) {
+		return new Random().nextInt(max) % (max - min + 1) + min;
+	}
+
+	public static long getRandomLong(long bound) {
+		long b, l;
+		do {
+			b = (new Random().nextLong() << 1) >>> 1;
+			l = b % bound;
+		} while (b - l + (bound - 1) < 0L);
+		return l;
 	}
 
 	public static float getRandomFloat(float bound, int scale) {
