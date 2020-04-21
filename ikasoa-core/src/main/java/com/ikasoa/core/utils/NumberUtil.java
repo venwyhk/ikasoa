@@ -3,12 +3,15 @@ package com.ikasoa.core.utils;
 import java.math.BigDecimal;
 import java.util.Random;
 
+import lombok.experimental.UtilityClass;
+
 /**
  * Number工具类
  * 
  * @author <a href="mailto:larry7696@gmail.com">Larry</a>
  * @version 0.6.3
  */
+@UtilityClass
 public class NumberUtil {
 
 	private final static int ROUNDING_MODE = BigDecimal.ROUND_HALF_UP;
