@@ -1,7 +1,7 @@
 package com.ikasoa.core.utils;
 
 import java.math.BigDecimal;
-import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 import lombok.experimental.UtilityClass;
 
@@ -14,16 +14,18 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public class NumberUtil {
 
+	private final static ThreadLocalRandom RANDOM = ThreadLocalRandom.current();
+
 	private final static int ROUNDING_MODE = BigDecimal.ROUND_HALF_UP;
 
 	public static int getRandomInt(int min, int max) {
-		return new Random().nextInt(max) % (max - min + 1) + min;
+		return RANDOM.nextInt(max) % (max - min + 1) + min;
 	}
 
 	public static long getRandomLong(long bound) {
 		long b, l;
 		do {
-			b = (new Random().nextLong() << 1) >>> 1;
+			b = (RANDOM.nextLong() << 1) >>> 1;
 			l = b % bound;
 		} while (b - l + (bound - 1) < 0L);
 		return l;
@@ -34,7 +36,7 @@ public class NumberUtil {
 	}
 
 	public static float getRandomFloat(float bound, int scale, int roundingMode) {
-		return new BigDecimal(Math.random() * bound).setScale(scale, roundingMode).floatValue();
+		return new BigDecimal(RANDOM.nextFloat() * bound).setScale(scale, roundingMode).floatValue();
 	}
 
 	public static double getRandomDouble(double bound, int scale) {
@@ -42,7 +44,7 @@ public class NumberUtil {
 	}
 
 	public static double getRandomDouble(double bound, int scale, int roundingMode) {
-		return getDouble(Math.random() * bound, scale, roundingMode);
+		return getDouble(RANDOM.nextDouble() * bound, scale, roundingMode);
 	}
 
 	public static double getDouble(double d, int scale) {

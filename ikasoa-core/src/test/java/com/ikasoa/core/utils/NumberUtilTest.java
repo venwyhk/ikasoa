@@ -15,9 +15,9 @@ public class NumberUtilTest extends TestCase {
 		int max = 100;
 		int num = NumberUtil.getRandomInt(min, max);
 		assertTrue(num > min);
-		assertTrue(num < max);
+		assertTrue(num <= max);
 	}
-	
+
 	@Test
 	public void testGetRandomLong() {
 		long bound = 1234567890L;

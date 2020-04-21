@@ -1,12 +1,12 @@
 package com.ikasoa.core.loadbalance.impl;
 
 import java.util.List;
-import java.util.Random;
 
 import com.ikasoa.core.IkasoaException;
 import com.ikasoa.core.loadbalance.LoadBalance;
 import com.ikasoa.core.loadbalance.ServerInfo;
 import com.ikasoa.core.utils.ListUtil;
+import com.ikasoa.core.utils.NumberUtil;
 import com.ikasoa.core.utils.ObjectUtil;
 
 import lombok.NoArgsConstructor;
@@ -63,7 +63,7 @@ public class RandomLoadBalanceImpl implements LoadBalance {
 		int size = serverInfoList.size();
 		if (size == 0)
 			throw new IkasoaException("Get server info failed !");
-		serverInfo = serverInfoList.get(new Random().nextInt(size) % (size + 1));
+		serverInfo = serverInfoList.get(NumberUtil.getRandomInt(0, size));
 		log.debug("ServerInfo is : {}", serverInfo);
 		return getServerInfo();
 	}
