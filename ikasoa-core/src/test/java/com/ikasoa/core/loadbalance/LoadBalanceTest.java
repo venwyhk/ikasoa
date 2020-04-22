@@ -129,7 +129,7 @@ public class LoadBalanceTest extends TestCase {
 			ServerInfo serverInfo1 = testSimpleConsistencyHashLoadBalanceImpl(serverInfoList, "abcdef");
 			ServerInfo serverInfo2 = testSimpleConsistencyHashLoadBalanceImpl(serverInfoList, "123456");
 			// 这里有一定机率是相同的.如果凑巧hash到同一地址,就换个hash再试一次.
-			if (serverInfo1.getHost().equals(serverInfo2.getHost())) {
+			if (StringUtil.equals(serverInfo1.getHost(), serverInfo2.getHost())) {
 				ServerInfo serverInfo3 = testSimpleConsistencyHashLoadBalanceImpl(serverInfoList, "987654321");
 				assertFalse(serverInfo1.getHost().equals(serverInfo3.getHost()));
 			}

@@ -29,6 +29,10 @@ public class ObjectUtil {
 		return Arrays.asList(objects).stream().filter(ObjectUtil::isNull).count() > 0;
 	}
 
+	public static boolean equals(Object obj1, Object obj2) {
+		return andIsNull(obj1, obj2) ? true : !orIsNull(obj1, obj2) ? obj1.equals(obj2) : false;
+	}
+
 	public static boolean same(Object obj1, Object obj2) {
 		return obj1 == obj2;
 	}

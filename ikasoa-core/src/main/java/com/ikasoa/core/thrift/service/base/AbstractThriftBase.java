@@ -73,7 +73,7 @@ public abstract class AbstractThriftBase
 	 */
 	@Override
 	public void read(TProtocol iprot) throws TException {
-		if (!"org.apache.thrift.scheme.StandardScheme".equals(iprot.getScheme().getName()))
+		if (!StringUtil.equals("org.apache.thrift.scheme.StandardScheme", iprot.getScheme().getName()))
 			throw new TApplicationException("Service scheme must be 'org.apache.thrift.scheme.StandardScheme' !");
 		TField schemeField;
 		iprot.readStructBegin();
@@ -95,7 +95,7 @@ public abstract class AbstractThriftBase
 	 */
 	@Override
 	public void write(TProtocol oprot) throws TException {
-		if (!"org.apache.thrift.scheme.StandardScheme".equals(oprot.getScheme().getName()))
+		if (!StringUtil.equals("org.apache.thrift.scheme.StandardScheme", oprot.getScheme().getName()))
 			throw new TApplicationException("Service scheme must be 'org.apache.thrift.scheme.StandardScheme' !");
 		oprot.writeStructBegin(getTStruct());
 		if (ObjectUtil.isNotNull(str)) {
@@ -109,7 +109,7 @@ public abstract class AbstractThriftBase
 
 	@Override
 	public int compareTo(AbstractThriftBase other) {
-		if (!getClass().equals(other.getClass()))
+		if (!ObjectUtil.equals(getClass(), other.getClass()))
 			return getClass().getName().compareTo(other.getClass().getName());
 		int lastComparison = Boolean.valueOf(isSet(null)).compareTo(isSet(null));
 		if (lastComparison != 0)

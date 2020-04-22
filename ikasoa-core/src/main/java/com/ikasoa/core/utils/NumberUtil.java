@@ -18,6 +18,15 @@ public class NumberUtil {
 
 	private final static int ROUNDING_MODE = BigDecimal.ROUND_HALF_UP;
 
+	/**
+	 * 获取一个范围的随机整数
+	 * 
+	 * @param min
+	 *            最小值
+	 * @param max
+	 *            最大值
+	 * @return int 随机数
+	 */
 	public static int getRandomInt(int min, int max) {
 		return RANDOM.nextInt(max) % (max - min + 1) + min;
 	}

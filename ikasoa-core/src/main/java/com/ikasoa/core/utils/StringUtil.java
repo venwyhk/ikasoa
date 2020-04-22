@@ -56,7 +56,7 @@ public class StringUtil {
 	}
 
 	public static boolean equals(String str1, String str2) {
-		return ObjectUtil.andIsNull(str1, str2) ? true : !ObjectUtil.orIsNull(str1, str2) ? str1.equals(str2) : false;
+		return ObjectUtil.equals(str1, str2);
 	}
 
 	public static byte[] strToBytes(String str) {

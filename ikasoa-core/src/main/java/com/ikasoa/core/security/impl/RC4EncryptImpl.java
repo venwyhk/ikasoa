@@ -22,7 +22,7 @@ public class RC4EncryptImpl implements SymmetricKeyEncrypt {
 	 *            待进行加密的数据
 	 * @param key
 	 *            加密的key
-	 * @return 返回经过加密后的数据 (String)
+	 * @return String 返回经过加密后的数据
 	 */
 	@Override
 	public String encrypt(String data, String key) {
@@ -38,7 +38,7 @@ public class RC4EncryptImpl implements SymmetricKeyEncrypt {
 	 *            加密数据 (String)
 	 * @param key
 	 *            加密的key
-	 * @return 返回解密后的数据
+	 * @return String 返回解密后的数据
 	 */
 	@Override
 	public String decrypt(String data, String key) {
@@ -54,7 +54,7 @@ public class RC4EncryptImpl implements SymmetricKeyEncrypt {
 	 *            待进行加密的数据
 	 * @param key
 	 *            加密的key
-	 * @return 返回经过加密后的数据 (byte)
+	 * @return byte[] 返回经过加密后的数据
 	 */
 	public byte[] encryptByte(String data, String key) {
 		if (StringUtil.orIsEmpty(data, key))
@@ -69,7 +69,7 @@ public class RC4EncryptImpl implements SymmetricKeyEncrypt {
 	 *            加密数据 (Byte)
 	 * @param key
 	 *            加密的key
-	 * @return 返回解密后的数据
+	 * @return String 返回解密后的数据
 	 */
 	public String decrypt(byte[] data, String key) {
 		if (ObjectUtil.isNull(data) || StringUtil.isEmpty(key))

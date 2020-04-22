@@ -36,9 +36,22 @@ public class ObjectUtilTest extends TestCase {
 	}
 
 	@Test
+	public void testEquals() {
+		String o1 = new String("1");
+		String o2 = new String("1");
+		String o3 = new String("2");
+		assertTrue(ObjectUtil.equals(o1, o1));
+		assertTrue(ObjectUtil.equals(o1, "1"));
+		assertTrue(ObjectUtil.equals(o1, o2));
+		assertFalse(ObjectUtil.equals(o1, o3));
+	}
+
+	@Test
 	public void testSame() {
-		assertTrue(ObjectUtil.same("", ""));
-		assertFalse(ObjectUtil.same("", "0"));
+		String o1 = new String("1");
+		String o2 = new String("1");
+		assertTrue(ObjectUtil.same(o1, o1));
+		assertFalse(ObjectUtil.same(o1, o2));
 	}
 
 }
