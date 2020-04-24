@@ -36,9 +36,10 @@ public class MapUtil {
 		return new HashMap<>(m);
 	}
 
-	public static <K, V> Map<K, V> buildHashMap(Object... objects) {
+	@SafeVarargs
+	public static <K, V> Map<K, V> buildHashMap(V... values) {
 		Map<K, V> map = newHashMap();
-		buildMap(map, objects);
+		buildMap(map, values);
 		return map;
 	}
 
@@ -59,9 +60,10 @@ public class MapUtil {
 		return new LinkedHashMap<>(m);
 	}
 
-	public static <K, V> Map<K, V> buildLinkedHashMap(Object... objects) {
+	@SafeVarargs
+	public static <K, V> Map<K, V> buildLinkedHashMap(V... values) {
 		Map<K, V> map = newLinkedHashMap();
-		buildMap(map, objects);
+		buildMap(map, values);
 		return map;
 	}
 
@@ -87,9 +89,10 @@ public class MapUtil {
 		return newIdentityHashMap(0).getClass();
 	}
 
-	public static <K, V> Map<K, V> buildIdentityHashMap(Object... objects) {
+	@SafeVarargs
+	public static <K, V> Map<K, V> buildIdentityHashMap(V... values) {
 		Map<K, V> map = newIdentityHashMap();
-		buildMap(map, objects);
+		buildMap(map, values);
 		return map;
 	}
 
@@ -109,9 +112,10 @@ public class MapUtil {
 		return new TreeMap<>(m);
 	}
 
-	public static <K, V> TreeMap<K, V> buildTreeMap(Object... objects) {
+	@SafeVarargs
+	public static <K, V> TreeMap<K, V> buildTreeMap(V... values) {
 		TreeMap<K, V> map = newTreeMap();
-		buildMap(map, objects);
+		buildMap(map, values);
 		return map;
 	}
 
@@ -132,9 +136,10 @@ public class MapUtil {
 		return new Hashtable<>(m);
 	}
 
-	public static <K, V> Hashtable<K, V> buildHashtable(Object... objects) {
+	@SafeVarargs
+	public static <K, V> Hashtable<K, V> buildHashtable(V... values) {
 		Hashtable<K, V> map = newHashtable();
-		buildMap(map, objects);
+		buildMap(map, values);
 		return map;
 	}
 
@@ -145,23 +150,23 @@ public class MapUtil {
 
 	public static Map<String, String> arrayToMap(String[][] array) {
 		final Map<String, String> map = newHashMap((int) (array.length * 1.5));
-		for (int i = 0; i < array.length; i++) {
+		JUtil.fur(0, array.length - 1, 1, i -> {
 			final String[] entry = array[i];
 			if (entry.length < 2)
 				throw new IllegalArgumentException(String.format("Array element %d, has a length less than 2 .", i));
 			map.put(entry[0], entry[1]);
-		}
+		});
 		return map;
 	}
 
 	public static Map<String, Object> arrayToMap(Object[][] array) {
 		final Map<String, Object> map = newHashMap((int) (array.length * 1.5));
-		for (int i = 0; i < array.length; i++) {
+		JUtil.fur(0, array.length - 1, 1, i -> {
 			final Object[] entry = array[i];
 			if (entry.length < 2)
 				throw new IllegalArgumentException(String.format("Array element %d, has a length less than 2 .", i));
 			map.put(entry[0].toString(), entry[1]);
-		}
+		});
 		return map;
 	}
 
@@ -171,9 +176,10 @@ public class MapUtil {
 
 	@SuppressWarnings("unchecked")
 	private void buildMap(@SuppressWarnings("rawtypes") Map map, Object[] objects) {
-		for (int i = 0; i < objects.length; i = i + 2)
-			if (i + 1 < objects.length)
-				map.put(objects[i], objects[i + 1]);
+		ListUtil.forEach(0, 2, ListUtil.buildArrayList(objects), (index, item) -> {
+			if (index + 1 < objects.length)
+				map.put(objects[index], objects[index + 1]);
+		});
 	}
 
 }

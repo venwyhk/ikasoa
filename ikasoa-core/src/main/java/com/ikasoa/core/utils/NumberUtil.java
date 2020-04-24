@@ -18,6 +18,22 @@ public class NumberUtil {
 
 	private final static int ROUNDING_MODE = BigDecimal.ROUND_HALF_UP;
 
+	public static int limitInt(int value, int min, int max) {
+		if (value < min)
+			value = min;
+		if (value > max)
+			value = max;
+		return value;
+	}
+
+	public static long limitLong(long value, long min, long max) {
+		if (value < min)
+			value = min;
+		if (value > max)
+			value = max;
+		return value;
+	}
+
 	/**
 	 * 获取一个范围的随机整数
 	 * 

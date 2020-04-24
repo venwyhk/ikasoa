@@ -3,6 +3,7 @@ package com.ikasoa.core.utils;
 import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.BiConsumer;
 
 import lombok.experimental.UtilityClass;
 
@@ -60,6 +61,21 @@ public class ListUtil {
 
 	public static boolean isEmpty(List<?> list) {
 		return ObjectUtil.isNull(list) || list.isEmpty();
+	}
+
+	public static <T> void forEach(int startIndex, int spanNum, Iterable<? extends T> elements,
+			BiConsumer<Integer, ? super T> action) {
+		if (ObjectUtil.orIsNull(elements, action))
+			throw new IllegalArgumentException("Incorrect parameters !");
+		int index = 1;
+		for (T element : elements) {
+			if (index <= NumberUtil.limitInt(startIndex, 0, Integer.MAX_VALUE)) {
+				index++;
+				continue;
+			}
+			action.accept(index - 1, element);
+			index = index + NumberUtil.limitInt(spanNum, 1, Integer.MAX_VALUE);
+		}
 	}
 
 }
