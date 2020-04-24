@@ -39,4 +39,15 @@ public class ListUtilTest extends TestCase {
 		assertTrue(ListUtil.isEmpty(ListUtil.newArrayList()));
 	}
 
+	@Test
+	public void testForEach() {
+		ListUtil.forEach(0, 2, ListUtil.buildArrayList("0", "2", "4"), (index, item) -> {
+			assertTrue(index == StringUtil.toInt(item));
+		});
+		ListUtil.forEach(2, 1, ListUtil.buildArrayList("a", "b", "c"), (index, item) -> {
+			assertTrue(index == 2);
+			assertEquals(item, "c");
+		});
+	}
+
 }
