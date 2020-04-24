@@ -7,7 +7,6 @@ import org.apache.thrift.transport.TMemoryBuffer;
 import org.junit.Test;
 
 import com.ikasoa.core.IkasoaException;
-import com.ikasoa.core.ServerInfo;
 import com.ikasoa.core.ServerTestCase;
 import com.ikasoa.core.TestConstants;
 import com.ikasoa.core.thrift.Factory;

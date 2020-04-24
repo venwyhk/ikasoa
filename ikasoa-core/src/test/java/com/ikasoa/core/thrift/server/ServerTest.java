@@ -16,7 +16,6 @@ import org.apache.thrift.transport.TTransportException;
 import org.apache.thrift.transport.TSSLTransportFactory.TSSLTransportParameters;
 import org.junit.Test;
 
-import com.ikasoa.core.ServerInfo;
 import com.ikasoa.core.ServerTestCase;
 import com.ikasoa.core.TestConstants;
 import com.ikasoa.core.thrift.Factory;

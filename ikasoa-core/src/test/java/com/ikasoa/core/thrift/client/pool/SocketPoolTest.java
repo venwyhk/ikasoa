@@ -5,7 +5,6 @@ import org.apache.thrift.transport.TTransportFactory;
 import org.junit.Test;
 
 import com.ikasoa.core.IkasoaException;
-import com.ikasoa.core.ServerInfo;
 import com.ikasoa.core.TestConstants;
 import com.ikasoa.core.thrift.GeneralFactory;
 import com.ikasoa.core.thrift.client.ThriftClient;
