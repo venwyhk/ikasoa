@@ -105,13 +105,10 @@ public class RC4EncryptImpl implements SymmetricKeyEncrypt {
 	private static String toHexString(String s) {
 		String str = "";
 		for (int i = 0; i < s.length(); i++) {
-			int ch = (int) s.charAt(i);
-			String s4 = Integer.toHexString(ch & 0xFF);
-			if (s4.length() == 1)
-				s4 = StringUtil.merge("0", s4);
-			str += s4;
+			String s4 = Integer.toHexString((int) s.charAt(i) & 0xFF);
+			str = s4.length() == 1 ? StringUtil.merge(str, "0", s4) : StringUtil.merge(str, s4);
 		}
-		return str; // 0x表示十六进制
+		return str;
 	}
 
 	private static byte[] toBytes(String src) {

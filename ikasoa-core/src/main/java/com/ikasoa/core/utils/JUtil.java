@@ -22,7 +22,7 @@ import lombok.extern.slf4j.Slf4j;
 public class JUtil {
 
 	/**
-	 * for循环方法
+	 * for循环替代方法
 	 * 
 	 * @param startIndex
 	 *            起始索引值
@@ -31,9 +31,9 @@ public class JUtil {
 	 * @param spanNum
 	 *            递增数
 	 * @param action
-	 *            消费(执行)循环
+	 *            消费(执行)
 	 */
-	protected static void fur(int startIndex, int maxIndex, int spanNum, IntConsumer action) {
+	public static void fur(int startIndex, int maxIndex, int spanNum, IntConsumer action) {
 		for (int index = NumberUtil.limitInt(startIndex, 0, Integer.MAX_VALUE); index <= maxIndex; index += NumberUtil
 				.limitInt(spanNum, 1, Integer.MAX_VALUE))
 			action.accept(index);

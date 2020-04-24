@@ -33,9 +33,9 @@ public class SecurityCompactProtocol extends TCompactProtocol {
 
 		protected final SymmetricKeyEncrypt encrypt_;
 
-		public Factory(String key, SymmetricKeyEncrypt encrypt) {
+		public Factory(final String key, SymmetricKeyEncrypt encrypt) {
 			if (StringUtil.isEmpty(key))
-				throw new IllegalArgumentException("'key' is null !");
+				throw new IllegalArgumentException("Key invalid !");
 			key_ = key;
 			encrypt_ = encrypt;
 		}
@@ -47,7 +47,7 @@ public class SecurityCompactProtocol extends TCompactProtocol {
 
 	}
 
-	public SecurityCompactProtocol(TTransport transport, String key, SymmetricKeyEncrypt encrypt) {
+	public SecurityCompactProtocol(TTransport transport, final String key, SymmetricKeyEncrypt encrypt) {
 		super(transport);
 		this.key = key;
 		this.encrypt = encrypt;
@@ -81,14 +81,14 @@ public class SecurityCompactProtocol extends TCompactProtocol {
 		return key.length() < KEY_MAX_LENGHT ? formatStr(key, KEY_MAX_LENGHT) : key;
 	}
 
-	private static String formatStr(String str, int length) {
+	private static String formatStr(final String str, int length) {
 		int strLen = str.getBytes().length;
 		if (strLen == length) {
 			return str;
 		} else if (strLen < length) {
-			String tem = "";
+			StringBuilder tem = new StringBuilder();
 			for (int i = 0; i < length - strLen; i++)
-				tem = StringUtil.merge(tem, " ");
+				tem.append(" ");
 			return StringUtil.merge(str, tem);
 		} else {
 			return str.substring(0, length);
