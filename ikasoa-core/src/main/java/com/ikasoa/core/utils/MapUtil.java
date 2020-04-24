@@ -148,24 +148,13 @@ public class MapUtil {
 		return newHashtable(0).getClass();
 	}
 
-	public static Map<String, String> arrayToMap(String[][] array) {
-		final Map<String, String> map = newHashMap((int) (array.length * 1.5));
+	public static <E> Map<E, E> arrayToMap(E[][] array) {
+		final Map<E, E> map = newHashMap((int) (array.length * 1.5));
 		JUtil.fur(0, array.length - 1, 1, i -> {
-			final String[] entry = array[i];
+			final E[] entry = array[i];
 			if (entry.length < 2)
 				throw new IllegalArgumentException(String.format("Array element %d, has a length less than 2 .", i));
 			map.put(entry[0], entry[1]);
-		});
-		return map;
-	}
-
-	public static Map<String, Object> arrayToMap(Object[][] array) {
-		final Map<String, Object> map = newHashMap((int) (array.length * 1.5));
-		JUtil.fur(0, array.length - 1, 1, i -> {
-			final Object[] entry = array[i];
-			if (entry.length < 2)
-				throw new IllegalArgumentException(String.format("Array element %d, has a length less than 2 .", i));
-			map.put(entry[0].toString(), entry[1]);
 		});
 		return map;
 	}

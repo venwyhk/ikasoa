@@ -33,7 +33,7 @@ public class JUtil {
 	 * @param action
 	 *            消费(执行)循环
 	 */
-	public static void fur(int startIndex, int maxIndex, int spanNum, IntConsumer action) {
+	protected static void fur(int startIndex, int maxIndex, int spanNum, IntConsumer action) {
 		for (int index = NumberUtil.limitInt(startIndex, 0, Integer.MAX_VALUE); index <= maxIndex; index += NumberUtil
 				.limitInt(spanNum, 1, Integer.MAX_VALUE))
 			action.accept(index);
@@ -54,7 +54,7 @@ public class JUtil {
 	 *                异常
 	 */
 	public static void copyProperties(Object target, Object source) throws IkasoaException {
-		Class<?> sourceClz = source.getClass(), targetClz = target.getClass();
+		final Class<?> sourceClz = source.getClass(), targetClz = target.getClass();
 		Field[] fields = sourceClz.getDeclaredFields();
 		if (fields.length == 0)
 			fields = sourceClz.getSuperclass().getDeclaredFields();
@@ -71,9 +71,9 @@ public class JUtil {
 				}
 			}
 			if (ObjectUtil.same(field.getType(), targetField.getType())) {
-				String getMethodName = StringUtil.merge("get", fieldName.substring(0, 1).toUpperCase(),
+				final String getMethodName = StringUtil.merge("get", fieldName.substring(0, 1).toUpperCase(),
 						fieldName.substring(1));
-				String setMethodName = StringUtil.merge("set", fieldName.substring(0, 1).toUpperCase(),
+				final String setMethodName = StringUtil.merge("set", fieldName.substring(0, 1).toUpperCase(),
 						fieldName.substring(1));
 				Method getMethod, setMethod;
 				try {

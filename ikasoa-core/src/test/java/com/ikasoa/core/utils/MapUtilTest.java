@@ -92,7 +92,7 @@ public class MapUtilTest extends TestCase {
 		assertEquals(map1.get("a"), "A");
 		assertEquals(map1.get("b"), "B");
 		Object[][] array2 = { { "a", 1 }, { "b", 2 } };
-		Map<String, Object> map2 = MapUtil.arrayToMap(array2);
+		Map<Object, Object> map2 = MapUtil.arrayToMap(array2);
 		assertEquals(map2.size(), 2);
 		assertEquals(map2.get("a"), 1);
 		assertEquals(map2.get("b"), 2);
