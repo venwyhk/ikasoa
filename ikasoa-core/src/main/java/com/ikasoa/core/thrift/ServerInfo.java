@@ -1,4 +1,4 @@
-package com.ikasoa.core.loadbalance;
+package com.ikasoa.core.thrift;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -24,15 +24,5 @@ public class ServerInfo {
 	 * 服务器端口
 	 */
 	private int port;
-
-	/**
-	 * 权重值 (如果有用负载均衡,那么此值越大,被调用的机率越高)
-	 */
-	private int weightNumber = 0;
-
-	public ServerInfo(String host, int port) {
-		this.host = host;
-		this.port = port;
-	}
 
 }

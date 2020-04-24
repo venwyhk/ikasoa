@@ -5,7 +5,8 @@ import com.ikasoa.core.IkasoaException;
 import com.ikasoa.core.ServerCheck;
 import com.ikasoa.core.ServerCheckFailProcessor;
 import com.ikasoa.core.loadbalance.LoadBalance;
-import com.ikasoa.core.loadbalance.ServerInfo;
+import com.ikasoa.core.loadbalance.Node;
+import com.ikasoa.core.thrift.ServerInfo;
 import com.ikasoa.core.thrift.client.ThriftClient;
 import com.ikasoa.core.thrift.client.ThriftClientConfiguration;
 import com.ikasoa.core.utils.ObjectUtil;
@@ -25,11 +26,12 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class LoadBalanceThriftClientImpl extends AbstractThriftClientImpl {
 
-	private LoadBalance loadBalance;
+	private LoadBalance<ServerInfo> loadBalance;
 
 	private ServerCheckFailProcessor serverCheckFailProcessor = getServerCheckFailProcessor(new NextProcessImpl());
 
-	public LoadBalanceThriftClientImpl(final LoadBalance loadBalance, final ThriftClientConfiguration configuration) {
+	public LoadBalanceThriftClientImpl(final LoadBalance<ServerInfo> loadBalance,
+			final ThriftClientConfiguration configuration) {
 		if (ObjectUtil.isNull(loadBalance))
 			throw new IllegalArgumentException("'loadBalance' is null !");
 		this.loadBalance = loadBalance;
@@ -69,12 +71,12 @@ public class LoadBalanceThriftClientImpl extends AbstractThriftClientImpl {
 	 * @version 0.3.4
 	 */
 	private void updateServerInfo() {
-		ServerInfo serverInfo = loadBalance.getServerInfo();
-		if (ObjectUtil.isNull(serverInfo))
-			throw new RuntimeException("'serverInfo' is null !");
-		setServerHost(serverInfo.getHost());
-		setServerPort(serverInfo.getPort());
-		log.debug("Update server info . ({})", serverInfo.toString());
+		Node<ServerInfo> serverInfoNode = loadBalance.getNode();
+		if (ObjectUtil.isNull(serverInfoNode))
+			throw new RuntimeException("'serverInfoNode' is null !");
+		setServerHost(serverInfoNode.getValue().getHost());
+		setServerPort(serverInfoNode.getValue().getPort());
+		log.debug("Update server info . ({})", serverInfoNode.toString());
 	}
 
 	/**

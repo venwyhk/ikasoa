@@ -11,7 +11,7 @@ import java.util.TreeMap;
 
 import com.ikasoa.core.IkasoaException;
 import com.ikasoa.core.loadbalance.LoadBalance;
-import com.ikasoa.core.loadbalance.ServerInfo;
+import com.ikasoa.core.loadbalance.Node;
 import com.ikasoa.core.utils.ListUtil;
 import com.ikasoa.core.utils.MapUtil;
 import com.ikasoa.core.utils.StringUtil;
@@ -26,9 +26,9 @@ import lombok.SneakyThrows;
  * @version 0.5
  */
 @NoArgsConstructor
-public class ConsistencyHashLoadBalanceImpl implements LoadBalance {
+public class ConsistencyHashLoadBalanceImpl<I> implements LoadBalance<I> {
 
-	private TreeMap<Long, ServerInfo> nodes = null;
+	private TreeMap<Long, Node<I>> nodes = null;
 
 	/**
 	 * 设置虚拟节点数目
@@ -38,26 +38,26 @@ public class ConsistencyHashLoadBalanceImpl implements LoadBalance {
 	private SoftReference<String> hashReference;
 
 	@SneakyThrows
-	public ConsistencyHashLoadBalanceImpl(List<ServerInfo> serverInfoList, String hash) {
+	public ConsistencyHashLoadBalanceImpl(List<Node<I>> nodeList, String hash) {
 		if (StringUtil.isEmpty(hash))
 			throw new IllegalArgumentException("Constructor must exist hash parameter !");
 		hashReference = new SoftReference<String>(StringUtil.merge(InetAddress.getLocalHost().getHostAddress(), hash));
 		nodes = MapUtil.newTreeMap();
-		ListUtil.forEach(0, 1, serverInfoList, (index, serverInfo) -> {
+		ListUtil.forEach(0, 1, nodeList, (index, node) -> {
 			for (int i = 0; i < VIRTUAL_NUM; i++)
-				nodes.put(hash(computeMd5(String.format("SHARD-%d-NODE-%d", index, i)), i), serverInfo);
+				nodes.put(hash(computeMd5(String.format("SHARD-%d-NODE-%d", index, i)), i), node);
 		});
 	}
 
 	@Override
-	public ServerInfo getServerInfo() {
-		SortedMap<Long, ServerInfo> tailMap = nodes.tailMap(hash(computeMd5(hashReference.get()), 0));
+	public Node<I> getNode() {
+		SortedMap<Long, Node<I>> tailMap = nodes.tailMap(hash(computeMd5(hashReference.get()), 0));
 		return nodes.get(tailMap.isEmpty() ? nodes.firstKey() : tailMap.firstKey());
 	}
 
 	@Override
-	public ServerInfo next() throws IkasoaException {
-		return getServerInfo();
+	public Node<I> next() throws IkasoaException {
+		return getNode();
 	}
 
 	private long hash(byte[] digest, int nTime) {

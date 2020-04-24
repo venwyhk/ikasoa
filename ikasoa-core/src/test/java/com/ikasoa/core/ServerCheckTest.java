@@ -3,8 +3,10 @@ package com.ikasoa.core;
 import java.util.List;
 
 import org.junit.Test;
-import com.ikasoa.core.loadbalance.ServerInfo;
+
+import com.ikasoa.core.loadbalance.Node;
 import com.ikasoa.core.loadbalance.impl.PollingLoadBalanceImpl;
+import com.ikasoa.core.thrift.ServerInfo;
 import com.ikasoa.core.thrift.client.ThriftClient;
 import com.ikasoa.core.thrift.client.ThriftClientConfiguration;
 import com.ikasoa.core.thrift.client.impl.LoadBalanceThriftClientImpl;
@@ -47,10 +49,12 @@ public class ServerCheckTest extends TestCase {
 	@Test
 	public void testLoadBalanceCheck() {
 		configuration.setServerCheck(new ServerCheckTestImpl());
-		List<ServerInfo> serverInfoList = ListUtil.buildArrayList(new ServerInfo("192.168.1.1", serverPort),
-				new ServerInfo("192.168.1.2", serverPort), new ServerInfo("192.168.1.3", serverPort));
+		List<Node<ServerInfo>> serverInfoNodeList = ListUtil.buildArrayList(
+				new Node<>(new ServerInfo("192.168.1.1", serverPort)),
+				new Node<>(new ServerInfo("192.168.1.2", serverPort)),
+				new Node<>(new ServerInfo("192.168.1.3", serverPort)));
 		try (ThriftClient loadBalanceThriftClient = new LoadBalanceThriftClientImpl(
-				new PollingLoadBalanceImpl(serverInfoList), configuration)) {
+				new PollingLoadBalanceImpl<>(serverInfoNodeList), configuration)) {
 			loadBalanceThriftClient.getTransport();
 			assertEquals(loadBalanceThriftClient.getServerHost(), "192.168.1.2");
 		} catch (Exception e) {

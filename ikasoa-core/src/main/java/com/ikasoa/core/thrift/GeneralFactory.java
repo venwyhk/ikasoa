@@ -12,7 +12,7 @@ import org.apache.thrift.transport.TNonblockingTransport;
 
 import com.ikasoa.core.IkasoaException;
 import com.ikasoa.core.loadbalance.LoadBalance;
-import com.ikasoa.core.loadbalance.ServerInfo;
+import com.ikasoa.core.loadbalance.Node;
 import com.ikasoa.core.loadbalance.impl.PollingLoadBalanceImpl;
 import com.ikasoa.core.thrift.client.AsyncMultiplexedProtocolFactory;
 import com.ikasoa.core.thrift.client.ThriftClient;
@@ -60,7 +60,7 @@ public class GeneralFactory implements Factory {
 	/**
 	 * 默认负载均衡实现
 	 */
-	private static final LoadBalance DEFAULT_LOAD_BALANCE = new PollingLoadBalanceImpl();
+	private static final LoadBalance<ServerInfo> DEFAULT_LOAD_BALANCE = new PollingLoadBalanceImpl<>();
 
 	public GeneralFactory(ThriftServerConfiguration thriftServerConfiguration) {
 		this.thriftServerConfiguration = thriftServerConfiguration;
@@ -163,13 +163,14 @@ public class GeneralFactory implements Factory {
 	 * 获取带负载均衡的ThriftClient对象
 	 */
 	@Override
-	public ThriftClient getThriftClient(List<ServerInfo> serverInfoList) {
-		return getThriftClient(serverInfoList, DEFAULT_LOAD_BALANCE);
+	public ThriftClient getThriftClient(List<Node<ServerInfo>> serverInfoNodeList) {
+		return getThriftClient(serverInfoNodeList, DEFAULT_LOAD_BALANCE);
 	}
 
 	@Override
-	public ThriftClient getThriftClient(List<ServerInfo> serverInfoList, LoadBalance loadBalance) {
-		return getThriftClient(serverInfoList, loadBalance, null);
+	public ThriftClient getThriftClient(List<Node<ServerInfo>> serverInfoNodeList,
+			LoadBalance<ServerInfo> loadBalance) {
+		return getThriftClient(serverInfoNodeList, loadBalance, null);
 	}
 
 	/**
@@ -177,12 +178,12 @@ public class GeneralFactory implements Factory {
 	 */
 	@Override
 	@SneakyThrows
-	@SuppressWarnings("rawtypes")
-	public ThriftClient getThriftClient(List<ServerInfo> serverInfoList, LoadBalance loadBalance, String param) {
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public ThriftClient getThriftClient(List<Node<ServerInfo>> serverInfoNodeList, LoadBalance<ServerInfo> loadBalance,
+			String param) {
 		Class[] paramTypes = { List.class, String.class };
-		Object[] params = { serverInfoList, param };
-		return new LoadBalanceThriftClientImpl(
-				(LoadBalance) loadBalance.getClass().getConstructor(paramTypes).newInstance(params),
+		Object[] params = { serverInfoNodeList, param };
+		return new LoadBalanceThriftClientImpl(loadBalance.getClass().getConstructor(paramTypes).newInstance(params),
 				thriftClientConfiguration);
 	}
 

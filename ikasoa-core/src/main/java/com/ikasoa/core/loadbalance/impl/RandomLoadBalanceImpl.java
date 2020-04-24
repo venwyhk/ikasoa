@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.ikasoa.core.IkasoaException;
 import com.ikasoa.core.loadbalance.LoadBalance;
-import com.ikasoa.core.loadbalance.ServerInfo;
+import com.ikasoa.core.loadbalance.Node;
 import com.ikasoa.core.utils.ListUtil;
 import com.ikasoa.core.utils.NumberUtil;
 import com.ikasoa.core.utils.ObjectUtil;
@@ -20,30 +20,30 @@ import lombok.extern.slf4j.Slf4j;
  */
 @NoArgsConstructor
 @Slf4j
-public class RandomLoadBalanceImpl implements LoadBalance {
+public class RandomLoadBalanceImpl<I> implements LoadBalance<I> {
 
 	/**
 	 * 服务器信息列表
 	 */
-	private List<ServerInfo> serverInfoList;
+	private List<Node<I>> nodeList;
 
 	/**
 	 * 当前服务器信息
 	 */
-	private ServerInfo serverInfo;
+	private Node<I> node;
 
-	public RandomLoadBalanceImpl(List<ServerInfo> serverInfoList) {
-		init(serverInfoList);
+	public RandomLoadBalanceImpl(List<Node<I>> nodeList) {
+		init(nodeList);
 	}
 
-	public RandomLoadBalanceImpl(List<ServerInfo> serverInfoList, String context) {
-		init(serverInfoList);
+	public RandomLoadBalanceImpl(List<Node<I>> nodeList, String context) {
+		init(nodeList);
 	}
 
-	private void init(List<ServerInfo> serverInfoList) {
-		if (ListUtil.isEmpty(serverInfoList))
-			throw new IllegalArgumentException("'serverInfoList' is null !");
-		this.serverInfoList = serverInfoList;
+	private void init(List<Node<I>> nodeList) {
+		if (ListUtil.isEmpty(nodeList))
+			throw new IllegalArgumentException("'nodeList' is null !");
+		this.nodeList = nodeList;
 		try {
 			next();
 		} catch (IkasoaException e) {
@@ -52,20 +52,20 @@ public class RandomLoadBalanceImpl implements LoadBalance {
 	}
 
 	@Override
-	public ServerInfo getServerInfo() {
-		if (ObjectUtil.isNull(serverInfo))
-			log.error("'serverInfo' is null !");
-		return serverInfo;
+	public Node<I> getNode() {
+		if (ObjectUtil.isNull(node))
+			log.error("'node' is null !");
+		return node;
 	}
 
 	@Override
-	public ServerInfo next() throws IkasoaException {
-		int size = serverInfoList.size();
+	public Node<I> next() throws IkasoaException {
+		int size = nodeList.size();
 		if (size == 0)
-			throw new IkasoaException("Get server info failed !");
-		serverInfo = serverInfoList.get(NumberUtil.getRandomInt(0, size));
-		log.debug("ServerInfo is : {}", serverInfo);
-		return getServerInfo();
+			throw new IkasoaException("Get node info failed !");
+		node = nodeList.get(NumberUtil.getRandomInt(0, size));
+		log.debug("Node is : {}", nodeList);
+		return getNode();
 	}
 
 }

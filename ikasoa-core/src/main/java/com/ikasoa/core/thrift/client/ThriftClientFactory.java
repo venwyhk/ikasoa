@@ -3,7 +3,8 @@ package com.ikasoa.core.thrift.client;
 import java.util.List;
 
 import com.ikasoa.core.loadbalance.LoadBalance;
-import com.ikasoa.core.loadbalance.ServerInfo;
+import com.ikasoa.core.loadbalance.Node;
+import com.ikasoa.core.thrift.ServerInfo;
 
 /**
  * Thrift客户端工厂接口
@@ -27,27 +28,28 @@ public interface ThriftClientFactory {
 	/**
 	 * 获取带负载均衡的ThriftClient对象
 	 * 
-	 * @param serverInfoList
+	 * @param serverInfoNodeList
 	 *            服务器信息列表
 	 * @return ThriftClient Thrift客户端
 	 */
-	ThriftClient getThriftClient(final List<ServerInfo> serverInfoList);
+	ThriftClient getThriftClient(final List<Node<ServerInfo>> serverInfoNodeList);
 
 	/**
 	 * 获取带负载均衡的ThriftClient对象
 	 * 
-	 * @param serverInfoList
+	 * @param serverInfoNodeList
 	 *            服务器信息列表
 	 * @param loadBalance
 	 *            负载均衡实现类
 	 * @return ThriftClient Thrift客户端
 	 */
-	ThriftClient getThriftClient(final List<ServerInfo> serverInfoList, final LoadBalance loadBalance);
+	ThriftClient getThriftClient(final List<Node<ServerInfo>> serverInfoNodeList,
+			final LoadBalance<ServerInfo> loadBalance);
 
 	/**
 	 * 获取带负载均衡的ThriftClient对象
 	 * 
-	 * @param serverInfoList
+	 * @param serverInfoNodeList
 	 *            服务器信息列表
 	 * @param loadBalance
 	 *            负载均衡实现类
@@ -55,7 +57,7 @@ public interface ThriftClientFactory {
 	 *            负载均衡实现参数
 	 * @return ThriftClient Thrift客户端
 	 */
-	ThriftClient getThriftClient(final List<ServerInfo> serverInfoList, final LoadBalance loadBalance,
-			final String param);
+	ThriftClient getThriftClient(final List<Node<ServerInfo>> serverInfoNodeList,
+			final LoadBalance<ServerInfo> loadBalance, final String param);
 
 }

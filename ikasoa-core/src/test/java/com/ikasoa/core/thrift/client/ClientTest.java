@@ -5,9 +5,10 @@ import java.util.List;
 import org.junit.Test;
 
 import com.ikasoa.core.TestConstants;
-import com.ikasoa.core.loadbalance.ServerInfo;
+import com.ikasoa.core.loadbalance.Node;
 import com.ikasoa.core.loadbalance.impl.PollingLoadBalanceImpl;
 import com.ikasoa.core.thrift.GeneralFactory;
+import com.ikasoa.core.thrift.ServerInfo;
 import com.ikasoa.core.thrift.client.impl.LoadBalanceThriftClientImpl;
 import com.ikasoa.core.thrift.client.impl.ThriftClientImpl;
 import com.ikasoa.core.utils.ListUtil;
@@ -47,21 +48,22 @@ public class ClientTest extends TestCase {
 	public void testLoadBalanceThriftClientImpl() {
 		String serverHost1 = TestConstants.LOCAL_HOST;
 		int serverPort1 = ServerUtil.getNewPort();
-		List<ServerInfo> serverInfoList = ListUtil.buildArrayList(new ServerInfo(serverHost1, serverPort1));
+		List<Node<ServerInfo>> serverInfoNodeList = ListUtil
+				.buildArrayList(new Node<>(new ServerInfo(serverHost1, serverPort1)));
 		// 以下测试利用自定义负载均衡类型通过GeneralFactory获取Client对象
 		try {
 			@Cleanup
 			ThriftClient loadBalanceThriftClient1 = new LoadBalanceThriftClientImpl(
-					new PollingLoadBalanceImpl(serverInfoList), configuration);
+					new PollingLoadBalanceImpl<>(serverInfoNodeList), configuration);
 			assertEquals(loadBalanceThriftClient1.getServerHost(), serverHost1);
 			assertEquals(loadBalanceThriftClient1.getServerPort(), serverPort1);
 			assertEquals(loadBalanceThriftClient1.getThriftClientConfiguration(), configuration);
 			String serverHost2 = "127.0.0.1";
 			int serverPort2 = ServerUtil.getNewPort();
-			serverInfoList.add(new ServerInfo(serverHost2, serverPort2));
+			serverInfoNodeList.add(new Node<>(new ServerInfo(serverHost2, serverPort2)));
 			@Cleanup
-			ThriftClient loadBalanceThriftClient2 = new GeneralFactory(configuration).getThriftClient(serverInfoList,
-					new PollingLoadBalanceImpl());
+			ThriftClient loadBalanceThriftClient2 = new GeneralFactory(configuration)
+					.getThriftClient(serverInfoNodeList, new PollingLoadBalanceImpl<>());
 			loadBalanceThriftClient2.getTransport();
 			assertEquals(loadBalanceThriftClient2.getServerHost(), serverHost1);
 			assertEquals(loadBalanceThriftClient2.getServerPort(), serverPort1);
