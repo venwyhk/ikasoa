@@ -20,6 +20,6 @@ public interface ServerCheck {
 	 *            服务器端口
 	 * @return boolean 服务器是否可用
 	 */
-	boolean check(String serverHost, int serverPort);
+	boolean check(ServerInfo serverInfo);
 
 }

@@ -27,12 +27,12 @@ public class PollingLoadBalanceImpl<I> implements LoadBalance<I> {
 	private int i, j = 0;
 
 	/**
-	 * 服务器地址和权重列表
+	 * 服务器节点和权重列表
 	 */
 	private List<Node<I>> nodeList;
 
 	/**
-	 * 当前服务器地址
+	 * 当前服务器节点
 	 */
 	private Node<I> node;
 

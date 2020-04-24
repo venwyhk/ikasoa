@@ -2,9 +2,9 @@ package com.ikasoa.core.thrift.client;
 
 import java.util.List;
 
+import com.ikasoa.core.ServerInfo;
 import com.ikasoa.core.loadbalance.LoadBalance;
 import com.ikasoa.core.loadbalance.Node;
-import com.ikasoa.core.thrift.ServerInfo;
 
 /**
  * Thrift客户端工厂接口
@@ -17,19 +17,17 @@ public interface ThriftClientFactory {
 	/**
 	 * 获取默认的ThriftClient对象
 	 * 
-	 * @param serverHost
-	 *            服务器地址
-	 * @param serverPort
-	 *            服务器端口
+	 * @param serverInfo
+	 *            服务器信息
 	 * @return ThriftClient Thrift客户端
 	 */
-	ThriftClient getThriftClient(final String serverHost, final int serverPort);
+	ThriftClient getThriftClient(final ServerInfo serverInfo);
 
 	/**
 	 * 获取带负载均衡的ThriftClient对象
 	 * 
 	 * @param serverInfoNodeList
-	 *            服务器信息列表
+	 *            服务器节点列表
 	 * @return ThriftClient Thrift客户端
 	 */
 	ThriftClient getThriftClient(final List<Node<ServerInfo>> serverInfoNodeList);
@@ -38,7 +36,7 @@ public interface ThriftClientFactory {
 	 * 获取带负载均衡的ThriftClient对象
 	 * 
 	 * @param serverInfoNodeList
-	 *            服务器信息列表
+	 *            服务器节点列表
 	 * @param loadBalance
 	 *            负载均衡实现类
 	 * @return ThriftClient Thrift客户端
@@ -50,7 +48,7 @@ public interface ThriftClientFactory {
 	 * 获取带负载均衡的ThriftClient对象
 	 * 
 	 * @param serverInfoNodeList
-	 *            服务器信息列表
+	 *            服务器节点列表
 	 * @param loadBalance
 	 *            负载均衡实现类
 	 * @param param

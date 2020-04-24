@@ -3,6 +3,7 @@ package com.ikasoa.core.thrift.client;
 import org.apache.thrift.protocol.TProtocol;
 import org.apache.thrift.transport.TTransport;
 import com.ikasoa.core.IkasoaException;
+import com.ikasoa.core.ServerInfo;
 
 /**
  * Thrift客户端接口
@@ -49,18 +50,11 @@ public interface ThriftClient extends AutoCloseable {
 	TProtocol getProtocol(final TTransport transport, final String serviceName);
 
 	/**
-	 * 获取Thrift服务器地址
+	 * 获取Thrift服务器信息
 	 * 
 	 * @return String 服务器地址
 	 */
-	String getServerHost();
-
-	/**
-	 * 获取Thrift服务器端口
-	 * 
-	 * @return int 服务器端口
-	 */
-	int getServerPort();
+	ServerInfo getServerInfo();
 
 	/**
 	 * 获取Thrift服务配置

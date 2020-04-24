@@ -4,11 +4,11 @@ import java.util.List;
 
 import org.junit.Test;
 
+import com.ikasoa.core.ServerInfo;
 import com.ikasoa.core.TestConstants;
 import com.ikasoa.core.loadbalance.Node;
 import com.ikasoa.core.loadbalance.impl.PollingLoadBalanceImpl;
 import com.ikasoa.core.thrift.GeneralFactory;
-import com.ikasoa.core.thrift.ServerInfo;
 import com.ikasoa.core.thrift.client.impl.LoadBalanceThriftClientImpl;
 import com.ikasoa.core.thrift.client.impl.ThriftClientImpl;
 import com.ikasoa.core.utils.ListUtil;
@@ -32,9 +32,10 @@ public class ClientTest extends TestCase {
 	@Test
 	public void testThriftClientImpl() {
 		int serverPort = ServerUtil.getNewPort();
-		try (ThriftClient thriftClient = new ThriftClientImpl(TestConstants.LOCAL_HOST, serverPort, configuration)) {
-			assertEquals(thriftClient.getServerHost(), TestConstants.LOCAL_HOST);
-			assertEquals(thriftClient.getServerPort(), serverPort);
+		try (ThriftClient thriftClient = new ThriftClientImpl(new ServerInfo(TestConstants.LOCAL_HOST, serverPort),
+				configuration)) {
+			assertEquals(thriftClient.getServerInfo().getHost(), TestConstants.LOCAL_HOST);
+			assertEquals(thriftClient.getServerInfo().getPort(), serverPort);
 			assertEquals(thriftClient.getThriftClientConfiguration(), configuration);
 		} catch (Exception e) {
 			fail();
@@ -55,8 +56,8 @@ public class ClientTest extends TestCase {
 			@Cleanup
 			ThriftClient loadBalanceThriftClient1 = new LoadBalanceThriftClientImpl(
 					new PollingLoadBalanceImpl<>(serverInfoNodeList), configuration);
-			assertEquals(loadBalanceThriftClient1.getServerHost(), serverHost1);
-			assertEquals(loadBalanceThriftClient1.getServerPort(), serverPort1);
+			assertEquals(loadBalanceThriftClient1.getServerInfo().getHost(), serverHost1);
+			assertEquals(loadBalanceThriftClient1.getServerInfo().getPort(), serverPort1);
 			assertEquals(loadBalanceThriftClient1.getThriftClientConfiguration(), configuration);
 			String serverHost2 = "127.0.0.1";
 			int serverPort2 = ServerUtil.getNewPort();
@@ -65,11 +66,11 @@ public class ClientTest extends TestCase {
 			ThriftClient loadBalanceThriftClient2 = new GeneralFactory(configuration)
 					.getThriftClient(serverInfoNodeList, new PollingLoadBalanceImpl<>());
 			loadBalanceThriftClient2.getTransport();
-			assertEquals(loadBalanceThriftClient2.getServerHost(), serverHost1);
-			assertEquals(loadBalanceThriftClient2.getServerPort(), serverPort1);
+			assertEquals(loadBalanceThriftClient2.getServerInfo().getHost(), serverHost1);
+			assertEquals(loadBalanceThriftClient2.getServerInfo().getPort(), serverPort1);
 			loadBalanceThriftClient2.getTransport();
-			assertEquals(loadBalanceThriftClient2.getServerHost(), serverHost2);
-			assertEquals(loadBalanceThriftClient2.getServerPort(), serverPort2);
+			assertEquals(loadBalanceThriftClient2.getServerInfo().getHost(), serverHost2);
+			assertEquals(loadBalanceThriftClient2.getServerInfo().getPort(), serverPort2);
 			assertEquals(loadBalanceThriftClient2.getThriftClientConfiguration(), configuration);
 		} catch (Exception e) {
 			fail();

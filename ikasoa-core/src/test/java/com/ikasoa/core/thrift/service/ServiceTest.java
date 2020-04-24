@@ -7,6 +7,7 @@ import org.apache.thrift.transport.TMemoryBuffer;
 import org.junit.Test;
 
 import com.ikasoa.core.IkasoaException;
+import com.ikasoa.core.ServerInfo;
 import com.ikasoa.core.ServerTestCase;
 import com.ikasoa.core.TestConstants;
 import com.ikasoa.core.thrift.Factory;
@@ -39,7 +40,8 @@ public class ServiceTest extends ServerTestCase {
 		ThriftServer thriftServer = factory.getThriftServer(serverPort, new TestService());
 		thriftServer.run();
 		waiting();
-		try (ThriftClient thriftClient = factory.getThriftClient(TestConstants.LOCAL_HOST, serverPort)) {
+		try (ThriftClient thriftClient = factory
+				.getThriftClient(new ServerInfo(TestConstants.LOCAL_HOST, serverPort))) {
 			assertEquals(factory.getService(thriftClient).get(TestConstants.TEST_STRING), TestConstants.TEST_STRING);
 		} catch (Exception e) {
 			fail();

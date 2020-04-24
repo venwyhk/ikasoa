@@ -5,11 +5,11 @@ import java.util.List;
 import org.junit.Test;
 
 import com.ikasoa.core.IkasoaException;
+import com.ikasoa.core.ServerInfo;
 import com.ikasoa.core.loadbalance.LoadBalance;
 import com.ikasoa.core.loadbalance.impl.ConsistencyHashLoadBalanceImpl;
 import com.ikasoa.core.loadbalance.impl.PollingLoadBalanceImpl;
 import com.ikasoa.core.loadbalance.impl.RandomLoadBalanceImpl;
-import com.ikasoa.core.thrift.ServerInfo;
 import com.ikasoa.core.utils.ListUtil;
 import com.ikasoa.core.utils.ServerUtil;
 import com.ikasoa.core.utils.StringUtil;
@@ -46,7 +46,7 @@ public class LoadBalanceTest extends TestCase {
 					ServerUtil.getNewPort(String.format("testPollingLoadBalanceImpl_%d", j)));
 			next(loadBalance);
 		}
-		// 测试新增服务器地址
+		// 测试新增服务器节点
 		serverInfoNodeList.add(new Node<ServerInfo>(
 				new ServerInfo(LOCAL_IP, ServerUtil.getNewPort("testPollingLoadBalanceImpl_new"))));
 		for (int k = 1; k <= testSize; k++)
@@ -88,7 +88,7 @@ public class LoadBalanceTest extends TestCase {
 		serverInfoNode = next(loadBalance);
 		assertEquals(serverInfoNode.getValue().getHost(), "192.168.1.3");
 		assertEquals(serverInfoNode.getValue().getPort(), ServerUtil.getNewPort("testWeightPollingLoadBalanceImpl_3"));
-		// 测试新增服务器地址
+		// 测试新增服务器节点
 		serverInfoNodeList.add(
 				new Node<>(new ServerInfo(LOCAL_IP, ServerUtil.getNewPort("testWeightPollingLoadBalanceImpl_4")), 0));
 		for (int i = 1; i <= 6; i++)

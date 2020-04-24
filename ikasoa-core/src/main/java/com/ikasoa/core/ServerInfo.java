@@ -1,4 +1,4 @@
-package com.ikasoa.core.thrift;
+package com.ikasoa.core;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

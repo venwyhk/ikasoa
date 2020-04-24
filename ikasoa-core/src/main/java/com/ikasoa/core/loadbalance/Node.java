@@ -16,12 +16,12 @@ import lombok.ToString;
 public class Node<I> {
 
 	/**
-	 * 节点信息
+	 * 服务器节点内容
 	 */
 	private I value;
 
 	/**
-	 * 权重值 (如果有用负载均衡,那么此值越大,被调用的机率越高)
+	 * 权重值 (在支持权重的负载均很实现中,此值越大,被调用的机率越高)
 	 */
 	private int weightNumber = 0;
 

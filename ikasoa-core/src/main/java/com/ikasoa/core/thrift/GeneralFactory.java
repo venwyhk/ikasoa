@@ -11,6 +11,7 @@ import org.apache.thrift.protocol.TProtocolFactory;
 import org.apache.thrift.transport.TNonblockingTransport;
 
 import com.ikasoa.core.IkasoaException;
+import com.ikasoa.core.ServerInfo;
 import com.ikasoa.core.loadbalance.LoadBalance;
 import com.ikasoa.core.loadbalance.Node;
 import com.ikasoa.core.loadbalance.impl.PollingLoadBalanceImpl;
@@ -155,8 +156,8 @@ public class GeneralFactory implements Factory {
 	 * 获取ThriftClient对象
 	 */
 	@Override
-	public ThriftClient getThriftClient(String serverHost, int serverPort) {
-		return new ThriftClientImpl(serverHost, serverPort, thriftClientConfiguration);
+	public ThriftClient getThriftClient(ServerInfo serverInfo) {
+		return new ThriftClientImpl(serverInfo, thriftClientConfiguration);
 	}
 
 	/**

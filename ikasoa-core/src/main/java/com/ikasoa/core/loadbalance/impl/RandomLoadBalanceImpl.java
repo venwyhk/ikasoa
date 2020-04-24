@@ -23,12 +23,12 @@ import lombok.extern.slf4j.Slf4j;
 public class RandomLoadBalanceImpl<I> implements LoadBalance<I> {
 
 	/**
-	 * 服务器信息列表
+	 * 服务节点信息列表
 	 */
 	private List<Node<I>> nodeList;
 
 	/**
-	 * 当前服务器信息
+	 * 当前服务节点信息
 	 */
 	private Node<I> node;
 

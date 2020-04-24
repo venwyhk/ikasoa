@@ -4,9 +4,9 @@ import org.apache.thrift.transport.TTransport;
 import com.ikasoa.core.IkasoaException;
 import com.ikasoa.core.ServerCheck;
 import com.ikasoa.core.ServerCheckFailProcessor;
+import com.ikasoa.core.ServerInfo;
 import com.ikasoa.core.loadbalance.LoadBalance;
 import com.ikasoa.core.loadbalance.Node;
-import com.ikasoa.core.thrift.ServerInfo;
 import com.ikasoa.core.thrift.client.ThriftClient;
 import com.ikasoa.core.thrift.client.ThriftClientConfiguration;
 import com.ikasoa.core.utils.ObjectUtil;
@@ -56,11 +56,11 @@ public class LoadBalanceThriftClientImpl extends AbstractThriftClientImpl {
 		ServerCheck serverCheck = getServerCheck();
 		// 如果有配置检测实现,则在建立连接前尝试检测服务器,如果服务器不可用则尝试切换到另一台服务器,切换规则取决于负载均衡实现.
 		// 需要注意,如果列表中的服务器全都不可用,则会无限循环下去,直到有可用的服务为止.
-		if (ObjectUtil.isNotNull(serverCheck) && !serverCheck.check(getServerHost(), getServerPort())) {
+		if (ObjectUtil.isNotNull(serverCheck) && !serverCheck.check(getServerInfo())) {
 			serverCheckFailProcessor.process(this);
 			return getTransport();
 		}
-		TTransport transport = super.getTransport(getServerHost(), getServerPort());
+		TTransport transport = super.getTransport(getServerInfo());
 		loadBalance.next();
 		return transport;
 	}
@@ -74,8 +74,7 @@ public class LoadBalanceThriftClientImpl extends AbstractThriftClientImpl {
 		Node<ServerInfo> serverInfoNode = loadBalance.getNode();
 		if (ObjectUtil.isNull(serverInfoNode))
 			throw new RuntimeException("'serverInfoNode' is null !");
-		setServerHost(serverInfoNode.getValue().getHost());
-		setServerPort(serverInfoNode.getValue().getPort());
+		setServerInfo(serverInfoNode.getValue());
 		log.debug("Update server info . ({})", serverInfoNode.toString());
 	}
 
@@ -88,8 +87,7 @@ public class LoadBalanceThriftClientImpl extends AbstractThriftClientImpl {
 
 		@Override
 		public void process(ThriftClient client) throws IkasoaException {
-			log.warn("Server is not available (serverHost : {}, serverPort : {}) , try next server .",
-					client.getServerHost(), client.getServerPort());
+			log.warn("Server is not available ({}) , try next server .", client.getServerInfo().toString());
 			loadBalance.next();
 		}
 

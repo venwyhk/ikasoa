@@ -6,7 +6,6 @@ import org.junit.Test;
 
 import com.ikasoa.core.loadbalance.Node;
 import com.ikasoa.core.loadbalance.impl.PollingLoadBalanceImpl;
-import com.ikasoa.core.thrift.ServerInfo;
 import com.ikasoa.core.thrift.client.ThriftClient;
 import com.ikasoa.core.thrift.client.ThriftClientConfiguration;
 import com.ikasoa.core.thrift.client.impl.LoadBalanceThriftClientImpl;
@@ -29,17 +28,20 @@ public class ServerCheckTest extends TestCase {
 	@Test
 	public void testCheck() {
 		configuration.setServerCheck(new ServerCheckTestImpl());
-		try (ThriftClient defaultThriftClient1 = new ThriftClientImpl("192.168.1.1", serverPort, configuration)) {
+		try (ThriftClient defaultThriftClient1 = new ThriftClientImpl(new ServerInfo("192.168.1.1", serverPort),
+				configuration)) {
 			assertNull(defaultThriftClient1.getTransport());
 		} catch (Exception e) {
 			assertFalse(StringUtil.equals("", e.getMessage()));
 		}
-		try (ThriftClient defaultThriftClient2 = new ThriftClientImpl("192.168.1.2", serverPort, configuration)) {
+		try (ThriftClient defaultThriftClient2 = new ThriftClientImpl(new ServerInfo("192.168.1.2", serverPort),
+				configuration)) {
 			assertNotNull(defaultThriftClient2.getTransport());
 		} catch (Exception e) {
 			fail();
 		}
-		try (ThriftClient defaultThriftClient3 = new ThriftClientImpl("192.168.1.3", serverPort, configuration)) {
+		try (ThriftClient defaultThriftClient3 = new ThriftClientImpl(new ServerInfo("192.168.1.3", serverPort),
+				configuration)) {
 			assertNull(defaultThriftClient3.getTransport());
 		} catch (Exception e) {
 			assertTrue(!StringUtil.equals("", e.getMessage()));
@@ -56,7 +58,7 @@ public class ServerCheckTest extends TestCase {
 		try (ThriftClient loadBalanceThriftClient = new LoadBalanceThriftClientImpl(
 				new PollingLoadBalanceImpl<>(serverInfoNodeList), configuration)) {
 			loadBalanceThriftClient.getTransport();
-			assertEquals(loadBalanceThriftClient.getServerHost(), "192.168.1.2");
+			assertEquals(loadBalanceThriftClient.getServerInfo().getHost(), "192.168.1.2");
 		} catch (Exception e) {
 			fail();
 		}
@@ -66,7 +68,8 @@ public class ServerCheckTest extends TestCase {
 	public void testCheckFailProcess() {
 		configuration.setServerCheck(new ServerCheckTestImpl());
 		configuration.setServerCheckFailProcessor(new ServerCheckFailProcessTestImpl());
-		try (ThriftClient defaultThriftClient = new ThriftClientImpl("192.168.1.1", serverPort, configuration)) {
+		try (ThriftClient defaultThriftClient = new ThriftClientImpl(new ServerInfo("192.168.1.1", serverPort),
+				configuration)) {
 			defaultThriftClient.getTransport();
 		} catch (Exception e) {
 			assertTrue(StringUtil.equals("exce", e.getMessage()));
@@ -76,8 +79,8 @@ public class ServerCheckTest extends TestCase {
 	class ServerCheckTestImpl implements ServerCheck {
 
 		@Override
-		public boolean check(String serverHost, int serverPort) {
-			return StringUtil.equals("192.168.1.2", serverHost);
+		public boolean check(ServerInfo serverInfo) {
+			return StringUtil.equals("192.168.1.2", serverInfo.getHost());
 		}
 
 	}

@@ -11,23 +11,23 @@ import com.ikasoa.core.IkasoaException;
 public interface LoadBalance<I> {
 
 	/**
-	 * 获取服务器信息
+	 * 获取服务器节点信息
 	 * <p>
-	 * 通过构造方法传入参数,一般传入一批服务器信息,如果有权重值也需要传入.
+	 * 通过构造方法传入参数,一般传入一批服务器节点,如果有权重值也需要传入.
 	 * <p>
-	 * 通过此方法获取一批服务器信息中的一个.如果未执行<code>next()</code>方法,则每次获取的地址应该是相同的.
+	 * 通过此方法获取一批服务器节点信息中的一个.如果未执行<code>next()</code>方法,则每次获取的节点是相同的.
 	 * 
-	 * @return ServerInfo 服务器信息
+	 * @return Node 服务器节点
 	 */
 	Node<I> getNode();
 
 	/**
-	 * 切换服务器信息
+	 * 切换服务器节点
 	 * <p>
-	 * 按照负载均衡规则切换一个服务器信息.返回的信息或者之后通过<code>getServerInfo()</code>
-	 * 方法获取的服务器信息为切换过后的信息,可能会与之前的不同.
+	 * 按照负载均衡规则切换一个服务器节点.返回节点信息或者通过<code>getNode()</code>获取节点信息
+	 * 方法获取的服务器节点信息为切换过后的信息,可能会与之前的节点不同.
 	 * 
-	 * @return ServerInfo
+	 * @return Node 服务器节点
 	 * @exception IkasoaException
 	 *                异常
 	 */
