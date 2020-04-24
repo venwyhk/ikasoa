@@ -3,7 +3,6 @@ package com.ikasoa.core.netty.server;
 import org.apache.thrift.transport.TTransport;
 import org.junit.Test;
 
-import com.ikasoa.core.ServerInfo;
 import com.ikasoa.core.ServerTestCase;
 import com.ikasoa.core.TestConstants;
 import com.ikasoa.core.netty.NettyGeneralFactory;
@@ -32,7 +31,7 @@ public class ServerTest extends ServerTestCase {
 		assertEquals(defaultNettyServer.getServerPort(), serverPort);
 		defaultNettyServer.run();
 		waiting();
-		try (ThriftClient client = factory.getThriftClient(new ServerInfo(TestConstants.LOCAL_HOST, serverPort));
+		try (ThriftClient client = factory.getThriftClient(TestConstants.LOCAL_HOST, serverPort);
 				TTransport transport = client.getTransport()) {
 			transport.open();
 			assertEquals(TestConstants.TEST_STRING,

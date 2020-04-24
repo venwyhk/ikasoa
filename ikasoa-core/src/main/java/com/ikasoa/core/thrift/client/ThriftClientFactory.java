@@ -17,6 +17,17 @@ public interface ThriftClientFactory {
 	/**
 	 * 获取默认的ThriftClient对象
 	 * 
+	 * @param serverHost
+	 *            服务器地址
+	 * @param serverPort
+	 *            服务器端口
+	 * @return ThriftClient Thrift客户端
+	 */
+	ThriftClient getThriftClient(final String serverHost, final int serverPort);
+
+	/**
+	 * 获取默认的ThriftClient对象
+	 * 
 	 * @param serverInfo
 	 *            服务器信息
 	 * @return ThriftClient Thrift客户端

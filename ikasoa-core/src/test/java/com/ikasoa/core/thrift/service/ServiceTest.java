@@ -40,8 +40,7 @@ public class ServiceTest extends ServerTestCase {
 		ThriftServer thriftServer = factory.getThriftServer(serverPort, new TestService());
 		thriftServer.run();
 		waiting();
-		try (ThriftClient thriftClient = factory
-				.getThriftClient(new ServerInfo(TestConstants.LOCAL_HOST, serverPort))) {
+		try (ThriftClient thriftClient = factory.getThriftClient(TestConstants.LOCAL_HOST, serverPort)) {
 			assertEquals(factory.getService(thriftClient).get(TestConstants.TEST_STRING), TestConstants.TEST_STRING);
 		} catch (Exception e) {
 			fail();

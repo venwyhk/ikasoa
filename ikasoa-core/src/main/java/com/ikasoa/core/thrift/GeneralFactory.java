@@ -156,6 +156,14 @@ public class GeneralFactory implements Factory {
 	 * 获取ThriftClient对象
 	 */
 	@Override
+	public ThriftClient getThriftClient(String serverHost, int serverPort) {
+		return new ThriftClientImpl(new ServerInfo(serverHost, serverPort), thriftClientConfiguration);
+	}
+
+	/**
+	 * 获取ThriftClient对象
+	 */
+	@Override
 	public ThriftClient getThriftClient(ServerInfo serverInfo) {
 		return new ThriftClientImpl(serverInfo, thriftClientConfiguration);
 	}

@@ -62,9 +62,8 @@ public class SocketPoolTest extends TestCase {
 		ThriftClientConfiguration configuration = new ThriftClientConfiguration();
 		configuration.setTransportFactory(new TTransportFactory());
 		configuration.setSocketPool(new TestSocketPoolImpl(serverPort));
-		try (ThriftClient thriftClient = new GeneralFactory(configuration)
-				.getThriftClient(new ServerInfo(TestConstants.LOCAL_HOST, serverPort));
-				TTransport transport = thriftClient.getTransport()) {
+		try (ThriftClient thriftClient = new GeneralFactory(configuration).getThriftClient(TestConstants.LOCAL_HOST,
+				serverPort); TTransport transport = thriftClient.getTransport()) {
 			assertNull(transport);
 		} catch (Exception e) {
 			fail();
@@ -78,9 +77,8 @@ public class SocketPoolTest extends TestCase {
 		configuration.setSocketPool(new NoSocketPoolImpl());
 		configuration.setTransportFactory(new TTransportFactory());
 		configuration.setSocketPool(new TestSocketPoolImpl(serverPort));
-		try (ThriftClient thriftClient = new GeneralFactory(configuration)
-				.getThriftClient(new ServerInfo(TestConstants.LOCAL_HOST, serverPort));
-				TTransport transport = thriftClient.getTransport()) {
+		try (ThriftClient thriftClient = new GeneralFactory(configuration).getThriftClient(TestConstants.LOCAL_HOST,
+				serverPort); TTransport transport = thriftClient.getTransport()) {
 			assertNull(transport);
 		} catch (Exception e) {
 			fail();
@@ -94,9 +92,8 @@ public class SocketPoolTest extends TestCase {
 		configuration.setSocketPool(new CommonsPoolImpl());
 		configuration.setTransportFactory(new TTransportFactory());
 		configuration.setSocketPool(new TestSocketPoolImpl(serverPort));
-		try (ThriftClient thriftClient = new GeneralFactory(configuration)
-				.getThriftClient(new ServerInfo(TestConstants.LOCAL_HOST, serverPort));
-				TTransport transport = thriftClient.getTransport()) {
+		try (ThriftClient thriftClient = new GeneralFactory(configuration).getThriftClient(TestConstants.LOCAL_HOST,
+				serverPort); TTransport transport = thriftClient.getTransport()) {
 			assertNull(transport);
 		} catch (Exception e) {
 			fail();
