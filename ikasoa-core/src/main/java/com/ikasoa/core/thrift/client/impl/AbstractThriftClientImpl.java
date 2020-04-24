@@ -14,6 +14,7 @@ import com.ikasoa.core.thrift.client.ThriftClientConfiguration;
 import com.ikasoa.core.thrift.client.pool.ClientSocketPoolParameters;
 import com.ikasoa.core.thrift.client.socket.ThriftSocket;
 import com.ikasoa.core.utils.ObjectUtil;
+import com.ikasoa.core.utils.ServerUtil;
 
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -84,18 +85,12 @@ public abstract class AbstractThriftClientImpl implements ThriftClient {
 	public ServerInfo getServerInfo() {
 		if (ObjectUtil.isNull(serverInfo))
 			throw new RuntimeException("'serverInfo' is null !");
+		if (!ServerUtil.isSocketPort(serverInfo.getPort()))
+			throw new RuntimeException(
+					String.format("Server initialize failed ! Port range must is 1025 ~ 65535 . Your port is : %d .",
+							serverInfo.getPort()));
 		return serverInfo;
 	}
-
-	// @Override
-	// public int getServerPort() {
-	// int port = serverInfo.getPort();
-	// if (!ServerUtil.isSocketPort(port))
-	// throw new RuntimeException(String
-	// .format("Server initialize failed ! Port range must is 1025 ~ 65535 .
-	// Your port is : %d .", port));
-	// return port;
-	// }
 
 	@Override
 	public ThriftClientConfiguration getThriftClientConfiguration() {

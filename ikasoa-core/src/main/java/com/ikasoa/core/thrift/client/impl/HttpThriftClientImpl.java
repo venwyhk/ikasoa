@@ -22,7 +22,7 @@ import lombok.extern.slf4j.Slf4j;
 public class HttpThriftClientImpl extends AbstractThriftClientImpl {
 
 	public HttpThriftClientImpl(String serverHost, ThriftClientConfiguration configuration) {
-		setServerInfo(new ServerInfo(serverHost, 0));
+		setServerInfo(new ServerInfo(serverHost, 1025));
 		if (ObjectUtil.isNull(configuration)) {
 			log.debug("Thrift client configuration is null .");
 			setConfiguration(new ThriftClientConfiguration());
