@@ -85,13 +85,14 @@ public class RC4EncryptImpl implements SymmetricKeyEncrypt {
 	}
 
 	private static byte[] initKey(String aKey) {
-		byte[] bKey = aKey.getBytes(), state = new byte[256];
-		for (int i = 0; i < 256; i++)
+		final int size = 256;
+		byte[] bKey = aKey.getBytes(), state = new byte[size];
+		for (int i = 0; i < size; i++)
 			state[i] = (byte) i;
 		int index1 = 0, index2 = 0;
 		if (ObjectUtil.isNull(bKey) || bKey.length == 0)
 			return null;
-		for (int i = 0; i < 256; i++) {
+		for (int i = 0; i < size; i++) {
 			index2 = ((bKey[index1] & 0xff) + (state[i] & 0xff) + index2) & 0xff;
 			byte tmp = state[i];
 			state[i] = state[index2];

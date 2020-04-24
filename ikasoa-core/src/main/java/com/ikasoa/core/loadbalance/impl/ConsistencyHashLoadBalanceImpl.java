@@ -12,6 +12,7 @@ import java.util.TreeMap;
 import com.ikasoa.core.IkasoaException;
 import com.ikasoa.core.loadbalance.LoadBalance;
 import com.ikasoa.core.loadbalance.ServerInfo;
+import com.ikasoa.core.utils.ListUtil;
 import com.ikasoa.core.utils.MapUtil;
 import com.ikasoa.core.utils.StringUtil;
 
@@ -42,11 +43,10 @@ public class ConsistencyHashLoadBalanceImpl implements LoadBalance {
 			throw new IllegalArgumentException("Constructor must exist hash parameter !");
 		hashReference = new SoftReference<String>(StringUtil.merge(InetAddress.getLocalHost().getHostAddress(), hash));
 		nodes = MapUtil.newTreeMap();
-		for (int i = 0; i < serverInfoList.size(); i++) {
-			ServerInfo serverInfo = serverInfoList.get(i);
-			for (int j = 0; j < VIRTUAL_NUM; j++)
-				nodes.put(hash(computeMd5(String.format("SHARD-%d-NODE-%d", i, j)), j), serverInfo);
-		}
+		ListUtil.forEach(0, 1, serverInfoList, (index, serverInfo) -> {
+			for (int i = 0; i < VIRTUAL_NUM; i++)
+				nodes.put(hash(computeMd5(String.format("SHARD-%d-NODE-%d", index, i)), i), serverInfo);
+		});
 	}
 
 	@Override
