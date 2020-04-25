@@ -38,7 +38,7 @@ public class MapUtil {
 
 	@SafeVarargs
 	public static <K, V> Map<K, V> buildHashMap(V... values) {
-		Map<K, V> map = newHashMap();
+		Map<K, V> map = newHashMap(values.length);
 		buildMap(map, values);
 		return map;
 	}
@@ -62,7 +62,7 @@ public class MapUtil {
 
 	@SafeVarargs
 	public static <K, V> Map<K, V> buildLinkedHashMap(V... values) {
-		Map<K, V> map = newLinkedHashMap();
+		Map<K, V> map = newLinkedHashMap(values.length);
 		buildMap(map, values);
 		return map;
 	}
@@ -91,7 +91,7 @@ public class MapUtil {
 
 	@SafeVarargs
 	public static <K, V> Map<K, V> buildIdentityHashMap(V... values) {
-		Map<K, V> map = newIdentityHashMap();
+		Map<K, V> map = newIdentityHashMap(values.length);
 		buildMap(map, values);
 		return map;
 	}
@@ -138,7 +138,7 @@ public class MapUtil {
 
 	@SafeVarargs
 	public static <K, V> Hashtable<K, V> buildHashtable(V... values) {
-		Hashtable<K, V> map = newHashtable();
+		Hashtable<K, V> map = newHashtable(values.length);
 		buildMap(map, values);
 		return map;
 	}
@@ -149,7 +149,7 @@ public class MapUtil {
 	}
 
 	public static <E> Map<E, E> arrayToMap(E[][] array) {
-		final Map<E, E> map = newHashMap((int) (array.length * 1.5));
+		final Map<E, E> map = newHashMap((int) (array.length));
 		JUtil.fur(0, array.length - 1, 1, i -> {
 			final E[] entry = array[i];
 			if (entry.length < 2)

@@ -13,19 +13,19 @@ import lombok.ToString;
 @AllArgsConstructor
 @Data
 @ToString
-public class Node<I> {
+public class Node<S> {
 
 	/**
 	 * 服务器节点内容
 	 */
-	private I value;
+	private S value;
 
 	/**
 	 * 权重值 (在支持权重的负载均很实现中,此值越大,被调用的机率越高)
 	 */
 	private int weightNumber = 0;
 
-	public Node(I value) {
+	public Node(S value) {
 		this.value = value;
 	}
 

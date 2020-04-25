@@ -20,27 +20,27 @@ import lombok.extern.slf4j.Slf4j;
  */
 @NoArgsConstructor
 @Slf4j
-public class RandomLoadBalanceImpl<I> implements LoadBalance<I> {
+public class RandomLoadBalanceImpl<S> implements LoadBalance<S> {
 
 	/**
 	 * 服务节点信息列表
 	 */
-	private List<Node<I>> nodeList;
+	private List<Node<S>> nodeList;
 
 	/**
 	 * 当前服务节点信息
 	 */
-	private Node<I> node;
+	private Node<S> node;
 
-	public RandomLoadBalanceImpl(List<Node<I>> nodeList) {
+	public RandomLoadBalanceImpl(List<Node<S>> nodeList) {
 		init(nodeList);
 	}
 
-	public RandomLoadBalanceImpl(List<Node<I>> nodeList, String context) {
+	public RandomLoadBalanceImpl(List<Node<S>> nodeList, String context) {
 		init(nodeList);
 	}
 
-	private void init(List<Node<I>> nodeList) {
+	private void init(List<Node<S>> nodeList) {
 		if (ListUtil.isEmpty(nodeList))
 			throw new IllegalArgumentException("'nodeList' is null !");
 		this.nodeList = nodeList;
@@ -52,14 +52,14 @@ public class RandomLoadBalanceImpl<I> implements LoadBalance<I> {
 	}
 
 	@Override
-	public Node<I> getNode() {
+	public Node<S> getNode() {
 		if (ObjectUtil.isNull(node))
 			log.error("'node' is null !");
 		return node;
 	}
 
 	@Override
-	public Node<I> next() throws IkasoaException {
+	public Node<S> next() throws IkasoaException {
 		int size = nodeList.size();
 		if (size == 0)
 			throw new IkasoaException("Get node info failed !");

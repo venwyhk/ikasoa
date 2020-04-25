@@ -8,7 +8,7 @@ import com.ikasoa.core.IkasoaException;
  * @author <a href="mailto:larry7696@gmail.com">Larry</a>
  * @version 0.1
  */
-public interface LoadBalance<I> {
+public interface LoadBalance<S> {
 
 	/**
 	 * 获取服务器节点信息
@@ -19,7 +19,7 @@ public interface LoadBalance<I> {
 	 * 
 	 * @return Node 服务器节点
 	 */
-	Node<I> getNode();
+	Node<S> getNode();
 
 	/**
 	 * 切换服务器节点
@@ -31,6 +31,6 @@ public interface LoadBalance<I> {
 	 * @exception IkasoaException
 	 *                异常
 	 */
-	Node<I> next() throws IkasoaException;
+	Node<S> next() throws IkasoaException;
 
 }

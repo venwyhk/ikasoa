@@ -19,7 +19,7 @@ import lombok.extern.slf4j.Slf4j;
  */
 @NoArgsConstructor
 @Slf4j
-public class PollingLoadBalanceImpl<I> implements LoadBalance<I> {
+public class PollingLoadBalanceImpl<S> implements LoadBalance<S> {
 
 	/**
 	 * 临时记数器
@@ -29,22 +29,22 @@ public class PollingLoadBalanceImpl<I> implements LoadBalance<I> {
 	/**
 	 * 服务器节点和权重列表
 	 */
-	private List<Node<I>> nodeList;
+	private List<Node<S>> nodeList;
 
 	/**
 	 * 当前服务器节点
 	 */
-	private Node<I> node;
+	private Node<S> node;
 
-	public PollingLoadBalanceImpl(List<Node<I>> nodeList) {
+	public PollingLoadBalanceImpl(List<Node<S>> nodeList) {
 		init(nodeList);
 	}
 
-	public PollingLoadBalanceImpl(List<Node<I>> nodeList, String context) {
+	public PollingLoadBalanceImpl(List<Node<S>> nodeList, String context) {
 		init(nodeList);
 	}
 
-	private void init(List<Node<I>> nodeList) {
+	private void init(List<Node<S>> nodeList) {
 		if (ListUtil.isEmpty(nodeList))
 			throw new IllegalArgumentException("'nodeList' is null !");
 		this.nodeList = nodeList;
@@ -56,18 +56,18 @@ public class PollingLoadBalanceImpl<I> implements LoadBalance<I> {
 	}
 
 	@Override
-	public Node<I> getNode() {
+	public Node<S> getNode() {
 		if (ObjectUtil.isNull(node))
 			log.error("'node' is null !");
 		return node;
 	}
 
 	@Override
-	public synchronized Node<I> next() throws IkasoaException {
+	public synchronized Node<S> next() throws IkasoaException {
 		int size = nodeList.size();
 		if (size == 0)
 			throw new IkasoaException("Get node failed !");
-		Node<I> node = nodeList.get(i);
+		Node<S> node = nodeList.get(i);
 		if (ObjectUtil.isNull(node) || node.getWeightNumber() < 0)
 			throw new IkasoaException("Node error !");
 		this.node = node;

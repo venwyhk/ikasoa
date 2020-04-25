@@ -26,9 +26,9 @@ import lombok.SneakyThrows;
  * @version 0.5
  */
 @NoArgsConstructor
-public class ConsistencyHashLoadBalanceImpl<I> implements LoadBalance<I> {
+public class ConsistencyHashLoadBalanceImpl<S> implements LoadBalance<S> {
 
-	private TreeMap<Long, Node<I>> nodes = null;
+	private TreeMap<Long, Node<S>> nodes = null;
 
 	/**
 	 * 设置虚拟节点数目
@@ -38,7 +38,7 @@ public class ConsistencyHashLoadBalanceImpl<I> implements LoadBalance<I> {
 	private SoftReference<String> hashReference;
 
 	@SneakyThrows
-	public ConsistencyHashLoadBalanceImpl(List<Node<I>> nodeList, String hash) {
+	public ConsistencyHashLoadBalanceImpl(List<Node<S>> nodeList, String hash) {
 		if (StringUtil.isEmpty(hash))
 			throw new IllegalArgumentException("Constructor must exist hash parameter !");
 		hashReference = new SoftReference<String>(StringUtil.merge(InetAddress.getLocalHost().getHostAddress(), hash));
@@ -50,13 +50,13 @@ public class ConsistencyHashLoadBalanceImpl<I> implements LoadBalance<I> {
 	}
 
 	@Override
-	public Node<I> getNode() {
-		SortedMap<Long, Node<I>> tailMap = nodes.tailMap(hash(computeMd5(hashReference.get()), 0));
+	public Node<S> getNode() {
+		SortedMap<Long, Node<S>> tailMap = nodes.tailMap(hash(computeMd5(hashReference.get()), 0));
 		return nodes.get(tailMap.isEmpty() ? nodes.firstKey() : tailMap.firstKey());
 	}
 
 	@Override
-	public Node<I> next() throws IkasoaException {
+	public Node<S> next() throws IkasoaException {
 		return getNode();
 	}
 
