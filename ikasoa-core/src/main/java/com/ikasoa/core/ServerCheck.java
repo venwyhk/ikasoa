@@ -14,7 +14,7 @@ public interface ServerCheck {
 	/**
 	 * 服务器检测
 	 * 
-	 * @param ServerInfo
+	 * @param serverInfo
 	 *            服务器信息
 	 * @return boolean 服务器是否可用
 	 */
