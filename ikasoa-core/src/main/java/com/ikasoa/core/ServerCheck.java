@@ -14,10 +14,8 @@ public interface ServerCheck {
 	/**
 	 * 服务器检测
 	 * 
-	 * @param serverHost
-	 *            服务器地址
-	 * @param serverPort
-	 *            服务器端口
+	 * @param ServerInfo
+	 *            服务器信息
 	 * @return boolean 服务器是否可用
 	 */
 	boolean check(ServerInfo serverInfo);
