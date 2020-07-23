@@ -59,7 +59,7 @@ public class BaseGetServiceFactory<T, R> extends GeneralFactory {
 		if (ObjectUtil.orIsNull(thriftClient, protocolHandler) || StringUtil.isEmpty(serviceKey))
 			return new InvalidGetService<T, R>();
 		log.debug("Create new instance 'IkasoaClientService' . (serverHost : {}, serverPort : {}, serviceKey : {})",
-				thriftClient.getServerHost(), thriftClient.getServerPort(), serviceKey);
+				thriftClient.getServerInfo().getHost(), thriftClient.getServerInfo().getPort(), serviceKey);
 		return new IkasoaClientService<T, R>(this, thriftClient, serviceKey, protocolHandler, clientInvocationHandler);
 	}
 

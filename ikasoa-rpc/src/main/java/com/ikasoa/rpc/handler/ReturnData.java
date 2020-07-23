@@ -61,7 +61,7 @@ public class ReturnData {
 			for (int i = 0; i < types.length; i++) {
 				Type type = types[i];
 				String typeName = StringUtil.isNotEmpty(type.getTypeName()) ? type.getTypeName().split("<")[0] : "";
-				Map<String, Object> dataTypeMap = MapUtil.arrayToMap(COLLECTION_DATATYPES);
+				Map<Object, Object> dataTypeMap = MapUtil.arrayToMap(COLLECTION_DATATYPES);
 				if (dataTypeMap.containsKey(typeName)) {
 					classTypes[i] = (Class<?>) dataTypeMap.get(typeName);
 					setContainerType(true);

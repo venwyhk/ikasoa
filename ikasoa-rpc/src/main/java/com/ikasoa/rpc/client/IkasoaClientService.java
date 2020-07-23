@@ -55,8 +55,8 @@ public class IkasoaClientService<T, R> implements BaseGetService<T, R> {
 		ClientInvocationContext context = null;
 		if (ObjectUtil.isNotNull(invocationHandler)) {
 			context = new ClientInvocationContext(UUID.randomUUID().toString());
-			context.setServerHost(thriftClient.getServerHost());
-			context.setServerPort(thriftClient.getServerPort());
+			context.setServerHost(thriftClient.getServerInfo().getHost());
+			context.setServerPort(thriftClient.getServerInfo().getPort());
 			context.setServiceKey(serviceKey);
 			context.setArgObject(arg);
 			context = invocationHandler.before(context);

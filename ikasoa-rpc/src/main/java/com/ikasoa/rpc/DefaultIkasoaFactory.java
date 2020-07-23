@@ -9,7 +9,8 @@ import java.util.Optional;
 import org.apache.thrift.TProcessor;
 
 import com.ikasoa.core.IkasoaException;
-import com.ikasoa.core.loadbalance.ServerInfo;
+import com.ikasoa.core.ServerInfo;
+import com.ikasoa.core.loadbalance.Node;
 import com.ikasoa.core.thrift.GeneralFactory;
 import com.ikasoa.core.thrift.client.ThriftClient;
 import com.ikasoa.core.thrift.client.ThriftClientConfiguration;
@@ -81,21 +82,16 @@ public class DefaultIkasoaFactory extends GeneralFactory implements IkasoaFactor
 			throw new IllegalArgumentException();
 		if (ObjectUtil.isNull(siw) || !siw.isNotNull())
 			throw new IllegalArgumentException("'serverInfoWrapper' is exist !");
-		return (T) Proxy
-				.newProxyInstance(iClass.getClassLoader(),
-						new Class<?>[] {
-								iClass },
-						(proxy, iMethod,
-								args) -> getBaseGetServiceFactory()
-										.getBaseGetService(
-												siw.isCluster()
-														? ObjectUtil.isNull(siw.getLoadBalance())
-																? getThriftClient(siw.getServerInfoList())
-																: getThriftClient(siw.getServerInfoList(),
-																		siw.getLoadBalance(), siw.getParam())
-														: getThriftClient(siw.getHost(), siw.getPort()),
-												getSKey(iClass, iMethod, true), new ReturnData(iMethod))
-										.get(args));
+		return (T) Proxy.newProxyInstance(iClass.getClassLoader(), new Class<?>[] { iClass },
+				(proxy, iMethod,
+						args) -> getBaseGetServiceFactory().getBaseGetService(
+								siw.isCluster()
+										? ObjectUtil.isNull(siw.getLoadBalance())
+												? getThriftClient(siw.getServerInfoList())
+												: getThriftClient(siw.getServerInfoList(), siw.getLoadBalance(),
+														siw.getParam())
+										: getThriftClient(siw.getHost(), siw.getPort()),
+								getSKey(iClass, iMethod, true), new ReturnData(iMethod)).get(args));
 	}
 
 	@Override
@@ -157,7 +153,7 @@ public class DefaultIkasoaFactory extends GeneralFactory implements IkasoaFactor
 	}
 
 	@Override
-	public ThriftClient getThriftClient(List<ServerInfo> serverInfoList) {
+	public ThriftClient getThriftClient(List<Node<ServerInfo>> serverInfoList) {
 		return super.getThriftClient(serverInfoList);
 	}
 
