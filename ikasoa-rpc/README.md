@@ -219,6 +219,7 @@ RpcServer.java
     import com.ikasoa.rpc.RpcException;
     import com.ikasoa.rpc.IkasoaFactory;
     import com.ikasoa.rpc.IkasoaServer;
+    import com.ikasoa.core.utils.ListUtil;
     public class RpcServer {
         private IkasoaServer server;
         public RpcServer(IkasoaFactory ikasoaFactory, int serverPort) throws RpcException {
@@ -229,7 +230,7 @@ RpcServer.java
             // this.server = ikasoaFactory.getIkasoaServer(new ImplWrapper(ExampleServiceImpl.class, exampleServiceImpl), serverPort);
             // 如有多个接口实现,可以传入List.
             // 例子如下:
-            // List<ImplWrapper> sList = new ArrayList<>();
+            // List<ImplWrapper> sList = ListUtil.newArrayList();
             // sList.add(new ImplWrapper(ExampleServiceImpl.class));
             // sList.add(new ImplWrapper(Example2ServiceImpl.class));
             // this.server = ikasoaFactory.getIkasoaServer(sList, serverPort);
@@ -254,6 +255,7 @@ RpcClient.java
     package example.ikasoa;
     import com.ikasoa.rpc.DefaultIkasoaFactory;
     import com.ikasoa.rpc.ServerInfoWrapper;
+    import com.ikasoa.core.utils.ListUtil;
     public class RpcClient {
         public static void main(String[] args) {
             // 如果接口之间有继承关系,则只需要配置子接口类
@@ -261,10 +263,10 @@ RpcClient.java
             ExampleService es = new DefaultIkasoaFactory().getInstance(ExampleService.class, new ServerInfoWrapper("localhost", 9993));
             // 如果有多个服务提供者,服务器地址和端口也可以传入List,系统将自动执行负载均衡(默认负载均衡规则为轮询,此外还支持随机,详见'负载均衡'文档目录).
             // 例子如下:
-            //  List<ServerInfo> serverInfoList = new ArrayList<>();
-            //  serverInfoList.add(new ServerInfo("localhost", 9993));
-            //  serverInfoList.add(new ServerInfo("192.168.1.41", 9993));
-            //  ExampleService es = new DefaultIkasoaFactory().getInstance(ExampleService.class, new ServerInfoWrapper(serverInfoList));
+            //  List<Node<ServerInfo>> serverInfoNodeList = ListUtil.newArrayList();
+            //  serverInfoNodeList.add(new Node<ServerInfo>(new ServerInfo("localhost", 9993)));
+            //  serverInfoLiserverInfoNodeListst.add((new Node<ServerInfo>(new ServerInfo("192.168.1.41", 9993)));
+            //  ExampleService es = new DefaultIkasoaFactory().getInstance(ExampleService.class, new ServerInfoWrapper(serverInfoNodeList));
             System.out.println(es.findVO(1).getString());
         }
     }
@@ -483,9 +485,9 @@ web.xml
 
 ```java
     ......
-    XService xs = new DefaultIkasoaFactory().getInstance(XService.class, new ServerInfoWrapper(serverInfoList));
+    XService xs = new DefaultIkasoaFactory().getInstance(XService.class, new ServerInfoWrapper(serverInfoNodeList));
     // 也可以写为如下方式:
-    // XService xs = new DefaultIkasoaFactory().getInstance(XService.class, new ServerInfoWrapper(serverInfoList, new PollingLoadBalanceImpl()));
+    // XService xs = new DefaultIkasoaFactory().getInstance(XService.class, new ServerInfoWrapper(serverInfoNodeList, new PollingLoadBalanceImpl()));
     ......
 ```
 
@@ -495,7 +497,7 @@ web.xml
 
 ```java
     ......
-    XService xs = new DefaultIkasoaFactory().getInstance(XService.class, new ServerInfoWrapper(serverInfoList, new RandomLoadBalanceImpl()));
+    XService xs = new DefaultIkasoaFactory().getInstance(XService.class, new ServerInfoWrapper(serverInfoNodeList, new RandomLoadBalanceImpl()));
     ......
 ```
 
@@ -509,7 +511,7 @@ web.xml
 
 ```java
     ......
-    XService xs = new DefaultIkasoaFactory().getInstance(XService.class, new ServerInfoWrapper(serverInfoList, new com.xxx.XLoadBalanceImpl()));
+    XService xs = new DefaultIkasoaFactory().getInstance(XService.class, new ServerInfoWrapper(serverInfoNodeList, new com.xxx.XLoadBalanceImpl()));
     ......
 ```
 
