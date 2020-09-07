@@ -33,7 +33,6 @@ import com.ikasoa.core.thrift.server.impl.ThreadPoolThriftServerImpl;
 import com.ikasoa.core.utils.MapUtil;
 import com.ikasoa.core.utils.ServerUtil;
 import com.ikasoa.core.utils.StringUtil;
-import com.ikasoa.core.thrift.server.ThriftSimpleService;
 import com.ikasoa.core.thrift.server.ThriftSimpleService.Iface;
 import com.ikasoa.core.thrift.server.ThriftSimpleService.Processor;
 

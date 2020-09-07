@@ -6,7 +6,6 @@ import org.junit.Test;
 
 import com.ikasoa.core.IkasoaException;
 import com.ikasoa.core.ServerInfo;
-import com.ikasoa.core.loadbalance.LoadBalance;
 import com.ikasoa.core.loadbalance.impl.ConsistencyHashLoadBalanceImpl;
 import com.ikasoa.core.loadbalance.impl.PollingLoadBalanceImpl;
 import com.ikasoa.core.loadbalance.impl.RandomLoadBalanceImpl;
