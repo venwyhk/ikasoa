@@ -137,7 +137,7 @@
         <dependency>
             <groupId>com.ikasoa</groupId>
             <artifactId>ikasoa-rpc</artifactId>
-            <version>0.3.3</version>
+            <version>0.3.3-BETA3</version>
         </dependency>
         <dependency>
             <groupId>com.ikasoa</groupId>
