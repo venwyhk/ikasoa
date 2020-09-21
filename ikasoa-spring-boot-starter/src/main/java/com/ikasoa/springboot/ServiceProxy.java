@@ -2,8 +2,9 @@ package com.ikasoa.springboot;
 
 import java.util.List;
 
+import com.ikasoa.core.ServerInfo;
 import com.ikasoa.core.loadbalance.LoadBalance;
-import com.ikasoa.core.loadbalance.ServerInfo;
+import com.ikasoa.core.loadbalance.Node;
 import com.ikasoa.rpc.Configurator;
 import com.ikasoa.rpc.IkasoaFactory;
 import com.ikasoa.rpc.ServerInfoWrapper;
@@ -20,7 +21,7 @@ public class ServiceProxy {
 
 	private int port;
 
-	private List<ServerInfo> serverInfoList;
+	private List<Node<ServerInfo>> serverInfoList;
 
 	private IkasoaFactoryFactory ikasoaFactoryFactory;
 
@@ -32,7 +33,7 @@ public class ServiceProxy {
 		this(host, port, new IkasoaFactoryFactory());
 	}
 
-	public ServiceProxy(List<ServerInfo> serverInfoList) {
+	public ServiceProxy(List<Node<ServerInfo>> serverInfoList) {
 		this(serverInfoList, new IkasoaFactoryFactory());
 	}
 
@@ -40,7 +41,7 @@ public class ServiceProxy {
 		this(host, port, new IkasoaFactoryFactory(configurator));
 	}
 
-	public ServiceProxy(List<ServerInfo> serverInfoList, Configurator configurator) {
+	public ServiceProxy(List<Node<ServerInfo>> serverInfoList, Configurator configurator) {
 		this(serverInfoList, new IkasoaFactoryFactory(configurator));
 	}
 
@@ -50,12 +51,12 @@ public class ServiceProxy {
 		this.ikasoaFactoryFactory = ikasoaFactoryFactory;
 	}
 
-	public ServiceProxy(List<ServerInfo> serverInfoList, IkasoaFactoryFactory ikasoaFactoryFactory) {
+	public ServiceProxy(List<Node<ServerInfo>> serverInfoList, IkasoaFactoryFactory ikasoaFactoryFactory) {
 		if (serverInfoList == null || serverInfoList.isEmpty())
 			throw new IllegalArgumentException("'serverInfoList' is null !");
 		this.serverInfoList = serverInfoList;
-		this.host = serverInfoList.get(0).getHost();
-		this.port = serverInfoList.get(0).getPort();
+		this.host = serverInfoList.get(0).getValue().getHost();
+		this.port = serverInfoList.get(0).getValue().getPort();
 		this.ikasoaFactoryFactory = ikasoaFactoryFactory;
 	}
 
@@ -65,7 +66,7 @@ public class ServiceProxy {
 		return defaultFactory.getInstance(iClass, new ServerInfoWrapper(host, port));
 	}
 
-	public <T> T getService(Class<T> iClass, LoadBalance loadBalance) {
+	public <T> T getService(Class<T> iClass, LoadBalance<ServerInfo> loadBalance) {
 		if (defaultFactory == null)
 			defaultFactory = ikasoaFactoryFactory.getIkasoaDefaultFactory();
 		return !serverInfoList.isEmpty() && loadBalance != null
@@ -79,7 +80,7 @@ public class ServiceProxy {
 		return nettyFactory.getInstance(iClass, new ServerInfoWrapper(host, port));
 	}
 
-	public <T> T getNettyService(Class<T> iClass, LoadBalance loadBalance) {
+	public <T> T getNettyService(Class<T> iClass, LoadBalance<ServerInfo> loadBalance) {
 		if (nettyFactory == null)
 			nettyFactory = ikasoaFactoryFactory.getIkasoaNettyFactory();
 		return !serverInfoList.isEmpty() && loadBalance != null

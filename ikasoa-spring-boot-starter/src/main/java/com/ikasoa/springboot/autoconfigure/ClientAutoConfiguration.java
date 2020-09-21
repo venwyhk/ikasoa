@@ -12,7 +12,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.ImportAware;
 import org.springframework.core.type.AnnotationMetadata;
 
-import com.ikasoa.core.loadbalance.ServerInfo;
+import com.ikasoa.core.ServerInfo;
+import com.ikasoa.core.loadbalance.Node;
 import com.ikasoa.core.thrift.client.ThriftClientConfiguration;
 import com.ikasoa.core.utils.ServerUtil;
 import com.ikasoa.core.utils.StringUtil;
@@ -52,9 +53,11 @@ public class ClientAutoConfiguration extends AbstractAutoConfiguration implement
 			List<ServiceInstance> instanceList = discoveryClient.getInstances(eurekaAppName);
 			if (instanceList.isEmpty())
 				throw new RpcException(StringUtil.merge("Service '", eurekaAppName, "' is empty !"));
-			List<ServerInfo> serverInfoList = instanceList.stream().map(i -> new ServerInfo(i.getHost(), eurekaAppPort))
+			List<Node<ServerInfo>> serverInfoList = instanceList.stream()
+					.map(i -> new Node<ServerInfo>(new ServerInfo(i.getHost(), eurekaAppPort)))
 					.collect(Collectors.toList());
-			return StringUtil.isEmpty(configurator) ? new ServiceProxy(serverInfoList)
+			return StringUtil.isEmpty(configurator)
+					? new ServiceProxy(serverInfoList)
 					: new ServiceProxy(serverInfoList, getConfigurator());
 		} else if (StringUtil.isNotEmpty(zkServerString)) {
 			Configurator configurator = getConfigurator();
