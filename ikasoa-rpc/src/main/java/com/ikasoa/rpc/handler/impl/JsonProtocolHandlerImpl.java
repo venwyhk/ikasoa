@@ -4,9 +4,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.IntStream;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson2.JSON;
+import com.alibaba.fastjson2.JSONObject;
+import com.alibaba.fastjson2.JSONReader.Feature;
 import com.ikasoa.core.utils.MapUtil;
 import com.ikasoa.core.utils.ObjectUtil;
 import com.ikasoa.core.utils.StringUtil;
@@ -39,9 +41,9 @@ public class JsonProtocolHandlerImpl<T, R> implements ProtocolHandler<T, R> {
 		if (strs.length != 2)
 			throw new IllegalArgumentException(StringUtil.merge("arg json string error : ", str));
 		String argClassStr = strs[0];
-		Class<?>[] argClasses = JSON.parseObject(argClassStr, Class[].class);
+		Class<?>[] argClasses = JSON.parseObject(argClassStr, Class[].class, Feature.SupportClassForName);
 		String argStr = strs[1];
-		String[] argStrs = JSON.parseObject(argStr, String[].class);
+		String[] argStrs = JSON.parseObject(argStr, String[].class, Feature.SupportClassForName);
 		if (argStrs.length != argClasses.length)
 			throw new IllegalArgumentException("parameters length is error !");
 		Object[] objs = new Object[argClasses.length];
@@ -52,7 +54,9 @@ public class JsonProtocolHandlerImpl<T, R> implements ProtocolHandler<T, R> {
 				objs[i] = null;
 				continue;
 			}
-			objs[i] = isAppendQuotes(s) ? JSON.parseObject(StringUtil.merge("\"", s, "\""), c) : JSON.parseObject(s, c);
+			objs[i] = isAppendQuotes(s)
+					? JSON.parseObject(StringUtil.merge("\"", s, "\""), c, Feature.SupportClassForName)
+					: JSON.parseObject(s, c, Feature.SupportClassForName);
 		}
 		return (T) objs;
 	}
@@ -63,9 +67,10 @@ public class JsonProtocolHandlerImpl<T, R> implements ProtocolHandler<T, R> {
 			return "[]";
 		Object[] args = (Object[]) arg;
 		Class<?>[] argClasses = new Class<?>[args.length];
-		for (int i = 0; i < args.length; i++)
+		IntStream.range(0, args.length).parallel().forEach(i -> {
 			if (ObjectUtil.isNotNull(args[i]))
 				argClasses[i] = args[i].getClass();
+		});
 		return new StringBuilder(JSON.toJSONString(argClasses)).append(CT).append(JSON.toJSONString(arg)).toString();
 	}
 
@@ -103,15 +108,15 @@ public class JsonProtocolHandlerImpl<T, R> implements ProtocolHandler<T, R> {
 				throw new IllegalArgumentException("'Map' must appoint type ! eg : 'Map<String, String>' .");
 			JSONObject jsonMap = JSON.parseObject(resultStr);
 			Map<Object, Object> map = MapUtil.newHashMap(jsonMap.size());
-			jsonMap.keySet().forEach(
-					key -> map.put(key, JSON.parseObject(jsonMap.get(key).toString(), resultData.getClassTypes(1))));
+			jsonMap.keySet().forEach(key -> map.put(key, JSON.parseObject(jsonMap.get(key).toString(),
+					resultData.getClassTypes(1), Feature.SupportClassForName)));
 			result = (R) map;
 		} else {
 			try {
 				// TODO: 暂时只有非集合类型才能识别真实数据类型
-				result = (R) JSON.parseObject(resultStr, Class.forName(strs[0]));
+				result = (R) JSON.parseObject(resultStr, Class.forName(strs[0]), Feature.SupportClassForName);
 			} catch (Exception e) {
-				result = (R) JSON.parseObject("{}", resultData.getClassType());
+				result = (R) JSON.parseObject("{}", resultData.getClassType(), Feature.SupportClassForName);
 			}
 		}
 		return result;
@@ -120,7 +125,9 @@ public class JsonProtocolHandlerImpl<T, R> implements ProtocolHandler<T, R> {
 	@Override
 	public Throwable strToThrowable(String str) {
 		String[] strs = str.split(String.valueOf(E));
-		return strs.length == 2 && StringUtil.equals("", strs[0]) ? JSON.parseObject(strs[1], Throwable.class) : null;
+		return strs.length == 2 && StringUtil.equals("", strs[0])
+				? JSON.parseObject(strs[1], Throwable.class, Feature.SupportClassForName)
+				: null;
 	}
 
 	@Override

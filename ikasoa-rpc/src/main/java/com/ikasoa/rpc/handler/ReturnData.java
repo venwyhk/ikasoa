@@ -8,6 +8,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.IntStream;
 
 import com.ikasoa.core.utils.MapUtil;
 import com.ikasoa.core.utils.ObjectUtil;
@@ -58,16 +59,16 @@ public class ReturnData {
 		try {
 			Type[] types = ((ParameterizedType) method.getGenericReturnType()).getActualTypeArguments();
 			classTypes = new Class<?>[types.length];
-			for (int i = 0; i < types.length; i++) {
+			Map<Object, Object> dataTypeMap = MapUtil.arrayToMap(COLLECTION_DATATYPES);
+			IntStream.range(0, types.length).parallel().forEach(i -> {
 				Type type = types[i];
 				String typeName = StringUtil.isNotEmpty(type.getTypeName()) ? type.getTypeName().split("<")[0] : "";
-				Map<Object, Object> dataTypeMap = MapUtil.arrayToMap(COLLECTION_DATATYPES);
 				if (dataTypeMap.containsKey(typeName)) {
 					classTypes[i] = (Class<?>) dataTypeMap.get(typeName);
 					setContainerType(true);
 				} else
 					classTypes[i] = (Class<?>) type;
-			}
+			});
 		} catch (Exception e) {
 			try {
 				this.classTypes = new Class<?>[] { Class.forName(this.className) };
