@@ -41,6 +41,9 @@ public class ListUtilTest extends TestCase {
 
 	@Test
 	public void testForEach() {
+		ListUtil.forEach(ListUtil.buildArrayList("0", "1", "2"), (index, item) -> {
+			assertTrue(index == StringUtil.toInt(item));
+		});
 		ListUtil.forEach(0, 2, ListUtil.buildArrayList("0", "2", "4"), (index, item) -> {
 			assertTrue(index == StringUtil.toInt(item));
 		});

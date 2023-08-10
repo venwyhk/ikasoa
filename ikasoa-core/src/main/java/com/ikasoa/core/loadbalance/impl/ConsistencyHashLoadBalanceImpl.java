@@ -8,6 +8,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.SortedMap;
 import java.util.TreeMap;
+import java.util.stream.IntStream;
 
 import com.ikasoa.core.IkasoaException;
 import com.ikasoa.core.loadbalance.LoadBalance;
@@ -43,10 +44,8 @@ public class ConsistencyHashLoadBalanceImpl<S> implements LoadBalance<S> {
 			throw new IllegalArgumentException("Constructor must exist hash parameter !");
 		hashReference = new SoftReference<String>(StringUtil.merge(InetAddress.getLocalHost().getHostAddress(), hash));
 		nodes = MapUtil.newTreeMap();
-		ListUtil.forEach(0, 1, nodeList, (index, node) -> {
-			for (int i = 0; i < VIRTUAL_NUM; i++)
-				nodes.put(hash(computeMd5(String.format("SHARD-%d-NODE-%d", index, i)), i), node);
-		});
+		ListUtil.forEach(nodeList, (index, node) -> IntStream.range(0, VIRTUAL_NUM)
+				.forEach(i -> nodes.put(hash(computeMd5(String.format("SHARD-%d-NODE-%d", index, i)), i), node)));
 	}
 
 	@Override

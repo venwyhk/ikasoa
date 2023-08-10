@@ -8,6 +8,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
+import java.util.stream.IntStream;
 
 import lombok.experimental.UtilityClass;
 
@@ -150,7 +151,7 @@ public class MapUtil {
 
 	public static <E> Map<E, E> arrayToMap(E[][] array) {
 		final Map<E, E> map = newHashMap((int) (array.length));
-		JUtil.fur(0, array.length - 1, 1, i -> {
+		IntStream.range(0, array.length).parallel().forEach(i -> {
 			final E[] entry = array[i];
 			if (entry.length < 2)
 				throw new IllegalArgumentException(String.format("Array element %d, has a length less than 2 .", i));

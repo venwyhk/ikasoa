@@ -62,6 +62,10 @@ public class ListUtil {
 	public static boolean isEmpty(List<?> list) {
 		return ObjectUtil.isNull(list) || list.isEmpty();
 	}
+	
+	public static <T> void forEach(Iterable<? extends T> elements, BiConsumer<Integer, ? super T> action) {
+		forEach(0, 1, elements, action);
+	}
 
 	public static <T> void forEach(int startIndex, int spanNum, Iterable<? extends T> elements,
 			BiConsumer<Integer, ? super T> action) {

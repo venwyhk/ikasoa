@@ -1,5 +1,7 @@
 package com.ikasoa.core.thrift.protocol;
 
+import java.util.stream.IntStream;
+
 import org.apache.thrift.TException;
 import org.apache.thrift.protocol.TCompactProtocol;
 import org.apache.thrift.protocol.TProtocol;
@@ -87,8 +89,7 @@ public class SecurityCompactProtocol extends TCompactProtocol {
 			return str;
 		} else if (strLen < length) {
 			StringBuilder tem = new StringBuilder();
-			for (int i = 0; i < length - strLen; i++)
-				tem.append(" ");
+			IntStream.range(0, length - strLen).forEach(i -> tem.append(" "));
 			return StringUtil.merge(str, tem);
 		} else {
 			return str.substring(0, length);

@@ -1,6 +1,7 @@
 package com.ikasoa.core.loadbalance;
 
 import java.util.List;
+import java.util.stream.IntStream;
 
 import org.junit.Test;
 
@@ -29,11 +30,10 @@ public class LoadBalanceTest extends TestCase {
 	public void testPollingLoadBalanceImpl() {
 		int testSize = 10;
 		List<Node<ServerInfo>> serverInfoNodeList = ListUtil.newArrayList();
-		for (int i = 1; i <= testSize; i++)
-			serverInfoNodeList.add(new Node<ServerInfo>(new ServerInfo(StringUtil.merge("192.168.1.", i),
-					ServerUtil.getNewPort(String.format("testPollingLoadBalanceImpl_%d", i)))));
+		IntStream.range(1, testSize+1).forEach(i -> serverInfoNodeList.add(new Node<ServerInfo>(new ServerInfo(StringUtil.merge("192.168.1.", i),
+				ServerUtil.getNewPort(String.format("testPollingLoadBalanceImpl_%d", i))))));
 		LoadBalance<ServerInfo> loadBalance = new PollingLoadBalanceImpl<>(serverInfoNodeList);
-		for (int j = 1; j <= testSize; j++) {
+		IntStream.range(1, testSize+1).forEach(j -> {
 			Node<ServerInfo> serverInfoNode = loadBalance.getNode();
 			assertNotNull(serverInfoNode);
 			assertEquals(serverInfoNode.getValue().getHost(), StringUtil.merge("192.168.1.", j));
@@ -44,12 +44,11 @@ public class LoadBalanceTest extends TestCase {
 			assertEquals(serverInfoNode.getValue().getPort(),
 					ServerUtil.getNewPort(String.format("testPollingLoadBalanceImpl_%d", j)));
 			next(loadBalance);
-		}
+		});
 		// 测试新增服务器节点
 		serverInfoNodeList.add(new Node<ServerInfo>(
 				new ServerInfo(LOCAL_IP, ServerUtil.getNewPort("testPollingLoadBalanceImpl_new"))));
-		for (int k = 1; k <= testSize; k++)
-			next(loadBalance);
+		IntStream.range(1, testSize + 1).forEach(k -> next(loadBalance));
 		Node<ServerInfo> serverInfoNode = loadBalance.getNode();
 		assertEquals(serverInfoNode.getValue().getHost(), LOCAL_IP);
 		assertEquals(serverInfoNode.getValue().getPort(), ServerUtil.getNewPort("testPollingLoadBalanceImpl_new"));

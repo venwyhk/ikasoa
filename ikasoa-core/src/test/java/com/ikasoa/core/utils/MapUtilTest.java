@@ -1,6 +1,7 @@
 package com.ikasoa.core.utils;
 
 import java.util.Map;
+import java.util.stream.IntStream;
 
 import org.junit.Test;
 

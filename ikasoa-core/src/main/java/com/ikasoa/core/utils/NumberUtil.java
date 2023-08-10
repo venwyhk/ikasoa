@@ -18,6 +18,14 @@ public class NumberUtil {
 
 	private final static int ROUNDING_MODE = BigDecimal.ROUND_HALF_UP;
 
+	public static byte limitByte(byte value, byte min, byte max) {
+		if (value < min)
+			value = min;
+		if (value > max)
+			value = max;
+		return value;
+	}
+
 	public static int limitInt(int value, int min, int max) {
 		if (value < min)
 			value = min;
@@ -37,10 +45,8 @@ public class NumberUtil {
 	/**
 	 * 获取一个范围的随机整数
 	 * 
-	 * @param min
-	 *            最小值
-	 * @param max
-	 *            最大值
+	 * @param min 最小值
+	 * @param max 最大值
 	 * @return int 随机数
 	 */
 	public static int getRandomInt(int min, int max) {

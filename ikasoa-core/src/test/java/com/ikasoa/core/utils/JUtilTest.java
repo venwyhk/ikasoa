@@ -7,16 +7,6 @@ import lombok.Data;
 
 public class JUtilTest extends TestCase {
 
-	@Test
-	public void test() {
-		JUtil.fur(0, 0, 0, i -> {
-			assertTrue(i == 0);
-		});
-		JUtil.fur(1, 1, 0, i -> {
-			assertTrue(i == 1);
-		});
-	}
-
 	/**
 	 * 对象拷贝测试
 	 */

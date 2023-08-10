@@ -1,5 +1,7 @@
 package com.ikasoa.core.security.impl;
 
+import java.util.stream.IntStream;
+
 import com.ikasoa.core.security.SymmetricKeyEncrypt;
 import com.ikasoa.core.utils.StringUtil;
 
@@ -51,7 +53,7 @@ public class CaesarEncryptImpl implements SymmetricKeyEncrypt {
 
 	private String execute(String data, int offset) throws Exception {
 		StringBuilder cipher = new StringBuilder();
-		for (int i = 0; i < data.length(); i++) {
+		IntStream.range(0, data.length()).forEach(i -> {
 			char c = data.charAt(i);
 			if (c >= 'a' && c <= 'z') {
 				c += offset % 26;
@@ -67,7 +69,7 @@ public class CaesarEncryptImpl implements SymmetricKeyEncrypt {
 					c -= 26;
 			}
 			cipher.append(c);
-		}
+		});
 		return cipher.toString();
 	}
 
