@@ -78,6 +78,9 @@ public class StringUtilTest extends TestCase {
 	public void testEquals() {
 		assertTrue(StringUtil.equals("abc", "abc"));
 		assertFalse(StringUtil.equals("abc", "abcd"));
+		assertFalse(StringUtil.equals(null, "a"));
+		assertFalse(StringUtil.equals("a", null));
+		assertTrue(StringUtil.equals(null, null));
 	}
 
 	@Test
