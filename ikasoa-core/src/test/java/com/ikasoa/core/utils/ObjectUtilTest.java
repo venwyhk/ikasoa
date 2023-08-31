@@ -5,7 +5,7 @@ import org.junit.Test;
 import junit.framework.TestCase;
 
 /**
- * Object工具单元测试
+ * Object工具类单元测试
  */
 public class ObjectUtilTest extends TestCase {
 

@@ -7,7 +7,7 @@ import org.junit.Test;
 import junit.framework.TestCase;
 
 /**
- * Date工具单元测试
+ * Date工具类单元测试
  */
 public class DateUtilTest extends TestCase {
 

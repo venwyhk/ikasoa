@@ -1,14 +1,13 @@
 package com.ikasoa.core.utils;
 
 import java.util.Map;
-import java.util.stream.IntStream;
 
 import org.junit.Test;
 
 import junit.framework.TestCase;
 
 /**
- * Map工具单元测试
+ * Map工具类单元测试
  */
 public class MapUtilTest extends TestCase {
 

@@ -7,17 +7,22 @@ import com.ikasoa.core.TestConstants;
 import junit.framework.TestCase;
 
 /**
- * 服务器工具单元测试
+ * 服务器工具类单元测试
  */
 public class ServerUtilTest extends TestCase {
 
 	@Test
+	public void testGetLocalIPv4() {
+		assertTrue(ServerUtil.isIPv4(ServerUtil.getLocalIPv4()));
+	}
+
+	@Test
 	public void testIsIpv4() {
-		assertTrue(ServerUtil.isIpv4("127.0.0.1"));
-		assertTrue(ServerUtil.isIpv4("192.168.1.111"));
-		assertFalse(ServerUtil.isIpv4("99999.99999.99999.00000"));
-		assertFalse(ServerUtil.isIpv4(TestConstants.LOCAL_HOST));
-		assertFalse(ServerUtil.isIpv4(" "));
+		assertTrue(ServerUtil.isIPv4("127.0.0.1"));
+		assertTrue(ServerUtil.isIPv4("192.168.1.111"));
+		assertFalse(ServerUtil.isIPv4("99999.99999.99999.00000"));
+		assertFalse(ServerUtil.isIPv4(TestConstants.LOCAL_HOST));
+		assertFalse(ServerUtil.isIPv4(" "));
 	}
 
 	@Test

@@ -5,6 +5,9 @@ import org.junit.Test;
 import junit.framework.TestCase;
 import lombok.Data;
 
+/**
+ * Java工具类单元测试
+ */
 public class JUtilTest extends TestCase {
 
 	/**

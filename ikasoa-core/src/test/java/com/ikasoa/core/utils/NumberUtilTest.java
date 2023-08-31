@@ -5,7 +5,7 @@ import org.junit.Test;
 import junit.framework.TestCase;
 
 /**
- * Number工具单元测试
+ * Number工具类单元测试
  */
 public class NumberUtilTest extends TestCase {
 

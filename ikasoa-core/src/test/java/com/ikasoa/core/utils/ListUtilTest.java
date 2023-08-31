@@ -7,7 +7,7 @@ import org.junit.Test;
 import junit.framework.TestCase;
 
 /**
- * List工具单元测试
+ * List工具类单元测试
  */
 public class ListUtilTest extends TestCase {
 

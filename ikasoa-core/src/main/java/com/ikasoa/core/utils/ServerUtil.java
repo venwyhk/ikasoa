@@ -1,6 +1,13 @@
 package com.ikasoa.core.utils;
 
+import java.net.Inet4Address;
+import java.net.InetAddress;
+import java.net.InterfaceAddress;
+import java.net.NetworkInterface;
 import java.net.ServerSocket;
+import java.net.SocketException;
+import java.net.UnknownHostException;
+import java.util.Enumeration;
 import java.util.Map;
 import java.util.regex.Pattern;
 
@@ -19,7 +26,27 @@ public class ServerUtil {
 
 	private static Map<String, Integer> portCacheMap = MapUtil.newHashMap();
 
-	public static boolean isIpv4(String ip) {
+	/**
+	 * 获取本地IP地址(IPv4)
+	 */
+	public static String getLocalIPv4() {
+		try {
+			for (Enumeration<NetworkInterface> e = NetworkInterface.getNetworkInterfaces(); e.hasMoreElements();) {
+				NetworkInterface item = e.nextElement();
+				for (InterfaceAddress address : item.getInterfaceAddresses()) {
+					if (item.isLoopback() || !item.isUp())
+						continue;
+					if (address.getAddress() instanceof Inet4Address)
+						return ((Inet4Address) address.getAddress()).getHostAddress();
+				}
+			}
+			return InetAddress.getLocalHost().getHostAddress();
+		} catch (SocketException | UnknownHostException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	public static boolean isIPv4(String ip) {
 		return Pattern
 				.compile("([1-9]|[1-9]\\d|1\\d{2}|2[0-4]\\d|25[0-5])(\\.(\\d|[1-9]\\d|1\\d{2}|2[0-4]\\d|25[0-5])){3}")
 				.matcher(ip).matches();

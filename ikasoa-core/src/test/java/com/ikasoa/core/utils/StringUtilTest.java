@@ -7,7 +7,7 @@ import com.ikasoa.core.TestConstants;
 import junit.framework.TestCase;
 
 /**
- * 字符串工具单元测试
+ * 字符串工具类单元测试
  */
 public class StringUtilTest extends TestCase {
 
